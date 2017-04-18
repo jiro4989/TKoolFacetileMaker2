@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="MVTextEditor" default="default" basedir="."
+  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+  <!-- プロパティ --><!--{{{-->
+
+  <property environment="env"/>
+  <property name="env.JAVA_HOME"     value="${env.JAVA_HOME}"/>
+  <property name="build.src.dir"     value="src"/>
+  <property name="build.lib.dir"     value="lib"/>
+  <property name="build.classes.dir" value="classes"/>
+  <property name="build.javadoc.dir" value="doc"/>
+  <property name="build.dist.dir"    value="dist"/>
+  <property name="build.main.class"  value="application.Main"/>
+  <property name="jar.name"          value="tkfm.jar"/>
+  <property name="lib.name"          value="formattable-string-1.0.0.jar"/>
+
+  <!--}}}-->
+
+  <!-- 外部ライブラリのパス --><!--{{{-->
+
+  <path id="lib">
+
+    <fileset dir="lib">
+
+      <include name="*.jar"/>
+
+    </fileset>
+
+  </path>
+
+<!--}}}-->
+
+  <target name="default" depends="clean,compile,jar"/>
+
+  <target name="clean"><!--{{{-->
+
+    <mkdir dir="${build.src.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${build.lib.dir}"/>
+    <mkdir dir="${build.dist.dir}"/>
+
+    <delete>
+
+      <fileset dir="${build.classes.dir}" includes="**/*"/>
+
+    </delete>
+
+  </target>
+
+  <!--}}}-->
+
+  <target name="compile" depends="clean"><!--{{{-->
+
+    <!-- コンパイル --><!--{{{-->
+
+    <javac includeantruntime="false"
+      classpathref="lib"
+      srcdir="${build.src.dir}"
+      destdir="${build.classes.dir}"
+      fork="yes"
+      executable="${env.JAVA_HOME}/bin/javac"
+      encoding="utf-8"
+      source="1.8"
+      debug="on"
+      >
+
+    </javac>
+
+    <!--}}}-->
+
+    <!-- リソースファイルのコピー --><!--{{{-->
+
+    <copy todir="classes">
+
+      <fileset dir="src">
+
+        <include name="**/*.css"/>
+        <include name="**/*.fxml"/>
+        <include name="**/*.png"/>
+        <include name="**/*.properties"/>
+
+      </fileset>
+
+    </copy>
+
+    <!--}}}-->
+
+    <!-- 実行 --><!--{{{-->
+
+    <java fork="true"
+      jvm="${env.JAVA_HOME}\bin\java"
+      classname="${build.main.class}"
+      classpath="${build.classes.dir}"
+      classpathref="lib"
+      >
+
+    </java>
+
+    <!--}}}-->
+
+  </target>
+
+  <!--}}}-->
+
+  <target name="jar" depends="compile"><!--{{{-->
+
+    <!-- 古いjarをすべて削除 --><!--{{{-->
+
+    <delete>
+
+      <fileset dir="." includes="*.jar"/>
+
+    </delete>
+
+    <!--}}}-->
+
+    <!-- jarの生成 --><!--{{{-->
+
+    <jar destfile="${jar.name}" basedir="classes">
+
+      <manifest>
+
+        <attribute name="Main-Class" value="${build.main.class}"/>
+
+      </manifest>
+
+      <zipgroupfileset dir="lib" includes="*.jar"/>
+
+    </jar>
+
+    <!--}}}-->
+
+  </target>
+
+  <!--}}}-->
+
+  <!-- ライブラリ用コンパイル -->
+
+  <target name="libCompile" depends="clean"><!--{{{-->
+
+    <!-- コンパイル --><!--{{{-->
+
+    <javac includeantruntime="false"
+      classpathref="lib"
+      srcdir="${build.src.dir}"
+      destdir="${build.classes.dir}"
+      fork="yes"
+      executable="${env.JAVA_HOME}/bin/javac"
+      encoding="utf-8"
+      source="1.8"
+      debug="on"
+      >
+
+    </javac>
+
+    <!--}}}-->
+
+    <!-- リソースファイルのコピー --><!--{{{-->
+
+    <copy todir="classes">
+
+      <fileset dir="src">
+
+        <include name="**/*.css"/>
+        <include name="**/*.fxml"/>
+        <include name="**/*.png"/>
+        <include name="**/*.properties"/>
+
+      </fileset>
+
+    </copy>
+
+    <!--}}}-->
+
+  </target>
+
+  <!--}}}-->
+
+  <target name="cleanJavadoc"><!--{{{-->
+
+    <delete dir="${build.javadoc.dir}"/>
+
+  </target><!--}}}-->
+
+  <target name="javadoc" depends="cleanJavadoc"><!--{{{-->
+
+    <mkdir dir="${build.javadoc.dir}"/>
+
+    <javadoc
+      sourcepath="${build.src.dir}"
+      destdir="${build.javadoc.dir}"
+      classpath="${build.classes.dir}"
+      encoding="UTF-8"
+      docencoding="UTF-8"
+      charset="UTF-8"
+      source="1.8"
+      public="true"
+      author="true"
+      version="true"
+      package="*"
+      >
+
+    </javadoc>
+
+  </target><!--}}}-->
+
+  <target name="lib" depends="clean,libCompile,cleanJavadoc,javadoc"><!--{{{-->
+
+    <!-- jarの生成 --><!--{{{-->
+
+    <jar destfile="${build.dist.dir}/${lib.name}" basedir="classes">
+
+      <!-- 
+      <zipgroupfileset dir="lib" includes="*.jar"/>
+      -->
+    </jar>
+
+    <!--}}}-->
+
+  </target>
+
+  <!--}}}-->
+
+</project>
+
