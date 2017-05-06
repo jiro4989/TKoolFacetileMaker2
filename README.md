@@ -4,7 +4,7 @@ TKoolFacetileMaker2 マニュアル
 作者             : 次郎(Jiro)  
 作成日           : 2016/07/16  
 最終更新日       : 2016/11/20  
-連絡先           : [避難所の一つ](http://ashelter.blog.fc2.com/)  
+連絡先           : [次ログ](http://jiroron666.hatenablog.com)  
 実行ファイル名   : TKFM.jar  
 動作確認・開発環境  
 - OS             : Windows7 64bit Home Premium, LinuxBean12.04  
