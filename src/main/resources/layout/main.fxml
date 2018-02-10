@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.canvas.Canvas?>
-<BorderPane prefHeight="877.0" prefWidth="1280.0" stylesheets="@/css/basic.css" xmlns="http://javafx.com/javafx/8.0.121"
+<BorderPane prefHeight="877.0" prefWidth="1280.0" stylesheets="@/css/basic.css" xmlns="http://javafx.com/javafx/8.0.161"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="jiro.app.MainController">
     <top>
         <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
@@ -195,24 +194,18 @@
                                 <Button mnemonicParsing="false" onAction="#clearListButtonOnAction" text="リストクリア"/>
                                 <Button mnemonicParsing="false" onAction="#upFileButtonOnAction" text="上"/>
                                 <Button mnemonicParsing="false" onAction="#downFileButtonOnAction" text="下"/>
-                                <RadioButton mnemonicParsing="false" text="画像セット"
-                                             onAction="#setModeRadioButtonOnAction">
+                                <RadioButton mnemonicParsing="false" onAction="#setModeRadioButtonOnAction"
+                                             text="画像セット">
                                     <toggleGroup>
                                         <ToggleGroup fx:id="clickModeGroup"/>
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton mnemonicParsing="false" text="画像削除"
-                                             onAction="#deleteModeRadioButtonOnAction"
-                                             toggleGroup="$clickModeGroup"
-                                />
-                                <RadioButton mnemonicParsing="false" text="画像位置交換"
-                                             onAction="#swapModeRadioButtonOnAction"
-                                             toggleGroup="$clickModeGroup"
-                                />
-                                <RadioButton mnemonicParsing="false" text="画像左右反転"
-                                             onAction="#flipModeRadioButtonOnAction"
-                                             toggleGroup="$clickModeGroup"
-                                />
+                                <RadioButton mnemonicParsing="false" onAction="#deleteModeRadioButtonOnAction"
+                                             text="画像削除" toggleGroup="$clickModeGroup"/>
+                                <RadioButton mnemonicParsing="false" onAction="#swapModeRadioButtonOnAction"
+                                             text="画像位置交換" toggleGroup="$clickModeGroup"/>
+                                <RadioButton mnemonicParsing="false" onAction="#flipModeRadioButtonOnAction"
+                                             text="画像左右反転" toggleGroup="$clickModeGroup"/>
                             </children>
                         </VBox>
                     </right>
@@ -236,11 +229,31 @@
                                             AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="13.0"
                                             AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="12.0">
                                     <content>
-                                    </content>
-                                    <content>
-                                        <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0"
-                                                   onMouseDragged="#selectedImageViewOnMouseDragged" pickOnBounds="true"
-                                                   preserveRatio="true"/>
+                                        <AnchorPane>
+                                            <children>
+                                                <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0"
+                                                           onMouseDragged="#selectedImageViewOnMouseDragged"
+                                                           pickOnBounds="true" preserveRatio="true"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                                <Rectangle fx:id="leftShadowRectangle" styleClass="shadow-rectangle"
+                                                           fill="BLACK" height="200.0"
+                                                           width="200.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.bottomAnchor="0.0"/>
+                                                <Rectangle fx:id="topShadowRectangle" styleClass="shadow-rectangle"
+                                                           fill="BLACK" height="200.0"
+                                                           width="200.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0"/>
+                                                <Rectangle fx:id="rightShadowRectangle" styleClass="shadow-rectangle"
+                                                           fill="BLACK" height="200.0"
+                                                           width="200.0" AnchorPane.topAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0"/>
+                                                <Rectangle fx:id="bottomShadowRectangle" styleClass="shadow-rectangle"
+                                                           fill="BLACK" height="200.0"
+                                                           width="200.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.bottomAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
                                     </content>
                                 </ScrollPane>
                             </children>
@@ -257,8 +270,8 @@
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <Canvas fx:id="overLayerCanvas" styleClass="canvas" AnchorPane.leftAnchor="10"
-                                        AnchorPane.topAnchor="10" width="576" height="288"/>
+                                <Canvas fx:id="overLayerCanvas" height="288" styleClass="canvas" width="576"
+                                        AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
                                 <ImageView fx:id="outImageView" styleClass="image-view" AnchorPane.leftAnchor="10"
                                            AnchorPane.topAnchor="10"/>
                             </children>

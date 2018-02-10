@@ -9,7 +9,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
+import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
+import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
 import javafx.util.Callback
@@ -100,6 +102,15 @@ class MainController {
     private lateinit var selectedImageView: ImageView
     private lateinit var selectedImage: TrimPosManageModel
 
+    @FXML
+    private lateinit var leftShadowRectangle: Rectangle
+    @FXML
+    private lateinit var topShadowRectangle: Rectangle
+    @FXML
+    private lateinit var rightShadowRectangle: Rectangle
+    @FXML
+    private lateinit var bottomShadowRectangle: Rectangle
+
     // 保存する画像のプレビューを描画するクラス
     @FXML
     private lateinit var outImageView: ImageView
@@ -112,7 +123,7 @@ class MainController {
     @FXML
     private fun initialize() {
         imageFiles = FileListModel(imageFileListView)
-        selectedImage = TrimPosManageModel(selectedImageView)
+        selectedImage = TrimPosManageModel(selectedImageView, leftShadowRectangle, topShadowRectangle, rightShadowRectangle, bottomShadowRectangle)
         outImages = OutImagePreviewModel(outImageView)
 
         imageFileListView.items = imageFiles.files
@@ -184,7 +195,7 @@ class MainController {
     fun selectedImageViewOnMouseDragged(mouseEvent: MouseEvent) {
         val x = mouseEvent.x
         val y = mouseEvent.y
-        selectedImage.point = Point(x, y)
+        selectedImage.setTrimPoint(Point(x, y))
     }
 
     /**

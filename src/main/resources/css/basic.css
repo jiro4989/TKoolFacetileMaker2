@@ -4,7 +4,13 @@
     -fx-pref-height: 288;
 }
 
-.canvas { -fx-opacity: 0.5; }
+.canvas {
+    -fx-opacity: 0.5;
+}
+
+.shadow-rectangle {
+    -fx-opacity: 0.5;
+}
 
 .button {
     -fx-pref-width: 100;
