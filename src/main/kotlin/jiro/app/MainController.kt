@@ -217,6 +217,12 @@ class MainController {
     }
 
     /**
+     * 画像を削除するステートに切り替えるイベント
+     */
+    fun deleteModeRadioButtonOnAction(actionEvent: ActionEvent) {
+    }
+
+    /**
      * 選択した画像の位置を交換するステートに切り替えるイベント。
      */
     fun swapModeRadioButtonOnAction(actionEvent: ActionEvent) {

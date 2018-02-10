@@ -201,6 +201,10 @@
                                         <ToggleGroup fx:id="clickModeGroup"/>
                                     </toggleGroup>
                                 </RadioButton>
+                                <RadioButton mnemonicParsing="false" text="画像削除"
+                                             onAction="#deleteModeRadioButtonOnAction"
+                                             toggleGroup="$clickModeGroup"
+                                />
                                 <RadioButton mnemonicParsing="false" text="画像位置交換"
                                              onAction="#swapModeRadioButtonOnAction"
                                              toggleGroup="$clickModeGroup"
