@@ -1,4 +1,5 @@
-/bin/
-/output/
-/properties/
-/classes/
+/img/
+/.idea/
+/.gradle/
+/out/
+/gradle/

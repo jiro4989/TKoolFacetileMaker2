@@ -1,0 +1,79 @@
+@startuml img/appflow.png
+
+title 業務フロー図
+
+|#00ff00|ユーザ操作|
+  partition 画像取り込み {
+    if (ファイル選択ダイアログを使用？) then (true)
+      :FileChooserを起動;
+      :必要な画像を選択;
+      :OKを押す;
+    else (true)
+      :エクスプローラを開く;
+      note right
+        アプリ外での操作
+      end note
+      :必要な画像を選択;
+      note right
+        アプリ外での操作
+      end note
+      :FileListViewにD&Dする;
+    endif
+  }
+
+|__ファイル選択ペイン__|
+  :画像がリストに追加される;
+
+|#AntiqueWhite|__トリミング位置調整ペイン__|
+  :画像プレビューペインで選択画像の一つ目が描画される;
+  :トリミング位置設定パネルが操作可能になる;
+
+|#00ff00|ユーザ操作|
+  partition トリミング位置調整 {
+    :画像プレビューペインで選択画像の一つ目を表示;
+    while (トリミング位置が未決定？)
+      if (マウスで調整？) then (true)
+        :マウスドラッグでトリミング位置の調整;
+      else
+        :キーボードを使用する;
+        if (WASD？) then (true)
+          :WASDを使用する;
+        else
+          :カーソルキーを使用する;
+        endif
+      endif
+
+      |#AntiqueWhite|__トリミング位置調整ペイン__|
+        :再描画され、画面が更新される;
+
+      |#00ff00|ユーザ操作|
+        :トリミング位置ペインの表示を確認;
+    endwhile
+  }
+
+  partition 画像挿入 {
+    if (一括挿入ボタンを押した？) then (true)
+      :一括挿入ボタンを押す;
+
+      |__出力画像確認ペイン__|
+        if (選択されている画像が8個以上?) then (true)
+          :8個目以降の画像は除外する;
+        else (false)
+          :選択画像が存在する分だけ順にGridPaneに追加される;
+        endif
+    else (false)
+      |#00ff00|ユーザ操作|
+        :マウスでGridPaneの任意の位置をクリックする;
+
+      |__出力画像確認ペイン__|
+        :クリック位置にGridPaneに画像が配置される;
+    endif
+  }
+
+|#00ff00|ユーザ操作|
+  :画像保存する;
+
+end
+
+@enduml
+

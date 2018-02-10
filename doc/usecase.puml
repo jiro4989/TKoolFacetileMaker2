@@ -1,0 +1,78 @@
+@startuml img/usecase.png
+
+title ユーザがアプリを使用するフロー
+
+start
+
+:アプリの起動;
+partition 画像取り込み {
+  if (ファイル選択ダイアログを使用？) then (true)
+    :FileChooserを起動;
+    :必要な画像を選択;
+    :OKを押す;
+  elseif (エクスプローラからD&D？) then (true)
+    :エクスプローラを開く;
+    note right
+      アプリ外での操作;
+    end note
+    :必要な画像を選択;
+    note right
+      アプリ外での操作;
+    end note
+    :FileListViewにD&Dする;
+  else (false)
+    end
+  endif
+  :画像が取り込まれる;
+}
+
+:画像ファイルを複数選択(1~8);
+note right
+  Shiftキーで一括範囲選択。
+  Ctrlキーで一つ一つを選択していくことが可能
+end note
+
+partition トリミング位置調整 {
+  :画像プレビューペインで選択画像の一つ目を表示;
+  while (トリミング位置が未決定？)
+    if (マウスで調整？) then (true)
+      :マウスでトリミング位置の調整;
+    else
+      :キーボードを使用する;
+      if (WASD？) then (true)
+        :WASDを使用する;
+      else
+        :カーソルキーを使用する;
+      endif
+    endif
+    :トリミング位置ペインの表示を確認;
+  endwhile
+}
+
+partition 画像の保存 {
+  if (上書き保存？) then (true)
+    :ファイルメニューから「上書き保存」を押す;
+    note right
+      キーボードでは Ctrl + S
+    end note
+    if (一度でもファイルを保存した？) then (true)
+      :上書き保存警告ダイアログを表示する;
+    else
+      :FileChooserで保存ダイアログを表示する。;
+    endif
+  else (false)
+    :ファイルメニューから「名前をつけて保存」を押す;
+    note right
+      キーボードでは Ctrl + Shift + S
+    end note
+    :FileChooserで保存ダイアログを表示する。;
+  endif
+  :画像を保存する;
+  :保存した画像のパス情報を保存する;
+}
+
+:画像の保存で保存した位置を確認する。;
+
+end
+
+@enduml

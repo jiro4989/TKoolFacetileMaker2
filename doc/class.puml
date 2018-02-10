@@ -1,0 +1,13 @@
+@startuml img/class.png
+
+class "Image" as Image {
+  draw()
+  close()
+}
+
+class "OutImage" {
+  add(Image)
+  out(fileName)
+}
+
+@enduml
