@@ -1,3 +1,8 @@
+.root {
+    -fx-pref-width: 1280px;
+    -fx-pref-height: 720px;
+}
+
 .image-view,
 .canvas {
     -fx-pref-width: 576;
@@ -12,3 +17,30 @@
     -fx-opacity: 0.5;
 }
 
+/*************************************************************
+    ファイルリストパネル
+*************************************************************/
+.file-list-titled-pane {
+    -fx-pref-width: 500px;
+    -fx-pref-height: infinity;
+}
+
+.file-list-list-view {
+    -fx-pref-width: 250px;
+}
+
+.file-list-tool-bar {
+    -fx-pref-width: 200px;
+    -fx-max-width: 300px;
+}
+
+.file-list-button {
+    -fx-pref-width: 200px;
+}
+
+/*************************************************************
+    トリミング位置パネル
+*************************************************************/
+.trim-pos-point-label {
+    -fx-pref-width: 75px;
+}

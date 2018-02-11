@@ -1,6 +1,9 @@
 package jiro.app.model
 
 import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
@@ -13,12 +16,17 @@ import java.io.File
 
 class TrimPosManageModel(
         private val imageView: ImageView
+        , private val moveWidthComboBox: ComboBox<Double>
         , leftShadowRectangle: Rectangle
         , topShadowRectangle: Rectangle
         , rightShadowRectangle: Rectangle
         , bottomShadowRectangle: Rectangle
+        , trimPosXLabel: Label
+        , trimPosYLabel: Label
 ) {
     private var point = Point()
+    private val trimPosXProperty = SimpleStringProperty()
+    private val trimPosYProperty = SimpleStringProperty()
 
     private val leftShadowRectangleWidthProperty = SimpleDoubleProperty()
     private val topShadowRectangleWidthProperty = SimpleDoubleProperty()
@@ -40,6 +48,53 @@ class TrimPosManageModel(
         topShadowRectangle.heightProperty().bind(topShadowRectangleHeightProperty)
         rightShadowRectangle.heightProperty().bind(rightShadowRectangleHeightProperty)
         bottomShadowRectangle.heightProperty().bind(bottomShadowRectangleHeightProperty)
+
+        trimPosXLabel.textProperty().bind(trimPosXProperty)
+        trimPosYLabel.textProperty().bind(trimPosYProperty)
+    }
+
+    /**
+     * トリミング位置を左に移動する
+     */
+    fun moveLeftTrimPos() {
+        val moveWidth = moveWidthComboBox.selectionModel.selectedItem
+        val revisionWidth = IMAGE_WIDTH / 2
+        val revisionHeight = IMAGE_HEIGHT / 2
+        val newPoint = Point(point.x - moveWidth + revisionWidth , point.y + revisionHeight)
+        setTrimPoint(newPoint)
+    }
+
+    /**
+     * トリミング位置を上に移動する
+     */
+    fun moveUpTrimPos() {
+        val moveWidth = moveWidthComboBox.selectionModel.selectedItem
+        val revisionWidth = IMAGE_WIDTH / 2
+        val revisionHeight = IMAGE_HEIGHT / 2
+        val newPoint = Point(point.x + revisionWidth, point.y - moveWidth + revisionHeight)
+        setTrimPoint(newPoint)
+    }
+
+    /**
+     * トリミング位置を下に移動する
+     */
+    fun moveDownTrimPos() {
+        val moveWidth = moveWidthComboBox.selectionModel.selectedItem
+        val revisionWidth = IMAGE_WIDTH / 2
+        val revisionHeight = IMAGE_HEIGHT / 2
+        val newPoint = Point(point.x + revisionWidth, point.y + moveWidth + revisionHeight)
+        setTrimPoint(newPoint)
+    }
+
+    /**
+     * トリミング位置を右に移動する
+     */
+    fun moveRightTrimPos() {
+        val moveWidth = moveWidthComboBox.selectionModel.selectedItem
+        val revisionWidth = IMAGE_WIDTH / 2
+        val revisionHeight = IMAGE_HEIGHT / 2
+        val newPoint = Point(point.x + moveWidth + revisionWidth, point.y + revisionHeight)
+        setTrimPoint(newPoint)
     }
 
     /**
@@ -84,6 +139,10 @@ class TrimPosManageModel(
 
         val x = Math.min(Math.max(newPoint.x, 0.0), imageWidth - IMAGE_WIDTH)
         val y = Math.min(Math.max(newPoint.y, 0.0), imageHeight - IMAGE_HEIGHT)
+
+        // ラベルのテキストも更新
+        this.trimPosXProperty.set(x.toString())
+        this.trimPosYProperty.set(y.toString())
 
         leftShadowRectangleWidthProperty.value = x
         leftShadowRectangleHeightProperty.value = imageHeight - y

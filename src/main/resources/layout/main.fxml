@@ -7,9 +7,11 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
+<?import java.lang.Double?>
 <?import java.net.URL?>
-<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.161"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="jiro.app.MainController">
+<?import javafx.collections.FXCollections?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="jiro.app.MainController">
     <stylesheets>
         <URL value="@/css/bootstrapfx3.css"/>
         <URL value="@/css/basic.css"/>
@@ -165,48 +167,44 @@
     </top>
 
     <left>
-        <TitledPane fx:id="fileListPane" styleClass="primary" prefHeight="2000.0" prefWidth="397.0" text="ファイルリスト">
+        <TitledPane fx:id="fileListPane" animated="false" collapsible="false"
+                    styleClass="file-list-titled-pane, primary" text="ファイルリスト">
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1"/>
             </BorderPane.margin>
             <content>
                 <BorderPane prefHeight="200.0" prefWidth="200.0">
                     <center>
-                        <ListView fx:id="imageFileListView"
-                                  onDragDropped="#imageFileListViewOnDragDropped"
+                        <ListView fx:id="imageFileListView" onDragDropped="#imageFileListViewOnDragDropped"
                                   onDragOver="#imageFileListViewOnDragOver" prefHeight="200.0" prefWidth="200.0"
                                   BorderPane.alignment="CENTER"/>
                     </center>
                     <right>
-                        <ToolBar orientation="VERTICAL" prefWidth="200.0">
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#addImagesButtonOnAction" text="一括挿入"/>
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#clearImagesButtonOnAction" text="クリア"/>
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#deleteListButtonOnAction" text="リスト削除"/>
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#clearListButtonOnAction" text="リストクリア"/>
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#upFileButtonOnAction" text="上"/>
-                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
-                                    onAction="#downFileButtonOnAction" text="下"/>
-                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false" selected="true"
-                                         onAction="#setModeRadioButtonOnAction"
-                                         text="画像セット">
+                        <ToolBar styleClass="file-list-tool-bar" orientation="VERTICAL">
+                            <Button mnemonicParsing="false" onAction="#addImagesButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="一括挿入"/>
+                            <Button mnemonicParsing="false" onAction="#clearImagesButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="クリア"/>
+                            <Button mnemonicParsing="false" onAction="#deleteListButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="リスト削除"/>
+                            <Button mnemonicParsing="false" onAction="#clearListButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="リストクリア"/>
+                            <Button mnemonicParsing="false" onAction="#upFileButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="上"/>
+                            <Button mnemonicParsing="false" onAction="#downFileButtonOnAction"
+                                    styleClass="file-list-button, btn, lg" text="下"/>
+                            <RadioButton mnemonicParsing="false" onAction="#setModeRadioButtonOnAction" selected="true"
+                                         styleClass="radio-button, lg" text="画像セット">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="clickModeGroup"/>
                                 </toggleGroup>
                             </RadioButton>
-                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
-                                         onAction="#deleteModeRadioButtonOnAction"
-                                         text="画像削除" toggleGroup="$clickModeGroup"/>
-                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
-                                         onAction="#swapModeRadioButtonOnAction"
-                                         text="画像位置交換" toggleGroup="$clickModeGroup"/>
-                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
-                                         onAction="#flipModeRadioButtonOnAction"
-                                         text="画像左右反転" toggleGroup="$clickModeGroup"/>
+                            <RadioButton mnemonicParsing="false" onAction="#deleteModeRadioButtonOnAction"
+                                         styleClass="radio-button, lg" text="画像削除" toggleGroup="$clickModeGroup"/>
+                            <RadioButton mnemonicParsing="false" onAction="#swapModeRadioButtonOnAction"
+                                         styleClass="radio-button, lg" text="画像位置交換" toggleGroup="$clickModeGroup"/>
+                            <RadioButton mnemonicParsing="false" onAction="#flipModeRadioButtonOnAction"
+                                         styleClass="radio-button, lg" text="画像左右反転" toggleGroup="$clickModeGroup"/>
                         </ToolBar>
                     </right>
                 </BorderPane>
@@ -218,45 +216,98 @@
         <BorderPane prefHeight="847.0" prefWidth="808.0">
 
             <center>
-                <TitledPane styleClass="primary" animated="false" collapsible="false" prefHeight="2000.0"
-                            prefWidth="916.0" text="画像ビューワ">
+                <TitledPane animated="false" collapsible="false" prefHeight="2000.0" prefWidth="916.0"
+                            styleClass="primary" text="画像ビューワ">
                     <BorderPane.margin>
                         <Insets right="5.0" top="5.0"/>
                     </BorderPane.margin>
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <ScrollPane layoutX="13.0" layoutY="12.0" prefHeight="425.0" prefWidth="659.0"
-                                            AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="13.0"
-                                            AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="12.0">
-                                    <content>
-                                        <AnchorPane>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0"
+                                            AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+                                            AnchorPane.topAnchor="5.0">
+                                    <bottom>
+                                        <VBox prefWidth="50.0" BorderPane.alignment="CENTER">
                                             <children>
-                                                <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0"
-                                                           onMouseDragged="#selectedImageViewOnMouseDragged"
-                                                           pickOnBounds="true" preserveRatio="true"
-                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                                                <Rectangle fx:id="leftShadowRectangle" styleClass="shadow-rectangle"
-                                                           fill="BLACK" height="200.0"
-                                                           width="200.0" AnchorPane.leftAnchor="0.0"
-                                                           AnchorPane.bottomAnchor="0.0"/>
-                                                <Rectangle fx:id="topShadowRectangle" styleClass="shadow-rectangle"
-                                                           fill="BLACK" height="200.0"
-                                                           width="200.0" AnchorPane.leftAnchor="0.0"
-                                                           AnchorPane.topAnchor="0.0"/>
-                                                <Rectangle fx:id="rightShadowRectangle" styleClass="shadow-rectangle"
-                                                           fill="BLACK" height="200.0"
-                                                           width="200.0" AnchorPane.topAnchor="0.0"
-                                                           AnchorPane.rightAnchor="0.0"/>
-                                                <Rectangle fx:id="bottomShadowRectangle" styleClass="shadow-rectangle"
-                                                           fill="BLACK" height="200.0"
-                                                           width="200.0" AnchorPane.rightAnchor="0.0"
-                                                           AnchorPane.bottomAnchor="0.0"/>
+                                                <Slider majorTickUnit="10.0" max="200.0" min="25.0" minorTickCount="5"
+                                                        showTickLabels="true" showTickMarks="true" value="100.0"
+                                                        onMouseDragged="#zoomRateSliderOnMouseDragged"
+                                                        onScroll="#zoomRateSliderOnScroll"
+                                                />
+                                                <ToolBar prefHeight="40.0" prefWidth="200.0">
+                                                    <items>
+                                                        <Label styleClass="lbl,lg" text="X:"/>
+                                                        <Label fx:id="trimPosXLabel"
+                                                               styleClass="trim-pos-point-label,lbl,lg" text="0.0"/>
+                                                        <Label styleClass="lbl,lg" text="Y:"/>
+                                                        <Label fx:id="trimPosYLabel"
+                                                               styleClass="trim-pos-point-label,lbl,lg" text="0.0"/>
+                                                        <Label styleClass="lbl,lg" text="位置移動幅:"/>
+                                                        <ComboBox fx:id="moveWidthComboBox" styleClass="lg"
+                                                                  prefWidth="150.0" >
+                                                            <items>
+                                                                <FXCollections fx:factory="observableArrayList">
+                                                                    <Double fx:value="1.0"/>
+                                                                    <Double fx:value="5.0"/>
+                                                                    <Double fx:value="10.0"/>
+                                                                    <Double fx:value="25.0"/>
+                                                                </FXCollections>
+                                                            </items>
+                                                            <value>
+                                                                <Double fx:value="5.0" />
+                                                            </value>
+                                                        </ComboBox>
+                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="左"
+                                                                onAction="#moveLeftButtonOnAction"/>
+                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="上"
+                                                                onAction="#moveUpButtonOnAction"/>
+                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="下"
+                                                                onAction="#moveDownftButtonOnAction"/>
+                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="右"
+                                                                onAction="#moveRightButtonOnAction"/>
+                                                        <Separator orientation="VERTICAL" prefHeight="0.0"/>
+                                                        <ComboBox styleClass="lg" prefWidth="150.0"/>
+                                                    </items>
+                                                </ToolBar>
                                             </children>
-                                        </AnchorPane>
-                                    </content>
-                                </ScrollPane>
+                                        </VBox>
+                                    </bottom>
+                                    <center>
+                                        <ScrollPane prefHeight="425.0" prefWidth="659.0" BorderPane.alignment="CENTER">
+                                            <content>
+                                                <AnchorPane>
+                                                    <children>
+                                                        <ImageView fx:id="selectedImageView" fitHeight="150.0"
+                                                                   fitWidth="200.0"
+                                                                   onMouseDragged="#selectedImageViewOnMouseDragged"
+                                                                   pickOnBounds="true" preserveRatio="true"
+                                                                   AnchorPane.bottomAnchor="0.0"
+                                                                   AnchorPane.leftAnchor="0.0"
+                                                                   AnchorPane.rightAnchor="0.0"
+                                                                   AnchorPane.topAnchor="0.0"/>
+                                                        <Rectangle fx:id="leftShadowRectangle" fill="BLACK"
+                                                                   height="200.0" styleClass="shadow-rectangle"
+                                                                   width="200.0" AnchorPane.bottomAnchor="0.0"
+                                                                   AnchorPane.leftAnchor="0.0"/>
+                                                        <Rectangle fx:id="topShadowRectangle" fill="BLACK"
+                                                                   height="200.0" styleClass="shadow-rectangle"
+                                                                   width="200.0" AnchorPane.leftAnchor="0.0"
+                                                                   AnchorPane.topAnchor="0.0"/>
+                                                        <Rectangle fx:id="rightShadowRectangle" fill="BLACK"
+                                                                   height="200.0" styleClass="shadow-rectangle"
+                                                                   width="200.0" AnchorPane.rightAnchor="0.0"
+                                                                   AnchorPane.topAnchor="0.0"/>
+                                                        <Rectangle fx:id="bottomShadowRectangle" fill="BLACK"
+                                                                   height="200.0" styleClass="shadow-rectangle"
+                                                                   width="200.0" AnchorPane.bottomAnchor="0.0"
+                                                                   AnchorPane.rightAnchor="0.0"/>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </ScrollPane>
+                                    </center>
+                                </BorderPane>
                             </children>
                         </AnchorPane>
                     </content>
@@ -264,23 +315,20 @@
             </center>
 
             <bottom>
-                <TitledPane styleClass="primary" animated="false" collapsible="false" prefHeight="330.0"
-                            prefWidth="896.0" text="出力画像プレビュー">
+                <TitledPane animated="false" collapsible="false" prefHeight="330.0" prefWidth="896.0"
+                            styleClass="primary" text="出力画像プレビュー">
                     <BorderPane.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0"/>
                     </BorderPane.margin>
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <Canvas fx:id="overLayerCanvas" styleClass="canvas"
-                                        AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"
-                                        width="576" height="288"
-                                        onMouseClicked="#overLayerCanvasOnMouseClicked"
-                                />
-                                <ImageView fx:id="outImageView" styleClass="image-view" AnchorPane.leftAnchor="10"
-                                           AnchorPane.topAnchor="10"
-                                           onMouseClicked="#outImageViewOnMouseClicked"
-                                />
+                                <Canvas fx:id="overLayerCanvas" height="288"
+                                        onMouseClicked="#overLayerCanvasOnMouseClicked" styleClass="canvas" width="576"
+                                        AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
+                                <ImageView fx:id="outImageView" onMouseClicked="#outImageViewOnMouseClicked"
+                                           styleClass="image-view" AnchorPane.leftAnchor="10"
+                                           AnchorPane.topAnchor="10"/>
                             </children>
                         </AnchorPane>
                     </content>

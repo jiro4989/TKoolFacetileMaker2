@@ -16,10 +16,11 @@ internal class Main : Application() {
     override fun start(primaryStage: Stage) {
         val res = ResourceBundle.getBundle("dict.main", Locale.getDefault())
         val root: Parent? = FXMLLoader.load(this.javaClass.getResource("/layout/main.fxml"), res)
-        val scene = Scene(root, 800.0, 600.0)
+        val scene = Scene(root)
         primaryStage.scene = scene
-
         primaryStage.title = "TKool Facetile Maker"
+        primaryStage.minWidth = 1280.0
+        primaryStage.minHeight = 720.0
         //primaryStage.icons     += Image(Texts.APP_ICON)
 
         primaryStage.show()

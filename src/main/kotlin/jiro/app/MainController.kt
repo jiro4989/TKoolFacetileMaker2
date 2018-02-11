@@ -8,6 +8,7 @@ import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
 import javafx.scene.input.MouseEvent
+import javafx.scene.input.ScrollEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
@@ -102,6 +103,13 @@ class MainController {
     private lateinit var selectedImage: TrimPosManageModel
 
     @FXML
+    private lateinit var trimPosXLabel: Label
+    @FXML
+    private lateinit var trimPosYLabel: Label
+    @FXML
+    private lateinit var moveWidthComboBox: ComboBox<Double>
+
+    @FXML
     private lateinit var leftShadowRectangle: Rectangle
     @FXML
     private lateinit var topShadowRectangle: Rectangle
@@ -122,7 +130,7 @@ class MainController {
     @FXML
     private fun initialize() {
         imageFiles = FileListModel(imageFileListView)
-        selectedImage = TrimPosManageModel(selectedImageView, leftShadowRectangle, topShadowRectangle, rightShadowRectangle, bottomShadowRectangle)
+        selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, leftShadowRectangle, topShadowRectangle, rightShadowRectangle, bottomShadowRectangle, trimPosXLabel, trimPosYLabel)
         outImages = OutImagePreviewModel(outImageView)
 
         imageFileListView.items = imageFiles.files
@@ -272,6 +280,48 @@ class MainController {
         val selectedItems = imageFiles.getSelectedItems()
         val images = selectedImage.getTrimmedImages(selectedItems)
         outImages.onMouseClicked(mouseEvent, images)
+    }
+
+    /**
+     * トリミング画像の拡大率の制御
+     */
+    fun zoomRateSliderOnMouseDragged(mouseEvent: MouseEvent) {
+
+    }
+
+    /**
+     * トリミング画像の拡大率の制御
+     */
+    fun zoomRateSliderOnScroll(scrollEvent: ScrollEvent) {
+
+    }
+
+    /**
+     * トリミング位置の移動
+     */
+    fun moveLeftButtonOnAction(actionEvent: ActionEvent) {
+        selectedImage.moveLeftTrimPos()
+    }
+
+    /**
+     * トリミング位置の移動
+     */
+    fun moveUpButtonOnAction(actionEvent: ActionEvent) {
+        selectedImage.moveUpTrimPos()
+    }
+
+    /**
+     * トリミング位置の移動
+     */
+    fun moveDownftButtonOnAction(actionEvent: ActionEvent) {
+        selectedImage.moveDownTrimPos()
+    }
+
+    /**
+     * トリミング位置の移動
+     */
+    fun moveRightButtonOnAction(actionEvent: ActionEvent) {
+        selectedImage.moveRightTrimPos()
     }
 }
 
