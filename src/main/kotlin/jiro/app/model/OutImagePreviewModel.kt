@@ -18,33 +18,6 @@ class OutImagePreviewModel(private val imageView: ImageView) {
     }
 
     /**
-     * 指定の番号の位置から画像をセットする。
-     */
-    fun setImages(index: Int = 0, images: List<Image>) {
-        val width = IMAGE_WIDTH
-        val height = IMAGE_HEIGHT
-        val wImg = WritableImage(width * TILE_COLUMN_COUNT, height * TILE_ROW_COUNT)
-        val writer = wImg.pixelWriter
-
-        images.forEachIndexed { i, image ->
-            val j = index + i
-            val c = j % TILE_COLUMN_COUNT
-            val r = j / TILE_COLUMN_COUNT
-
-            val w = IMAGE_WIDTH
-            val h = IMAGE_HEIGHT
-            val x = c * w
-            val y = r * h
-
-            val pixels = IntArray(w * h)
-            image.pixelReader.getPixels(0, 0, w, h, FMT, pixels, 0, w)
-            writer.setPixels(x, y, w, h, FMT, pixels, 0, w)
-        }
-
-        imageView.image = wImg
-    }
-
-    /**
      * すべての画像をクリアする。
      */
     fun clear() {
@@ -180,4 +153,13 @@ class OutImagePreviewModel(private val imageView: ImageView) {
         imageView.image = srcWritableImage
     }
 
+    /**
+     * 指定の番号の位置から画像をセットする。
+     */
+    fun setImages(index: Int = 0, images: List<Image>) {
+        images.forEachIndexed { i, image ->
+            val point = Point().trim(i+index)
+            setImage(point, image)
+        }
+    }
 }
