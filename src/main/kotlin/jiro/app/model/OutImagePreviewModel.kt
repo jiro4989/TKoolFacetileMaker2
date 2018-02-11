@@ -7,8 +7,6 @@ import javafx.scene.image.WritableImage
 import javafx.scene.input.MouseEvent
 import jiro.app.data.Point
 import jiro.app.util.*
-import org.omg.PortableServer.POA
-import java.nio.file.Files.delete
 
 internal val FMT = PixelFormat.getIntArgbInstance()
 
