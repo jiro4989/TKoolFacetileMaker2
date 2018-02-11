@@ -78,12 +78,12 @@ class TrimPosManageModel(
         val newPoint = Point(point.x - IMAGE_WIDTH / 2, point.y - IMAGE_HEIGHT / 2)
         this.point = newPoint
 
-        val x = newPoint.x
-        val y = newPoint.y
-
         val image = imageView.image
         val imageWidth = image.width
         val imageHeight = image.height
+
+        val x = Math.min(Math.max(newPoint.x, 0.0), imageWidth - IMAGE_WIDTH)
+        val y = Math.min(Math.max(newPoint.y, 0.0), imageHeight - IMAGE_HEIGHT)
 
         leftShadowRectangleWidthProperty.value = x
         leftShadowRectangleHeightProperty.value = imageHeight - y

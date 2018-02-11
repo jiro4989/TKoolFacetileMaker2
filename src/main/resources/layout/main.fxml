@@ -2,26 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
-
-<BorderPane prefHeight="877.0" prefWidth="1280.0" stylesheets="@/css/basic.css" xmlns="http://javafx.com/javafx/8.0.161"
+<?import java.net.URL?>
+<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.161"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="jiro.app.MainController">
+    <stylesheets>
+        <URL value="@/css/bootstrapfx3.css"/>
+        <URL value="@/css/basic.css"/>
+    </stylesheets>
     <top>
         <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
             <menus>
@@ -173,41 +165,49 @@
     </top>
 
     <left>
-        <TitledPane fx:id="fileListPane" animated="false" collapsible="false" expanded="true" prefHeight="2000.0"
-                    prefWidth="397.0" text="ファイルリスト">
+        <TitledPane fx:id="fileListPane" styleClass="primary" prefHeight="2000.0" prefWidth="397.0" text="ファイルリスト">
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1"/>
             </BorderPane.margin>
             <content>
                 <BorderPane prefHeight="200.0" prefWidth="200.0">
                     <center>
-                        <ListView fx:id="imageFileListView" onDragDropped="#imageFileListViewOnDragDropped"
+                        <ListView fx:id="imageFileListView"
+                                  onDragDropped="#imageFileListViewOnDragDropped"
                                   onDragOver="#imageFileListViewOnDragOver" prefHeight="200.0" prefWidth="200.0"
                                   BorderPane.alignment="CENTER"/>
                     </center>
                     <right>
-                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-                            <children>
-                                <Button mnemonicParsing="false" onAction="#addImagesButtonOnAction" text="一括挿入"/>
-                                <Button mnemonicParsing="false" onAction="#clearImagesButtonOnAction" text="クリア"/>
-                                <Button mnemonicParsing="false" onAction="#deleteListButtonOnAction" text="リスト削除"/>
-                                <Button mnemonicParsing="false" onAction="#clearListButtonOnAction" text="リストクリア"/>
-                                <Button mnemonicParsing="false" onAction="#upFileButtonOnAction" text="上"/>
-                                <Button mnemonicParsing="false" onAction="#downFileButtonOnAction" text="下"/>
-                                <RadioButton mnemonicParsing="false" onAction="#setModeRadioButtonOnAction"
-                                             text="画像セット">
-                                    <toggleGroup>
-                                        <ToggleGroup fx:id="clickModeGroup"/>
-                                    </toggleGroup>
-                                </RadioButton>
-                                <RadioButton mnemonicParsing="false" onAction="#deleteModeRadioButtonOnAction"
-                                             text="画像削除" toggleGroup="$clickModeGroup"/>
-                                <RadioButton mnemonicParsing="false" onAction="#swapModeRadioButtonOnAction"
-                                             text="画像位置交換" toggleGroup="$clickModeGroup"/>
-                                <RadioButton mnemonicParsing="false" onAction="#flipModeRadioButtonOnAction"
-                                             text="画像左右反転" toggleGroup="$clickModeGroup"/>
-                            </children>
-                        </VBox>
+                        <ToolBar orientation="VERTICAL" prefWidth="200.0">
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#addImagesButtonOnAction" text="一括挿入"/>
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#clearImagesButtonOnAction" text="クリア"/>
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#deleteListButtonOnAction" text="リスト削除"/>
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#clearListButtonOnAction" text="リストクリア"/>
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#upFileButtonOnAction" text="上"/>
+                            <Button styleClass="btn, primary, lg" mnemonicParsing="false"
+                                    onAction="#downFileButtonOnAction" text="下"/>
+                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false" selected="true"
+                                         onAction="#setModeRadioButtonOnAction"
+                                         text="画像セット">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="clickModeGroup"/>
+                                </toggleGroup>
+                            </RadioButton>
+                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
+                                         onAction="#deleteModeRadioButtonOnAction"
+                                         text="画像削除" toggleGroup="$clickModeGroup"/>
+                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
+                                         onAction="#swapModeRadioButtonOnAction"
+                                         text="画像位置交換" toggleGroup="$clickModeGroup"/>
+                            <RadioButton styleClass="radio-button, lg" mnemonicParsing="false"
+                                         onAction="#flipModeRadioButtonOnAction"
+                                         text="画像左右反転" toggleGroup="$clickModeGroup"/>
+                        </ToolBar>
                     </right>
                 </BorderPane>
             </content>
@@ -218,7 +218,8 @@
         <BorderPane prefHeight="847.0" prefWidth="808.0">
 
             <center>
-                <TitledPane animated="false" collapsible="false" prefHeight="2000.0" prefWidth="916.0" text="画像ビューワ">
+                <TitledPane styleClass="primary" animated="false" collapsible="false" prefHeight="2000.0"
+                            prefWidth="916.0" text="画像ビューワ">
                     <BorderPane.margin>
                         <Insets right="5.0" top="5.0"/>
                     </BorderPane.margin>
@@ -263,7 +264,8 @@
             </center>
 
             <bottom>
-                <TitledPane animated="false" collapsible="false" prefHeight="330.0" prefWidth="896.0" text="出力画像プレビュー">
+                <TitledPane styleClass="primary" animated="false" collapsible="false" prefHeight="330.0"
+                            prefWidth="896.0" text="出力画像プレビュー">
                     <BorderPane.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0"/>
                     </BorderPane.margin>

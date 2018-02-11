@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
-import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
@@ -156,7 +155,7 @@ class MainController {
             val y = point.y
             graphics.strokeRect(x, y, w, h)
 
-            val text = it.toString()
+            val text = (it+1).toString()
             val textX = x + IMAGE_WIDTH / 2
             val textY = y + IMAGE_HEIGHT / 2
             graphics.fillText(text, textX, textY)
