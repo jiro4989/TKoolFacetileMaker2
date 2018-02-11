@@ -103,6 +103,9 @@ class MainController {
     private lateinit var selectedImage: TrimPosManageModel
 
     @FXML
+    private lateinit var zoomRateSlider: Slider
+
+    @FXML
     private lateinit var trimPosXLabel: Label
     @FXML
     private lateinit var trimPosYLabel: Label
@@ -119,6 +122,8 @@ class MainController {
     private lateinit var bottomShadowRectangle: Rectangle
     @FXML
     private lateinit var overLayerRectangle: Rectangle
+    @FXML
+    private lateinit var shadowCanvas: Canvas
 
     // 保存する画像のプレビューを描画するクラス
     @FXML
@@ -132,7 +137,7 @@ class MainController {
     @FXML
     private fun initialize() {
         imageFiles = FileListModel(imageFileListView)
-        selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, leftShadowRectangle, topShadowRectangle, rightShadowRectangle, bottomShadowRectangle, overLayerRectangle, trimPosXLabel, trimPosYLabel)
+        selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
         outImages = OutImagePreviewModel(outImageView)
 
         imageFileListView.items = imageFiles.files
@@ -201,10 +206,10 @@ class MainController {
     /**
      * ImageVIew上でマウスドラッグするとトリミング位置が変動する。
      */
-    fun overLayerRectangleOnMouseDragged(mouseEvent: MouseEvent) {
+    fun shadowCanvasOnMouseDragged(mouseEvent: MouseEvent) {
         val x = mouseEvent.x
         val y = mouseEvent.y
-        selectedImage.setTrimPoint(Point(x, y))
+        selectedImage.setTrimPointOnMouseDragged(Point(x, y))
     }
 
     /**
@@ -288,7 +293,7 @@ class MainController {
      * トリミング画像の拡大率の制御
      */
     fun zoomRateSliderOnMouseDragged(mouseEvent: MouseEvent) {
-
+        selectedImage.updateZoomRate()
     }
 
     /**

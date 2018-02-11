@@ -2,12 +2,14 @@ package jiro.app.model
 
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
+import javafx.scene.canvas.Canvas
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
+import javafx.scene.control.Slider
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
-import javafx.scene.shape.Rectangle
+import javafx.scene.paint.Color
 import jiro.app.data.Point
 import jiro.app.util.IMAGE_HEIGHT
 import jiro.app.util.IMAGE_WIDTH
@@ -17,45 +19,27 @@ import java.io.File
 class TrimPosManageModel(
         private val imageView: ImageView
         , private val moveWidthComboBox: ComboBox<Double>
-        , leftShadowRectangle: Rectangle
-        , topShadowRectangle: Rectangle
-        , rightShadowRectangle: Rectangle
-        , bottomShadowRectangle: Rectangle
-        , overLayerRectangle: Rectangle
+        , private val zoomRateSlider: Slider
+        , private val shadowCanvas: Canvas
         , trimPosXLabel: Label
         , trimPosYLabel: Label
 ) {
     private var point = Point()
+    private var zoomedPoint = point
+
     private val trimPosXProperty = SimpleStringProperty()
     private val trimPosYProperty = SimpleStringProperty()
-
-    private val leftShadowRectangleWidthProperty = SimpleDoubleProperty()
-    private val topShadowRectangleWidthProperty = SimpleDoubleProperty()
-    private val rightShadowRectangleWidthProperty = SimpleDoubleProperty()
-    private val bottomShadowRectangleWidthProperty = SimpleDoubleProperty()
-    private val overLayerRectangleWidthProperty = SimpleDoubleProperty()
-
-    private val leftShadowRectangleHeightProperty = SimpleDoubleProperty()
-    private val topShadowRectangleHeightProperty = SimpleDoubleProperty()
-    private val rightShadowRectangleHeightProperty = SimpleDoubleProperty()
-    private val bottomShadowRectangleHeightProperty = SimpleDoubleProperty()
-    private val overLayerRectangleHeightProperty = SimpleDoubleProperty()
+    private val imageWidthProperty = SimpleDoubleProperty()
+    private val imageHeightProperty = SimpleDoubleProperty()
 
     init {
-        leftShadowRectangle.widthProperty().bind(leftShadowRectangleWidthProperty)
-        topShadowRectangle.widthProperty().bind(topShadowRectangleWidthProperty)
-        rightShadowRectangle.widthProperty().bind(rightShadowRectangleWidthProperty)
-        bottomShadowRectangle.widthProperty().bind(bottomShadowRectangleWidthProperty)
-        overLayerRectangle.widthProperty().bind(overLayerRectangleWidthProperty)
-
-        leftShadowRectangle.heightProperty().bind(leftShadowRectangleHeightProperty)
-        topShadowRectangle.heightProperty().bind(topShadowRectangleHeightProperty)
-        rightShadowRectangle.heightProperty().bind(rightShadowRectangleHeightProperty)
-        bottomShadowRectangle.heightProperty().bind(bottomShadowRectangleHeightProperty)
-        overLayerRectangle.heightProperty().bind(overLayerRectangleHeightProperty)
-
         trimPosXLabel.textProperty().bind(trimPosXProperty)
         trimPosYLabel.textProperty().bind(trimPosYProperty)
+
+        imageView.fitWidthProperty().bind(imageWidthProperty)
+        imageView.fitHeightProperty().bind(imageHeightProperty)
+        shadowCanvas.widthProperty().bind(imageWidthProperty)
+        shadowCanvas.heightProperty().bind(imageHeightProperty)
     }
 
     /**
@@ -63,9 +47,7 @@ class TrimPosManageModel(
      */
     fun moveLeftTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val revisionWidth = IMAGE_WIDTH / 2
-        val revisionHeight = IMAGE_HEIGHT / 2
-        val newPoint = Point(point.x - moveWidth + revisionWidth, point.y + revisionHeight)
+        val newPoint = Point(point.x - moveWidth, point.y)
         setTrimPoint(newPoint)
     }
 
@@ -74,9 +56,7 @@ class TrimPosManageModel(
      */
     fun moveUpTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val revisionWidth = IMAGE_WIDTH / 2
-        val revisionHeight = IMAGE_HEIGHT / 2
-        val newPoint = Point(point.x + revisionWidth, point.y - moveWidth + revisionHeight)
+        val newPoint = Point(point.x, point.y - moveWidth)
         setTrimPoint(newPoint)
     }
 
@@ -85,9 +65,7 @@ class TrimPosManageModel(
      */
     fun moveDownTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val revisionWidth = IMAGE_WIDTH / 2
-        val revisionHeight = IMAGE_HEIGHT / 2
-        val newPoint = Point(point.x + revisionWidth, point.y + moveWidth + revisionHeight)
+        val newPoint = Point(point.x, point.y + moveWidth)
         setTrimPoint(newPoint)
     }
 
@@ -96,9 +74,7 @@ class TrimPosManageModel(
      */
     fun moveRightTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val revisionWidth = IMAGE_WIDTH / 2
-        val revisionHeight = IMAGE_HEIGHT / 2
-        val newPoint = Point(point.x + moveWidth + revisionWidth, point.y + revisionHeight)
+        val newPoint = Point(point.x + moveWidth, point.y)
         setTrimPoint(newPoint)
     }
 
@@ -107,26 +83,22 @@ class TrimPosManageModel(
      */
     fun setImage(filePath: String) {
         val img = Image("file:$filePath")
-        val w = img.width
-        val h = img.height
-        imageView.prefWidth(w)
-        imageView.prefHeight(h)
-        imageView.fitWidth = w
-        imageView.fitHeight = h
+        val zoomRate = zoomRateSlider.value / 100
+        val w = img.width * zoomRate
+        val h = img.height * zoomRate
+
+        imageWidthProperty.set(w)
+        imageHeightProperty.set(h)
 
         // 初めて画像をセットするときはnullなので、そのときだけ実行
         val flg = imageView.image == null
         imageView.image = img
         if (flg) {
             // 画像の中央にフォーカスをセットしておく
-            val nw = w / 2
-            val nh = h / 2
+            val nw = w / 2 - IMAGE_WIDTH / 2
+            val nh = h / 2 - IMAGE_HEIGHT / 2
             setTrimPoint(Point(nw, nh))
         }
-
-        // マウスのクリック可能領域の更新
-        overLayerRectangleWidthProperty.set(w)
-        overLayerRectangleHeightProperty.set(h)
     }
 
     /**
@@ -144,35 +116,67 @@ class TrimPosManageModel(
                 .map { WritableImage(it.pixelReader, x, y, w, h) }
     }
 
+    private fun updateTrimPoint() = setTrimPoint(this.point)
+
     /**
      * トリミングの始点をセットする。
      */
     fun setTrimPoint(point: Point) {
-        val newPoint = Point(point.x - IMAGE_WIDTH / 2, point.y - IMAGE_HEIGHT / 2)
-        this.point = newPoint
+        val imageWidth = imageWidthProperty.get()
+        val imageHeight = imageHeightProperty.get()
 
+        val x = Math.min(Math.max(point.x, 0.0), imageWidth - IMAGE_WIDTH)
+        val y = Math.min(Math.max(point.y, 0.0), imageHeight - IMAGE_HEIGHT)
+        this.point = Point(x, y)
+
+        updateCanvas()
+        updatePointLabels()
+    }
+
+    /**
+     * トリミングの始点をセットする。
+     */
+    fun setTrimPointOnMouseDragged(point: Point) {
+        val imageWidth = imageWidthProperty.get()
+        val imageHeight = imageHeightProperty.get()
+
+        val x = Math.min(Math.max(point.x - IMAGE_WIDTH / 2, 0.0), imageWidth - IMAGE_WIDTH)
+        val y = Math.min(Math.max(point.y - IMAGE_HEIGHT / 2, 0.0), imageHeight - IMAGE_HEIGHT)
+        this.point = Point(x, y)
+
+        updateCanvas()
+        updatePointLabels()
+    }
+
+    private fun updatePointLabels() {
+        this.trimPosXProperty.set(this.point.x.toString())
+        this.trimPosYProperty.set(this.point.y.toString())
+    }
+
+    /**
+     * 拡大率の更新
+     */
+    fun updateZoomRate() {
+        val zoomRate = zoomRateSlider.value / 100
         val image = imageView.image
-        val imageWidth = image.width
-        val imageHeight = image.height
+        val w = Math.max(image.width * zoomRate, IMAGE_WIDTH.toDouble())
+        val h = Math.max(image.height * zoomRate, IMAGE_HEIGHT.toDouble())
+        imageWidthProperty.set(w)
+        imageHeightProperty.set(h)
+        updateCanvas()
+        updateTrimPoint()
+    }
 
-        val x = Math.min(Math.max(newPoint.x, 0.0), imageWidth - IMAGE_WIDTH)
-        val y = Math.min(Math.max(newPoint.y, 0.0), imageHeight - IMAGE_HEIGHT)
-
-        // ラベルのテキストも更新
-        this.trimPosXProperty.set(x.toString())
-        this.trimPosYProperty.set(y.toString())
-
-        leftShadowRectangleWidthProperty.value = x
-        leftShadowRectangleHeightProperty.value = imageHeight - y
-
-        topShadowRectangleWidthProperty.value = x + IMAGE_WIDTH
-        topShadowRectangleHeightProperty.value = y
-
-        rightShadowRectangleWidthProperty.value = imageWidth - (x + IMAGE_WIDTH)
-        rightShadowRectangleHeightProperty.value = y + IMAGE_HEIGHT
-
-        bottomShadowRectangleWidthProperty.value = imageWidth - x
-        bottomShadowRectangleHeightProperty.value = imageHeight - (y + IMAGE_HEIGHT)
+    /**
+     * 影キャンパスを再描画する
+     */
+    private fun updateCanvas() {
+        val graphics = shadowCanvas.graphicsContext2D
+        graphics.fill = Color.BLACK
+        val w = shadowCanvas.width
+        val h = shadowCanvas.height
+        graphics.fillRect(0.0, 0.0, w, h)
+        graphics.clearRect(this.point.x, this.point.y, IMAGE_WIDTH.toDouble(), IMAGE_HEIGHT.toDouble())
     }
 }
 

@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
 <?import java.lang.Double?>
 <?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
 <BorderPane xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="jiro.app.MainController">
     <stylesheets>
@@ -180,7 +198,7 @@
                                   BorderPane.alignment="CENTER"/>
                     </center>
                     <right>
-                        <ToolBar styleClass="file-list-tool-bar" orientation="VERTICAL">
+                        <ToolBar orientation="VERTICAL" styleClass="file-list-tool-bar">
                             <Button mnemonicParsing="false" onAction="#addImagesButtonOnAction"
                                     styleClass="file-list-button, btn, lg" text="一括挿入"/>
                             <Button mnemonicParsing="false" onAction="#clearImagesButtonOnAction"
@@ -222,100 +240,71 @@
                         <Insets right="5.0" top="5.0"/>
                     </BorderPane.margin>
                     <content>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                            <children>
-                                <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0"
-                                            AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-                                            AnchorPane.topAnchor="5.0">
-                                    <bottom>
-                                        <VBox prefWidth="50.0" BorderPane.alignment="CENTER">
-                                            <children>
-                                                <Slider majorTickUnit="10.0" max="200.0" min="25.0" minorTickCount="5"
-                                                        showTickLabels="true" showTickMarks="true" value="100.0"
-                                                        onMouseDragged="#zoomRateSliderOnMouseDragged"
-                                                        onScroll="#zoomRateSliderOnScroll"
-                                                />
-                                                <ToolBar prefHeight="40.0" prefWidth="200.0">
-                                                    <items>
-                                                        <Label styleClass="lbl,lg" text="X:"/>
-                                                        <Label fx:id="trimPosXLabel"
-                                                               styleClass="trim-pos-point-label,lbl,lg" text="0.0"/>
-                                                        <Label styleClass="lbl,lg" text="Y:"/>
-                                                        <Label fx:id="trimPosYLabel"
-                                                               styleClass="trim-pos-point-label,lbl,lg" text="0.0"/>
-                                                        <Label styleClass="lbl,lg" text="位置移動幅:"/>
-                                                        <ComboBox fx:id="moveWidthComboBox" styleClass="lg"
-                                                                  prefWidth="150.0" >
-                                                            <items>
-                                                                <FXCollections fx:factory="observableArrayList">
-                                                                    <Double fx:value="1.0"/>
-                                                                    <Double fx:value="5.0"/>
-                                                                    <Double fx:value="10.0"/>
-                                                                    <Double fx:value="25.0"/>
-                                                                </FXCollections>
-                                                            </items>
-                                                            <value>
-                                                                <Double fx:value="5.0" />
-                                                            </value>
-                                                        </ComboBox>
-                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="左"
-                                                                onAction="#moveLeftButtonOnAction"/>
-                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="上"
-                                                                onAction="#moveUpButtonOnAction"/>
-                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="下"
-                                                                onAction="#moveDownftButtonOnAction"/>
-                                                        <Button styleClass="btn,lg" mnemonicParsing="false" text="右"
-                                                                onAction="#moveRightButtonOnAction"/>
-                                                        <Separator orientation="VERTICAL" prefHeight="0.0"/>
-                                                        <ComboBox styleClass="lg" prefWidth="150.0"/>
-                                                    </items>
-                                                </ToolBar>
-                                            </children>
-                                        </VBox>
-                                    </bottom>
-                                    <center>
-                                        <ScrollPane prefHeight="425.0" prefWidth="659.0" BorderPane.alignment="CENTER">
-                                            <content>
-                                                <AnchorPane>
-                                                    <children>
-                                                        <ImageView fx:id="selectedImageView" fitHeight="150.0"
-                                                                   fitWidth="200.0"
-                                                                   pickOnBounds="true" preserveRatio="true"
-                                                                   AnchorPane.bottomAnchor="0.0"
-                                                                   AnchorPane.leftAnchor="0.0"
-                                                                   AnchorPane.rightAnchor="0.0"
-                                                                   AnchorPane.topAnchor="0.0"
-                                                        />
-                                                        <Rectangle fx:id="leftShadowRectangle" fill="BLACK"
-                                                                   height="200.0" styleClass="shadow-rectangle"
-                                                                   width="200.0" AnchorPane.bottomAnchor="0.0"
-                                                                   AnchorPane.leftAnchor="0.0"/>
-                                                        <Rectangle fx:id="topShadowRectangle" fill="BLACK"
-                                                                   height="200.0" styleClass="shadow-rectangle"
-                                                                   width="200.0" AnchorPane.leftAnchor="0.0"
-                                                                   AnchorPane.topAnchor="0.0"/>
-                                                        <Rectangle fx:id="rightShadowRectangle" fill="BLACK"
-                                                                   height="200.0" styleClass="shadow-rectangle"
-                                                                   width="200.0" AnchorPane.rightAnchor="0.0"
-                                                                   AnchorPane.topAnchor="0.0"/>
-                                                        <Rectangle fx:id="bottomShadowRectangle" fill="BLACK"
-                                                                   height="200.0" styleClass="shadow-rectangle"
-                                                                   width="200.0" AnchorPane.bottomAnchor="0.0"
-                                                                   AnchorPane.rightAnchor="0.0"/>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
 
-                                                        <Rectangle fx:id="overLayerRectangle" width="200.0" height="200.0" styleClass="over-layer-rectangle"
-                                                                   AnchorPane.leftAnchor="0.0"
-                                                                   AnchorPane.topAnchor="0.0"
-                                                                   onMouseDragged="#overLayerRectangleOnMouseDragged"
-                                                        />
-                                                    </children>
-                                                </AnchorPane>
-                                            </content>
-                                        </ScrollPane>
-                                    </center>
-                                </BorderPane>
-                            </children>
-                        </AnchorPane>
+                            <center>
+                                <ScrollPane BorderPane.alignment="CENTER">
+                                    <content>
+                                        <AnchorPane>
+                                            <children>
+                                                <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0"
+                                                           pickOnBounds="true" preserveRatio="true"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                                <Canvas fx:id="shadowCanvas" styleClass="canvas"
+                                                        onMouseDragged="#shadowCanvasOnMouseDragged"
+                                                        AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </ScrollPane>
+                            </center>
+
+                            <bottom>
+                                <VBox prefWidth="50.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <Slider fx:id="zoomRateSlider" majorTickUnit="10.0" max="200.0" min="25.0"
+                                                minorTickCount="5" onMouseDragged="#zoomRateSliderOnMouseDragged"
+                                                onScroll="#zoomRateSliderOnScroll" showTickLabels="true"
+                                                showTickMarks="true" value="100.0"/>
+                                        <ToolBar prefHeight="40.0" prefWidth="200.0">
+                                            <items>
+                                                <Label styleClass="lbl,lg" text="X:"/>
+                                                <Label fx:id="trimPosXLabel" styleClass="trim-pos-point-label,lbl,lg"
+                                                       text="0.0"/>
+                                                <Label styleClass="lbl,lg" text="Y:"/>
+                                                <Label fx:id="trimPosYLabel" styleClass="trim-pos-point-label,lbl,lg"
+                                                       text="0.0"/>
+                                                <Label styleClass="lbl,lg" text="位置移動幅:"/>
+                                                <ComboBox fx:id="moveWidthComboBox" prefWidth="150.0" styleClass="lg">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <Double fx:value="1.0"/>
+                                                            <Double fx:value="5.0"/>
+                                                            <Double fx:value="10.0"/>
+                                                            <Double fx:value="25.0"/>
+                                                        </FXCollections>
+                                                    </items>
+                                                    <value>
+                                                        <Double fx:value="5.0"/>
+                                                    </value>
+                                                </ComboBox>
+                                                <Button mnemonicParsing="false" onAction="#moveLeftButtonOnAction"
+                                                        styleClass="btn,lg" text="左"/>
+                                                <Button mnemonicParsing="false" onAction="#moveUpButtonOnAction"
+                                                        styleClass="btn,lg" text="上"/>
+                                                <Button mnemonicParsing="false" onAction="#moveDownftButtonOnAction"
+                                                        styleClass="btn,lg" text="下"/>
+                                                <Button mnemonicParsing="false" onAction="#moveRightButtonOnAction"
+                                                        styleClass="btn,lg" text="右"/>
+                                                <Separator orientation="VERTICAL" prefHeight="0.0"/>
+                                                <ComboBox prefWidth="150.0" styleClass="lg"/>
+                                            </items>
+                                        </ToolBar>
+                                    </children>
+                                </VBox>
+                            </bottom>
+                        </BorderPane>
                     </content>
                 </TitledPane>
             </center>
