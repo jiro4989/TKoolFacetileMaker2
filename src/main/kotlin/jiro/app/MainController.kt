@@ -155,7 +155,7 @@ class MainController {
             val y = point.y
             graphics.strokeRect(x, y, w, h)
 
-            val text = (it+1).toString()
+            val text = (it + 1).toString()
             val textX = x + IMAGE_WIDTH / 2
             val textY = y + IMAGE_HEIGHT / 2
             graphics.fillText(text, textX, textY)
@@ -224,27 +224,28 @@ class MainController {
      * 画像をセットするステートに切り替えるイベント
      */
     fun setModeRadioButtonOnAction(actionEvent: ActionEvent) {
+        outImages.changeClickModeToSetImage()
     }
 
     /**
      * 画像を削除するステートに切り替えるイベント
      */
     fun deleteModeRadioButtonOnAction(actionEvent: ActionEvent) {
+        outImages.changeClickModeToDeleteImage()
     }
 
     /**
      * 選択した画像の位置を交換するステートに切り替えるイベント。
      */
     fun swapModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        // TODO
-        outImages.swapPos(0, 1)
+        outImages.changeClickModeToSwapImage()
     }
 
     /**
      * 選択した画像を左右反転するステートに切り替えるイベント
      */
     fun flipModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        outImages.flip(0)
+        outImages.changeClickModeToFlipImage()
     }
 
     fun deleteListButtonOnAction(actionEvent: ActionEvent) {

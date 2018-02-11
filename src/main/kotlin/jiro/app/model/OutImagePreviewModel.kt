@@ -7,13 +7,46 @@ import javafx.scene.image.WritableImage
 import javafx.scene.input.MouseEvent
 import jiro.app.data.Point
 import jiro.app.util.*
-import java.io.File
+import org.omg.PortableServer.POA
+import java.nio.file.Files.delete
 
 internal val FMT = PixelFormat.getIntArgbInstance()
 
 class OutImagePreviewModel(private val imageView: ImageView) {
+    // マウスクリック時の挙動定義
+    private val setClickEvent: (Point, Image) -> Unit = { point, image ->
+        setImage(point, image)
+        swapImageIndexList.clear()
+    }
+
+    private val deleteClickEvent: (Point, Image) -> Unit = { point, _ ->
+        delete(point)
+        swapImageIndexList.clear()
+    }
+
+    private val swapClickEvent: (Point, Image) -> Unit = { point, _ ->
+        swapImageIndexList += point.index
+        if (2 <= swapImageIndexList.size) {
+            val from = swapImageIndexList[0]
+            val to = swapImageIndexList[1]
+            swapPos(from, to)
+            swapImageIndexList.clear()
+        }
+    }
+
+    private val flipClickEvent: (Point, Image) -> Unit = { point, _ ->
+        flip(point.index)
+        swapImageIndexList.clear()
+    }
+
+    // マウスクリック時のイベント
+    private var clickEventState = setClickEvent
+
+    // 左右反転の対象のリスト
+    private val swapImageIndexList = mutableListOf<Int>()
+
     init {
-        val writableImage = WritableImage(IMAGE_WIDTH * TILE_COLUMN_COUNT, IMAGE_HEIGHT*TILE_ROW_COUNT)
+        val writableImage = WritableImage(IMAGE_WIDTH * TILE_COLUMN_COUNT, IMAGE_HEIGHT * TILE_ROW_COUNT)
         imageView.image = writableImage
     }
 
@@ -30,14 +63,22 @@ class OutImagePreviewModel(private val imageView: ImageView) {
     /**
      * 番号の位置の画像を削除する。
      */
-    fun delete(pos: Point) {
-        val x = pos.x.toInt()
-        val y = pos.y.toInt()
+    private fun delete(index: Int) = delete(Point().trim(index))
+
+    /**
+     * 番号の位置の画像を削除する。
+     * たとえばpointが番号1の範囲 x = 0~144, y = 0~144の範囲に存在するときに
+     * pointの位置を(0, 0)に修正し、番号1の範囲で削除する
+     */
+    private fun delete(point: Point) {
+        val fixedPoint = point.trim()
+        val x = fixedPoint.x.toInt()
+        val y = fixedPoint.y.toInt()
         val w = IMAGE_WIDTH
         val h = IMAGE_HEIGHT
 
         val reader = imageView.image.pixelReader
-        val wImg = WritableImage(reader, w* TILE_COLUMN_COUNT, h* TILE_ROW_COUNT)
+        val wImg = WritableImage(reader, w * TILE_COLUMN_COUNT, h * TILE_ROW_COUNT)
         val writer = wImg.pixelWriter
 
         // 削除なんで空の配列
@@ -48,16 +89,28 @@ class OutImagePreviewModel(private val imageView: ImageView) {
     }
 
     /**
-     * 二箇所の画像の位置を入れ替える。
+     * 番号の位置の画像を入れ替える
      */
     fun swapPos(from: Int, to: Int) {
-        val img = imageView.image
         val fromPoint = Point().trim(from)
         val toPoint = Point().trim(to)
-        val fromImg = img.getTrimmedImage(fromPoint)
-        val toImg = img.getTrimmedImage(toPoint)
-        setImage(fromPoint, toImg)
-        setImage(toPoint, fromImg)
+        swapPos(fromPoint, toPoint)
+    }
+
+    /**
+     * 2つの座標の画像を入れ替える
+     * 座標の位置に該当するタイル上の画像をまるっと切り出して入れ替えるため、
+     * 事前に切り出し開始位置の左上のpointを計算する必要はない。
+     */
+    fun swapPos(from: Point, to: Point) {
+        val fixedFrom = from.trim()
+        val fixedTo = to.trim()
+
+        val img = imageView.image
+        val fromImg = img.getTrimmedImage(fixedFrom)
+        val toImg = img.getTrimmedImage(fixedTo)
+        setImage(fixedFrom, toImg)
+        setImage(fixedTo, fromImg)
     }
 
     /**
@@ -118,26 +171,40 @@ class OutImagePreviewModel(private val imageView: ImageView) {
 //        return bimg
 //    }
 
+    fun changeClickModeToSetImage() {
+        clickEventState = setClickEvent
+    }
+
+    fun changeClickModeToDeleteImage() {
+        clickEventState = deleteClickEvent
+    }
+
+    fun changeClickModeToSwapImage() {
+        clickEventState = swapClickEvent
+    }
+
+    fun changeClickModeToFlipImage() {
+        clickEventState = flipClickEvent
+    }
+
     fun onMouseClicked(mouseEvent: MouseEvent, images: List<Image>) {
         val x = mouseEvent.x
         val y = mouseEvent.y
-        val image = images[0]
-
-        val index = Math.floor(Math.floor(x / IMAGE_WIDTH) + Math.floor(y / IMAGE_HEIGHT) * TILE_COLUMN_COUNT).toInt()
-        val point = Point().trim(index)
-        setImage(point, image)
+        val point = Point(x, y)
+        clickEventState(point, images[0])
     }
 
     /**
      * 画像をposの位置に貼り付ける
-     * @param pos 画像の貼り付け開始位置
+     * @param point 画像の貼り付け開始位置
      * @param img 貼り付ける画像
      */
-    private fun setImage(pos: Point, img: Image) {
-        delete(pos)
+    private fun setImage(point: Point, img: Image) {
+        delete(point)
+        val fixedPoint = point.trim()
 
-        val x = pos.x.toInt()
-        val y = pos.y.toInt()
+        val x = fixedPoint.x.toInt()
+        val y = fixedPoint.y.toInt()
         val w = img.width.toInt()
         val h = img.height.toInt()
         val pixels = img.getPixels()
@@ -158,7 +225,7 @@ class OutImagePreviewModel(private val imageView: ImageView) {
      */
     fun setImages(index: Int = 0, images: List<Image>) {
         images.forEachIndexed { i, image ->
-            val point = Point().trim(i+index)
+            val point = Point().trim(i + index)
             setImage(point, image)
         }
     }
