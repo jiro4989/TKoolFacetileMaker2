@@ -64,8 +64,8 @@ class TrimPosManageModel(
         val subFiles = files.subList(0, max)
         val x = point.x.toInt()
         val y = point.y.toInt()
-        val w = 144
-        val h = 144
+        val w = IMAGE_WIDTH
+        val h = IMAGE_HEIGHT
         return subFiles
                 .map { Image("file:${it.absolutePath}") }
                 .map { WritableImage(it.pixelReader, x, y, w, h) }

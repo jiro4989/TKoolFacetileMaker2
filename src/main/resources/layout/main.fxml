@@ -272,10 +272,15 @@
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <Canvas fx:id="overLayerCanvas" height="288" styleClass="canvas" width="576"
-                                        AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
+                                <Canvas fx:id="overLayerCanvas" styleClass="canvas"
+                                        AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"
+                                        width="576" height="288"
+                                        onMouseClicked="#overLayerCanvasOnMouseClicked"
+                                />
                                 <ImageView fx:id="outImageView" styleClass="image-view" AnchorPane.leftAnchor="10"
-                                           AnchorPane.topAnchor="10"/>
+                                           AnchorPane.topAnchor="10"
+                                           onMouseClicked="#outImageViewOnMouseClicked"
+                                />
                             </children>
                         </AnchorPane>
                     </content>

@@ -4,12 +4,19 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
 import javafx.scene.image.WritableImage
+import javafx.scene.input.MouseEvent
 import jiro.app.data.Point
 import jiro.app.util.*
+import java.io.File
 
 internal val FMT = PixelFormat.getIntArgbInstance()
 
 class OutImagePreviewModel(private val imageView: ImageView) {
+    init {
+        val writableImage = WritableImage(IMAGE_WIDTH * TILE_COLUMN_COUNT, IMAGE_HEIGHT*TILE_ROW_COUNT)
+        imageView.image = writableImage
+    }
+
     /**
      * 指定の番号の位置から画像をセットする。
      */
@@ -56,7 +63,8 @@ class OutImagePreviewModel(private val imageView: ImageView) {
         val w = IMAGE_WIDTH
         val h = IMAGE_HEIGHT
 
-        val wImg = WritableImage(w, h)
+        val reader = imageView.image.pixelReader
+        val wImg = WritableImage(reader, w* TILE_COLUMN_COUNT, h* TILE_ROW_COUNT)
         val writer = wImg.pixelWriter
 
         // 削除なんで空の配列
@@ -137,12 +145,24 @@ class OutImagePreviewModel(private val imageView: ImageView) {
 //        return bimg
 //    }
 
+    fun onMouseClicked(mouseEvent: MouseEvent, images: List<Image>) {
+        val x = mouseEvent.x
+        val y = mouseEvent.y
+        val image = images[0]
+
+        val index = Math.floor(Math.floor(x / IMAGE_WIDTH) + Math.floor(y / IMAGE_HEIGHT) * TILE_COLUMN_COUNT).toInt()
+        val point = Point().trim(index)
+        setImage(point, image)
+    }
+
     /**
      * 画像をposの位置に貼り付ける
      * @param pos 画像の貼り付け開始位置
      * @param img 貼り付ける画像
      */
     private fun setImage(pos: Point, img: Image) {
+        delete(pos)
+
         val x = pos.x.toInt()
         val y = pos.y.toInt()
         val w = img.width.toInt()

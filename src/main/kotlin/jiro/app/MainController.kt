@@ -208,7 +208,7 @@ class MainController {
      * 画像をタイルペインに追加する。
      */
     fun addImagesButtonOnAction(actionEvent: ActionEvent) {
-        val files = imageFiles.selectedItems()
+        val files = imageFiles.getSelectedItems()
         val trimmedImages = selectedImage.getTrimmedImages(files)
         outImages.setImages(images = trimmedImages)
     }
@@ -261,6 +261,16 @@ class MainController {
 
     fun downFileButtonOnAction(actionEvent: ActionEvent) {
         imageFiles.swapDown()
+    }
+
+    fun overLayerCanvasOnMouseClicked(mouseEvent: MouseEvent) {
+        outImageViewOnMouseClicked(mouseEvent)
+    }
+
+    fun outImageViewOnMouseClicked(mouseEvent: MouseEvent) {
+        val selectedItems = imageFiles.getSelectedItems()
+        val images = selectedImage.getTrimmedImages(selectedItems)
+        outImages.onMouseClicked(mouseEvent, images)
     }
 }
 

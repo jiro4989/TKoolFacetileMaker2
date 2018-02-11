@@ -36,7 +36,7 @@ class FileListModel(private val listView: ListView<File>) {
         listView.selectionModel.select(to)
     }
 
-    fun selectedItems(): MutableList<File> {
+    fun getSelectedItems(): MutableList<File> {
         val selectedItems = listView.selectionModel.selectedItems
         val max = if (selectedItems.size <= MAX_IMAGE_COUNT) selectedItems.size else MAX_IMAGE_COUNT
         return selectedItems.subList(0, max)
