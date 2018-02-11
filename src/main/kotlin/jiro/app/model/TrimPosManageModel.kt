@@ -2,6 +2,7 @@ package jiro.app.model
 
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
+import javafx.embed.swing.SwingFXUtils
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
@@ -14,7 +15,10 @@ import jiro.app.data.Point
 import jiro.app.util.IMAGE_HEIGHT
 import jiro.app.util.IMAGE_WIDTH
 import jiro.app.util.MAX_IMAGE_COUNT
+import java.awt.RenderingHints
+import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 
 class TrimPosManageModel(
         private val imageView: ImageView
@@ -105,14 +109,30 @@ class TrimPosManageModel(
      * 座標の位置で画像をトリミングしたリストとして取得して返却する。
      */
     fun getTrimmedImages(files: List<File>): List<Image> {
+        val zoomRate = zoomRateSlider.value / 100
         val max = if (files.size <= MAX_IMAGE_COUNT) files.size else MAX_IMAGE_COUNT
         val subFiles = files.subList(0, max)
         val x = point.x.toInt()
         val y = point.y.toInt()
         val w = IMAGE_WIDTH
         val h = IMAGE_HEIGHT
+
         return subFiles
-                .map { Image("file:${it.absolutePath}") }
+                .map { ImageIO.read(it) }
+                .map {
+                    // バイキュービック補間でスケーリング
+                    // もっとスマートな方法ないもんかね...
+                    val w = (it.width * zoomRate).toInt()
+                    val h = (it.height * zoomRate).toInt()
+                    val bImg = BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
+                    val g = bImg.createGraphics()
+                    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC)
+                    g.scale(zoomRate, zoomRate)
+                    g.drawImage(it, 0, 0, null)
+                    g.dispose()
+                    bImg
+                }
+                .map { SwingFXUtils.toFXImage(it, null) }
                 .map { WritableImage(it.pixelReader, x, y, w, h) }
     }
 
