@@ -21,6 +21,7 @@ class TrimPosManageModel(
         , topShadowRectangle: Rectangle
         , rightShadowRectangle: Rectangle
         , bottomShadowRectangle: Rectangle
+        , overLayerRectangle: Rectangle
         , trimPosXLabel: Label
         , trimPosYLabel: Label
 ) {
@@ -32,22 +33,26 @@ class TrimPosManageModel(
     private val topShadowRectangleWidthProperty = SimpleDoubleProperty()
     private val rightShadowRectangleWidthProperty = SimpleDoubleProperty()
     private val bottomShadowRectangleWidthProperty = SimpleDoubleProperty()
+    private val overLayerRectangleWidthProperty = SimpleDoubleProperty()
 
     private val leftShadowRectangleHeightProperty = SimpleDoubleProperty()
     private val topShadowRectangleHeightProperty = SimpleDoubleProperty()
     private val rightShadowRectangleHeightProperty = SimpleDoubleProperty()
     private val bottomShadowRectangleHeightProperty = SimpleDoubleProperty()
+    private val overLayerRectangleHeightProperty = SimpleDoubleProperty()
 
     init {
         leftShadowRectangle.widthProperty().bind(leftShadowRectangleWidthProperty)
         topShadowRectangle.widthProperty().bind(topShadowRectangleWidthProperty)
         rightShadowRectangle.widthProperty().bind(rightShadowRectangleWidthProperty)
         bottomShadowRectangle.widthProperty().bind(bottomShadowRectangleWidthProperty)
+        overLayerRectangle.widthProperty().bind(overLayerRectangleWidthProperty)
 
         leftShadowRectangle.heightProperty().bind(leftShadowRectangleHeightProperty)
         topShadowRectangle.heightProperty().bind(topShadowRectangleHeightProperty)
         rightShadowRectangle.heightProperty().bind(rightShadowRectangleHeightProperty)
         bottomShadowRectangle.heightProperty().bind(bottomShadowRectangleHeightProperty)
+        overLayerRectangle.heightProperty().bind(overLayerRectangleHeightProperty)
 
         trimPosXLabel.textProperty().bind(trimPosXProperty)
         trimPosYLabel.textProperty().bind(trimPosYProperty)
@@ -60,7 +65,7 @@ class TrimPosManageModel(
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
         val revisionWidth = IMAGE_WIDTH / 2
         val revisionHeight = IMAGE_HEIGHT / 2
-        val newPoint = Point(point.x - moveWidth + revisionWidth , point.y + revisionHeight)
+        val newPoint = Point(point.x - moveWidth + revisionWidth, point.y + revisionHeight)
         setTrimPoint(newPoint)
     }
 
@@ -100,7 +105,7 @@ class TrimPosManageModel(
     /**
      * 画像をセットする
      */
-    fun setImageWith(filePath: String) {
+    fun setImage(filePath: String) {
         val img = Image("file:$filePath")
         val w = img.width
         val h = img.height
@@ -108,7 +113,20 @@ class TrimPosManageModel(
         imageView.prefHeight(h)
         imageView.fitWidth = w
         imageView.fitHeight = h
+
+        // 初めて画像をセットするときはnullなので、そのときだけ実行
+        val flg = imageView.image == null
         imageView.image = img
+        if (flg) {
+            // 画像の中央にフォーカスをセットしておく
+            val nw = w / 2
+            val nh = h / 2
+            setTrimPoint(Point(nw, nh))
+        }
+
+        // マウスのクリック可能領域の更新
+        overLayerRectangleWidthProperty.set(w)
+        overLayerRectangleHeightProperty.set(h)
     }
 
     /**

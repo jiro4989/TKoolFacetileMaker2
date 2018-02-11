@@ -280,12 +280,12 @@
                                                     <children>
                                                         <ImageView fx:id="selectedImageView" fitHeight="150.0"
                                                                    fitWidth="200.0"
-                                                                   onMouseDragged="#selectedImageViewOnMouseDragged"
                                                                    pickOnBounds="true" preserveRatio="true"
                                                                    AnchorPane.bottomAnchor="0.0"
                                                                    AnchorPane.leftAnchor="0.0"
                                                                    AnchorPane.rightAnchor="0.0"
-                                                                   AnchorPane.topAnchor="0.0"/>
+                                                                   AnchorPane.topAnchor="0.0"
+                                                        />
                                                         <Rectangle fx:id="leftShadowRectangle" fill="BLACK"
                                                                    height="200.0" styleClass="shadow-rectangle"
                                                                    width="200.0" AnchorPane.bottomAnchor="0.0"
@@ -302,6 +302,12 @@
                                                                    height="200.0" styleClass="shadow-rectangle"
                                                                    width="200.0" AnchorPane.bottomAnchor="0.0"
                                                                    AnchorPane.rightAnchor="0.0"/>
+
+                                                        <Rectangle fx:id="overLayerRectangle" width="200.0" height="200.0" styleClass="over-layer-rectangle"
+                                                                   AnchorPane.leftAnchor="0.0"
+                                                                   AnchorPane.topAnchor="0.0"
+                                                                   onMouseDragged="#overLayerRectangleOnMouseDragged"
+                                                        />
                                                     </children>
                                                 </AnchorPane>
                                             </content>

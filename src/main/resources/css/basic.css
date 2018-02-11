@@ -44,3 +44,7 @@
 .trim-pos-point-label {
     -fx-pref-width: 75px;
 }
+
+.over-layer-rectangle {
+    -fx-opacity: 0.0;
+}
