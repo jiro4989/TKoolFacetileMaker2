@@ -140,6 +140,8 @@ class MainController {
     @FXML
     private lateinit var overLayerCanvas: Canvas
 
+    private lateinit var mainService: MainService
+
     @FXML
     private fun initialize() {
         load(File("./res/config.xml"))
@@ -147,6 +149,7 @@ class MainController {
         imageFiles = FileListModel(imageFileListView)
         selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
         outImages = OutImagePreviewModel(outImageView)
+        mainService = MainService(imageFiles, selectedImage, outImages)
 
         imageFileListView.items = imageFiles.files
         imageFileListView.selectionModel.selectionMode = SelectionMode.MULTIPLE
@@ -187,7 +190,7 @@ class MainController {
 
     @FXML
     private fun openMenuItemOnAction(actionEvent: ActionEvent) {
-        val files = openFileMenu()
+        val files = mainService.open()
         imageFiles.add(files)
     }
 
@@ -224,28 +227,14 @@ class MainController {
      * 画像を上書き保存する。
      */
     fun saveMenuItemOnAction(actionEvent: ActionEvent) {
-
+        mainService.save()
     }
 
     /**
      * 画像を別名保存する。
      */
-    fun saveAsMenuItemOnAction(actionEvent: ActionEvent) {
-        val stage = Stage(StageStyle.UTILITY)
-        val fileChooser = FileChooser()
-        fileChooser.extensionFilters += FileChooser.ExtensionFilter("Image Files", "*.png")
-        fileChooser.initialDirectory = File(".")
-
-        val file: File? = fileChooser.showSaveDialog(stage)
-        file?.let {
-            try {
-                outImages.saveImage(file)
-            } catch (e:IOException) {
-                e.printStackTrace()
-                TODO("エラーメッセージをGUIで表示する")
-                TODO("エラーをログファイルに出力する")
-            }
-        }
+    fun saveAsMenuItemOnAction() {
+        mainService.saveAs()
     }
 
     /**
