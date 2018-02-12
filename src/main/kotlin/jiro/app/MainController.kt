@@ -18,6 +18,7 @@ import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.util.Callback
+import jiro.app.dao.load
 import jiro.app.data.Point
 import jiro.app.model.FileListModel
 import jiro.app.model.OutImagePreviewModel
@@ -141,6 +142,8 @@ class MainController {
 
     @FXML
     private fun initialize() {
+        load(File("./res/config.xml"))
+
         imageFiles = FileListModel(imageFileListView)
         selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
         outImages = OutImagePreviewModel(outImageView)
