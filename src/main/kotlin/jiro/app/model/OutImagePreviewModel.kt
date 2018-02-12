@@ -1,5 +1,6 @@
 package jiro.app.model
 
+import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
@@ -7,6 +8,9 @@ import javafx.scene.image.WritableImage
 import javafx.scene.input.MouseEvent
 import jiro.app.data.Point
 import jiro.app.util.*
+import java.io.File
+import java.io.IOException
+import javax.imageio.ImageIO
 
 internal val FMT = PixelFormat.getIntArgbInstance()
 
@@ -226,5 +230,15 @@ class OutImagePreviewModel(private val imageView: ImageView) {
             val point = Point().trim(i + index)
             setImage(point, image)
         }
+    }
+
+    /**
+     * 表示中の画像を保存する。
+     */
+    @Throws(IOException::class)
+    fun saveImage(file: File) {
+        val srcImage = imageView.image
+        val convertedImage = SwingFXUtils.fromFXImage(srcImage, null)
+        ImageIO.write(convertedImage, "PNG", file)
     }
 }

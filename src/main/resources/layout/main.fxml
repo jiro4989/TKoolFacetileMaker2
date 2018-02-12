@@ -35,7 +35,7 @@
                                                     shortcut="UP"/>
                             </accelerator>
                         </MenuItem>
-                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" text="別名で保存する">
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" text="別名で保存する" onAction="#saveAsMenuItemOnAction">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN"
                                                     shortcut="UP"/>

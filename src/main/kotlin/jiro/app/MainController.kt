@@ -14,6 +14,9 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
+import javafx.stage.FileChooser
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 import javafx.util.Callback
 import jiro.app.data.Point
 import jiro.app.model.FileListModel
@@ -22,6 +25,8 @@ import jiro.app.model.TrimPosManageModel
 import jiro.app.util.IMAGE_HEIGHT
 import jiro.app.util.IMAGE_WIDTH
 import java.io.File
+import java.io.IOException
+import javax.imageio.ImageIO
 
 class MainController {
 
@@ -213,10 +218,31 @@ class MainController {
     }
 
     /**
-     * 画像をファイルとして保存する。
+     * 画像を上書き保存する。
      */
     fun saveMenuItemOnAction(actionEvent: ActionEvent) {
 
+    }
+
+    /**
+     * 画像を別名保存する。
+     */
+    fun saveAsMenuItemOnAction(actionEvent: ActionEvent) {
+        val stage = Stage(StageStyle.UTILITY)
+        val fileChooser = FileChooser()
+        fileChooser.extensionFilters += FileChooser.ExtensionFilter("Image Files", "*.png")
+        fileChooser.initialDirectory = File(".")
+
+        val file: File? = fileChooser.showSaveDialog(stage)
+        file?.let {
+            try {
+                outImages.saveImage(file)
+            } catch (e:IOException) {
+                e.printStackTrace()
+                TODO("エラーメッセージをGUIで表示する")
+                TODO("エラーをログファイルに出力する")
+            }
+        }
     }
 
     /**
@@ -330,5 +356,6 @@ class MainController {
     fun moveRightButtonOnAction(actionEvent: ActionEvent) {
         selectedImage.moveRightTrimPos()
     }
+
 }
 
