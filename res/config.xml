@@ -1,43 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config title="設定値">
-  <version title="バージョン" description="ツクールのバージョン間で異なる設定値">
-    <2000>
-      <image>
-        <tile>
-          <columnCount>4</columnCount>
-          <rowCount>4</rowCount>
-          <oneTile>
-            <width>48</width>
-            <height>48</height>
-          </oneTile>
-        </tile>
-      </image>
-    </2000>
-
-    <vxace>
-      <image>
-        <tile>
-          <columnCount>4</columnCount>
-          <rowCount>2</rowCount>
-          <oneTile>
-            <width>96</width>
-            <height>96</height>
-          </oneTile>
-        </tile>
-      </image>
-    </vxace>
-
-    <mv>
-      <image>
-        <tile>
-          <columnCount>4</columnCount>
-          <rowCount>2</rowCount>
-          <oneTile>
-            <width>144</width>
-            <height>144</height>
-          </oneTile>
-        </tile>
-      </image>
-    </mv>
-  </version>
+<config>
+    <version id="2000">
+        <image>
+            <columnCount>4</columnCount>
+            <rowCount>4</rowCount>
+            <oneTile>
+                <width>48</width>
+                <height>48</height>
+            </oneTile>
+        </image>
+    </version>
+    <version id="vxace">
+        <image>
+            <columnCount>4</columnCount>
+            <rowCount>2</rowCount>
+            <oneTile>
+                <width>96</width>
+                <height>96</height>
+            </oneTile>
+        </image>
+    </version>
+    <version id="mv">
+        <image>
+            <columnCount>4</columnCount>
+            <rowCount>2</rowCount>
+            <oneTile>
+                <width>144</width>
+                <height>144</height>
+            </oneTile>
+        </image>
+    </version>
 </config>
