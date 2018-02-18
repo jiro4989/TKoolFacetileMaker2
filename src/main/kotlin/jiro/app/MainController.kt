@@ -148,7 +148,7 @@ class MainController {
         val tkoolItems = configModel.versions.map { RadioMenuItem(it.name) }
         tkoolGroup.toggles.setAll(tkoolItems)
         tkoolMenu.items.setAll(tkoolItems)
-        tkoolItems[2].isSelected = true
+        tkoolItems[0].isSelected = true
 
         // 外部から読み出される設定値を更新
         tkoolVersion = configModel.versions[tkoolGroup.toggles.indexOf(tkoolGroup.selectedToggle)]
@@ -182,7 +182,8 @@ class MainController {
         graphics.textAlign = TextAlignment.CENTER
         graphics.textBaseline = VPos.CENTER
         graphics.font = Font(30.0)
-        (0..7).forEach {
+
+        (0 until tkoolVersion.getMaxImageCount()).forEach {
             val point = Point().trim(it)
             val x = point.x
             val y = point.y
