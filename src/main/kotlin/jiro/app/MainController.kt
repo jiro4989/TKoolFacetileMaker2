@@ -133,12 +133,16 @@ class MainController {
 
     // 保存する画像のプレビューを描画するクラス
     @FXML
-    private lateinit var outImageView: ImageView
-    private lateinit var outImages: OutImagePreviewModel
+    private lateinit var outImageTabPane: TabPane
+    private lateinit var outImageAnchorPanes: List<OutImageAnchorPane>
 
-    // 保存する画像に重ねるクリックイベントと外観を制御するクラス
-    @FXML
-    private lateinit var overLayerCanvas: Canvas
+    //@FXML
+    //private lateinit var outImageView: ImageView
+    //private lateinit var outImages: OutImagePreviewModel
+
+    //// 保存する画像に重ねるクリックイベントと外観を制御するクラス
+    //@FXML
+    //private lateinit var overLayerCanvas: Canvas
 
     private lateinit var mainService: MainService
 
@@ -148,15 +152,26 @@ class MainController {
         val tkoolItems = configModel.versions.map { RadioMenuItem(it.name) }
         tkoolGroup.toggles.setAll(tkoolItems)
         tkoolMenu.items.setAll(tkoolItems)
-        tkoolItems[0].isSelected = true
+        tkoolItems[2].isSelected = true
+        tkoolVersion = configModel.versions[2]
+
+        // ツクールのバージョン分追加する
+        outImageAnchorPanes = configModel.versions.map { OutImageAnchorPane(it) }
+        val tabs = configModel.versions.mapIndexed { index, item ->
+            val tab = Tab(item.name)
+            tab.content = outImageAnchorPanes[index]
+            tab.isClosable = false
+            tab
+        }
+        outImageTabPane.tabs.setAll(tabs)
 
         // 外部から読み出される設定値を更新
         tkoolVersion = configModel.versions[tkoolGroup.toggles.indexOf(tkoolGroup.selectedToggle)]
 
         imageFiles = FileListModel(imageFileListView)
         selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
-        outImages = OutImagePreviewModel(outImageView)
-        mainService = MainService(imageFiles, selectedImage, outImages)
+        //outImages = OutImagePreviewModel(outImageView)
+        //mainService = MainService(imageFiles, selectedImage, outImages)
 
         imageFileListView.items = imageFiles.files
         imageFileListView.selectionModel.selectionMode = SelectionMode.MULTIPLE
@@ -171,28 +186,6 @@ class MainController {
                     item?.name?.let { text = item.name }
                 }
             }
-        }
-
-        // FIXME
-        // サイズ変更が入ったタイミングで再描画する必要があるため、この箇所で実行すると変更漏れが生じる
-        val graphics = overLayerCanvas.graphicsContext2D
-        val w = tkoolVersion.getImageOneTileWidth().toDouble()
-        val h = tkoolVersion.getImageOneTileHeight().toDouble()
-        graphics.fill = Color.rgb(0, 0, 0, 1.0)
-        graphics.textAlign = TextAlignment.CENTER
-        graphics.textBaseline = VPos.CENTER
-        graphics.font = Font(30.0)
-
-        (0 until tkoolVersion.getMaxImageCount()).forEach {
-            val point = Point().trim(it)
-            val x = point.x
-            val y = point.y
-            graphics.strokeRect(x, y, w, h)
-
-            val text = (it + 1).toString()
-            val textX = x + tkoolVersion.getImageOneTileWidth() / 2
-            val textY = y + tkoolVersion.getImageOneTileHeight() / 2
-            graphics.fillText(text, textX, textY)
         }
     }
 
@@ -251,42 +244,42 @@ class MainController {
     fun addImagesButtonOnAction(actionEvent: ActionEvent) {
         val files = imageFiles.getSelectedItems()
         val trimmedImages = selectedImage.getTrimmedImages(files)
-        outImages.setImages(images = trimmedImages)
+        //outImages.setImages(images = trimmedImages)
     }
 
     /**
      * タイルペインの画像を初期化する。
      */
     fun clearImagesButtonOnAction(actionEvent: ActionEvent) {
-        outImages.clear()
+        //outImages.clear()
     }
 
     /**
      * 画像をセットするステートに切り替えるイベント
      */
     fun setModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        outImages.changeClickModeToSetImage()
+        //outImages.changeClickModeToSetImage()
     }
 
     /**
      * 画像を削除するステートに切り替えるイベント
      */
     fun deleteModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        outImages.changeClickModeToDeleteImage()
+        //outImages.changeClickModeToDeleteImage()
     }
 
     /**
      * 選択した画像の位置を交換するステートに切り替えるイベント。
      */
     fun swapModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        outImages.changeClickModeToSwapImage()
+        //outImages.changeClickModeToSwapImage()
     }
 
     /**
      * 選択した画像を左右反転するステートに切り替えるイベント
      */
     fun flipModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        outImages.changeClickModeToFlipImage()
+        //outImages.changeClickModeToFlipImage()
     }
 
     fun deleteListButtonOnAction(actionEvent: ActionEvent) {
@@ -312,7 +305,7 @@ class MainController {
     fun outImageViewOnMouseClicked(mouseEvent: MouseEvent) {
         val selectedItems = imageFiles.getSelectedItems()
         val images = selectedImage.getTrimmedImages(selectedItems)
-        outImages.onMouseClicked(mouseEvent, images)
+        //outImages.onMouseClicked(mouseEvent, images)
     }
 
     /**

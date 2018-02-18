@@ -5,7 +5,7 @@ import javafx.scene.layout.AnchorPane
 import jiro.app.model.VersionModel
 import java.util.*
 
-class OutImageStage(tkoolVersion: VersionModel) : AnchorPane() {
+class OutImageAnchorPane(tkoolVersion: VersionModel) : AnchorPane() {
     private lateinit var controller: OutImageController
 
     init {
@@ -14,6 +14,7 @@ class OutImageStage(tkoolVersion: VersionModel) : AnchorPane() {
         val root = loader.load() as AnchorPane
         controller = loader.getController<OutImageController>()
         controller.tkoolVersion = tkoolVersion
+        controller.drawTile()
         this.children += root
     }
 }

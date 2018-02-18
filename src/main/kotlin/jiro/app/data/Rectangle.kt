@@ -1,5 +1,6 @@
 package jiro.app.data
 
+import jiro.app.model.VersionModel
 import jiro.app.tkoolVersion
 
 /**
@@ -19,12 +20,12 @@ data class Point(val x: Double = 0.0, val y: Double = 0.0) {
     /**
      * タイル上の画像のときの、トリミング位置(左上)のPositionを返す
      */
-    fun trim(index: Int): Point {
-        val c = index % tkoolVersion.getImageColumnCount()
-        val r = index / tkoolVersion.getImageColumnCount()
+    fun trim(index: Int, version: VersionModel = tkoolVersion): Point {
+        val c = index % version.getImageColumnCount()
+        val r = index / version.getImageColumnCount()
 
-        val w = tkoolVersion.getImageOneTileWidth()
-        val h = tkoolVersion.getImageOneTileHeight()
+        val w = version.getImageOneTileWidth()
+        val h = version.getImageOneTileHeight()
         val x = (c * w).toDouble()
         val y = (r * h).toDouble()
         return Point(x, y)

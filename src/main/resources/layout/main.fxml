@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import java.net.URL?>
-<?import javafx.scene.shape.Rectangle?>
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="jiro.app.MainController">
     <stylesheets>
@@ -289,21 +288,9 @@
                         <Insets bottom="5.0" right="5.0" top="5.0"/>
                     </BorderPane.margin>
                     <content>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                            <children>
-                                <Canvas fx:id="overLayerCanvas" height="288"
-                                        AnchorPane.topAnchor="10"
-                                        AnchorPane.leftAnchor="10"
-                                        onMouseClicked="#overLayerCanvasOnMouseClicked" styleClass="canvas" width="576"
-                                />
-                                <ImageView fx:id="outImageView"
-                                           AnchorPane.topAnchor="10"
-                                           AnchorPane.leftAnchor="10"
-                                           onMouseClicked="#outImageViewOnMouseClicked"
-                                           styleClass="image-view"
-                                />
-                            </children>
-                        </AnchorPane>
+                        <TabPane fx:id="outImageTabPane">
+
+                        </TabPane>
                     </content>
                 </TitledPane>
             </bottom>
