@@ -302,9 +302,12 @@
                             <children>
                                 <Canvas fx:id="overLayerCanvas" height="288"
                                         onMouseClicked="#overLayerCanvasOnMouseClicked" styleClass="canvas" width="576"
+                                        onMouseMoved="#outImageViewOnMouseMoved"
                                         AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
-                                <ImageView fx:id="outImageView" onMouseClicked="#outImageViewOnMouseClicked"
+                                <ImageView fx:id="outImageView"
+                                           onMouseClicked="#outImageViewOnMouseClicked"
                                            styleClass="image-view" AnchorPane.leftAnchor="10"
+                                           onMouseMoved="#outImageViewOnMouseMoved"
                                            AnchorPane.topAnchor="10"/>
                             </children>
                         </AnchorPane>

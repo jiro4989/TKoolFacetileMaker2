@@ -6,10 +6,7 @@ import javafx.geometry.VPos
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.input.DragEvent
-import javafx.scene.input.MouseEvent
-import javafx.scene.input.ScrollEvent
-import javafx.scene.input.TransferMode
+import javafx.scene.input.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
@@ -347,6 +344,13 @@ class MainController {
      */
     fun moveRightButtonOnAction(actionEvent: ActionEvent) {
         selectedImage.moveRightTrimPos()
+    }
+
+    /**
+     * マウスが画像タイル状に存在するときに、そこにフォーカスがあることを指し示すパネルを追従させる
+     */
+    fun outImageViewOnMouseMoved(mouseEvent: MouseEvent) {
+        println("fooooooo")
     }
 
 }
