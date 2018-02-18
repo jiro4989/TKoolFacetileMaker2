@@ -346,12 +346,5 @@ class MainController {
         selectedImage.moveRightTrimPos()
     }
 
-    /**
-     * マウスが画像タイル状に存在するときに、そこにフォーカスがあることを指し示すパネルを追従させる
-     */
-    fun outImageViewOnMouseMoved(mouseEvent: MouseEvent) {
-        println("fooooooo")
-    }
-
 }
 

@@ -1,11 +1,14 @@
 package jiro.app.model
 
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.PixelFormat
 import javafx.scene.image.WritableImage
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.AnchorPane
+import javafx.scene.shape.Rectangle
 import jiro.app.data.Point
 import jiro.app.util.*
 import java.io.File

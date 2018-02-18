@@ -9,11 +9,9 @@
     -fx-pref-height: 288;
 }
 
-.canvas {
-    -fx-opacity: 0.5;
-}
-
-.shadow-rectangle {
+.canvas,
+.shadow-rectangle,
+.focus-rectangle {
     -fx-opacity: 0.5;
 }
 
@@ -52,4 +50,11 @@
 
 .over-layer-rectangle {
     -fx-opacity: 0.0;
+}
+
+/*************************************************************
+    出力画像パネル
+*************************************************************/
+.focus-rectangle {
+    -fx-background-color: #0093ff;
 }
