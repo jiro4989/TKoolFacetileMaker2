@@ -93,11 +93,6 @@ class MainController {
     @FXML
     private lateinit var clickModeGroup: ToggleGroup
 
-    // ツクールのバージョン間の設定
-    @FXML
-    private lateinit var tkoolMenu: Menu
-    private val tkoolGroup: ToggleGroup = ToggleGroup()
-
     // 画像ファイルを保持するクラス
     @FXML
     private lateinit var imageFileListView: ListView<File>
@@ -148,11 +143,7 @@ class MainController {
 
     @FXML
     private fun initialize() {
-        // MenuItemのツクールのバージョンをセット
-        val tkoolItems = configModel.versions.map { RadioMenuItem(it.name) }
-        tkoolGroup.toggles.setAll(tkoolItems)
-        tkoolMenu.items.setAll(tkoolItems)
-        tkoolItems[2].isSelected = true
+        // 外部から読み出される設定値を更新
         tkoolVersion = configModel.versions[2]
 
         // ツクールのバージョン分追加する
@@ -165,13 +156,8 @@ class MainController {
         }
         outImageTabPane.tabs.setAll(tabs)
 
-        // 外部から読み出される設定値を更新
-        tkoolVersion = configModel.versions[tkoolGroup.toggles.indexOf(tkoolGroup.selectedToggle)]
-
         imageFiles = FileListModel(imageFileListView)
         selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
-        //outImages = OutImagePreviewModel(outImageView)
-        //mainService = MainService(imageFiles, selectedImage, outImages)
 
         imageFileListView.items = imageFiles.files
         imageFileListView.selectionModel.selectionMode = SelectionMode.MULTIPLE

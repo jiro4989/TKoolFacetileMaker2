@@ -145,7 +145,6 @@
                         </MenuItem>
                     </items>
                 </Menu>
-                <Menu fx:id="tkoolMenu" mnemonicParsing="false" text="ツクール" />
                 <Menu mnemonicParsing="false" text="ヘルプ">
                     <items>
                         <MenuItem fx:id="versionInfoItem" mnemonicParsing="false" text="バージョン情報"/>
@@ -206,7 +205,7 @@
         <BorderPane prefHeight="847.0" prefWidth="808.0">
 
             <center>
-                <TitledPane animated="false" collapsible="false" prefHeight="2000.0" prefWidth="916.0"
+                <TitledPane animated="false" collapsible="false" prefHeight="1000.0" prefWidth="916.0"
                             styleClass="primary" text="画像ビューワ">
                     <BorderPane.margin>
                         <Insets right="5.0" top="5.0"/>
@@ -282,7 +281,7 @@
             </center>
 
             <bottom>
-                <TitledPane animated="false" collapsible="false" prefHeight="330.0" prefWidth="896.0"
+                <TitledPane animated="false" collapsible="false" prefHeight="400.0" prefWidth="896.0"
                             styleClass="primary" text="出力画像プレビュー">
                     <BorderPane.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0"/>

@@ -6,7 +6,7 @@ import jiro.app.model.VersionModel
 import java.util.*
 
 class OutImageAnchorPane(tkoolVersion: VersionModel) : AnchorPane() {
-    private lateinit var controller: OutImageController
+    private var controller: OutImageController
 
     init {
         val res = ResourceBundle.getBundle("dict.main", Locale.getDefault())

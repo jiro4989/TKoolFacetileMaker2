@@ -29,16 +29,13 @@ class OutImageController {
 
     @FXML
     private fun initialize() {
-
+        outImages = OutImagePreviewModel(outImageView)
     }
 
     fun overLayerCanvasOnMouseClicked(mouseEvent: MouseEvent) {
-
-
     }
 
     fun outImageViewOnMouseClicked(mouseEvent: MouseEvent) {
-
     }
 
     /**
