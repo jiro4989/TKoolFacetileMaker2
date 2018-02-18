@@ -176,8 +176,8 @@ class MainController {
         // FIXME
         // サイズ変更が入ったタイミングで再描画する必要があるため、この箇所で実行すると変更漏れが生じる
         val graphics = overLayerCanvas.graphicsContext2D
-        val w = tkoolVersion.image.oneTile.width.toDouble()
-        val h = tkoolVersion.image.oneTile.height.toDouble()
+        val w = tkoolVersion.getImageOneTileWidth().toDouble()
+        val h = tkoolVersion.getImageOneTileHeight().toDouble()
         graphics.fill = Color.rgb(0, 0, 0, 1.0)
         graphics.textAlign = TextAlignment.CENTER
         graphics.textBaseline = VPos.CENTER
@@ -189,8 +189,8 @@ class MainController {
             graphics.strokeRect(x, y, w, h)
 
             val text = (it + 1).toString()
-            val textX = x + tkoolVersion.image.oneTile.width / 2
-            val textY = y + tkoolVersion.image.oneTile.height / 2
+            val textX = x + tkoolVersion.getImageOneTileWidth() / 2
+            val textY = y + tkoolVersion.getImageOneTileHeight() / 2
             graphics.fillText(text, textX, textY)
         }
     }

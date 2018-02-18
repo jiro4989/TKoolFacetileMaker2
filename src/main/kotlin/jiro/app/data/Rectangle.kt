@@ -12,7 +12,7 @@ data class Size(val width: Double, val height: Double)
  */
 data class Point(val x: Double = 0.0, val y: Double = 0.0) {
     // 画像タイル上の番号(0~)
-    val index = Math.floor(Math.floor(x / tkoolVersion.image.oneTile.width) + Math.floor(y / tkoolVersion.image.oneTile.height) * tkoolVersion.image.columnCount).toInt()
+    val index = Math.floor(Math.floor(x / tkoolVersion.getImageOneTileWidth()) + Math.floor(y / tkoolVersion.getImageOneTileHeight()) * tkoolVersion.getImageColumnCount()).toInt()
 
     fun trim(): Point = trim(index)
 
@@ -20,11 +20,11 @@ data class Point(val x: Double = 0.0, val y: Double = 0.0) {
      * タイル上の画像のときの、トリミング位置(左上)のPositionを返す
      */
     fun trim(index: Int): Point {
-        val c = index % tkoolVersion.image.columnCount
-        val r = index / tkoolVersion.image.columnCount
+        val c = index % tkoolVersion.getImageColumnCount()
+        val r = index / tkoolVersion.getImageColumnCount()
 
-        val w = tkoolVersion.image.oneTile.width
-        val h = tkoolVersion.image.oneTile.height
+        val w = tkoolVersion.getImageOneTileWidth()
+        val h = tkoolVersion.getImageOneTileHeight()
         val x = (c * w).toDouble()
         val y = (r * h).toDouble()
         return Point(x, y)
