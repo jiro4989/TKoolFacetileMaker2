@@ -11,6 +11,7 @@ import jiro.app.util.*
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
+import jiro.app.tkoolVersion
 
 internal val FMT = PixelFormat.getIntArgbInstance()
 
@@ -48,7 +49,7 @@ class OutImagePreviewModel(private val imageView: ImageView) {
     private val swapImageIndexList = mutableListOf<Int>()
 
     init {
-        val writableImage = WritableImage(IMAGE_WIDTH * TILE_COLUMN_COUNT, IMAGE_HEIGHT * TILE_ROW_COUNT)
+        val writableImage = WritableImage(tkoolVersion.image.oneTile.width * tkoolVersion.image.columnCount, tkoolVersion.image.oneTile.height * tkoolVersion.image.rowCount)
         imageView.image = writableImage
     }
 
@@ -56,9 +57,9 @@ class OutImagePreviewModel(private val imageView: ImageView) {
      * すべての画像をクリアする。
      */
     fun clear() {
-        val width = IMAGE_WIDTH
-        val height = IMAGE_HEIGHT
-        val wImg = WritableImage(width * TILE_COLUMN_COUNT, height * TILE_ROW_COUNT)
+        val width = tkoolVersion.image.oneTile.width
+        val height = tkoolVersion.image.oneTile.height
+        val wImg = WritableImage(width * tkoolVersion.image.columnCount, height * tkoolVersion.image.rowCount)
         imageView.image = wImg
     }
 
@@ -76,11 +77,11 @@ class OutImagePreviewModel(private val imageView: ImageView) {
         val fixedPoint = point.trim()
         val x = fixedPoint.x.toInt()
         val y = fixedPoint.y.toInt()
-        val w = IMAGE_WIDTH
-        val h = IMAGE_HEIGHT
+        val w = tkoolVersion.image.oneTile.width
+        val h = tkoolVersion.image.oneTile.height
 
         val reader = imageView.image.pixelReader
-        val wImg = WritableImage(reader, w * TILE_COLUMN_COUNT, h * TILE_ROW_COUNT)
+        val wImg = WritableImage(reader, w * tkoolVersion.image.columnCount, h * tkoolVersion.image.rowCount)
         val writer = wImg.pixelWriter
 
         // 削除なんで空の配列
@@ -125,8 +126,8 @@ class OutImagePreviewModel(private val imageView: ImageView) {
         // 指定の位置からトリミングした画像を取得
         val trimmedImage = srcImage.getTrimmedImage(point)
         val trimmedPixels = trimmedImage.getPixels()
-        val w = IMAGE_WIDTH
-        val h = IMAGE_HEIGHT
+        val w = tkoolVersion.image.oneTile.width
+        val h = tkoolVersion.image.oneTile.height
 
         // 切り出したpixelの左右反転したpixelを取得
         val newPixels = IntArray(trimmedPixels.size)

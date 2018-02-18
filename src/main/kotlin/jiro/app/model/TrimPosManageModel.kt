@@ -12,9 +12,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 import jiro.app.data.Point
-import jiro.app.util.IMAGE_HEIGHT
-import jiro.app.util.IMAGE_WIDTH
-import jiro.app.util.MAX_IMAGE_COUNT
+import jiro.app.tkoolVersion
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
@@ -99,8 +97,8 @@ class TrimPosManageModel(
         imageView.image = img
         if (flg) {
             // 画像の中央にフォーカスをセットしておく
-            val nw = w / 2 - IMAGE_WIDTH / 2
-            val nh = h / 2 - IMAGE_HEIGHT / 2
+            val nw = w / 2 - tkoolVersion.getImageOneTileWidth() / 2
+            val nh = h / 2 - tkoolVersion.getImageOneTileHeight() / 2
             setTrimPoint(Point(nw, nh))
         }
     }
@@ -110,12 +108,12 @@ class TrimPosManageModel(
      */
     fun getTrimmedImages(files: List<File>): List<Image> {
         val zoomRate = zoomRateSlider.value / 100
-        val max = if (files.size <= MAX_IMAGE_COUNT) files.size else MAX_IMAGE_COUNT
+        val max = if (files.size <= tkoolVersion.getMaxImageCount()) files.size else tkoolVersion.getMaxImageCount()
         val subFiles = files.subList(0, max)
         val x = point.x.toInt()
         val y = point.y.toInt()
-        val w = IMAGE_WIDTH
-        val h = IMAGE_HEIGHT
+        val w = tkoolVersion.getImageOneTileWidth()
+        val h = tkoolVersion.getImageOneTileHeight()
 
         return subFiles
                 .map { ImageIO.read(it) }
@@ -145,8 +143,8 @@ class TrimPosManageModel(
         val imageWidth = imageWidthProperty.get()
         val imageHeight = imageHeightProperty.get()
 
-        val x = Math.min(Math.max(point.x, 0.0), imageWidth - IMAGE_WIDTH)
-        val y = Math.min(Math.max(point.y, 0.0), imageHeight - IMAGE_HEIGHT)
+        val x = Math.min(Math.max(point.x, 0.0), imageWidth - tkoolVersion.getImageOneTileWidth())
+        val y = Math.min(Math.max(point.y, 0.0), imageHeight - tkoolVersion.getImageOneTileHeight())
         this.point = Point(x, y)
 
         updateCanvas()
@@ -160,8 +158,8 @@ class TrimPosManageModel(
         val imageWidth = imageWidthProperty.get()
         val imageHeight = imageHeightProperty.get()
 
-        val x = Math.min(Math.max(point.x - IMAGE_WIDTH / 2, 0.0), imageWidth - IMAGE_WIDTH)
-        val y = Math.min(Math.max(point.y - IMAGE_HEIGHT / 2, 0.0), imageHeight - IMAGE_HEIGHT)
+        val x = Math.min(Math.max(point.x - tkoolVersion.getImageOneTileWidth() / 2, 0.0), imageWidth - tkoolVersion.getImageOneTileWidth())
+        val y = Math.min(Math.max(point.y - tkoolVersion.getImageOneTileHeight() / 2, 0.0), imageHeight - tkoolVersion.getImageOneTileHeight())
         this.point = Point(x, y)
 
         updateCanvas()
@@ -179,8 +177,8 @@ class TrimPosManageModel(
     fun updateZoomRate() {
         val zoomRate = zoomRateSlider.value / 100
         val image = imageView.image
-        val w = Math.max(image.width * zoomRate, IMAGE_WIDTH.toDouble())
-        val h = Math.max(image.height * zoomRate, IMAGE_HEIGHT.toDouble())
+        val w = Math.max(image.width * zoomRate, tkoolVersion.getImageOneTileWidth().toDouble())
+        val h = Math.max(image.height * zoomRate, tkoolVersion.getImageOneTileHeight().toDouble())
         imageWidthProperty.set(w)
         imageHeightProperty.set(h)
         updateCanvas()
@@ -196,7 +194,7 @@ class TrimPosManageModel(
         val w = shadowCanvas.width
         val h = shadowCanvas.height
         graphics.fillRect(0.0, 0.0, w, h)
-        graphics.clearRect(this.point.x, this.point.y, IMAGE_WIDTH.toDouble(), IMAGE_HEIGHT.toDouble())
+        graphics.clearRect(this.point.x, this.point.y, tkoolVersion.getImageOneTileWidth().toDouble(), tkoolVersion.getImageOneTileHeight().toDouble())
     }
 }
 

@@ -3,27 +3,22 @@ package jiro.app
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.geometry.VPos
-import javafx.scene.Group
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.input.*
+import javafx.scene.input.DragEvent
+import javafx.scene.input.MouseEvent
+import javafx.scene.input.ScrollEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
-import javafx.stage.FileChooser
-import javafx.stage.Stage
-import javafx.stage.StageStyle
 import javafx.util.Callback
 import jiro.app.dao.load
 import jiro.app.data.Point
 import jiro.app.model.*
-import jiro.app.util.IMAGE_HEIGHT
-import jiro.app.util.IMAGE_WIDTH
 import java.io.File
-import java.io.IOException
-import javax.imageio.ImageIO
 
 // 設定ファイルから読み取ったデータ
 private var configModel: ConfigModel = load(File("./res/config.xml"))
@@ -181,8 +176,8 @@ class MainController {
         // FIXME
         // サイズ変更が入ったタイミングで再描画する必要があるため、この箇所で実行すると変更漏れが生じる
         val graphics = overLayerCanvas.graphicsContext2D
-        val w = IMAGE_WIDTH.toDouble()
-        val h = IMAGE_HEIGHT.toDouble()
+        val w = tkoolVersion.image.oneTile.width.toDouble()
+        val h = tkoolVersion.image.oneTile.height.toDouble()
         graphics.fill = Color.rgb(0, 0, 0, 1.0)
         graphics.textAlign = TextAlignment.CENTER
         graphics.textBaseline = VPos.CENTER
@@ -194,8 +189,8 @@ class MainController {
             graphics.strokeRect(x, y, w, h)
 
             val text = (it + 1).toString()
-            val textX = x + IMAGE_WIDTH / 2
-            val textY = y + IMAGE_HEIGHT / 2
+            val textX = x + tkoolVersion.image.oneTile.width / 2
+            val textY = y + tkoolVersion.image.oneTile.height / 2
             graphics.fillText(text, textX, textY)
         }
     }

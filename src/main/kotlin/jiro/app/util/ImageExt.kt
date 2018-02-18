@@ -6,6 +6,7 @@ import jiro.app.data.Point
 import jiro.app.data.Rectangle
 import jiro.app.data.Size
 import jiro.app.model.FMT
+import jiro.app.tkoolVersion
 
 /**
  * 画像全体のpixelを返す
@@ -39,7 +40,7 @@ fun Image.getPixels(rectangle: Rectangle): IntArray {
  * 切り出し範囲は、指定の位置からIMAGE_WIDTH, IMAGE_HEIGHTの矩形となる。
  */
 fun Image.getTrimmedImage(point:Point): Image {
-    val size = Size(IMAGE_WIDTH.toDouble(), IMAGE_HEIGHT.toDouble())
+    val size = Size(tkoolVersion.getImageOneTileWidth().toDouble(), tkoolVersion.getImageOneTileHeight().toDouble())
     val rectangle = Rectangle(point, size)
     return getTrimmedImage(rectangle)
 }
