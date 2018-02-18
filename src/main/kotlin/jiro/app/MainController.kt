@@ -3,6 +3,7 @@ package jiro.app
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.geometry.VPos
+import javafx.scene.Group
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
@@ -17,6 +18,7 @@ import javafx.stage.StageStyle
 import javafx.util.Callback
 import jiro.app.dao.load
 import jiro.app.data.Point
+import jiro.app.model.ConfigModel
 import jiro.app.model.FileListModel
 import jiro.app.model.OutImagePreviewModel
 import jiro.app.model.TrimPosManageModel
@@ -25,6 +27,9 @@ import jiro.app.util.IMAGE_WIDTH
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
+
+// 設定ファイルから読み取ったデータ
+var configModel: ConfigModel = load(File("./res/config.xml"))
 
 class MainController {
 
@@ -95,6 +100,11 @@ class MainController {
     @FXML
     private lateinit var clickModeGroup: ToggleGroup
 
+    // ツクールのバージョン間の設定
+    @FXML
+    private lateinit var tkoolMenu: Menu
+    private val tkoolGroup: ToggleGroup = ToggleGroup()
+
     // 画像ファイルを保持するクラス
     @FXML
     private lateinit var imageFileListView: ListView<File>
@@ -141,7 +151,10 @@ class MainController {
 
     @FXML
     private fun initialize() {
-        load(File("./res/config.xml"))
+        // MenuItemのツクールのバージョンをセット
+        val tkoolItems = configModel.versions.map { RadioMenuItem(it.name) }
+        tkoolGroup.toggles.setAll(tkoolItems)
+        tkoolMenu.items.setAll(tkoolItems)
 
         imageFiles = FileListModel(imageFileListView)
         selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)

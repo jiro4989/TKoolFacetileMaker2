@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <version id="2000">
+    <version id="2000" name="2000">
         <image>
             <columnCount>4</columnCount>
             <rowCount>4</rowCount>
@@ -10,7 +10,7 @@
             </oneTile>
         </image>
     </version>
-    <version id="vxace">
+    <version id="vxace" name="VXACE">
         <image>
             <columnCount>4</columnCount>
             <rowCount>2</rowCount>
@@ -20,7 +20,7 @@
             </oneTile>
         </image>
     </version>
-    <version id="mv">
+    <version id="mv" name="MV">
         <image>
             <columnCount>4</columnCount>
             <rowCount>2</rowCount>

@@ -146,18 +146,7 @@
                         </MenuItem>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="ツクール">
-                    <items>
-                        <RadioMenuItem fx:id="mvRadioMenuItem" disable="false" mnemonicParsing="false" selected="true"
-                                       text="ＭＶ">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="group"/>
-                            </toggleGroup>
-                        </RadioMenuItem>
-                        <RadioMenuItem fx:id="vxaceRadioMenuItem" mnemonicParsing="false" text="ＶＸＡＣＥ"
-                                       toggleGroup="$group"/>
-                    </items>
-                </Menu>
+                <Menu fx:id="tkoolMenu" mnemonicParsing="false" text="ツクール" />
                 <Menu mnemonicParsing="false" text="ヘルプ">
                     <items>
                         <MenuItem fx:id="versionInfoItem" mnemonicParsing="false" text="バージョン情報"/>

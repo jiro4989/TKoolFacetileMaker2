@@ -1,13 +1,12 @@
 package jiro.app.dao
 
+import jiro.app.model.ConfigModel
+import jiro.app.model.ImageModel
+import jiro.app.model.OneTileModel
+import jiro.app.model.VersionModel
 import org.w3c.dom.Element
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
-
-data class ConfigModel(val versions: List<VersionModel>)
-data class VersionModel(val id: String, val image: ImageModel)
-data class ImageModel(val columnCount: Int, val rowCount: Int, val oneTile: OneTileModel)
-data class OneTileModel(val width: Int, val height: Int)
 
 /**
  * Configを取得する
@@ -28,6 +27,7 @@ fun load(file: File): ConfigModel {
 
 private fun Element.getVersion(): VersionModel? {
     val id = this.getAttribute("id")
+    val name = this.getAttribute("name")
     var image: ImageModel? = null
 
     val nodes = this.childNodes
@@ -38,7 +38,7 @@ private fun Element.getVersion(): VersionModel? {
         }
     }
 
-    return image?.let { VersionModel(id, it) } ?: null
+    return image?.let { VersionModel(id, name, it) } ?: null
 }
 
 private fun Element.getImage(): ImageModel? {
