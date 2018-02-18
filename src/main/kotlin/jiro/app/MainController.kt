@@ -357,5 +357,13 @@ class MainController {
         selectedImage.moveRightTrimPos()
     }
 
+    /**
+     * ツクールのバージョンを変更。
+     * トリミング範囲や画像の規格を更新する
+     */
+    private fun updateTkoolVersion() {
+
+    }
+
 }
 
