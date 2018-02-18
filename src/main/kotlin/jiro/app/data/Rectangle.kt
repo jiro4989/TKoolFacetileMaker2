@@ -3,7 +3,6 @@ package jiro.app.data
 import jiro.app.util.IMAGE_HEIGHT
 import jiro.app.util.IMAGE_WIDTH
 import jiro.app.util.TILE_COLUMN_COUNT
-import jiro.app.configModel as config
 
 /**
  * 幅
