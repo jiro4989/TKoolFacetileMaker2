@@ -1,11 +1,13 @@
 package jiro.app
 
 import javafx.fxml.FXMLLoader
+import javafx.scene.image.Image
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
 import jiro.app.model.VersionModel
 import java.util.*
 
-class OutImageAnchorPane(tkoolVersion: VersionModel) : AnchorPane() {
+class OutImageAnchorPane(tkoolVersion: VersionModel, private val mainController: MainController) : AnchorPane() {
     private var controller: OutImageController
 
     init {
@@ -14,7 +16,20 @@ class OutImageAnchorPane(tkoolVersion: VersionModel) : AnchorPane() {
         val root = loader.load() as AnchorPane
         controller = loader.getController<OutImageController>()
         controller.tkoolVersion = tkoolVersion
+        controller.mainController = mainController
+        controller.initImage()
         controller.drawTile()
         this.children += root
     }
+
+    fun clear() {
+        controller.clear()
+    }
+
+    fun setImages(index: Int, images: List<Image>) = controller.setImages(index, images)
+    fun changeClickModeToSetImage() = controller.changeClickModeToSetImage()
+    fun changeClickModeToDeleteImage() = controller.changeClickModeToDeleteImage()
+    fun changeClickModeToSwapImage() = controller.changeClickModeToSwapImage()
+    fun changeClickModeToFlipImage() = controller.changeClickModeToFlipImage()
+    fun mouseClickEvent(mouseEvent: MouseEvent, images: List<Image>) {}
 }

@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 import jiro.app.data.Point
-import jiro.app.tkoolVersion
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
@@ -25,8 +24,9 @@ class TrimPosManageModel(
         , private val shadowCanvas: Canvas
         , trimPosXLabel: Label
         , trimPosYLabel: Label
+        , private var version: VersionModel
 ) {
-    private var point = Point()
+    private var point = Point(version = version)
     private var zoomedPoint = point
 
     private val trimPosXProperty = SimpleStringProperty()
@@ -49,7 +49,7 @@ class TrimPosManageModel(
      */
     fun moveLeftTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val newPoint = Point(point.x - moveWidth, point.y)
+        val newPoint = Point(point.x - moveWidth, point.y, version)
         setTrimPoint(newPoint)
     }
 
@@ -58,7 +58,7 @@ class TrimPosManageModel(
      */
     fun moveUpTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val newPoint = Point(point.x, point.y - moveWidth)
+        val newPoint = Point(point.x, point.y - moveWidth, version)
         setTrimPoint(newPoint)
     }
 
@@ -67,7 +67,7 @@ class TrimPosManageModel(
      */
     fun moveDownTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val newPoint = Point(point.x, point.y + moveWidth)
+        val newPoint = Point(point.x, point.y + moveWidth, version)
         setTrimPoint(newPoint)
     }
 
@@ -76,7 +76,7 @@ class TrimPosManageModel(
      */
     fun moveRightTrimPos() {
         val moveWidth = moveWidthComboBox.selectionModel.selectedItem
-        val newPoint = Point(point.x + moveWidth, point.y)
+        val newPoint = Point(point.x + moveWidth, point.y, version)
         setTrimPoint(newPoint)
     }
 
@@ -97,9 +97,9 @@ class TrimPosManageModel(
         imageView.image = img
         if (flg) {
             // 画像の中央にフォーカスをセットしておく
-            val nw = w / 2 - tkoolVersion.getImageOneTileWidth() / 2
-            val nh = h / 2 - tkoolVersion.getImageOneTileHeight() / 2
-            setTrimPoint(Point(nw, nh))
+            val nw = w / 2 - version.getImageOneTileWidth() / 2
+            val nh = h / 2 - version.getImageOneTileHeight() / 2
+            setTrimPoint(Point(nw, nh, version))
         }
     }
 
@@ -108,12 +108,12 @@ class TrimPosManageModel(
      */
     fun getTrimmedImages(files: List<File>): List<Image> {
         val zoomRate = zoomRateSlider.value / 100
-        val max = if (files.size <= tkoolVersion.getMaxImageCount()) files.size else tkoolVersion.getMaxImageCount()
+        val max = if (files.size <= version.getMaxImageCount()) files.size else version.getMaxImageCount()
         val subFiles = files.subList(0, max)
         val x = point.x.toInt()
         val y = point.y.toInt()
-        val w = tkoolVersion.getImageOneTileWidth()
-        val h = tkoolVersion.getImageOneTileHeight()
+        val w = version.getImageOneTileWidth()
+        val h = version.getImageOneTileHeight()
 
         return subFiles
                 .map { ImageIO.read(it) }
@@ -143,9 +143,9 @@ class TrimPosManageModel(
         val imageWidth = imageWidthProperty.get()
         val imageHeight = imageHeightProperty.get()
 
-        val x = Math.min(Math.max(point.x, 0.0), imageWidth - tkoolVersion.getImageOneTileWidth())
-        val y = Math.min(Math.max(point.y, 0.0), imageHeight - tkoolVersion.getImageOneTileHeight())
-        this.point = Point(x, y)
+        val x = Math.min(Math.max(point.x, 0.0), imageWidth - version.getImageOneTileWidth())
+        val y = Math.min(Math.max(point.y, 0.0), imageHeight - version.getImageOneTileHeight())
+        this.point = Point(x, y, version)
 
         updateCanvas()
         updatePointLabels()
@@ -158,9 +158,9 @@ class TrimPosManageModel(
         val imageWidth = imageWidthProperty.get()
         val imageHeight = imageHeightProperty.get()
 
-        val x = Math.min(Math.max(point.x - tkoolVersion.getImageOneTileWidth() / 2, 0.0), imageWidth - tkoolVersion.getImageOneTileWidth())
-        val y = Math.min(Math.max(point.y - tkoolVersion.getImageOneTileHeight() / 2, 0.0), imageHeight - tkoolVersion.getImageOneTileHeight())
-        this.point = Point(x, y)
+        val x = Math.min(Math.max(point.x - version.getImageOneTileWidth() / 2, 0.0), imageWidth - version.getImageOneTileWidth())
+        val y = Math.min(Math.max(point.y - version.getImageOneTileHeight() / 2, 0.0), imageHeight - version.getImageOneTileHeight())
+        this.point = Point(x, y, version)
 
         updateCanvas()
         updatePointLabels()
@@ -177,8 +177,8 @@ class TrimPosManageModel(
     fun updateZoomRate() {
         val zoomRate = zoomRateSlider.value / 100
         val image = imageView.image
-        val w = Math.max(image.width * zoomRate, tkoolVersion.getImageOneTileWidth().toDouble())
-        val h = Math.max(image.height * zoomRate, tkoolVersion.getImageOneTileHeight().toDouble())
+        val w = Math.max(image.width * zoomRate, version.getImageOneTileWidth().toDouble())
+        val h = Math.max(image.height * zoomRate, version.getImageOneTileHeight().toDouble())
         imageWidthProperty.set(w)
         imageHeightProperty.set(h)
         updateCanvas()
@@ -194,7 +194,15 @@ class TrimPosManageModel(
         val w = shadowCanvas.width
         val h = shadowCanvas.height
         graphics.fillRect(0.0, 0.0, w, h)
-        graphics.clearRect(this.point.x, this.point.y, tkoolVersion.getImageOneTileWidth().toDouble(), tkoolVersion.getImageOneTileHeight().toDouble())
+        graphics.clearRect(this.point.x, this.point.y, version.getImageOneTileWidth().toDouble(), version.getImageOneTileHeight().toDouble())
+    }
+
+    /**
+     * ツクールのバージョン情報を更新し、画面を再描画する
+     */
+    fun updateTkoolVersion(tkoolVersion: VersionModel) {
+        version = tkoolVersion
+        updateCanvas()
     }
 }
 

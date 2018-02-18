@@ -3,14 +3,13 @@ package jiro.app.model
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.ListView
-import jiro.app.tkoolVersion
 import java.io.File
 
 /**
  * 画像ファイルのパス情報のObservableListのラッパークラス。
  * 原則ListViewへのデータの追加はこのラッパークラスのメソッド経由で行う。
  */
-class FileListModel(private val listView: ListView<File>) {
+class FileListModel(private val listView: ListView<File>, private val version: VersionModel) {
     val files: ObservableList<File> = FXCollections.observableArrayList()
 
     init {
@@ -38,7 +37,7 @@ class FileListModel(private val listView: ListView<File>) {
 
     fun getSelectedItems(): MutableList<File> {
         val selectedItems = listView.selectionModel.selectedItems
-        val max = if (selectedItems.size <= tkoolVersion.getMaxImageCount()) selectedItems.size else tkoolVersion.getMaxImageCount()
+        val max = if (selectedItems.size <= version.getMaxImageCount()) selectedItems.size else version.getMaxImageCount()
         return selectedItems.subList(0, max)
     }
 

@@ -5,14 +5,13 @@ import javafx.scene.image.WritableImage
 import jiro.app.data.Point
 import jiro.app.data.Rectangle
 import jiro.app.data.Size
-import jiro.app.model.FMT
-import jiro.app.tkoolVersion
+import jiro.app.model.VersionModel
 
 /**
  * 画像全体のpixelを返す
  */
-fun Image.getPixels(): IntArray {
-    val point = Point()
+fun Image.getPixels(version: VersionModel): IntArray {
+    val point = Point(version = version)
     val size = Size(width, height)
     val rectangle = Rectangle(point, size)
     return this.getPixels(rectangle)
@@ -39,8 +38,8 @@ fun Image.getPixels(rectangle: Rectangle): IntArray {
  * 指定の位置から切り出した画像を返す。
  * 切り出し範囲は、指定の位置からIMAGE_WIDTH, IMAGE_HEIGHTの矩形となる。
  */
-fun Image.getTrimmedImage(point:Point): Image {
-    val size = Size(tkoolVersion.getImageOneTileWidth().toDouble(), tkoolVersion.getImageOneTileHeight().toDouble())
+fun Image.getTrimmedImage(point:Point, version:VersionModel): Image {
+    val size = Size(version.getImageOneTileWidth().toDouble(), version.getImageOneTileHeight().toDouble())
     val rectangle = Rectangle(point, size)
     return getTrimmedImage(rectangle)
 }

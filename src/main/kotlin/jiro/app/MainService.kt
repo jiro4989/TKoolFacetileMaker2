@@ -4,7 +4,6 @@ import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import jiro.app.model.FileListModel
-import jiro.app.model.OutImagePreviewModel
 import jiro.app.model.TrimPosManageModel
 import java.io.File
 import java.io.IOException
@@ -12,7 +11,6 @@ import java.io.IOException
 class MainService(
         private val fileListModel: FileListModel
         , private val trimPosManageModel: TrimPosManageModel
-        , private val outImagePreviewModel: OutImagePreviewModel
 ) {
     // 一度でも保存したファイル
     private var savedFile: File? = null
@@ -36,7 +34,7 @@ class MainService(
     fun save() {
         savedFile?.let {
             try {
-                outImagePreviewModel.saveImage(it)
+                //outImagePreviewModel.saveImage(it)
             } catch (e: IOException) {
                 e.printStackTrace()
                 TODO("エラーメッセージをGUIで表示する")
@@ -61,7 +59,7 @@ class MainService(
         savedFile = fileChooser.showSaveDialog(stage)
         savedFile?.let {
             try {
-                outImagePreviewModel.saveImage(it)
+                //outImagePreviewModel.saveImage(it)
             } catch (e: IOException) {
                 e.printStackTrace()
                 TODO("エラーメッセージをGUIで表示する")

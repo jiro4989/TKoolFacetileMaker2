@@ -2,27 +2,26 @@ package jiro.app
 
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.geometry.VPos
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.*
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.input.ScrollEvent
 import javafx.scene.input.TransferMode
-import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
-import javafx.scene.text.Font
-import javafx.scene.text.TextAlignment
 import javafx.util.Callback
 import jiro.app.dao.load
 import jiro.app.data.Point
-import jiro.app.model.*
+import jiro.app.model.ConfigModel
+import jiro.app.model.FileListModel
+import jiro.app.model.TrimPosManageModel
+import jiro.app.model.VersionModel
 import java.io.File
 
 // 設定ファイルから読み取ったデータ
 private var configModel: ConfigModel = load(File("./res/config.xml"))
-lateinit var tkoolVersion: VersionModel
 
 class MainController {
 
@@ -130,14 +129,9 @@ class MainController {
     @FXML
     private lateinit var outImageTabPane: TabPane
     private lateinit var outImageAnchorPanes: List<OutImageAnchorPane>
+    private lateinit var selectedOutImage: OutImageAnchorPane
 
-    //@FXML
-    //private lateinit var outImageView: ImageView
-    //private lateinit var outImages: OutImagePreviewModel
-
-    //// 保存する画像に重ねるクリックイベントと外観を制御するクラス
-    //@FXML
-    //private lateinit var overLayerCanvas: Canvas
+    private lateinit var tkoolVersion: VersionModel
 
     private lateinit var mainService: MainService
 
@@ -146,18 +140,27 @@ class MainController {
         // 外部から読み出される設定値を更新
         tkoolVersion = configModel.versions[2]
 
+        imageFiles = FileListModel(imageFileListView, tkoolVersion)
+        selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel, tkoolVersion)
+
         // ツクールのバージョン分追加する
-        outImageAnchorPanes = configModel.versions.map { OutImageAnchorPane(it) }
+        outImageAnchorPanes = configModel.versions.map { OutImageAnchorPane(it, this) }
         val tabs = configModel.versions.mapIndexed { index, item ->
             val tab = Tab(item.name)
-            tab.content = outImageAnchorPanes[index]
+            val pane = outImageAnchorPanes[index]
+            tab.content = pane
             tab.isClosable = false
+            // タブが切り替わるとステートが変わる
+            tab.setOnSelectionChanged {
+                val idx = outImageTabPane.selectionModel.selectedIndex
+                tkoolVersion = configModel.versions[idx]
+                selectedOutImage = outImageAnchorPanes[idx]
+                selectedImage.updateTkoolVersion(tkoolVersion)
+            }
             tab
         }
         outImageTabPane.tabs.setAll(tabs)
-
-        imageFiles = FileListModel(imageFileListView)
-        selectedImage = TrimPosManageModel(selectedImageView, moveWidthComboBox, zoomRateSlider, shadowCanvas, trimPosXLabel, trimPosYLabel)
+        outImageTabPane.selectionModel.select(2)
 
         imageFileListView.items = imageFiles.files
         imageFileListView.selectionModel.selectionMode = SelectionMode.MULTIPLE
@@ -207,7 +210,7 @@ class MainController {
     fun shadowCanvasOnMouseDragged(mouseEvent: MouseEvent) {
         val x = mouseEvent.x
         val y = mouseEvent.y
-        selectedImage.setTrimPointOnMouseDragged(Point(x, y))
+        selectedImage.setTrimPointOnMouseDragged(Point(x, y, tkoolVersion))
     }
 
     /**
@@ -228,44 +231,43 @@ class MainController {
      * 画像をタイルペインに追加する。
      */
     fun addImagesButtonOnAction(actionEvent: ActionEvent) {
-        val files = imageFiles.getSelectedItems()
-        val trimmedImages = selectedImage.getTrimmedImages(files)
-        //outImages.setImages(images = trimmedImages)
+        val trimmedImages = getSelectedImages()
+        selectedOutImage.setImages(0, trimmedImages)
     }
 
     /**
      * タイルペインの画像を初期化する。
      */
     fun clearImagesButtonOnAction(actionEvent: ActionEvent) {
-        //outImages.clear()
+        selectedOutImage.clear()
     }
 
     /**
      * 画像をセットするステートに切り替えるイベント
      */
     fun setModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        //outImages.changeClickModeToSetImage()
+        outImageAnchorPanes.forEach { it.changeClickModeToSetImage() }
     }
 
     /**
      * 画像を削除するステートに切り替えるイベント
      */
     fun deleteModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        //outImages.changeClickModeToDeleteImage()
+        outImageAnchorPanes.forEach { it.changeClickModeToDeleteImage() }
     }
 
     /**
      * 選択した画像の位置を交換するステートに切り替えるイベント。
      */
     fun swapModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        //outImages.changeClickModeToSwapImage()
+        outImageAnchorPanes.forEach { it.changeClickModeToSwapImage() }
     }
 
     /**
      * 選択した画像を左右反転するステートに切り替えるイベント
      */
     fun flipModeRadioButtonOnAction(actionEvent: ActionEvent) {
-        //outImages.changeClickModeToFlipImage()
+        outImageAnchorPanes.forEach { it.changeClickModeToFlipImage() }
     }
 
     fun deleteListButtonOnAction(actionEvent: ActionEvent) {
@@ -291,7 +293,7 @@ class MainController {
     fun outImageViewOnMouseClicked(mouseEvent: MouseEvent) {
         val selectedItems = imageFiles.getSelectedItems()
         val images = selectedImage.getTrimmedImages(selectedItems)
-        //outImages.onMouseClicked(mouseEvent, images)
+        selectedOutImage.mouseClickEvent(mouseEvent, images)
     }
 
     /**
@@ -342,6 +344,11 @@ class MainController {
      */
     private fun updateTkoolVersion() {
 
+    }
+
+    fun getSelectedImages(): List<Image> {
+        val files = imageFiles.getSelectedItems()
+        return selectedImage.getTrimmedImages(files)
     }
 
 }
