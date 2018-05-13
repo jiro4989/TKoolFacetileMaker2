@@ -2,7 +2,8 @@ buildscript {
     ext.kotlin_version = '1.2.10'
 
     repositories {
-        mavenCentral()
+        mavenCentral(
+        )
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -27,4 +28,13 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'jiro.app.MainKt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
