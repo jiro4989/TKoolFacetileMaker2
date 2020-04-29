@@ -1,9 +1,9 @@
-package jiro.app.dao
+package com.jiro4989.tkfm.dao
 
-import jiro.app.model.ConfigModel
-import jiro.app.model.ImageModel
-import jiro.app.model.OneTileModel
-import jiro.app.model.VersionModel
+import com.jiro4989.tkfm.model.ConfigModel
+import com.jiro4989.tkfm.model.ImageModel
+import com.jiro4989.tkfm.model.OneTileModel
+import com.jiro4989.tkfm.model.VersionModel
 import org.w3c.dom.Element
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory

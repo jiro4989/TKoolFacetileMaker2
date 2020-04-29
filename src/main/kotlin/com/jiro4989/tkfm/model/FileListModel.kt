@@ -1,4 +1,4 @@
-package jiro.app.model
+package com.jiro4989.tkfm.model
 
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList

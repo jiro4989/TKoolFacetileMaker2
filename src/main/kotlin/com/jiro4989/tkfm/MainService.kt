@@ -1,10 +1,10 @@
-package jiro.app
+package com.jiro4989.tkfm
 
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import jiro.app.model.FileListModel
-import jiro.app.model.TrimPosManageModel
+import com.jiro4989.tkfm.model.FileListModel
+import com.jiro4989.tkfm.model.TrimPosManageModel
 import java.io.File
 import java.io.IOException
 

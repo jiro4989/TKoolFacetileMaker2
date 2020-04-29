@@ -1,6 +1,6 @@
-package jiro.app.data
+package com.jiro4989.tkfm.data
 
-import jiro.app.model.VersionModel
+import com.jiro4989.tkfm.model.VersionModel
 
 /**
  * 幅

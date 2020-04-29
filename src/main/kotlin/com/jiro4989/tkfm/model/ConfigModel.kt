@@ -1,4 +1,4 @@
-package jiro.app.model
+package com.jiro4989.tkfm.model
 
 data class ConfigModel(val versions: List<VersionModel>)
 data class VersionModel(val id: String, val name: String, val image: ImageModel) {

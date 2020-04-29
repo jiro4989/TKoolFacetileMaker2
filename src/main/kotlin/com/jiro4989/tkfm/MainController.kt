@@ -1,4 +1,4 @@
-package jiro.app
+package com.jiro4989.tkfm
 
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -12,12 +12,12 @@ import javafx.scene.input.ScrollEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.shape.Rectangle
 import javafx.util.Callback
-import jiro.app.dao.load
-import jiro.app.data.Point
-import jiro.app.model.ConfigModel
-import jiro.app.model.FileListModel
-import jiro.app.model.TrimPosManageModel
-import jiro.app.model.VersionModel
+import com.jiro4989.tkfm.dao.load
+import com.jiro4989.tkfm.data.Point
+import com.jiro4989.tkfm.model.ConfigModel
+import com.jiro4989.tkfm.model.FileListModel
+import com.jiro4989.tkfm.model.TrimPosManageModel
+import com.jiro4989.tkfm.model.VersionModel
 import java.io.File
 
 // 設定ファイルから読み取ったデータ

@@ -1,10 +1,10 @@
-package jiro.app
+package com.jiro4989.tkfm
 
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
-import jiro.app.model.VersionModel
+import com.jiro4989.tkfm.model.VersionModel
 import java.util.*
 
 class OutImageAnchorPane(tkoolVersion: VersionModel, private val mainController: MainController) : AnchorPane() {

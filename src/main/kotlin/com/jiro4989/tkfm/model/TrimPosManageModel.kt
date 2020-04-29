@@ -1,4 +1,4 @@
-package jiro.app.model
+package com.jiro4989.tkfm.model
 
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
@@ -11,7 +11,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
-import jiro.app.data.Point
+import com.jiro4989.tkfm.data.Point
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File

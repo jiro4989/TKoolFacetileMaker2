@@ -1,4 +1,4 @@
-package jiro.app
+package com.jiro4989.tkfm
 
 import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXML
@@ -11,11 +11,11 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
-import jiro.app.data.Point
-import jiro.app.model.VersionModel
-import jiro.app.util.FMT
-import jiro.app.util.getPixels
-import jiro.app.util.getTrimmedImage
+import com.jiro4989.tkfm.data.Point
+import com.jiro4989.tkfm.model.VersionModel
+import com.jiro4989.tkfm.util.FMT
+import com.jiro4989.tkfm.util.getPixels
+import com.jiro4989.tkfm.util.getTrimmedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO

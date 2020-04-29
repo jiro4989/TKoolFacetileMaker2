@@ -47,7 +47,7 @@ compileTestKotlin {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'jiro.app.MainKt'
+        attributes 'Main-Class': 'com.jiro4989.tkfm.MainKt'
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

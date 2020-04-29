@@ -1,4 +1,4 @@
-package jiro.app
+package com.jiro4989.tkfm
 
 import javafx.application.Application
 import javafx.fxml.FXMLLoader

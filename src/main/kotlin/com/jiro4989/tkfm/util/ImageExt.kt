@@ -1,11 +1,11 @@
-package jiro.app.util
+package com.jiro4989.tkfm.util
 
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
-import jiro.app.data.Point
-import jiro.app.data.Rectangle
-import jiro.app.data.Size
-import jiro.app.model.VersionModel
+import com.jiro4989.tkfm.data.Point
+import com.jiro4989.tkfm.data.Rectangle
+import com.jiro4989.tkfm.data.Size
+import com.jiro4989.tkfm.model.VersionModel
 
 /**
  * 画像全体のpixelを返す

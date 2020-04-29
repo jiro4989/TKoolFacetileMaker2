@@ -1,4 +1,4 @@
-package jiro.app.util
+package com.jiro4989.tkfm.util
 
 import javafx.scene.image.WritablePixelFormat
 
