@@ -3,3 +3,5 @@
 /.gradle/
 /out/
 /gradle/
+/build/classes/
+/build/kotlin/
