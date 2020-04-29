@@ -1,5 +1,12 @@
 package com.jiro4989.tkfm
 
+import com.jiro4989.tkfm.data.Point
+import com.jiro4989.tkfm.model.VersionModel
+import com.jiro4989.tkfm.util.FMT
+import com.jiro4989.tkfm.util.getPixels
+import com.jiro4989.tkfm.util.getTrimmedImage
+import java.io.File
+import java.io.IOException
 import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXML
 import javafx.geometry.VPos
@@ -11,13 +18,6 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
-import com.jiro4989.tkfm.data.Point
-import com.jiro4989.tkfm.model.VersionModel
-import com.jiro4989.tkfm.util.FMT
-import com.jiro4989.tkfm.util.getPixels
-import com.jiro4989.tkfm.util.getTrimmedImage
-import java.io.File
-import java.io.IOException
 import javax.imageio.ImageIO
 
 /**
@@ -285,7 +285,6 @@ class OutImageController {
         val c = tkoolVersion.getImageColumnCount()
         val w = tkoolVersion.getImageOneTileWidth()
         val h = tkoolVersion.getImageOneTileHeight()
-        outImageView.image = WritableImage(c*w, r*h)
+        outImageView.image = WritableImage(c * w, r * h)
     }
-
 }

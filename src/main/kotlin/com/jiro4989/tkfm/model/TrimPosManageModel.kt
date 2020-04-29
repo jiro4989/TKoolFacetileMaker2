@@ -1,5 +1,9 @@
 package com.jiro4989.tkfm.model
 
+import com.jiro4989.tkfm.data.Point
+import java.awt.RenderingHints
+import java.awt.image.BufferedImage
+import java.io.File
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.embed.swing.SwingFXUtils
@@ -11,20 +15,16 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
-import com.jiro4989.tkfm.data.Point
-import java.awt.RenderingHints
-import java.awt.image.BufferedImage
-import java.io.File
 import javax.imageio.ImageIO
 
 class TrimPosManageModel(
-        private val imageView: ImageView
-        , private val moveWidthComboBox: ComboBox<Double>
-        , private val zoomRateSlider: Slider
-        , private val shadowCanvas: Canvas
-        , trimPosXLabel: Label
-        , trimPosYLabel: Label
-        , private var version: VersionModel
+    private val imageView: ImageView,
+    private val moveWidthComboBox: ComboBox<Double>,
+    private val zoomRateSlider: Slider,
+    private val shadowCanvas: Canvas,
+    trimPosXLabel: Label,
+    trimPosYLabel: Label,
+    private var version: VersionModel
 ) {
     private var point = Point(version = version)
     private var zoomedPoint = point
@@ -205,5 +205,3 @@ class TrimPosManageModel(
         updateCanvas()
     }
 }
-
-

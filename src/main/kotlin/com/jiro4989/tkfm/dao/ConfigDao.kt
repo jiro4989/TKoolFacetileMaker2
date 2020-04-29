@@ -4,9 +4,9 @@ import com.jiro4989.tkfm.model.ConfigModel
 import com.jiro4989.tkfm.model.ImageModel
 import com.jiro4989.tkfm.model.OneTileModel
 import com.jiro4989.tkfm.model.VersionModel
-import org.w3c.dom.Element
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
+import org.w3c.dom.Element
 
 /**
  * Configを取得する
@@ -74,4 +74,3 @@ private fun Element.getOneTile(): OneTileModel {
     }
     return OneTileModel(width, height)
 }
-

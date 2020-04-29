@@ -1,11 +1,11 @@
 package com.jiro4989.tkfm.util
 
-import javafx.scene.image.Image
-import javafx.scene.image.WritableImage
 import com.jiro4989.tkfm.data.Point
 import com.jiro4989.tkfm.data.Rectangle
 import com.jiro4989.tkfm.data.Size
 import com.jiro4989.tkfm.model.VersionModel
+import javafx.scene.image.Image
+import javafx.scene.image.WritableImage
 
 /**
  * 画像全体のpixelを返す
@@ -38,7 +38,7 @@ fun Image.getPixels(rectangle: Rectangle): IntArray {
  * 指定の位置から切り出した画像を返す。
  * 切り出し範囲は、指定の位置からIMAGE_WIDTH, IMAGE_HEIGHTの矩形となる。
  */
-fun Image.getTrimmedImage(point:Point, version:VersionModel): Image {
+fun Image.getTrimmedImage(point: Point, version: VersionModel): Image {
     val size = Size(version.getImageOneTileWidth().toDouble(), version.getImageOneTileHeight().toDouble())
     val rectangle = Rectangle(point, size)
     return getTrimmedImage(rectangle)

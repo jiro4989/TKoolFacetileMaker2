@@ -1,11 +1,11 @@
 package com.jiro4989.tkfm
 
+import java.util.*
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
-import java.util.*
 
 fun main(args: Array<String>) {
     Application.launch(Main::class.java, *args)
@@ -21,7 +21,7 @@ internal class Main : Application() {
         primaryStage.title = "TKool Facetile Maker"
         primaryStage.minWidth = 1280.0
         primaryStage.minHeight = 720.0
-        //primaryStage.icons     += Image(Texts.APP_ICON)
+        // primaryStage.icons     += Image(Texts.APP_ICON)
 
         primaryStage.show()
     }

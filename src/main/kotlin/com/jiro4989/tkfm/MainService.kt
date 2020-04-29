@@ -1,16 +1,16 @@
 package com.jiro4989.tkfm
 
-import javafx.stage.FileChooser
-import javafx.stage.Stage
-import javafx.stage.StageStyle
 import com.jiro4989.tkfm.model.FileListModel
 import com.jiro4989.tkfm.model.TrimPosManageModel
 import java.io.File
 import java.io.IOException
+import javafx.stage.FileChooser
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 
 class MainService(
-        private val fileListModel: FileListModel
-        , private val trimPosManageModel: TrimPosManageModel
+    private val fileListModel: FileListModel,
+    private val trimPosManageModel: TrimPosManageModel
 ) {
     // 一度でも保存したファイル
     private var savedFile: File? = null
@@ -34,7 +34,7 @@ class MainService(
     fun save() {
         savedFile?.let {
             try {
-                //outImagePreviewModel.saveImage(it)
+                // outImagePreviewModel.saveImage(it)
             } catch (e: IOException) {
                 e.printStackTrace()
                 TODO("エラーメッセージをGUIで表示する")
@@ -59,7 +59,7 @@ class MainService(
         savedFile = fileChooser.showSaveDialog(stage)
         savedFile?.let {
             try {
-                //outImagePreviewModel.saveImage(it)
+                // outImagePreviewModel.saveImage(it)
             } catch (e: IOException) {
                 e.printStackTrace()
                 TODO("エラーメッセージをGUIで表示する")
@@ -68,4 +68,3 @@ class MainService(
         }
     }
 }
-

@@ -1,9 +1,9 @@
 package com.jiro4989.tkfm.model
 
+import java.io.File
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.ListView
-import java.io.File
 
 /**
  * 画像ファイルのパス情報のObservableListのラッパークラス。

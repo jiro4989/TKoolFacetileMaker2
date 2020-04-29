@@ -1,5 +1,12 @@
 package com.jiro4989.tkfm
 
+import com.jiro4989.tkfm.dao.load
+import com.jiro4989.tkfm.data.Point
+import com.jiro4989.tkfm.model.ConfigModel
+import com.jiro4989.tkfm.model.FileListModel
+import com.jiro4989.tkfm.model.TrimPosManageModel
+import com.jiro4989.tkfm.model.VersionModel
+import java.io.File
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.canvas.Canvas
@@ -12,13 +19,6 @@ import javafx.scene.input.ScrollEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.shape.Rectangle
 import javafx.util.Callback
-import com.jiro4989.tkfm.dao.load
-import com.jiro4989.tkfm.data.Point
-import com.jiro4989.tkfm.model.ConfigModel
-import com.jiro4989.tkfm.model.FileListModel
-import com.jiro4989.tkfm.model.TrimPosManageModel
-import com.jiro4989.tkfm.model.VersionModel
-import java.io.File
 
 // 設定ファイルから読み取ったデータ
 private var configModel: ConfigModel = load(File("./res/config.xml"))
@@ -307,7 +307,6 @@ class MainController {
      * トリミング画像の拡大率の制御
      */
     fun zoomRateSliderOnScroll(scrollEvent: ScrollEvent) {
-
     }
 
     /**
@@ -343,13 +342,10 @@ class MainController {
      * トリミング範囲や画像の規格を更新する
      */
     private fun updateTkoolVersion() {
-
     }
 
     fun getSelectedImages(): List<Image> {
         val files = imageFiles.getSelectedItems()
         return selectedImage.getTrimmedImages(files)
     }
-
 }
-
