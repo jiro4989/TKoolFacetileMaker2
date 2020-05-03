@@ -36,21 +36,21 @@ public class PropertiesHundler {
     {
         File file = new File(filePath);
         (new File(ioDirPath)).mkdirs();
+
         if(!file.exists()) {
-          System.err.println("error");
-          return;
+          for(int i = 0; i < initialKeys.length; i++) {
+            prop.setProperty(initialKeys[i], initialValues[i]);
+          }
+          write();
         }
+
+        file = new File(filePath);
 
         try (InputStream is = new FileInputStream(file)) {
           prop.load(new InputStreamReader(is, "UTF-8"));
-          for(int i = 0; i < initialKeys.length; i++)
-              prop.setProperty(initialKeys[i], initialValues[i]);
         } catch (IOException e) {
           e.printStackTrace();
         }
-
-        write();
-        load();
     }
 
     public void write()
@@ -58,9 +58,6 @@ public class PropertiesHundler {
         File file = new File(filePath);
         (new File(ioDirPath)).mkdirs();
 
-        Exception exception;
-        exception = null;
-        Object obj = null;
         try (FileOutputStream fos = new FileOutputStream(file)) {
           prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
         } catch (IOException e) {
