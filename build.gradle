@@ -26,6 +26,19 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+
+    // oreore library
+    compile files('lib/my-properties-1.2.0.jar')
+
+    // JavaFX
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.fxml.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.graphics.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.controls.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.media.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx-swt.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.base.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.web.jar')
+    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.swing.jar')
 }
 
 application {
