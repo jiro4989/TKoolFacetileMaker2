@@ -60,6 +60,10 @@ application {
     mainClassName = 'com.jiro4989.tkfm.Main'
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
