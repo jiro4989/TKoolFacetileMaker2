@@ -49,7 +49,7 @@ jobs:
 
           echo "os_name = $os_name"
           mkdir -p jmods/${os_name}
-          curl -O jmods/${os_name}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${os_name}-x64_bin-jmods.zip
+          curl -o jmods/${os_name}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${os_name}-x64_bin-jmods.zip
           pushd jmods/${os_name}
           unzip jmods.zip
           popd
