@@ -48,11 +48,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     // JavaFX
-    compile "org.openjfx:javafx-fxml:$javafx_version"
-    compile "org.openjfx:javafx-base:$javafx_version"
-    compile "org.openjfx:javafx-controls:$javafx_version"
-    compile "org.openjfx:javafx-graphics:$javafx_version"
-    compile "org.openjfx:javafx-swing:$javafx_version"
+    implementation "org.openjfx:javafx-fxml:$javafx_version"
+    implementation "org.openjfx:javafx-base:$javafx_version"
+    implementation "org.openjfx:javafx-controls:$javafx_version"
+    implementation "org.openjfx:javafx-graphics:$javafx_version"
+    implementation "org.openjfx:javafx-swing:$javafx_version"
 }
 
 application {
