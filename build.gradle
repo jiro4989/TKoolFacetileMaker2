@@ -7,7 +7,7 @@
  */
 
 buildscript {
-    ext.javafx_version = '13'
+    ext.javafx_version = '11'
 
     repositories {
         mavenCentral()
@@ -51,14 +51,11 @@ dependencies {
     compile files('lib/my-properties-1.2.0.jar')
 
     // JavaFX
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.fxml.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.graphics.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.controls.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.media.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx-swt.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.base.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.web.jar')
-    compile files('/usr/lib/jvm/javafx-sdk-11.0.2/lib/javafx.swing.jar')
+    compile "org.openjfx:javafx-fxml:$javafx_version"
+    compile "org.openjfx:javafx-base:$javafx_version"
+    compile "org.openjfx:javafx-controls:$javafx_version"
+    compile "org.openjfx:javafx-graphics:$javafx_version"
+    compile "org.openjfx:javafx-swing:$javafx_version"
 }
 
 application {
