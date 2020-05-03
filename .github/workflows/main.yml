@@ -48,21 +48,21 @@ jobs:
           esac
 
           echo "os_name = $os_name"
-          mkdir -p jmods/${{ steps.vars.outputs.os_name }}
-          curl -O jmods/${{ steps.vars.outputs.os_name }}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${{ steps.vars.outputs.os_name }}-x64_bin-jmods.zip
-          pushd jmods/${{ steps.vars.outputs.os_name }}
+          mkdir -p jmods/${os_name}
+          curl -O jmods/${os_name}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${os_name}-x64_bin-jmods.zip
+          pushd jmods/${os_name}
           unzip jmods.zip
           popd
-          ./link.sh "jmods/${{ steps.vars.outputs.os_name }}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
-          mkdir tkfm_${{ steps.vars.outputs.os_name }}
-          cp -r build/libs/tkfm.jar jre tkfm_${{ steps.vars.outputs.os_name }}/
+          ./link.sh "jmods/${os_name}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
+          mkdir tkfm_${os_name}
+          cp -r build/libs/tkfm.jar jre tkfm_${os_name}/
           mkdir dist
-          if [ ${{ steps.vars.outputs.os_name }} = windows ]; then
-            7z a tkfm_${{ steps.vars.outputs.os_name }}.zip tkfm_${{ steps.vars.outputs.os_name }}
-            mv tkfm_${{ steps.vars.outputs.os_name }}.zip dist/
+          if [ ${os_name} = windows ]; then
+            7z a tkfm_${os_name}.zip tkfm_${os_name}
+            mv tkfm_${os_name}.zip dist/
           else
-            tar czf tkfm_${{ steps.vars.outputs.os_name }}.tar.gz tkfm_${{ steps.vars.outputs.os_name }}
-            mv tkfm_${{ steps.vars.outputs.os_name }}.tar.gz dist/
+            tar czf tkfm_${os_name}.tar.gz tkfm_${os_name}
+            mv tkfm_${os_name}.tar.gz dist/
           fi
       - name: Release
         if: startsWith(github.ref, 'refs/tags/')
