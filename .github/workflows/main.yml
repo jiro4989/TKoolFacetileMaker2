@@ -1,0 +1,83 @@
+name: build
+
+on:
+  push:
+
+env:
+  JAVAFX_VERSION: '11.0.2'
+
+jobs:
+  before:
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}"
+
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - macOS-latest
+          - ubuntu-latest
+    needs: before
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '13'
+          java-package: jdk
+          architecture: x64
+      - name: Build
+        run: ./gradlew build
+
+      - name: Create artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          case ${{ matrix.os }} in
+            windows-latest)
+              os_name=windows
+              ;;
+            macOS-latest)
+              os_name=osx
+              ;;
+            ubuntu-latest)
+              os_name=linux
+              ;;
+          esac
+
+          echo "os_name = $os_name"
+          mkdir -p jmods/${os_name}
+          curl -o jmods/${os_name}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${os_name}-x64_bin-jmods.zip
+          pushd jmods/${os_name}
+          unzip jmods.zip
+          popd
+          bash link.sh "jmods/${os_name}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
+          mkdir tkfm_${os_name}
+          cp -r build/libs/tkfm.jar jre tkfm_${os_name}/
+          mkdir dist
+          if [ ${os_name} = windows ]; then
+            7z a tkfm_${os_name}.zip tkfm_${os_name}
+            mv tkfm_${os_name}.zip dist/
+          else
+            tar czf tkfm_${os_name}.tar.gz tkfm_${os_name}
+            mv tkfm_${os_name}.tar.gz dist/
+          fi
+        shell: bash
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'dist/tkfm_*.*'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-tag-draft:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    steps:
+      - uses: release-drafter/release-drafter@v5.3.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
