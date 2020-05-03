@@ -64,6 +64,7 @@ jobs:
             tar czf tkfm_${os_name}.tar.gz tkfm_${os_name}
             mv tkfm_${os_name}.tar.gz dist/
           fi
+        shell: bash
       - name: Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
