@@ -1,123 +1,123 @@
 package com.jiro4989.tkfm;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Properties;
 
-/**
- * プロパティファイルのユーティリティクラス。
- * ファイル名のみをコンストラクタに渡すと、
- * プロパティファイルを管理するためのディレクトリのパスを付与したファイルを保持する。
- * @author jiro
- * @version 3.0
- */
 public class PropertiesHundler {
-  private Properties prop = new Properties();
-  private final File propertiesFile;
-  private static final String INITIAL_IO_DIR_PATH = "." + File.separator + "properties";
+    private Properties prop;
+    private static final String INITIAL_IO_DIR_PATH;
+    private final String ioDirPath;
+    private final String fileName;
+    private final String filePath;
+    private final String initialKeys[];
+    private final String initialValues[];
 
-  /**
-   * 参照するファイルを渡すコンストラクタ
-   * @param aFile プロパティファイル
-   */
-  public PropertiesHundler(File aFile) {
-    propertiesFile = aFile;
-  }
+    static 
+    {
+        INITIAL_IO_DIR_PATH = (new StringBuilder(".")).append(File.separator).append("properties").toString();
+    }
 
-  /**
-   * ファイル名のみを指定する場合のコンストラクタ。
-   * プロパティファイルの保存先は"./properties"
-   * @param aFileName 保存するファイル名(拡張子は不要)
-   */
-  public PropertiesHundler(String aFileName) {
-    this(aFileName, INITIAL_IO_DIR_PATH);
-  }
+    public PropertiesHundler(String aFileName, String keys[], String values[])
+    {
+        this(aFileName, INITIAL_IO_DIR_PATH, keys, values);
+    }
 
-  /**
-   * ファイル名とプロパティファイルの保存先のパスを指定する場合のコンストラクタ。
-   * @param aFileName 保存するファイル名(拡張子は不要)
-   * @param anIoDirPath ファイル保存先のディレクトリの相対パス
-   */
-  public PropertiesHundler(String aFileName, String anIoDirPath) {
-    propertiesFile = new File(anIoDirPath + File.separator + aFileName + ".properties");
-  }
+    public PropertiesHundler(String aFileName, String anIoDirPath, String keys[], String values[])
+    {
+        prop = new Properties();
+        fileName = (new StringBuilder(String.valueOf(aFileName))).append(".properties").toString();
+        ioDirPath = anIoDirPath;
+        filePath = (new StringBuilder(String.valueOf(ioDirPath))).append(File.separator).append(fileName).toString();
+        initialKeys = keys;
+        initialValues = values;
+    }
 
-  /**
-   * プロパティファイルをロードする。
-   */
-  public void load() {
-    if (propertiesFile.exists()) {
-      try (InputStream is = new FileInputStream(propertiesFile)) {
+    public void load()
+    {
+        File file;
+        (new File(ioDirPath)).mkdirs();
+        file = new File(filePath);
+        if(!file.exists())
+            break MISSING_BLOCK_LABEL_120;
+        Exception exception;
+        exception = null;
+        Object obj = null;
+        InputStream is = new FileInputStream(file);
         prop.load(new InputStreamReader(is, "UTF-8"));
-      } catch (IOException e) {
+        if(is != null)
+            is.close();
+        break MISSING_BLOCK_LABEL_119;
+        exception;
+        if(is != null)
+            is.close();
+        throw exception;
+        Exception exception1;
+        exception1;
+        if(exception == null)
+            exception = exception1;
+        else
+        if(exception != exception1)
+            exception.addSuppressed(exception1);
+        throw exception;
+        IOException e;
+        e;
         e.printStackTrace();
-      }
+        return;
+        for(int i = 0; i < initialKeys.length; i++)
+            prop.setProperty(initialKeys[i], initialValues[i]);
+
+        write();
+        load();
+        return;
     }
-  }
 
-  /**
-   * プロパティファイルを出力する。
-   */
-  public void write() {
-    try (FileOutputStream fos = new FileOutputStream(propertiesFile)) {
-      prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+    public void write()
+    {
+        File file;
+        (new File(ioDirPath)).mkdirs();
+        file = new File(filePath);
+        Exception exception;
+        exception = null;
+        Object obj = null;
+        FileOutputStream fos = new FileOutputStream(file);
+        prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
+        if(fos != null)
+            fos.close();
+        break MISSING_BLOCK_LABEL_121;
+        exception;
+        if(fos != null)
+            fos.close();
+        throw exception;
+        Exception exception1;
+        exception1;
+        if(exception == null)
+            exception = exception1;
+        else
+        if(exception != exception1)
+            exception.addSuppressed(exception1);
+        throw exception;
+        FileNotFoundException e;
+        e;
+        e.printStackTrace();
+        break MISSING_BLOCK_LABEL_121;
+        e;
+        e.printStackTrace();
     }
-  }
 
-  /**
-   * プロパティファイルが存在するかどうかを調べる。
-   * @return 存在する or 存在しない
-   */
-  public boolean exists() {
-    return propertiesFile.exists();
-  }
+    public void setValue(String key, String value)
+    {
+        prop.setProperty(key, value);
+    }
 
-  /**
-   * ディレクトリを生成する。
-   * @return 成功 or 失敗
-   */
-  public boolean mkdirs() {
-    return propertiesFile.getParentFile().mkdirs();
-  }
+    public String getValue(String key)
+    {
+        return prop.getProperty(key);
+    }
 
-  /**
-   * 保持しているファイルを返す。
-   * @return プロパティファイル
-   */
-  public File getFile() {
-    return propertiesFile;
-  }
+    public boolean exists()
+    {
+        File file = new File(filePath);
+        return file.exists();
+    }
 
-  /**
-   * ファイルから値を取得する。
-   * @param key キー
-   * @return 値
-   */
-  public String getValue(String key) {
-    return prop.getProperty(key);
-  }
-
-  /**
-   * ファイルに保存するキーと値を設定する。
-   * @param key キー
-   * @param value 値
-   */
-  public void setValue(String key, String value) {
-    prop.setProperty(key, value);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("Properties: %s, File: %s.", prop, propertiesFile);
-  }
 }
