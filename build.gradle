@@ -47,9 +47,6 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
-    // oreore library
-    compile files('lib/my-properties-1.2.0.jar')
-
     // JavaFX
     compile "org.openjfx:javafx-fxml:$javafx_version"
     compile "org.openjfx:javafx-base:$javafx_version"
