@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -eu
+set -eux
 
-readonly modules="$(cat modules.txt | tr \\n ,)"
+readonly modules="$(cat modules.txt | tr -d '\r' | tr \\n ,)"
 readonly module_path="${1:-/usr/lib/jvm/javafx-jmods-11.0.2/}"
 
 jlink \
