@@ -2,6 +2,8 @@ name: build
 
 on:
   push:
+  release:
+    types: [published]
 
 env:
   JAVAFX_VERSION: '11.0.2'
