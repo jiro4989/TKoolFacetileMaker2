@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import jiro.lib.util.PropertiesHundler;
+import com.jiro4989.tkfm.PropertiesHundler;
 
 
 /**

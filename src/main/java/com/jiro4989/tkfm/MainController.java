@@ -37,7 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jiro.lib.util.PropertiesHundler;
+import com.jiro4989.tkfm.PropertiesHundler;
 
 public class MainController {
 	private Main main;
