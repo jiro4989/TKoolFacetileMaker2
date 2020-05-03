@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox prefHeight="699.0" prefWidth="407.0" spacing="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.fileList.FileListHBoxController">
+<HBox prefHeight="699.0" prefWidth="407.0" spacing="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jiro4989.tkfm.fileList.FileListHBoxController">
   <children>
     <ListView fx:id="fileListView" prefHeight="644.0" prefWidth="253.0" />
     <AnchorPane id="AnchorPane" prefHeight="801.0" prefWidth="144.0">

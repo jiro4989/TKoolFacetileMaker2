@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="304.0" prefWidth="864.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.outputViewer.OutputViewerAnchorPaneController">
+<AnchorPane id="AnchorPane" prefHeight="304.0" prefWidth="864.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPaneController">
   <children>
     <GridPane id="outputImagePane" fx:id="panelGridPane" gridLinesVisible="true" prefHeight="288.0" prefWidth="576.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
       <children>

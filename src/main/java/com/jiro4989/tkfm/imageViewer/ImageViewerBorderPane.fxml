@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="478.0" prefWidth="862.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.imageViewer.ImageViewerBorderPaneController">
+<BorderPane prefHeight="478.0" prefWidth="862.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController">
   <!-- TODO Add Nodes -->
   <bottom>
     <ToolBar BorderPane.alignment="CENTER">
