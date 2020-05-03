@@ -1,4 +1,4 @@
-package jiro.lib.java.util;
+package com.jiro4989.tkfm;
 
 import java.io.File;
 import java.io.FileInputStream;
