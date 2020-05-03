@@ -3,6 +3,9 @@ name: build
 on:
   push:
 
+env:
+  JAVAFX_VERSION: '11.0.2'
+
 jobs:
   before:
     runs-on: ubuntu-latest
@@ -11,7 +14,15 @@ jobs:
       - run: echo "${{ github.event.head_commit.message }}"
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        - os: windows-latest
+          os_name: windows
+        - os: macOS-latest
+          os_name: osx
+        - os: ubuntu-latest
+          os_name: linux
     needs: before
     steps:
       - uses: actions/checkout@v1
@@ -20,4 +31,41 @@ jobs:
           java-version: '13'
           java-package: jdk
           architecture: x64
-      - run: ./gradlew build
+      - name: Build
+        run: ./gradlew build
+
+      - name: Create artifact
+        # if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir -p jmods/${{ matrix.os_name }}
+          curl -O jmods/${{ matrix.os_name }}/jmods.zip -sSL https://download2.gluonhq.com/openjfx/${{ env.JAVAFX_VERSION }}/openjfx-${{ env.JAVAFX_VERSION }}_${{ matrix.os_name }}-x64_bin-jmods.zip
+          pushd jmods/${{ matrix.os_name }}
+          unzip jmods.zip
+          popd
+          ./link.sh "jmods/${{ matrix.os_name }}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
+          mkdir tkfm_${{ matrix.os_name }}
+          cp -r build/libs/tkfm.jar jre tkfm_${{ matrix.os_name }}/
+          mkdir dist
+          if [ ${{ matrix.os_name }} = windows ]; then
+            7z a tkfm_${{ matrix.os_name }}.zip tkfm_${{ matrix.os_name }}
+            mv tkfm_${{ matrix.os_name }}.zip dist/
+          else
+            tar czf tkfm_${{ matrix.os_name }}.tar.gz tkfm_${{ matrix.os_name }}
+            mv tkfm_${{ matrix.os_name }}.tar.gz dist/
+          fi
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'dist/tkfm_*.*'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-tag-draft:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    steps:
+      - uses: release-drafter/release-drafter@v5.3.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
