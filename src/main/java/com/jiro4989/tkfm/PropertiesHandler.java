@@ -3,7 +3,7 @@ package com.jiro4989.tkfm;
 import java.io.*;
 import java.util.Properties;
 
-public class PropertiesHundler {
+public class PropertiesHandler {
     private Properties prop;
     private static final String INITIAL_IO_DIR_PATH;
     private final String ioDirPath;
