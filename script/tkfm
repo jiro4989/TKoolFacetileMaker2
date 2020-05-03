@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./jre/bin/java -jar tkfm.jar com.jiro4989.tkfm.Main
