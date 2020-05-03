@@ -57,7 +57,7 @@ jobs:
           popd
           bash link.sh "jmods/${os_name}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
           mkdir tkfm_${os_name}
-          cp -r build/libs/tkfm.jar jre tkfm_${os_name}/
+          cp -r README.* build/libs/tkfm.jar jre script/tkfm script/tkfm.bat tkfm_${os_name}/
           mkdir dist
           if [ ${os_name} = windows ]; then
             7z a tkfm_${os_name}.zip tkfm_${os_name}
