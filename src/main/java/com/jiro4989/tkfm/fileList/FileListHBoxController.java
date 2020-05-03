@@ -1,11 +1,11 @@
-package application.fileList;
+package com.jiro4989.tkfm.fileList;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import application.MainController;
+import com.jiro4989.tkfm.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

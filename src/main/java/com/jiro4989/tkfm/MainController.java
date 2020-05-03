@@ -1,4 +1,4 @@
-package application;
+package com.jiro4989.tkfm;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,18 +10,18 @@ import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
-import application.fileList.FileListHBox;
-import application.fileList.FileListHBoxController;
-import application.imageViewer.ImageViewerBorderPane;
-import application.imageViewer.ImageViewerBorderPaneController;
-import application.options.Numberings;
-import application.options.Options;
-import application.options.OptionsStage;
-import application.options.Separators;
-import application.outputViewer.MyImageView;
-import application.outputViewer.OutputViewerAnchorPane;
-import application.outputViewer.OutputViewerAnchorPaneController;
-import application.version.VersionStage;
+import com.jiro4989.tkfm.fileList.FileListHBox;
+import com.jiro4989.tkfm.fileList.FileListHBoxController;
+import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
+import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
+import com.jiro4989.tkfm.options.Numberings;
+import com.jiro4989.tkfm.options.Options;
+import com.jiro4989.tkfm.options.OptionsStage;
+import com.jiro4989.tkfm.options.Separators;
+import com.jiro4989.tkfm.outputViewer.MyImageView;
+import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPane;
+import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPaneController;
+import com.jiro4989.tkfm.version.VersionStage;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

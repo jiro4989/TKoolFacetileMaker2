@@ -1,4 +1,4 @@
-package application.outputViewer;
+package com.jiro4989.tkfm.outputViewer;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

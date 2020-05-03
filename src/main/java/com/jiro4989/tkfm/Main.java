@@ -1,4 +1,4 @@
-package application;
+package com.jiro4989.tkfm;
 
 import java.util.stream.IntStream;
 

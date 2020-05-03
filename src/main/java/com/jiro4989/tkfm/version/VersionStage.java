@@ -1,4 +1,4 @@
-package application.version;
+package com.jiro4989.tkfm.version;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

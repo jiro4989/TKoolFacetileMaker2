@@ -1,8 +1,8 @@
-package application.imageViewer;
+package com.jiro4989.tkfm.imageViewer;
 
 import java.util.Optional;
 
-import application.MainController;
+import com.jiro4989.tkfm.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

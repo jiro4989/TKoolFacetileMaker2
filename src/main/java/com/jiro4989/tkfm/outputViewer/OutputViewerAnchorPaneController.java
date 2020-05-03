@@ -1,8 +1,8 @@
-package application.outputViewer;
+package com.jiro4989.tkfm.outputViewer;
 
 import java.util.Arrays;
 
-import application.MainController;
+import com.jiro4989.tkfm.MainController;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

@@ -1,4 +1,4 @@
-package application;
+package com.jiro4989.tkfm;
 
 public enum TKoolVersion {
 	MV(144), VXACE(96);

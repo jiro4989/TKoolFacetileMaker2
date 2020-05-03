@@ -1,8 +1,8 @@
-package application.imageViewer;
+package com.jiro4989.tkfm.imageViewer;
 
 import java.io.IOException;
 
-import application.MainController;
+import com.jiro4989.tkfm.MainController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 

@@ -1,4 +1,4 @@
-package application.outputViewer;
+package com.jiro4989.tkfm.outputViewer;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

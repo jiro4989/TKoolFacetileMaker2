@@ -1,6 +1,6 @@
-package application.version;
+package com.jiro4989.tkfm.version;
 
-import application.Main;
+import com.jiro4989.tkfm.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

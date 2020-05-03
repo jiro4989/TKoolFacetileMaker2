@@ -1,4 +1,4 @@
-package application.options;
+package com.jiro4989.tkfm.options;
 
 import java.io.File;
 import java.util.Arrays;
