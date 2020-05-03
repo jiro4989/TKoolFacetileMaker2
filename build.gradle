@@ -45,3 +45,11 @@ application {
     // Define the main class for the application.
     mainClassName = 'com.jiro4989.tkfm.Main'
 }
+
+jar {
+  manifest {
+    attributes 'Main-Class': 'com.jiro4989.tkfm.Main'
+  }
+
+  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
