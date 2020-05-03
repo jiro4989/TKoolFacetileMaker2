@@ -17,12 +17,12 @@ public class PropertiesHandler {
         INITIAL_IO_DIR_PATH = (new StringBuilder(".")).append(File.separator).append("properties").toString();
     }
 
-    public PropertiesHundler(String aFileName, String keys[], String values[])
+    public PropertiesHandler(String aFileName, String keys[], String values[])
     {
         this(aFileName, INITIAL_IO_DIR_PATH, keys, values);
     }
 
-    public PropertiesHundler(String aFileName, String anIoDirPath, String keys[], String values[])
+    public PropertiesHandler(String aFileName, String anIoDirPath, String keys[], String values[])
     {
         prop = new Properties();
         fileName = (new StringBuilder(String.valueOf(aFileName))).append(".properties").toString();

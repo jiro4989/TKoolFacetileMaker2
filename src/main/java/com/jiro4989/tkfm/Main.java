@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import com.jiro4989.tkfm.PropertiesHundler;
+import com.jiro4989.tkfm.PropertiesHandler;
 
 
 /**
@@ -26,7 +26,7 @@ public class Main extends Application {
 
 	private static final String[] KEYS = {"x", "y", "width", "height"};
 	private static final String[] INITIAL_VALUES = {"90", "26", "1280", "880"};
-	private PropertiesHundler prop = new PropertiesHundler("window_options", KEYS, INITIAL_VALUES);
+	private PropertiesHandler prop = new PropertiesHandler("window_options", KEYS, INITIAL_VALUES);
 
 	@Override
 	public void start(Stage primaryStage) {

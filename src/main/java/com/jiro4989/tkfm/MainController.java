@@ -37,7 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.jiro4989.tkfm.PropertiesHundler;
+import com.jiro4989.tkfm.PropertiesHandler;
 
 public class MainController {
 	private Main main;
@@ -67,7 +67,7 @@ public class MainController {
 			"", ".",
 			"", ".",
 			"MyActor.png"};
-	private PropertiesHundler prop = new PropertiesHundler("options", KEYS, INITIAL_VALUES);
+	private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
 
 	// **************************************************
 	// ファイル
