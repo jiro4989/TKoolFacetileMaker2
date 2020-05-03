@@ -34,74 +34,38 @@ public class PropertiesHundler {
 
     public void load()
     {
-        File file;
+        File file = new File(filePath);
         (new File(ioDirPath)).mkdirs();
-        file = new File(filePath);
-        if(!file.exists())
-            break MISSING_BLOCK_LABEL_120;
-        Exception exception;
-        exception = null;
-        Object obj = null;
-        InputStream is = new FileInputStream(file);
-        prop.load(new InputStreamReader(is, "UTF-8"));
-        if(is != null)
-            is.close();
-        break MISSING_BLOCK_LABEL_119;
-        exception;
-        if(is != null)
-            is.close();
-        throw exception;
-        Exception exception1;
-        exception1;
-        if(exception == null)
-            exception = exception1;
-        else
-        if(exception != exception1)
-            exception.addSuppressed(exception1);
-        throw exception;
-        IOException e;
-        e;
-        e.printStackTrace();
-        return;
-        for(int i = 0; i < initialKeys.length; i++)
-            prop.setProperty(initialKeys[i], initialValues[i]);
+        if(!file.exists()) {
+          System.err.println("error");
+          return;
+        }
+
+        try (InputStream is = new FileInputStream(file)) {
+          prop.load(new InputStreamReader(is, "UTF-8"));
+          for(int i = 0; i < initialKeys.length; i++)
+              prop.setProperty(initialKeys[i], initialValues[i]);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
 
         write();
         load();
-        return;
     }
 
     public void write()
     {
-        File file;
+        File file = new File(filePath);
         (new File(ioDirPath)).mkdirs();
-        file = new File(filePath);
+
         Exception exception;
         exception = null;
         Object obj = null;
-        FileOutputStream fos = new FileOutputStream(file);
-        prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
-        if(fos != null)
-            fos.close();
-        break MISSING_BLOCK_LABEL_121;
-        exception;
-        if(fos != null)
-            fos.close();
-        throw exception;
-        Exception exception1;
-        exception1;
-        if(exception == null)
-            exception = exception1;
-        else
-        if(exception != exception1)
-            exception.addSuppressed(exception1);
-        throw exception;
-        FileNotFoundException e;
-        e;
-        e.printStackTrace();
-        break MISSING_BLOCK_LABEL_121;
-        e;
-        e.printStackTrace();
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+          prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
     }
 
     public void setValue(String key, String value)
