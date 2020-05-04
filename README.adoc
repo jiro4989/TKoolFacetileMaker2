@@ -80,7 +80,9 @@ https://github.com/jiro4989/TKoolFacetileMaker2/releases[Releases]から各プ�
 
 == 連絡先
 
-バグ報告、機能要望などあれば以下に連絡をください。
+バグ報告、機能要望、質問などがあれば、リポジトリのissuesに起票ください。
+
+それ以外については、以下に連絡ください。
 
 https://twitter.com/jiro_saburomaru[@jiro_saburomaru]
 
