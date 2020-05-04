@@ -108,7 +108,7 @@ GPL-2.0
 前述のビルドコマンドを実行後に以下のコマンドを実行する。
 
 実行する前提条件として、下記スクリプトにかかれている `module-path`
-のパスにJavaFX SDKがインストール去れている必要がある。 JavaFX SDKは
+のパスにJavaFX SDKがインストールされている必要がある。 JavaFX SDKは
 https://gluonhq.com/products/javafx/[JavaFXのサイト]
 からSDKをダウンロードしてきて圧縮ファイルを展開して配置する。
 
@@ -125,7 +125,7 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 に記載。ここに追記するとスクリプトにも反映される。
 
 実行する前提条件として、下記スクリプトにかかれている `module-path`
-のパスにJavaFX JMODSがインストール去れている必要がある。 JavaFX JMODSは
+のパスにJavaFX JMODSがインストールされている必要がある。 JavaFX JMODSは
 前述のJavaFXのサイトにて配布されている。こちらをダウンロードしてきて、
 スクリプトに指定のパスに配置する。
 
