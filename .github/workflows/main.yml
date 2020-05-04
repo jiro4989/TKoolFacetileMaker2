@@ -59,7 +59,7 @@ jobs:
           pushd jmods/${os_name}
           unzip jmods.zip
           popd
-          bash link.sh "jmods/${os_name}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
+          bash script/link.sh "jmods/${os_name}/javafx-jmods-${{ env.JAVAFX_VERSION }}"
           mkdir tkfm_${os_name}
           cp -r .github/dist/* LICENSE build/libs/tkfm.jar jre tkfm_${os_name}/
           mkdir dist

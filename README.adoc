@@ -114,7 +114,7 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 
 [source,bash]
 ----
-./start.sh
+./script/start.sh
 ----
 
 === カスタムJREの作成手順
@@ -131,7 +131,7 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 
 [source,bash]
 ----
-./link.sh
+./script/link.sh
 ----
 
 === カスタムJREを使用してアプリを起動する手順
