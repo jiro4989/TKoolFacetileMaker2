@@ -18,3 +18,73 @@ image::./docs/demo.gif[]
 また、MV,VXACEと記載しているとおり、MV,VXACE両方の規格に合わせて出力することが
 可能になっています。
 
+== 開発者向け
+
+=== ビルド手順
+
+以下のコマンドを実行する。
+
+[source,bash]
+----
+./gradlew build
+----
+
+=== アプリ起動手順
+
+前述のビルドコマンドを実行後に以下のコマンドを実行する。
+
+実行する前提条件として、下記スクリプトにかかれている `module-path`
+のパスにJavaFX SDKがインストール去れている必要がある。 JavaFX SDKは
+https://gluonhq.com/products/javafx/[JavaFXのサイト]
+からSDKをダウンロードしてきて圧縮ファイルを展開して配置する。
+
+[source,bash]
+----
+./start.sh
+----
+
+=== カスタムJREの作成手順
+
+以下のコマンドを実行する。青果物としてjreディレクトリが作成される。
+
+アプリが依存しているモジュールは `modules.txt` に記載。ここに追記するとスクリプトにも反映される。
+
+実行する前提条件として、下記スクリプトにかかれている `module-path`
+のパスにJavaFX JMODSがインストール去れている必要がある。 JavaFX JMODSは
+前述のJavaFXのサイトにて配布されている。こちらをダウンロードしてきて、スクリプトに指定のパスに配置する。
+
+[source,bash]
+----
+./link.sh
+----
+
+=== カスタムJREを使用してアプリを起動する手順
+
+以下の手順を実施する。
+
+* ビルド手順
+* カスタムJRE作成手順
+
+実施の後、以下のコマンドを実行する。
+
+[source,bash]
+----
+./jre/bin/java -jar build/libs/tkfm.jar com.jiro4989.tkfm.Main
+----
+
+これで起動しなければ何かがおかしい。
+
+=== リリース手順
+
+リリースドラフトをpublishすると配布物がリリースされる。
+リリースはすべてCI環境で行うため、環境を整える必要はない。
+
+masterブランチが更新されるとGitHubActionsが走る。
+masterでGitHubActionsが走ると、リリースのドラフトが作成される。
+リリースドラフトをpublishすると、GitHubActionsが起動する。
+
+タグを切ったときのGitHubActionsのワークフローでは、
+前述のビルドとカスタムJRE作成と同様の処理が走る。
+
+生成された各プラットフォーム向けの配布物をGitHubReleaseに添付する。
+
