@@ -1,16 +1,11 @@
 TKoolFacetileMaker2 マニュアル
 ================================================================================
 
-作者             : 次郎(Jiro)  
+作者             : 次郎 (Jiro)  
 作成日           : 2016/07/16  
-最終更新日       : 2016/11/20  
-連絡先           : [次ログ](http://jiroron666.hatenablog.com)  
-実行ファイル名   : TKFM.jar  
-動作確認・開発環境  
-- OS             : Windows7 64bit Home Premium, LinuxBean12.04  
-- プロセッサ     : 3.50GHz Intel Core i7-4770K  
-- メモリ         : 8GB RAM  
-- Javaバージョン : 1.8.0-101  
+最終更新日       : 2020/05/04  
+連絡先           : [@jiro_saburomaru - Twitter](https://twitter.com/jiro_saburomaru)  
+実行ファイル名   : tkfm.bat, tkfm  
 
 ## 目次 ########################################################################
 
