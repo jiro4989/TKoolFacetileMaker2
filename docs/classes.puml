@@ -10,6 +10,10 @@ package com.jiro4989.tkfm {
       -int y
       +int getX()
       +int getY()
+      +void moveUp(int)
+      +void moveRight(int)
+      +void moveDown(int)
+      +void moveLeft(int)
     }
     
     class Rectangle {
@@ -37,10 +41,12 @@ package com.jiro4989.tkfm {
   
   package model {
     class ImageFileModel {
+      -File file
       -boolean isSelected
       
       +boolean isSelected()
       +boolean isImage()
+      +Image readImage()
     }
     
     class ImageFilesModel {
@@ -61,7 +67,14 @@ package com.jiro4989.tkfm {
       -Image image
       -Position cropPos
       -Rectangle cropRect
-      +Image getCroppedImage()
+      -double scale
+      
+      +Image crop()
+      +void moveUp(int)
+      +void moveRight(int)
+      +void moveDown(int)
+      +void moveLeft(int)
+      +void setScale(double)
     }
     
     class ImagesModel {
