@@ -1,6 +1,5 @@
 package com.jiro4989.tkfm.model;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,12 +12,12 @@ public class ImageFilesModel {
     croppingImage = ci;
   }
 
-  public void add(ImageFileModel file) throws IOException {
+  public void add(ImageFileModel file) {
     files.add(file);
     select(selectedIndex);
   }
 
-  public void remove(int i) throws IOException {
+  public void remove(int i) {
     files.remove(i);
     select(selectedIndex);
   }
@@ -28,7 +27,7 @@ public class ImageFilesModel {
     croppingImage.setImage(null);
   }
 
-  public void select(int i) throws IOException {
+  public void select(int i) {
     var min = 0;
     var max = files.size();
     if (i < min || max <= i) {
@@ -41,15 +40,15 @@ public class ImageFilesModel {
     croppingImage.setImage(img);
   }
 
-  public void selectFirst() throws IOException {
+  public void selectFirst() {
     select(0);
   }
 
-  public void selectNext() throws IOException {
+  public void selectNext() {
     select(selectedIndex + 1);
   }
 
-  public void selectPrev() throws IOException {
+  public void selectPrev() {
     select(selectedIndex - 1);
   }
 }

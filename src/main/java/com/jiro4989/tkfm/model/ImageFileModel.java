@@ -1,9 +1,7 @@
 package com.jiro4989.tkfm.model;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 
 public class ImageFileModel {
   private File file;
@@ -25,7 +23,7 @@ public class ImageFileModel {
     return false;
   }
 
-  public BufferedImage readImage() throws IOException {
-    return ImageIO.read(file);
+  public Image readImage() {
+    return new Image(file.getPath());
   }
 }
