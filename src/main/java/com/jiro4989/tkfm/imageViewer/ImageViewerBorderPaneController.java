@@ -79,10 +79,12 @@ public class ImageViewerBorderPaneController {
         image -> {
           var x = event.getX();
           var y = event.getY();
-          var w = cropImage.getRectangleWidth();
-          var h = cropImage.getRectangleHeight();
-          cropImage.setPositionX(x - w / 2);
-          cropImage.setPositionY(y - h / 2);
+          var rect = cropImage.getRectangle();
+          var w = rect.getWidth();
+          var h = rect.getHeight();
+          var pos = cropImage.getPosition();
+          pos.setX(x - w / 2);
+          pos.setY(y - h / 2);
 
           // double x = focusGridPane.getLayoutX();
           // double y = focusGridPane.getLayoutY();
