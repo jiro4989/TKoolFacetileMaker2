@@ -1,0 +1,95 @@
+@startuml
+
+package com.jiro4989.tkfm {
+'  package controller {}
+'  package service {}
+
+  package data {
+    class Position {
+      -int x
+      -int y
+      +int getX()
+      +int getY()
+    }
+    
+    class Rectangle {
+      -int width
+      -int height
+      +int getWidth()
+      +int getHeight()
+    }
+      
+    class TileImage {
+      -Image image
+      -TilePosition pos
+      +Image getImage()
+      +TilePosition getTilePosition()
+    }
+    
+    class TilePosition {
+      -int row
+      -int col
+      
+      +int getRow()
+      +int getCol()
+    }
+  }
+  
+  package model {
+    class ImageFileModel {
+      -boolean isSelected
+      
+      +boolean isSelected()
+      +boolean isImage()
+    }
+    
+    class ImageFilesModel {
+      -List<ImageFileModel> files
+      -int selectedPos
+      
+      +void add(ImageFileModel)
+      +void remove(int)
+      +void clear()
+      +void select(int)
+      +void selectFirst()
+      +void selectNext()
+      +void selectPrev()
+      +List<ImageFileModel> getSelectedImageFilesModel()
+    }
+    
+    class ImageModel {
+      -Image image
+      -Position cropPos
+      -Rectangle cropRect
+      +Image getCroppedImage()
+    }
+    
+    class ImagesModel {
+      -List<TileImage> images
+      -int rowCount
+      -int colCount
+      
+      +void swap(TilePosition, TilePosition)
+      +void remove(TilePosition)
+      +void clear()
+      ~int getImages()
+      ~int getRowCount()
+      ~int getColCount()
+    }
+  
+    class ImageIOModel {
+      +void writeFile(File, ImagesModel)
+      -Image format(ImagesModel)
+    }
+  }
+}
+
+ImageFilesModel *-- ImageFileModel
+ImageModel *-- Position
+ImageModel *-- Rectangle
+ImagesModel *-- TileImage
+ImagesModel ..> TilePosition
+TileImage *-- TilePosition
+ImageIOModel ..> ImagesModel
+
+@enduml
