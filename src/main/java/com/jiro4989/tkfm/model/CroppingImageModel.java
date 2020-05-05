@@ -102,6 +102,14 @@ public class CroppingImageModel {
     return cropRect;
   }
 
+  public double getRectangleWidth() {
+    return cropRect.getWidth();
+  }
+
+  public double getRectangleHeight() {
+    return cropRect.getHeight();
+  }
+
   public void setPositionX(double x) {
     cropPos.setX(x);
   }

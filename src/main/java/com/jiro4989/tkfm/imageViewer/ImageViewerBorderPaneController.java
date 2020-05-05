@@ -51,15 +51,8 @@ public class ImageViewerBorderPaneController {
 
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
-
-    // pos.yProperty().bind(focusGridPane.layoutYProperty());
-    // rect.widthProperty().bind(focusGridPane.prefWidthProperty());
-    // rect.heightProperty().bind(focusGridPane.prefHeightProperty());
-
-    // focusGridPane.layoutXProperty().bind(pos.xProperty());
-    // focusGridPane.layoutYProperty().bind(pos.yProperty());
-    // focusGridPane.prefWidthProperty().bind(rect.widthProperty());
-    // focusGridPane.prefHeightProperty().bind(rect.heightProperty());
+    Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
 
     slider.setOnMouseClicked(e -> changeZoomRate(slider.getValue()));
     slider.setOnMouseDragged(e -> changeZoomRate(slider.getValue()));
@@ -86,8 +79,10 @@ public class ImageViewerBorderPaneController {
         image -> {
           var x = event.getX();
           var y = event.getY();
-          cropImage.setPositionX(x);
-          cropImage.setPositionY(y);
+          var w = cropImage.getRectangleWidth();
+          var h = cropImage.getRectangleHeight();
+          cropImage.setPositionX(x - w / 2);
+          cropImage.setPositionY(y - h / 2);
 
           // double x = focusGridPane.getLayoutX();
           // double y = focusGridPane.getLayoutY();
