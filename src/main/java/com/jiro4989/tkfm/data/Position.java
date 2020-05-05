@@ -8,8 +8,8 @@ public class Position {
   private IntegerProperty y = new SimpleIntegerProperty(0);
 
   public Position(int x, int y) {
-    this.x = new SimpleIntegerProperty(x);
-    this.y = new SimpleIntegerProperty(y);
+    setX(x);
+    setY(y);
   }
 
   public IntegerProperty xProperty() {

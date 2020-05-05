@@ -8,8 +8,8 @@ public class Rectangle {
   private IntegerProperty height = new SimpleIntegerProperty(0);
 
   public Rectangle(int w, int h) {
-    this.width = new SimpleIntegerProperty(w);
-    this.height = new SimpleIntegerProperty(h);
+    setWidth(w);
+    setHeight(h);
   }
 
   public IntegerProperty widthProperty() {
