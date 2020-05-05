@@ -3,6 +3,7 @@ package com.jiro4989.tkfm.imageViewer;
 import com.jiro4989.tkfm.MainController;
 import com.jiro4989.tkfm.model.CroppingImageModel;
 import java.util.Optional;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -48,10 +49,17 @@ public class ImageViewerBorderPaneController {
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
 
-    focusGridPane.layoutXProperty().bind(pos.xProperty());
-    focusGridPane.layoutYProperty().bind(pos.yProperty());
-    focusGridPane.prefWidthProperty().bind(rect.widthProperty());
-    focusGridPane.prefHeightProperty().bind(rect.heightProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
+
+    // pos.yProperty().bind(focusGridPane.layoutYProperty());
+    // rect.widthProperty().bind(focusGridPane.prefWidthProperty());
+    // rect.heightProperty().bind(focusGridPane.prefHeightProperty());
+
+    // focusGridPane.layoutXProperty().bind(pos.xProperty());
+    // focusGridPane.layoutYProperty().bind(pos.yProperty());
+    // focusGridPane.prefWidthProperty().bind(rect.widthProperty());
+    // focusGridPane.prefHeightProperty().bind(rect.heightProperty());
 
     slider.setOnMouseClicked(e -> changeZoomRate(slider.getValue()));
     slider.setOnMouseDragged(e -> changeZoomRate(slider.getValue()));
