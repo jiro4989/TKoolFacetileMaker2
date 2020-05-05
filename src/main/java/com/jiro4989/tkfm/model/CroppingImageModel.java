@@ -1,9 +1,9 @@
 package com.jiro4989.tkfm.model;
 
-import java.util.Optional;
-import java.awt.image.BufferedImage;
 import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 public class CroppingImageModel {
   private Optional<BufferedImage> image;
@@ -11,7 +11,7 @@ public class CroppingImageModel {
   private Rectangle cropRect = new Rectangle(144, 144);
   private double scale = 100.0;
 
-  public CroppingImageModel(BufferedImage image, Position pos, Rectangle rect, double scale)  {
+  public CroppingImageModel(BufferedImage image, Position pos, Rectangle rect, double scale) {
     this.image = Optional.ofNullable(image);
     this.cropPos = pos;
     this.cropRect = rect;
