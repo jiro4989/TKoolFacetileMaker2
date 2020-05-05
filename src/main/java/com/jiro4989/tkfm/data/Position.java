@@ -7,6 +7,10 @@ public class Position {
   private IntegerProperty x = new SimpleIntegerProperty(0);
   private IntegerProperty y = new SimpleIntegerProperty(0);
 
+  public Position() {
+    this(0, 0);
+  }
+
   public Position(int x, int y) {
     setX(x);
     setY(y);

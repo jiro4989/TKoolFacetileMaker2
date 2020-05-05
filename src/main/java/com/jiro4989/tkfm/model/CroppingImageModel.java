@@ -11,6 +11,8 @@ public class CroppingImageModel {
   private Rectangle cropRect = new Rectangle(144, 144);
   private double scale = 100.0;
 
+  public CroppingImageModel() {}
+
   public CroppingImageModel(BufferedImage image, Position pos, Rectangle rect, double scale) {
     this.image = Optional.ofNullable(image);
     this.cropPos = pos;
@@ -90,5 +92,29 @@ public class CroppingImageModel {
 
   public void setScale(double scale) {
     this.scale = scale;
+  }
+
+  public Position getPosition() {
+    return cropPos;
+  }
+
+  public Rectangle getRectangle() {
+    return cropRect;
+  }
+
+  public void setPositionX(int x) {
+    cropPos.setX(x);
+  }
+
+  public void setPositionY(int y) {
+    cropPos.setY(y);
+  }
+
+  public void setRectangleX(int w) {
+    cropRect.setWidth(w);
+  }
+
+  public void setRectangleY(int h) {
+    cropRect.setHeight(h);
   }
 }

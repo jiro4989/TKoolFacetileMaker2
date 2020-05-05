@@ -1,6 +1,7 @@
 package com.jiro4989.tkfm.imageViewer;
 
 import com.jiro4989.tkfm.MainController;
+import com.jiro4989.tkfm.model.CroppingImageModel;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,9 +39,20 @@ public class ImageViewerBorderPaneController {
   @FXML private Label yLabel;
   @FXML private Label rateLabel;
 
+  private CroppingImageModel cropImage = new CroppingImageModel();
+
   @FXML
   private void initialize() {
     focusGridPane.setOnMouseDragged(e -> moveFocusGridPane(e));
+
+    var pos = cropImage.getPosition();
+    var rect = cropImage.getRectangle();
+
+    focusGridPane.layoutXProperty().bind(pos.xProperty());
+    focusGridPane.layoutYProperty().bind(pos.yProperty());
+    focusGridPane.prefWidthProperty().bind(rect.widthProperty());
+    focusGridPane.prefHeightProperty().bind(rect.heightProperty());
+
     slider.setOnMouseClicked(e -> changeZoomRate(slider.getValue()));
     slider.setOnMouseDragged(e -> changeZoomRate(slider.getValue()));
     slider.setOnScroll(e -> changeZoomRateWithScroll(e));
@@ -64,18 +76,23 @@ public class ImageViewerBorderPaneController {
   private void moveFocusGridPane(MouseEvent event) {
     imageOpt.ifPresent(
         image -> {
-          double x = focusGridPane.getLayoutX();
-          double y = focusGridPane.getLayoutY();
-          double mouseX = x + event.getX();
-          double mouseY = y + event.getY();
-          int width = mainController.getTKoolVersion().getWidth();
-          x = mouseX - width / 2;
-          y = mouseY - width / 2;
+          var x = event.getX();
+          var y = event.getY();
+          cropImage.setPositionX((int) x);
+          cropImage.setPositionY((int) y);
 
-          double rate = getRate();
-          rate /= 100;
-          setFocusPosition(x, y, rate, image.getWidth(), image.getHeight(), width);
-          updateTrimmingImageView();
+          // double x = focusGridPane.getLayoutX();
+          // double y = focusGridPane.getLayoutY();
+          // double mouseX = x + event.getX();
+          // double mouseY = y + event.getY();
+          // int width = mainController.getTKoolVersion().getWidth();
+          // x = mouseX - width / 2;
+          // y = mouseY - width / 2;
+
+          // double rate = getRate();
+          // rate /= 100;
+          // setFocusPosition(x, y, rate, image.getWidth(), image.getHeight(), width);
+          // updateTrimmingImageView();
         });
   }
 
