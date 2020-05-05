@@ -1,8 +1,8 @@
 package com.jiro4989.tkfm.model;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class ImageFileModel {

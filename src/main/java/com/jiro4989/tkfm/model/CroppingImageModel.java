@@ -101,4 +101,12 @@ public class CroppingImageModel {
   public Rectangle getRectangle() {
     return cropRect;
   }
+
+  public void setImage(BufferedImage image) {
+    this.image = Optional.ofNullable(image);
+  }
+
+  public void clearImage() {
+    setImage(null);
+  }
 }
