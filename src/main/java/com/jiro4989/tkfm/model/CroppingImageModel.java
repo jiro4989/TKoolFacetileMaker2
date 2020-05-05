@@ -2,26 +2,27 @@ package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
-import java.awt.image.BufferedImage;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 
 public class CroppingImageModel {
-  private ObjectProperty<BufferedImage> image = new SimpleObjectProperty<>(createEmptyImage());
+  private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
   private Position cropPos = new Position(0, 0);
   private Rectangle cropRect = new Rectangle(144, 144);
   private double scale = 100.0;
 
   public CroppingImageModel() {}
 
-  public CroppingImageModel(BufferedImage image, Position pos, Rectangle rect, double scale) {
+  public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
     this.image.set(image);
     this.cropPos = pos;
     this.cropRect = rect;
     this.scale = scale;
   }
 
-  public BufferedImage crop() {
+  public Image crop() {
     return null;
   }
 
@@ -38,8 +39,8 @@ public class CroppingImageModel {
     var x = cropPos.getX();
     x += n;
 
-    BufferedImage bImg = image.get();
-    var w = bImg.getWidth();
+    Image bImg = image.get();
+    double w = bImg.getWidth();
     var rectWidth = cropRect.getWidth();
     if (w < x + rectWidth) {
       x = w - rectWidth;
@@ -52,8 +53,8 @@ public class CroppingImageModel {
     var y = cropPos.getY();
     y += n;
 
-    BufferedImage bImg = image.get();
-    var h = bImg.getHeight();
+    Image bImg = image.get();
+    double h = bImg.getHeight();
     var rectHeight = cropRect.getHeight();
     if (h < y + rectHeight) {
       y = h - rectHeight;
@@ -85,7 +86,7 @@ public class CroppingImageModel {
     return cropRect;
   }
 
-  public void setImage(BufferedImage image) {
+  public void setImage(Image image) {
     this.image.set(image);
   }
 
@@ -93,7 +94,11 @@ public class CroppingImageModel {
     setImage(createEmptyImage());
   }
 
-  private static BufferedImage createEmptyImage() {
-    return new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+  public ObjectProperty<Image> imageProperty() {
+    return image;
+  }
+
+  private static Image createEmptyImage() {
+    return new WritableImage(100, 100);
   }
 }

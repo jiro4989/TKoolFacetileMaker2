@@ -49,6 +49,7 @@ public class ImageViewerBorderPaneController {
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
 
+    Bindings.bindBidirectional(imageView.imageProperty(), cropImage.imageProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
