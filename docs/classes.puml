@@ -1,8 +1,23 @@
 @startuml
 
 package com.jiro4989.tkfm {
-'  package controller {}
-'  package service {}
+  class Main {
+    -MainController mainController
+  }
+  
+  package controller {
+    class MainController {
+      -MainService mainService
+    }
+  }
+  
+  package service {
+    class MainService {
+      -ImageFilesModel imageFiles
+      -CroppingImageModel croppingImage
+      -TileImagesModel tileImages
+    }
+  }
 
   package data {
     class Position {
@@ -63,7 +78,7 @@ package com.jiro4989.tkfm {
       +List<ImageFileModel> getSelectedImageFilesModel()
     }
     
-    class ImageModel {
+    class CroppingImageModel {
       -Image image
       -Position cropPos
       -Rectangle cropRect
@@ -77,7 +92,7 @@ package com.jiro4989.tkfm {
       +void setScale(double)
     }
     
-    class ImagesModel {
+    class TileImagesModel {
       -List<TileImage> images
       -int rowCount
       -int colCount
@@ -89,20 +104,37 @@ package com.jiro4989.tkfm {
       ~int getRowCount()
       ~int getColCount()
     }
-  
-    class ImageIOModel {
-      +void writeFile(File, ImagesModel)
-      -Image format(ImagesModel)
+  }
+
+  package util {
+    class ImageIOUtil {
+      +void writeFile(File, TileImagesModel)
+      -Image format(TileImagesModel)
     }
   }
 }
 
+Main *-- MainController
+
+MainController *-- MainService
+
+MainService *-- ImageFilesModel
+MainService *-- CroppingImageModel
+MainService *-- TileImagesModel
+MainService ..> ImageIOUtil
+
 ImageFilesModel *-- ImageFileModel
-ImageModel *-- Position
-ImageModel *-- Rectangle
-ImagesModel *-- TileImage
-ImagesModel ..> TilePosition
+
+CroppingImageModel *-- Position
+CroppingImageModel *-- Rectangle
+
+TileImagesModel *-- TileImage
+TileImagesModel ..> TilePosition
+
+ImageIOUtil ..> TileImagesModel
+
 TileImage *-- TilePosition
-ImageIOModel ..> ImagesModel
+
+ImageFileModel -[hidden]down- Rectangle
 
 @enduml
