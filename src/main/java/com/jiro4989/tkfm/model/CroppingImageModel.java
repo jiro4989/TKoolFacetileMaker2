@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 public class CroppingImageModel {
-  private Optional<BufferedImage> image;
+  private Optional<BufferedImage> image = Optional.ofNullable(null);
   private Position cropPos = new Position(0, 0);
   private Rectangle cropRect = new Rectangle(144, 144);
   private double scale = 100.0;
