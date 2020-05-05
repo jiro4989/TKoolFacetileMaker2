@@ -1,42 +1,42 @@
 package com.jiro4989.tkfm.data;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 public class Position {
-  private IntegerProperty x = new SimpleIntegerProperty(0);
-  private IntegerProperty y = new SimpleIntegerProperty(0);
+  private DoubleProperty x = new SimpleDoubleProperty(0.0);
+  private DoubleProperty y = new SimpleDoubleProperty(0.0);
 
   public Position() {
     this(0, 0);
   }
 
-  public Position(int x, int y) {
+  public Position(double x, double y) {
     setX(x);
     setY(y);
   }
 
-  public IntegerProperty xProperty() {
+  public DoubleProperty xProperty() {
     return x;
   }
 
-  public IntegerProperty yProperty() {
+  public DoubleProperty yProperty() {
     return y;
   }
 
-  public int getX() {
+  public double getX() {
     return x.get();
   }
 
-  public int getY() {
+  public double getY() {
     return y.get();
   }
 
-  public void setX(int x) {
+  public void setX(double x) {
     this.x.set(x);
   }
 
-  public void setY(int y) {
+  public void setY(double y) {
     this.y.set(y);
   }
 }

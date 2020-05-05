@@ -78,8 +78,8 @@ public class ImageViewerBorderPaneController {
         image -> {
           var x = event.getX();
           var y = event.getY();
-          cropImage.setPositionX((int) x);
-          cropImage.setPositionY((int) y);
+          cropImage.setPositionX(x);
+          cropImage.setPositionY(y);
 
           // double x = focusGridPane.getLayoutX();
           // double y = focusGridPane.getLayoutY();
@@ -287,11 +287,11 @@ public class ImageViewerBorderPaneController {
   }
 
   public void changeVersion(double width) {
-    focusGridPane.setPrefSize(width, width);
-    trimmingGridPane.setPrefSize(width, width);
-    trimmingImageView.setFitWidth(width);
-    trimmingImageView.setFitHeight(width);
-    updateTrimmingImageView();
+    // focusGridPane.setPrefSize(width, width);
+    // trimmingGridPane.setPrefSize(width, width);
+    // trimmingImageView.setFitWidth(width);
+    // trimmingImageView.setFitHeight(width);
+    // updateTrimmingImageView();
   }
 
   public void zoomIn() {
