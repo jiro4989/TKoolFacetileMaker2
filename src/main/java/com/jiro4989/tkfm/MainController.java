@@ -1,7 +1,5 @@
 package com.jiro4989.tkfm;
 
-import com.jiro4989.tkfm.fileList.FileListHBox;
-import com.jiro4989.tkfm.fileList.FileListHBoxController;
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
 import com.jiro4989.tkfm.model.*;
@@ -16,13 +14,19 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -60,6 +64,12 @@ public class MainController {
     "false", "UNDER_SCORE", "NUMBERING01", "12", "MV", "", ".", "", ".", "MyActor.png"
   };
   private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
+
+  @FXML private ListView<ImageFileModel> fileListView;
+  @FXML private Button insertButton;
+  @FXML private Button clearButton;
+  @FXML private Button listDeleteButton;
+  @FXML private Button listClearButton;
 
   // **************************************************
   // ファイル
@@ -117,21 +127,17 @@ public class MainController {
   // **************************************************
   // レイアウト定義用
   // **************************************************
-  @FXML private TitledPane fileListPane;
   @FXML private TitledPane imageViewerPane;
-  // @FXML private TitledPane outputViewerPane;
   @FXML private ImageView outputImageView;
 
   // **************************************************
   // 拡張パネルクラス
   // **************************************************
-  private FileListHBox fileListHBox = new FileListHBox(this);
   private ImageViewerBorderPane imageViewerBorderPane = new ImageViewerBorderPane(this);
 
   // **************************************************
   // 拡張パネルコントローラー
   // **************************************************
-  private FileListHBoxController fileListHBoxController;
   private ImageViewerBorderPaneController imageViewerBorderPaneController;
 
   private ImageFilesModel imageFiles;
@@ -148,9 +154,9 @@ public class MainController {
     optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
-    insertMenuItem.setOnAction(e -> fileListHBoxController.insertImages(0));
-    listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
-    listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
+    // insertMenuItem.setOnAction(e -> fileListHBoxController.insertImages(0));
+    // listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
+    // listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
 
     upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
     leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
@@ -159,14 +165,14 @@ public class MainController {
     zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
     zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
 
-    insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
-    insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
-    insertMenuItem3.setOnAction(e -> fileListHBoxController.insertImages(2));
-    insertMenuItem4.setOnAction(e -> fileListHBoxController.insertImages(3));
-    insertMenuItem5.setOnAction(e -> fileListHBoxController.insertImages(4));
-    insertMenuItem6.setOnAction(e -> fileListHBoxController.insertImages(5));
-    insertMenuItem7.setOnAction(e -> fileListHBoxController.insertImages(6));
-    insertMenuItem8.setOnAction(e -> fileListHBoxController.insertImages(7));
+    // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
+    // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
+    // insertMenuItem3.setOnAction(e -> fileListHBoxController.insertImages(2));
+    // insertMenuItem4.setOnAction(e -> fileListHBoxController.insertImages(3));
+    // insertMenuItem5.setOnAction(e -> fileListHBoxController.insertImages(4));
+    // insertMenuItem6.setOnAction(e -> fileListHBoxController.insertImages(5));
+    // insertMenuItem7.setOnAction(e -> fileListHBoxController.insertImages(6));
+    // insertMenuItem8.setOnAction(e -> fileListHBoxController.insertImages(7));
 
     versionInfoItem.setOnAction(e -> openVersionWindow());
 
@@ -174,16 +180,15 @@ public class MainController {
     vxaceRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.VXACE));
 
     // 各種親パネルに拡張パネルを登録
-    fileListPane.setContent(fileListHBox);
     imageViewerPane.setContent(imageViewerBorderPane);
     // outputViewerPane.setContent(outputViewerAnchorPane);
 
-    fileListHBoxController = fileListHBox.getController();
+    // fileListHBoxController = fileListHBox.getController();
     imageViewerBorderPaneController = imageViewerBorderPane.getController();
 
     cropImage = imageViewerBorderPaneController.getCroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
-    fileListHBoxController.setImageFilesModel(imageFiles);
+    // fileListHBoxController.setImageFilesModel(imageFiles);
     tileImage = new TileImageModel();
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
 
@@ -209,6 +214,17 @@ public class MainController {
 
     File dir = new File(OUTPUT_DIR);
     dir.mkdirs();
+
+    fileListView.setOnDragOver(e -> dragOver(e));
+    fileListView.setOnDragDropped(e -> dragDropped(e));
+    fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
+    fileListView.setItems(imageFiles.getFiles());
+
+    // insertButton.setOnAction(e -> insertImages(0));
+    // clearButton.setOnAction(e -> clearOutputImages());
+    // listDeleteButton.setOnAction(e -> deleteFile());
+    // listClearButton.setOnAction(e -> clearFiles());
   }
 
   /**
@@ -250,7 +266,7 @@ public class MainController {
 
     List<File> files = fc.showOpenMultipleDialog(stage);
     Optional<List<File>> filesOpt = Optional.ofNullable(files);
-    filesOpt.ifPresent(fileListHBoxController::addFiles);
+    // filesOpt.ifPresent(fileListHBoxController::addFiles);
     filesOpt.ifPresent(
         list -> {
           File file = list.get(0);
@@ -371,10 +387,6 @@ public class MainController {
     return imageViewerBorderPaneController.getRate();
   }
 
-  public String getFilePath() {
-    return fileListHBoxController.getFilePath();
-  }
-
   public Image getTrimmingImage() {
     return imageViewerBorderPaneController.getTrimmingImage();
   }
@@ -416,5 +428,34 @@ public class MainController {
     prop.write();
 
     main.closeAction();
+  }
+
+  /** ドラッグオーバーでファイルを受け取る */
+  private void dragOver(DragEvent event) {
+    Dragboard board = event.getDragboard();
+    if (board.hasFiles()) {
+      event.acceptTransferModes(TransferMode.COPY);
+    }
+  }
+
+  /** ドロップでリストに格納 */
+  private void dragDropped(DragEvent event) {
+    Dragboard board = event.getDragboard();
+    if (board.hasFiles()) {
+      List<File> list = board.getFiles();
+      list.stream().forEach(f -> imageFiles.add(f));
+      event.setDropCompleted(true);
+      event.acceptTransferModes(TransferMode.COPY);
+    } else {
+      event.setDropCompleted(false);
+    }
+  }
+
+  /** リストビューの選択が変更された場合に呼び出される。 */
+  private void changeSelection() {
+    if (!fileListView.getSelectionModel().isEmpty()) {
+      int i = fileListView.getSelectionModel().getSelectedIndex();
+      imageFiles.select(i);
+    }
   }
 }
