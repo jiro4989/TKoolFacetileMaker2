@@ -89,8 +89,8 @@ public class TileImageModel {
   public void bulkInsert(List<Image> images) {
     int i = 0;
     int size = images.size();
-    for (int y = 0; y < colCount; y++) {
-      for (int x = 0; x < rowCount; x++) {
+    for (int y = 0; y < rowCount; y++) {
+      for (int x = 0; x < colCount; x++) {
         if (size <= i) {
           return;
         }
