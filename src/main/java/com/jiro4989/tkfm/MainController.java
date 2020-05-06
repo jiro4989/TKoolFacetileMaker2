@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -31,6 +32,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -128,7 +130,8 @@ public class MainController {
   // **************************************************
   @FXML private TitledPane fileListPane;
   @FXML private TitledPane imageViewerPane;
-  @FXML private TitledPane outputViewerPane;
+  // @FXML private TitledPane outputViewerPane;
+  @FXML private ImageView outputImageView;
 
   // **************************************************
   // 拡張パネルクラス
@@ -146,6 +149,7 @@ public class MainController {
 
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
+  private TileImageModel tileImage;
 
   @FXML
   private void initialize() {
@@ -186,7 +190,7 @@ public class MainController {
     // 各種親パネルに拡張パネルを登録
     fileListPane.setContent(fileListHBox);
     imageViewerPane.setContent(imageViewerBorderPane);
-    outputViewerPane.setContent(outputViewerAnchorPane);
+    // outputViewerPane.setContent(outputViewerAnchorPane);
 
     fileListHBoxController = fileListHBox.getController();
     imageViewerBorderPaneController = imageViewerBorderPane.getController();
@@ -195,6 +199,8 @@ public class MainController {
     cropImage = imageViewerBorderPaneController.getCroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
     fileListHBoxController.setImageFilesModel(imageFiles);
+    tileImage = new TileImageModel();
+    Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
 
     prop.load();
     options =
