@@ -1,0 +1,140 @@
+@startuml
+
+package com.jiro4989.tkfm {
+  class Main {
+    -MainController mainController
+  }
+  
+  package controller {
+    class MainController {
+      -MainService mainService
+    }
+  }
+  
+  package service {
+    class MainService {
+      -ImageFilesModel imageFiles
+      -CroppingImageModel croppingImage
+      -TileImagesModel tileImages
+    }
+  }
+
+  package data {
+    class Position {
+      -int x
+      -int y
+      +int getX()
+      +int getY()
+      +void moveUp(int)
+      +void moveRight(int)
+      +void moveDown(int)
+      +void moveLeft(int)
+    }
+    
+    class Rectangle {
+      -int width
+      -int height
+      +int getWidth()
+      +int getHeight()
+    }
+      
+    class TileImage {
+      -Image image
+      -TilePosition pos
+      +Image getImage()
+      +TilePosition getTilePosition()
+    }
+    
+    class TilePosition {
+      -int row
+      -int col
+      
+      +int getRow()
+      +int getCol()
+    }
+  }
+  
+  package model {
+    class ImageFileModel {
+      -File file
+      -boolean isSelected
+      
+      +boolean isSelected()
+      +boolean isImage()
+      +Image readImage()
+    }
+    
+    class ImageFilesModel {
+      -List<ImageFileModel> files
+      -int selectedPos
+      
+      +void add(ImageFileModel)
+      +void remove(int)
+      +void clear()
+      +void select(int)
+      +void selectFirst()
+      +void selectNext()
+      +void selectPrev()
+      +List<ImageFileModel> getSelectedImageFilesModel()
+    }
+    
+    class CroppingImageModel {
+      -Image image
+      -Position cropPos
+      -Rectangle cropRect
+      -double scale
+      
+      +Image crop()
+      +void moveUp(int)
+      +void moveRight(int)
+      +void moveDown(int)
+      +void moveLeft(int)
+      +void setScale(double)
+    }
+    
+    class TileImagesModel {
+      -List<TileImage> images
+      -int rowCount
+      -int colCount
+      
+      +void swap(TilePosition, TilePosition)
+      +void remove(TilePosition)
+      +void clear()
+      ~int getImages()
+      ~int getRowCount()
+      ~int getColCount()
+    }
+  }
+
+  package util {
+    class ImageIOUtil {
+      +void writeFile(File, TileImagesModel)
+      -Image format(TileImagesModel)
+    }
+  }
+}
+
+Main *-- MainController
+
+MainController *-- MainService
+
+MainService *-- ImageFilesModel
+MainService *-- CroppingImageModel
+MainService *-- TileImagesModel
+MainService ..> ImageIOUtil
+
+ImageFilesModel *-- ImageFileModel
+
+CroppingImageModel *-- Position
+CroppingImageModel *-- Rectangle
+
+TileImagesModel *-- TileImage
+TileImagesModel ..> TilePosition
+
+ImageIOUtil ..> TileImagesModel
+
+TileImage *-- TilePosition
+
+ImageFileModel -[hidden]down- Rectangle
+
+@enduml

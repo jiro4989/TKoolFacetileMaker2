@@ -5,3 +5,6 @@
 build
 
 /properties/
+
+**/.metadata/
+**/jdt.ls*/
