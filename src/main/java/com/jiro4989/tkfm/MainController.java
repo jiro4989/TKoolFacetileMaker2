@@ -1,6 +1,8 @@
 package com.jiro4989.tkfm;
 
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.options.Numberings;
@@ -16,6 +18,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.input.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -63,9 +66,18 @@ public class MainController {
   @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
   @FXML private Button removeButton;
+  @FXML private ImageView cropImageView;
+  @FXML private GridPane focusGridPane;
   @FXML private Label cropXLabel;
   @FXML private Label cropYLabel;
   @FXML private Label cropScaleLabel;
+  @FXML private Slider cropScaleSlider;
+  @FXML private ComboBox<Integer> cropAxisComboBox;
+  private ObservableList<Integer> cropAxisItems = FXCollections.observableArrayList(1, 5, 10, 25, 50);
+
+  @FXML private ComboBox<Integer> cropScaleComboBox;
+  private ObservableList<Integer> cropScaleItems = FXCollections.observableArrayList(1, 5, 10, 25, 50);
+  @FXML private ImageView outputImageView;
 
   // **************************************************
   // ファイル
@@ -119,12 +131,6 @@ public class MainController {
   // ヘルプ
   // **************************************************
   @FXML private MenuItem versionInfoItem;
-
-  // **************************************************
-  // レイアウト定義用
-  // **************************************************
-  @FXML private TitledPane imageViewerPane;
-  @FXML private ImageView outputImageView;
 
   // **************************************************
   // 拡張パネルクラス

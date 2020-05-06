@@ -192,12 +192,12 @@
                               <ToolBar BorderPane.alignment="CENTER">
                                  <items>
                                     <Label text="Ｘ：" />
-                                    <Label prefWidth="75.0" text="0.0" fx:id="xLabel" />
+                                    <Label fx:id="cropXLabel" prefWidth="75.0" text="0.0" />
                                     <Label text="Ｙ：" />
-                                    <Label fx:id="yLabel" prefWidth="75.0" text="0.0" />
+                                    <Label fx:id="cropYLabel" prefWidth="75.0" text="0.0" />
                                     <Separator orientation="VERTICAL" prefHeight="14.0" />
                                     <Label text="移動幅：" />
-                                    <ComboBox fx:id="axisComboBox" prefWidth="100.0">
+                                    <ComboBox fx:id="cropAxisComboBox" prefWidth="100.0">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="アイテム1" />
@@ -208,9 +208,9 @@
                                     </ComboBox>
                                     <Separator orientation="VERTICAL" prefHeight="14.0" />
                                     <Label text="拡大率：" />
-                                    <Label fx:id="rateLabel" prefWidth="75.0" text="100.0" />
+                                    <Label fx:id="cropScaleLabel" prefWidth="75.0" text="100.0" />
                                     <Label text="拡大幅：" />
-                                    <ComboBox fx:id="zoomRateComboBox" prefWidth="100.0">
+                                    <ComboBox fx:id="cropScaleComboBox" prefWidth="100.0">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="アイテム1" />
@@ -228,7 +228,7 @@
                            <center>
                               <BorderPane prefHeight="200.0" prefWidth="200.0">
                                  <bottom>
-                                    <Slider fx:id="slider" blockIncrement="5.0" majorTickUnit="25.0" max="200.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+                                    <Slider fx:id="cropScaleSlider" blockIncrement="5.0" majorTickUnit="25.0" max="200.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
                                  </bottom>
                                  <center>
                                     <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
@@ -265,7 +265,7 @@
                                     </ScrollPane>
                                  </center>
                                  <left>
-                                    <AnchorPane prefHeight="435.0" prefWidth="163.0">
+                                    <AnchorPane fx:id="cropImageView" prefHeight="435.0" prefWidth="163.0">
                                        <children>
                                           <FlowPane alignment="BOTTOM_LEFT" columnHalignment="LEFT" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="149.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
                                              <children>
