@@ -17,6 +17,7 @@ buildscript {
     }
     dependencies {
         classpath "org.openjfx:javafx-plugin:0.0.8"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
     }
 }
 
@@ -29,9 +30,12 @@ plugins {
 
     // Code formatter
     id 'com.github.sherter.google-java-format' version '0.8'
+
+    id 'jacoco'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -79,3 +83,40 @@ jar {
 
   from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
+test {
+  finalizedBy jacocoTestReport
+}
+
+jacoco {
+  applyTo junitPlatformTest
+}
+
+task junitPlatformJacocoReport(type: JacocoReport) {
+  sourceSets sourceSets.main
+  executionData junitPlatformTest
+}
+
+// // junitPlatform.enableStandardTestTask true
+// 
+// // jacocoTestReport {
+// //   dependsOn test
+// // }
+// // 
+// jacoco {
+//   toolVersion = '0.8.5'
+//   //applyTo junitPlatformTest
+// }
+// 
+// jacocoTestReport {
+//   afterEvaluate {
+//     classDirectories = files(classDirectories.files.collect {
+//       fileTree(dir: it, exclude: ['**/Main*'])
+//     })
+//   }
+//   reports {
+//     xml.enabled true
+//     csv.enabled false
+//     html.enabled true
+//   }
+// }
