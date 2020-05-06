@@ -182,6 +182,7 @@ public class MainController {
     var rect = cropImage.getRectangle();
     // Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty());
     Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
+    Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
@@ -457,12 +458,6 @@ public class MainController {
   private void focusGridPaneOnMouseDragged(MouseEvent event) {
     double x = event.getX();
     double y = event.getY();
-    var rect = cropImage.getRectangle();
-    var w = rect.getWidth();
-    var h = rect.getHeight();
-    var pos = cropImage.getPosition();
-    pos.setX(x - w / 2);
-    pos.setY(y - h / 2);
-    croppedImageView.setImage(cropImage.crop());
+    cropImage.moveByMouse(x, y);
   }
 }

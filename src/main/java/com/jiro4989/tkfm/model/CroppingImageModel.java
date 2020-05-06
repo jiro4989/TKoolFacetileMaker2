@@ -8,6 +8,8 @@ import javafx.scene.image.WritableImage;
 
 public class CroppingImageModel {
   private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
+  private ObjectProperty<Image> croppedImage =
+      new SimpleObjectProperty<>(new WritableImage(144, 144));
   private Position cropPos = new Position(0, 0);
   private Rectangle cropRect = new Rectangle(144, 144);
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
@@ -34,52 +36,61 @@ public class CroppingImageModel {
     return new WritableImage(pix, (int) x, (int) y, (int) width, (int) width);
   }
 
-  public void moveUp(double n) {
-    double y = cropPos.getY();
-    y -= n;
-    if (y < 0) {
-      y = 0;
-    }
-    cropPos.setY(y);
-  }
-
-  public void moveRight(double n) {
-    double x = cropPos.getX();
-    x += n;
-
+  public void move(double x, double y) {
     Image bImg = image.get();
     double w = bImg.getWidth();
-    double rectWidth = cropRect.getWidth();
-    if (w < x + rectWidth) {
-      x = w - rectWidth;
-    }
-
-    cropPos.setX(x);
-  }
-
-  public void moveDown(double n) {
-    double y = cropPos.getY();
-    y += n;
-
-    Image bImg = image.get();
     double h = bImg.getHeight();
+    double rectWidth = cropRect.getWidth();
     double rectHeight = cropRect.getHeight();
-    if (h < y + rectHeight) {
-      y = h - rectHeight;
-    }
-
-    cropPos.setY(y);
-  }
-
-  public void moveLeft(double n) {
-    double x = this.cropPos.getX();
-    x -= n;
 
     if (x < 0) {
       x = 0;
+    } else if (w < x + rectWidth) {
+      x = w - rectWidth;
+    }
+
+    if (y < 0) {
+      y = 0;
+    } else if (h < y + rectHeight) {
+      y = h - rectHeight;
     }
 
     cropPos.setX(x);
+    cropPos.setY(y);
+    croppedImage.set(crop());
+  }
+
+  public void moveUp(double n) {
+    double x = cropPos.getX();
+    double y = cropPos.getY() - n;
+    move(x, y);
+  }
+
+  public void moveRight(double n) {
+    double x = cropPos.getX() + n;
+    double y = cropPos.getY();
+    move(x, y);
+  }
+
+  public void moveDown(double n) {
+    double x = cropPos.getX();
+    double y = cropPos.getY() + n;
+    move(x, y);
+  }
+
+  public void moveLeft(double n) {
+    double x = cropPos.getX() - n;
+    double y = cropPos.getY();
+    move(x, y);
+  }
+
+  /** Centering */
+  public void moveByMouse(double x, double y) {
+    double w = cropRect.getWidth();
+    double h = cropRect.getHeight();
+    x = x - w / 2;
+    y = y - h / 2;
+    move(x, y);
   }
 
   public void setScale(double scale) {
@@ -104,6 +115,10 @@ public class CroppingImageModel {
 
   public ObjectProperty<Image> imageProperty() {
     return image;
+  }
+
+  public ObjectProperty<Image> croppedImageProperty() {
+    return croppedImage;
   }
 
   public DoubleProperty scaleProperty() {
