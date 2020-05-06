@@ -95,27 +95,11 @@ public class CroppingImageModel {
     move(x, y);
   }
 
-  public void setScale(double scale) {
-    this.scale.set(scale);
-  }
-
-  public Position getPosition() {
-    return cropPos;
-  }
-
-  public Rectangle getRectangle() {
-    return cropRect;
-  }
-
-  public void setImage(Image image) {
-    this.image.set(image);
-    this.imageWidth.set(image.getWidth());
-    this.imageHeight.set(image.getHeight());
-  }
-
   public void clearImage() {
     setImage(createEmptyImage());
   }
+
+  // property /////////////////////////////////////////////////////////////////
 
   public ObjectProperty<Image> imageProperty() {
     return image;
@@ -136,6 +120,30 @@ public class CroppingImageModel {
   public DoubleProperty scaleProperty() {
     return scale;
   }
+
+  // getter ///////////////////////////////////////////////////////////////////
+
+  public Position getPosition() {
+    return cropPos;
+  }
+
+  public Rectangle getRectangle() {
+    return cropRect;
+  }
+
+  // setter ///////////////////////////////////////////////////////////////////
+
+  public void setImage(Image image) {
+    this.image.set(image);
+    this.imageWidth.set(image.getWidth());
+    this.imageHeight.set(image.getHeight());
+  }
+
+  public void setScale(double scale) {
+    this.scale.set(scale);
+  }
+
+  // private method ////////////////////////////////////////////////////////////
 
   private static Image createEmptyImage() {
     return new WritableImage(100, 100);
