@@ -2,10 +2,12 @@ package com.jiro4989.tkfm.model;
 
 import java.io.File;
 import java.util.LinkedList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ImageFilesModel {
-  private List<ImageFileModel> files = new LinkedList<>();
+  private ObservableList<ImageFileModel> files =
+      FXCollections.observableArrayList(new LinkedList<>());
   private int selectedIndex = 0;
   private final CroppingImageModel croppingImage;
 
@@ -33,8 +35,8 @@ public class ImageFilesModel {
   }
 
   public void select(int i) {
-    var min = 0;
-    var max = files.size();
+    int min = 0;
+    int max = files.size();
     if (i < min || max <= i) {
       return;
     }
@@ -57,7 +59,7 @@ public class ImageFilesModel {
     select(selectedIndex - 1);
   }
 
-  public List<ImageFileModel> getFiles() {
+  public ObservableList<ImageFileModel> getFiles() {
     return files;
   }
 }

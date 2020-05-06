@@ -5,7 +5,6 @@ import com.jiro4989.tkfm.model.*;
 import java.io.File;
 import java.util.List;
 import java.util.stream.IntStream;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -78,26 +77,12 @@ public class FileListHBoxController {
 
   /** 最初に選択したファイルをリストから削除する。 */
   public void deleteFile() {
-    // TODO
     imageFiles.remove(0);
-    // if (!fileListView.getSelectionModel().isEmpty()) {
-    //   int index = fileListView.getSelectionModel().getSelectedIndex();
-    //   fileListView.getItems().remove(index);
-    //   // fileNameList.remove(index);
-    //   // filePathList.remove(index);
-    // }
-    // clearImageView();
   }
 
   /** リストの全てのファイルを削除する。 */
   public void clearFiles() {
     imageFiles.clear();
-    // if (!fileListView.getSelectionModel().isEmpty()) {
-    //   fileListView.getItems().clear();
-    //   // fileNameList.clear();
-    //   // filePathList.clear();
-    // }
-    // clearImageView();
   }
 
   /** イメージビューに登録している画像をクリアする。 */
@@ -181,7 +166,7 @@ public class FileListHBoxController {
 
   public void setImageFilesModel(ImageFilesModel m) {
     imageFiles = m;
-    var arr = FXCollections.observableArrayList(imageFiles.getFiles());
+    var arr = imageFiles.getFiles();
     fileListView.setItems(arr);
   }
 }
