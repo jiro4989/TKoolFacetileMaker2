@@ -25,8 +25,8 @@ jobs:
       matrix:
         os:
           - windows-latest
-          - macOS-latest
-          - ubuntu-latest
+            #- macOS-latest
+            #- ubuntu-latest
     needs: before
     steps:
       - uses: actions/checkout@v1
@@ -35,8 +35,10 @@ jobs:
           java-version: '14'
           java-package: jdk
           architecture: x64
+      - name: Install xvfb
+        run: apt install -y xvfb
       - name: Build
-        run: ./gradlew build
+        run: xvfb-run ./gradlew build
 
       - name: Create artifact
         if: startsWith(github.ref, 'refs/tags/')
