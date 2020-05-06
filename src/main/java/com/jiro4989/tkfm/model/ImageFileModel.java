@@ -26,4 +26,9 @@ public class ImageFileModel {
   public Image readImage() {
     return new Image(file.toURI().toString());
   }
+
+  @Override
+  public String toString() {
+    return file.getName();
+  }
 }
