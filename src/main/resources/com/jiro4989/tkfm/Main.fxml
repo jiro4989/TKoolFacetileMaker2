@@ -13,7 +13,9 @@
   <center>
     <BorderPane prefHeight="847.0" prefWidth="808.0">
       <bottom>
-        <TitledPane fx:id="outputViewerPane" animated="false" collapsible="false" content="$null" prefHeight="330.0" prefWidth="896.0" text="出力画像プレビュー">
+        <TitledPane animated="false" collapsible="false" content="$null" prefHeight="2000.0" prefWidth="916.0" text="画像ビューワ">
+          <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" >
+          </ImageView>
           <BorderPane.margin>
             <Insets bottom="5.0" right="5.0" top="5.0" />
           </BorderPane.margin>
