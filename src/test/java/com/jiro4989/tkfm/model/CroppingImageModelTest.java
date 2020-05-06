@@ -1,13 +1,14 @@
 package com.jiro4989.tkfm.model;
 
-import java.io.File;
-import javafx.scene.image.Image;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
+import java.io.File;
+import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.testfx.framework.junit5.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class CroppingImageModelTest {
