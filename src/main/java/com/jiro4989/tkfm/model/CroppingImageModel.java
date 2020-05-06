@@ -38,7 +38,7 @@ public class CroppingImageModel {
     return new WritableImage(pix, (int) x, (int) y, (int) width, (int) width);
   }
 
-  public void move(double x, double y) {
+  private void move(double x, double y) {
     Image bImg = image.get();
     double w = bImg.getWidth();
     double h = bImg.getHeight();
@@ -88,10 +88,10 @@ public class CroppingImageModel {
 
   /** Centering */
   public void moveByMouse(double x, double y) {
-    double w = cropRect.getWidth();
-    double h = cropRect.getHeight();
-    x = x - w / 2;
-    y = y - h / 2;
+    // double w = cropRect.getWidth();
+    // double h = cropRect.getHeight();
+    // x = x - w / 2;
+    // y = y - h / 2;
     move(x, y);
   }
 
