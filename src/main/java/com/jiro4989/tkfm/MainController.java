@@ -461,6 +461,7 @@ public class MainController {
   @FXML
   private void removeButtonOnClicked(MouseEvent e) {}
 
+  // TODO: Bad method name
   @FXML
   private void focusGridPaneOnMouseDragged(MouseEvent event) {
     double x = event.getX();
