@@ -1,9 +1,5 @@
 package com.jiro4989.tkfm;
 
-import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
@@ -15,15 +11,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.input.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -67,16 +64,19 @@ public class MainController {
   @FXML private Button clearButton;
   @FXML private Button removeButton;
   @FXML private ImageView cropImageView;
+  @FXML private ImageView croppedImageView;
   @FXML private GridPane focusGridPane;
   @FXML private Label cropXLabel;
   @FXML private Label cropYLabel;
   @FXML private Label cropScaleLabel;
   @FXML private Slider cropScaleSlider;
   @FXML private ComboBox<Integer> cropAxisComboBox;
-  private ObservableList<Integer> cropAxisItems = FXCollections.observableArrayList(1, 5, 10, 25, 50);
+  private ObservableList<Integer> cropAxisItems =
+      FXCollections.observableArrayList(1, 5, 10, 25, 50);
 
   @FXML private ComboBox<Integer> cropScaleComboBox;
-  private ObservableList<Integer> cropScaleItems = FXCollections.observableArrayList(1, 5, 10, 25, 50);
+  private ObservableList<Integer> cropScaleItems =
+      FXCollections.observableArrayList(1, 5, 10, 25, 50);
   @FXML private ImageView outputImageView;
 
   // **************************************************
@@ -219,7 +219,7 @@ public class MainController {
 
     // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
     // slider.valueProperty().addListener(e -> updateImage());
-    // 
+    //
     // axisComboBox.setItems(axisItems);
     // zoomRateComboBox.setItems(zoomRateItems);
     // axisComboBox.getSelectionModel().select(1);
@@ -374,22 +374,6 @@ public class MainController {
     // imageViewerBorderPaneController.setImage(filePath);
   }
 
-  public double getX() {
-    return 0;
-  }
-
-  public double getY() {
-    return 0;
-  }
-
-  public double getRate() {
-    return 0;
-  }
-
-  public Image getTrimmingImage() {
-    return 0;
-  }
-
   public TKoolVersion getTKoolVersion() {
     return version;
   }
@@ -461,16 +445,13 @@ public class MainController {
   }
 
   @FXML
-  private void bulkInsertButtonOnClicked(MouseEvent e) {
-  }
+  private void bulkInsertButtonOnClicked(MouseEvent e) {}
 
   @FXML
-  private void clearButtonOnClicked(MouseEvent e) {
-  }
+  private void clearButtonOnClicked(MouseEvent e) {}
 
   @FXML
-  private void removeButtonOnClicked(MouseEvent e) {
-  }
+  private void removeButtonOnClicked(MouseEvent e) {}
 
   @FXML
   private void focusGridPaneOnMouseDragged(MouseEvent event) {
@@ -482,6 +463,6 @@ public class MainController {
     var pos = cropImage.getPosition();
     pos.setX(x - w / 2);
     pos.setY(y - h / 2);
-    cropImageView.setImage(cropImage.crop());
+    croppedImageView.setImage(cropImage.crop());
   }
 }

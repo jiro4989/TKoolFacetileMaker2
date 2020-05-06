@@ -237,7 +237,7 @@
                                              <children>
                                                 <GridPane id="GridPane" fx:id="imageViewGridPane" gridLinesVisible="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <children>
-                                                      <ImageView fx:id="imageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                      <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                    </children>
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -265,14 +265,14 @@
                                     </ScrollPane>
                                  </center>
                                  <left>
-                                    <AnchorPane fx:id="cropImageView" prefHeight="435.0" prefWidth="163.0">
+                                    <AnchorPane prefHeight="435.0" prefWidth="163.0">
                                        <children>
                                           <FlowPane alignment="BOTTOM_LEFT" columnHalignment="LEFT" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="149.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
                                              <children>
                                                 <Label id="" prefHeight="30.0" prefWidth="106.0" text="トリミング：" />
                                                 <GridPane fx:id="trimmingGridPane" gridLinesVisible="true" prefHeight="144.0" prefWidth="144.0">
                                                    <children>
-                                                      <ImageView fx:id="trimmingImageView" fitHeight="144.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                      <ImageView fx:id="croppedImageView" fitHeight="144.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                    </children>
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
