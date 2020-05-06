@@ -187,6 +187,8 @@ public class MainController {
     Bindings.bindBidirectional(
         cropImageGridPane.prefHeightProperty(), cropImage.imageHeightProperty());
     Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
+    Bindings.bindBidirectional(cropImageView.fitWidthProperty(), cropImage.imageWidthProperty());
+    Bindings.bindBidirectional(cropImageView.fitHeightProperty(), cropImage.imageHeightProperty());
     Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
