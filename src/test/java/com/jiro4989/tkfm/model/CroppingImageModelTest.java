@@ -6,7 +6,10 @@ import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.testfx.framework.junit5.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(ApplicationExtension.class)
 public class CroppingImageModelTest {
   @Test
   public void testCroppedImageWidthAndHeightEqualsRectangle() throws Exception {
