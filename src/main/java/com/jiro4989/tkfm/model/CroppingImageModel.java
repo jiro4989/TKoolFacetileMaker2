@@ -12,6 +12,8 @@ public class CroppingImageModel {
       new SimpleObjectProperty<>(new WritableImage(144, 144));
   private Position cropPos = new Position(0, 0);
   private Rectangle cropRect = new Rectangle(144, 144);
+  private DoubleProperty imageWidth = new SimpleDoubleProperty(288.0);
+  private DoubleProperty imageHeight = new SimpleDoubleProperty(288.0);
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
   public CroppingImageModel() {}
@@ -107,6 +109,8 @@ public class CroppingImageModel {
 
   public void setImage(Image image) {
     this.image.set(image);
+    this.imageWidth.set(image.getWidth());
+    this.imageHeight.set(image.getHeight());
   }
 
   public void clearImage() {
@@ -119,6 +123,14 @@ public class CroppingImageModel {
 
   public ObjectProperty<Image> croppedImageProperty() {
     return croppedImage;
+  }
+
+  public DoubleProperty imageWidthProperty() {
+    return imageWidth;
+  }
+
+  public DoubleProperty imageHeightProperty() {
+    return imageHeight;
   }
 
   public DoubleProperty scaleProperty() {

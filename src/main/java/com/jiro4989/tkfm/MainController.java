@@ -63,6 +63,7 @@ public class MainController {
   @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
   @FXML private Button removeButton;
+  @FXML private GridPane cropImageGridPane;
   @FXML private ImageView cropImageView;
   @FXML private ImageView croppedImageView;
   @FXML private GridPane focusGridPane;
@@ -181,6 +182,10 @@ public class MainController {
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
     // Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty());
+    Bindings.bindBidirectional(
+        cropImageGridPane.prefWidthProperty(), cropImage.imageWidthProperty());
+    Bindings.bindBidirectional(
+        cropImageGridPane.prefHeightProperty(), cropImage.imageHeightProperty());
     Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
     Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());

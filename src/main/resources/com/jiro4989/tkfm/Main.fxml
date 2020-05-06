@@ -187,7 +187,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <BorderPane prefHeight="478.0" prefWidth="862.0">
+                        <BorderPane prefHeight="478.0" prefWidth="862.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <bottom>
                               <ToolBar BorderPane.alignment="CENTER">
                                  <items>
@@ -235,7 +235,7 @@
                                        <content>
                                           <AnchorPane id="AnchorPane">
                                              <children>
-                                                <GridPane id="GridPane" fx:id="imageViewGridPane" gridLinesVisible="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <children>
                                                       <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                    </children>
