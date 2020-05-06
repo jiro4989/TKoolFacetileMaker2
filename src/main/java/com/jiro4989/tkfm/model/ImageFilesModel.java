@@ -47,18 +47,6 @@ public class ImageFilesModel {
     croppingImage.setImage(img);
   }
 
-  public void selectFirst() {
-    select(0);
-  }
-
-  public void selectNext() {
-    select(selectedIndex + 1);
-  }
-
-  public void selectPrev() {
-    select(selectedIndex - 1);
-  }
-
   public ObservableList<ImageFileModel> getFiles() {
     return files;
   }
