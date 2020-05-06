@@ -11,7 +11,7 @@ public class TileImageModel {
 
   private final List<List<Image>> images = new LinkedList<>();
   private final ObjectProperty<Image> image =
-      new SimpleObjectProperty<>(new WritableImage(rowCount * size, colCount * size));
+      new SimpleObjectProperty<>(new WritableImage(colCount * size, rowCount * size));
 
   public TileImageModel() {
     for (int i = 0; i < rowCount; i++) {
@@ -59,7 +59,7 @@ public class TileImageModel {
 
   private void draw() {
     var rawImg = image.get();
-    if (rawImg instanceof PixelWriter) {
+    if (rawImg instanceof WritableImage) {
       var img = (WritableImage) rawImg;
       var writer = img.getPixelWriter();
       for (int y = 0; y < rowCount; y++) {

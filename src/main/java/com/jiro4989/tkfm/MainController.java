@@ -459,9 +459,13 @@ public class MainController {
     var images =
         fileListView
             .getSelectionModel()
-            .getSelectedItems()
+            .getSelectedIndices()
             .stream()
-            .map(f -> f.readImage())
+            .map(
+                i -> {
+                  imageFiles.select(i);
+                  return cropImage.crop();
+                })
             .collect(Collectors.toList());
     tileImage.bulkInsert(images);
   }
