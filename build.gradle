@@ -17,6 +17,7 @@ buildscript {
     }
     dependencies {
         classpath "org.openjfx:javafx-plugin:0.0.8"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
     }
 }
 
@@ -29,9 +30,12 @@ plugins {
 
     // Code formatter
     id 'com.github.sherter.google-java-format' version '0.8'
+
+    id 'jacoco'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -45,7 +49,10 @@ dependencies {
     implementation 'com.google.guava:guava:28.2-jre'
 
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+    testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2'
+    testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
 
     // JavaFX
     implementation "org.openjfx:javafx-fxml:$javafx_version"
@@ -76,4 +83,23 @@ jar {
   archiveBaseName = 'tkfm'
 
   from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+test {
+  finalizedBy jacocoTestReport
+}
+
+jacoco {
+  applyTo junitPlatformTest
+}
+
+task junitPlatformJacocoReport(type: JacocoReport) {
+  sourceSets sourceSets.main
+  executionData junitPlatformTest
+}
+
+junitPlatformTest {
+  jacoco {
+    destinationFile = file("${buildDir}/jacoco/test.exec")
+  }
 }
