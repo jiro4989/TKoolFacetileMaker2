@@ -2,8 +2,7 @@ package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
@@ -11,7 +10,7 @@ public class CroppingImageModel {
   private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
   private Position cropPos = new Position(0, 0);
   private Rectangle cropRect = new Rectangle(144, 144);
-  private double scale = 100.0;
+  private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
   public CroppingImageModel() {}
 
@@ -19,11 +18,20 @@ public class CroppingImageModel {
     this.image.set(image);
     this.cropPos = pos;
     this.cropRect = rect;
-    this.scale = scale;
+    this.scale.set(scale);
   }
 
   public Image crop() {
-    return null;
+    var x = cropPos.getX();
+    var y = cropPos.getY();
+    var width = cropRect.getWidth();
+    var height = cropRect.getHeight();
+    double scale = this.scale.get() / 100;
+    width /= scale;
+    x /= scale;
+    y /= scale;
+    var pix = image.get().getPixelReader();
+    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) width);
   }
 
   public void moveUp(double n) {
@@ -75,7 +83,7 @@ public class CroppingImageModel {
   }
 
   public void setScale(double scale) {
-    this.scale = scale;
+    this.scale.set(scale);
   }
 
   public Position getPosition() {
@@ -96,6 +104,10 @@ public class CroppingImageModel {
 
   public ObjectProperty<Image> imageProperty() {
     return image;
+  }
+
+  public DoubleProperty scaleProperty() {
+    return scale;
   }
 
   private static Image createEmptyImage() {

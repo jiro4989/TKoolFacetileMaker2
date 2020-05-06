@@ -12,8 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
@@ -54,9 +52,8 @@ public class ImageViewerBorderPaneController {
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
     Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
+    Bindings.bindBidirectional(slider.valueProperty(), cropImage.scaleProperty());
 
-    slider.setOnMouseClicked(e -> changeZoomRate(slider.getValue()));
-    slider.setOnMouseDragged(e -> changeZoomRate(slider.getValue()));
     slider.setOnScroll(e -> changeZoomRateWithScroll(e));
     slider.valueProperty().addListener(e -> updateImage());
 
@@ -76,30 +73,15 @@ public class ImageViewerBorderPaneController {
    * @param event マウスイベント
    */
   private void moveFocusGridPane(MouseEvent event) {
-    imageOpt.ifPresent(
-        image -> {
-          var x = event.getX();
-          var y = event.getY();
-          var rect = cropImage.getRectangle();
-          var w = rect.getWidth();
-          var h = rect.getHeight();
-          var pos = cropImage.getPosition();
-          pos.setX(x - w / 2);
-          pos.setY(y - h / 2);
-
-          // double x = focusGridPane.getLayoutX();
-          // double y = focusGridPane.getLayoutY();
-          // double mouseX = x + event.getX();
-          // double mouseY = y + event.getY();
-          // int width = mainController.getTKoolVersion().getWidth();
-          // x = mouseX - width / 2;
-          // y = mouseY - width / 2;
-
-          // double rate = getRate();
-          // rate /= 100;
-          // setFocusPosition(x, y, rate, image.getWidth(), image.getHeight(), width);
-          // updateTrimmingImageView();
-        });
+    double x = event.getX();
+    double y = event.getY();
+    var rect = cropImage.getRectangle();
+    var w = rect.getWidth();
+    var h = rect.getHeight();
+    var pos = cropImage.getPosition();
+    pos.setX(x - w / 2);
+    pos.setY(y - h / 2);
+    trimmingImageView.setImage(cropImage.crop());
   }
 
   /**
@@ -127,80 +109,43 @@ public class ImageViewerBorderPaneController {
     yLabel.setText("" + y);
   }
 
-  /** ズーム倍率を変更する。 */
-  private void changeZoomRate(double rate) {
-    imageOpt
-        .filter(i -> mainController.getTKoolVersion().getWidth() < i.getWidth() * rate / 100)
-        .ifPresent(
-            i -> {
-              slider.setValue(rate);
-              rateLabel.setText("" + Math.floor(rate));
-              updateImage();
-            });
-  }
-
   /**
    * マウススクロールで拡大率を変更する。
    *
    * @param e
    */
   private void changeZoomRateWithScroll(ScrollEvent e) {
-    double deltaY = e.getDeltaY();
-    double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
-    double currentRate = getRate();
-
-    double newRate = 0 < deltaY ? currentRate + plus : currentRate - plus;
-    newRate = Math.max(0, newRate);
-    newRate = Math.min(200, newRate);
-    changeZoomRate(newRate);
+    // double deltaY = e.getDeltaY();
+    // double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
+    // double currentRate = getRate();
+    //
+    // double newRate = 0 < deltaY ? currentRate + plus : currentRate - plus;
+    // newRate = Math.max(0, newRate);
+    // newRate = Math.min(200, newRate);
+    // changeZoomRate(newRate);
   }
 
   /** 画像を更新する。 */
   private void updateImage() {
-    imageOpt.ifPresent(
-        image -> {
-          double rate = getRate();
-          rate /= 100;
-          double imageWidth = image.getWidth();
-          double imageHeight = image.getHeight();
-          int width = mainController.getTKoolVersion().getWidth();
-
-          if (width < imageWidth * rate) {
-            imageViewGridPane.setPrefSize(imageWidth * rate, imageHeight * rate);
-            imageView.setFitWidth(imageWidth * rate);
-            imageView.setFitHeight(imageHeight * rate);
-
-            double x = focusGridPane.getLayoutX();
-            double y = focusGridPane.getLayoutY();
-            setFocusPosition(x, y, rate, imageWidth, imageHeight, width);
-            updateTrimmingImageView();
-          }
-        });
-  }
-
-  /** トリミング画像のプレビューを更新する。 */
-  private void updateTrimmingImageView() {
-    imageOpt.ifPresent(
-        image -> {
-          double x = focusGridPane.getLayoutX();
-          if (0 < x) {
-            trimmingImageView.setImage(getTrimmingImage(image));
-          }
-        });
-  }
-
-  /** トリミングした画像を返す */
-  private WritableImage getTrimmingImage(Image aImage) {
-    double x = focusGridPane.getLayoutX();
-    double y = focusGridPane.getLayoutY();
-    double width = mainController.getTKoolVersion().getWidth();
-    double rate = getRate();
-    rate /= 100;
-    width /= rate;
-    x /= rate;
-    y /= rate;
-    PixelReader pix = aImage.getPixelReader();
-    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) width);
+    // imageOpt.ifPresent(
+    //     image -> {
+    //       double rate = getRate();
+    //       rate /= 100;
+    //       double imageWidth = image.getWidth();
+    //       double imageHeight = image.getHeight();
+    //       int width = mainController.getTKoolVersion().getWidth();
+    //
+    //       if (width < imageWidth * rate) {
+    //         imageViewGridPane.setPrefSize(imageWidth * rate, imageHeight * rate);
+    //         imageView.setFitWidth(imageWidth * rate);
+    //         imageView.setFitHeight(imageHeight * rate);
+    //
+    //         double x = focusGridPane.getLayoutX();
+    //         double y = focusGridPane.getLayoutY();
+    //         setFocusPosition(x, y, rate, imageWidth, imageHeight, width);
+    //         trimmingImageView.setImage(cropImage.crop());
+    //       }
+    //     });
   }
 
   /**
@@ -218,15 +163,17 @@ public class ImageViewerBorderPaneController {
    * @param filePath
    */
   public void setImage(String filePath) {
-    imageOpt = Optional.ofNullable(new Image("file:" + filePath));
-    imageOpt.ifPresent(
-        image -> {
-          double width = image.getWidth();
-          double height = image.getHeight();
-          imageViewGridPane.setPrefSize(width, height);
-          imageView.setImage(image);
-          updateImage();
-        });
+    var img = new Image("file:" + filePath);
+    cropImage.setImage(img);
+    // imageOpt = Optional.ofNullable();
+    // imageOpt.ifPresent(
+    //     image -> {
+    //       double width = image.getWidth();
+    //       double height = image.getHeight();
+    //       imageViewGridPane.setPrefSize(width, height);
+    //       imageView.setImage(image);
+    //       updateImage();
+    //     });
   }
 
   public void clearImageView() {
@@ -235,49 +182,24 @@ public class ImageViewerBorderPaneController {
     trimmingImageView.setImage(null);
   }
 
-  private void move(double x, double y) {
-    imageOpt.ifPresent(
-        image -> {
-          double rate = getRate();
-          rate /= 100;
-          double imageWidth = image.getWidth();
-          double imageHeight = image.getHeight();
-          int width = mainController.getTKoolVersion().getWidth();
-          setFocusPosition(x, y, rate, imageWidth, imageHeight, width);
-          updateTrimmingImageView();
-        });
-  }
-
   public void moveUp() {
-    double x = getX();
-    double currentY = getY();
-    double plus = axisComboBox.getSelectionModel().getSelectedItem();
-    double y = currentY - plus;
-    move(x, y);
+    double n = axisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveUp(n);
   }
 
   public void moveLeft() {
-    double currentX = getX();
-    double plus = axisComboBox.getSelectionModel().getSelectedItem();
-    double x = currentX - plus;
-    double y = getY();
-    move(x, y);
+    double n = axisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveLeft(n);
   }
 
   public void moveDown() {
-    double x = getX();
-    double currentY = getY();
-    double plus = axisComboBox.getSelectionModel().getSelectedItem();
-    double y = currentY + plus;
-    move(x, y);
+    double n = axisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveDown(n);
   }
 
   public void moveRight() {
-    double currentX = getX();
-    double plus = axisComboBox.getSelectionModel().getSelectedItem();
-    double x = currentX + plus;
-    double y = getY();
-    move(x, y);
+    double n = axisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveRight(n);
   }
 
   public double getX() {
@@ -297,19 +219,19 @@ public class ImageViewerBorderPaneController {
     // trimmingGridPane.setPrefSize(width, width);
     // trimmingImageView.setFitWidth(width);
     // trimmingImageView.setFitHeight(width);
-    // updateTrimmingImageView();
+    // trimmingImageView.setImage(cropImage.crop());
   }
 
   public void zoomIn() {
-    double rate = getRate();
-    double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
-    changeZoomRate(rate + plus);
+    // double rate = getRate();
+    // double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
+    // changeZoomRate(rate + plus);
   }
 
   public void zoomOut() {
-    double rate = getRate();
-    double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
-    changeZoomRate(rate - plus);
+    // double rate = getRate();
+    // double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
+    // changeZoomRate(rate - plus);
   }
 
   public CroppingImageModel getCroppingImageModel() {
