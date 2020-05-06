@@ -4,8 +4,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class Position {
-  private DoubleProperty x = new SimpleDoubleProperty(0.0);
-  private DoubleProperty y = new SimpleDoubleProperty(0.0);
+  private final DoubleProperty x = new SimpleDoubleProperty(0.0);
+  private final DoubleProperty y = new SimpleDoubleProperty(0.0);
 
   public Position() {
     this(0, 0);

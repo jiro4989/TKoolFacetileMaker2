@@ -88,10 +88,10 @@ public class CroppingImageModel {
 
   /** Centering */
   public void moveByMouse(double x, double y) {
-    // double w = cropRect.getWidth();
-    // double h = cropRect.getHeight();
-    // x = x - w / 2;
-    // y = y - h / 2;
+    double w = cropRect.getWidth();
+    double h = cropRect.getHeight();
+    x = x - w / 2;
+    y = y - h / 2;
     move(x, y);
   }
 
