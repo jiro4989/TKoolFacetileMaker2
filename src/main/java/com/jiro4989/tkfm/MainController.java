@@ -9,23 +9,13 @@ import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
 import com.jiro4989.tkfm.options.OptionsStage;
 import com.jiro4989.tkfm.options.Separators;
-import com.jiro4989.tkfm.outputViewer.MyImageView;
-import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPane;
-import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPaneController;
 import com.jiro4989.tkfm.version.VersionStage;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
@@ -37,7 +27,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.imageio.ImageIO;
 
 public class MainController {
   private Main main;
@@ -138,14 +127,12 @@ public class MainController {
   // **************************************************
   private FileListHBox fileListHBox = new FileListHBox(this);
   private ImageViewerBorderPane imageViewerBorderPane = new ImageViewerBorderPane(this);
-  private OutputViewerAnchorPane outputViewerAnchorPane = new OutputViewerAnchorPane(this);
 
   // **************************************************
   // 拡張パネルコントローラー
   // **************************************************
   private FileListHBoxController fileListHBoxController;
   private ImageViewerBorderPaneController imageViewerBorderPaneController;
-  private OutputViewerAnchorPaneController outputViewerAnchorPaneController;
 
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
@@ -162,7 +149,6 @@ public class MainController {
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
     insertMenuItem.setOnAction(e -> fileListHBoxController.insertImages(0));
-    clearMenuItem.setOnAction(e -> clearOutputImages());
     listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
     listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
 
@@ -194,7 +180,6 @@ public class MainController {
 
     fileListHBoxController = fileListHBox.getController();
     imageViewerBorderPaneController = imageViewerBorderPane.getController();
-    outputViewerAnchorPaneController = outputViewerAnchorPane.getController();
 
     cropImage = imageViewerBorderPaneController.getCroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
@@ -235,8 +220,6 @@ public class MainController {
     version = aVersion;
     double width = (double) version.getWidth();
     imageViewerBorderPaneController.changeVersion(width);
-    outputViewerAnchorPaneController.changeVersion(width);
-    clearOutputImages();
   }
 
   /** オプション設定画面を開く。 */
@@ -253,22 +236,6 @@ public class MainController {
   private void openVersionWindow() {
     VersionStage stage = new VersionStage();
     stage.showAndWait();
-  }
-
-  /**
-   * 出力画像プレビューのイメージのリストを取得する。
-   *
-   * @return イメージのリスト
-   */
-  private List<MyImageView> getPanelImages() {
-    ObservableList<Node> imageList = outputViewerAnchorPaneController.getPanelImagesList();
-    List<MyImageView> images =
-        imageList
-            .stream()
-            .filter(n -> n instanceof MyImageView)
-            .map(n -> (MyImageView) n)
-            .collect(Collectors.toList());
-    return images;
   }
 
   /** 取り込むファイルを選択する。 */
@@ -298,46 +265,34 @@ public class MainController {
       saveAsFile();
       return;
     }
-
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
-    savedFileOpt.ifPresent(
-        file -> {
-          try {
-            ImageIO.write(image, "png", file);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
   }
 
   /** 別名で保存する。 */
   private void saveAsFile() {
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
-    FileChooser fc = new FileChooser();
-    fc.setTitle("名前をつけて保存");
-    fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    File dir = new File(savedDirPath);
-    dir = dir.exists() ? dir : new File(".");
-    fc.setInitialDirectory(dir);
-    fc.setInitialFileName(savedFileName);
-
-    Stage stage = new Stage(StageStyle.UTILITY);
-    savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
-    savedFileOpt.ifPresent(
-        file -> {
-          savedFileName = file.getName();
-          initialSavedFileName = file.getName();
-          savedDirPath = file.getParent();
-          try {
-            ImageIO.write(image, "png", file);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
+    // List<MyImageView> images = getPanelImages();
+    // BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
+    //
+    // FileChooser fc = new FileChooser();
+    // fc.setTitle("名前をつけて保存");
+    // fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
+    // File dir = new File(savedDirPath);
+    // dir = dir.exists() ? dir : new File(".");
+    // fc.setInitialDirectory(dir);
+    // fc.setInitialFileName(savedFileName);
+    //
+    // Stage stage = new Stage(StageStyle.UTILITY);
+    // savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
+    // savedFileOpt.ifPresent(
+    //     file -> {
+    //       savedFileName = file.getName();
+    //       initialSavedFileName = file.getName();
+    //       savedDirPath = file.getParent();
+    //       try {
+    //         ImageIO.write(image, "png", file);
+    //       } catch (IOException e) {
+    //         e.printStackTrace();
+    //       }
+    //     });
   }
 
   /** ナンバリングしてファイルを保存する。 ファイル名が存在しなかった場合は定義するためのダイアログを呼び出す。 */
@@ -368,31 +323,31 @@ public class MainController {
 
   /** ファイル末尾にナンバリングを付与して画像を出力する処理。 */
   private void numberingSave() {
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
-    File file = new File(OUTPUT_DIR + numberingFileName);
-    int index = 1;
-    file = options.makeFormatedFile(file, index);
-    while (file.exists() && index <= 100) {
-      index++;
-      file = options.makeFormatedFile(file, index);
-    }
-
-    if (index <= 100) {
-      try {
-        ImageIO.write(image, "png", file);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return;
-    }
-
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("エラー");
-    alert.getDialogPane().setHeaderText("ファイルのナンバリングが100を超えました。");
-    alert.getDialogPane().setContentText("ファイルを整理してから再度実行してください。");
-    alert.showAndWait();
+    // List<MyImageView> images = getPanelImages();
+    // BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
+    //
+    // File file = new File(OUTPUT_DIR + numberingFileName);
+    // int index = 1;
+    // file = options.makeFormatedFile(file, index);
+    // while (file.exists() && index <= 100) {
+    //   index++;
+    //   file = options.makeFormatedFile(file, index);
+    // }
+    //
+    // if (index <= 100) {
+    //   try {
+    //     ImageIO.write(image, "png", file);
+    //   } catch (IOException e) {
+    //     e.printStackTrace();
+    //   }
+    //   return;
+    // }
+    //
+    // Alert alert = new Alert(AlertType.ERROR);
+    // alert.setTitle("エラー");
+    // alert.getDialogPane().setHeaderText("ファイルのナンバリングが100を超えました。");
+    // alert.getDialogPane().setContentText("ファイルを整理してから再度実行してください。");
+    // alert.showAndWait();
   }
 
   /**
@@ -440,16 +395,8 @@ public class MainController {
     main = aMain;
   }
 
-  public void setTrimmingImage(String filePath, int column, int row) {
-    outputViewerAnchorPaneController.setTrimmingImage(filePath, column, row);
-  }
-
   public void clearImageView() {
     imageViewerBorderPaneController.clearImageView();
-  }
-
-  public void clearOutputImages() {
-    outputViewerAnchorPaneController.clearImages();
   }
 
   /** プロパティファイルを書き出す。 呼び出し元はMainクラスで、ウィンドウを閉じるときに呼び出される。 */

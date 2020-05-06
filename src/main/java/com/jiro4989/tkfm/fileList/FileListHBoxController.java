@@ -72,7 +72,7 @@ public class FileListHBoxController {
 
   /** 出力画像パネルのイメージをクリアする。 */
   private void clearOutputImages() {
-    mainController.clearOutputImages();
+    // mainController.clearOutputImages();
   }
 
   /** 最初に選択したファイルをリストから削除する。 */
