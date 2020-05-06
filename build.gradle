@@ -103,3 +103,10 @@ junitPlatformTest {
     destinationFile = file("${buildDir}/jacoco/test.exec")
   }
 }
+
+jacocoTestReport {
+  reports {
+    xml.enabled = true
+    html.enabled = true
+  }
+}
