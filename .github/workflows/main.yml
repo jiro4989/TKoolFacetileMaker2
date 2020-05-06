@@ -33,6 +33,8 @@ jobs:
         run: sudo apt install -y xvfb
       - name: Test
         run: xvfb-run ./gradlew test
+      - name: Send coverage report
+        run: bash <(curl -s https://codecov.io/bash)
 
   build:
     runs-on: ${{ matrix.os }}
