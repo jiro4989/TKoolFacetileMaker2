@@ -98,26 +98,8 @@ task junitPlatformJacocoReport(type: JacocoReport) {
   executionData junitPlatformTest
 }
 
-// // junitPlatform.enableStandardTestTask true
-// 
-// // jacocoTestReport {
-// //   dependsOn test
-// // }
-// // 
-// jacoco {
-//   toolVersion = '0.8.5'
-//   //applyTo junitPlatformTest
-// }
-// 
-// jacocoTestReport {
-//   afterEvaluate {
-//     classDirectories = files(classDirectories.files.collect {
-//       fileTree(dir: it, exclude: ['**/Main*'])
-//     })
-//   }
-//   reports {
-//     xml.enabled true
-//     csv.enabled false
-//     html.enabled true
-//   }
-// }
+junitPlatformTest {
+  jacoco {
+    destinationFile = file("${buildDir}/jacoco/test.exec")
+  }
+}
