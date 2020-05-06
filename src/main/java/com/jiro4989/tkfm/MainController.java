@@ -455,7 +455,7 @@ public class MainController {
   }
 
   @FXML
-  private void bulkInsertButtonOnClicked(MouseEvent e) {
+  private void bulkInsertButtonOnClicked() {
     var images =
         fileListView
             .getSelectionModel()
@@ -467,18 +467,18 @@ public class MainController {
   }
 
   @FXML
-  private void clearButtonOnClicked(MouseEvent e) {
+  private void clearButtonOnClicked() {
     imageFiles.clear();
   }
 
   @FXML
-  private void removeButtonOnClicked(MouseEvent e) {
+  private void removeButtonOnClicked() {
     var i = fileListView.getSelectionModel().getSelectedIndex();
     imageFiles.remove(i);
   }
 
   @FXML
-  private void clearOutputButtonOnClicked(MouseEvent e) {
+  private void clearOutputButtonOnClicked() {
     tileImage.clear();
   }
 
