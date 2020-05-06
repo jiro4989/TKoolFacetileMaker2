@@ -246,7 +246,7 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                 </GridPane>
-                                                <GridPane fx:id="focusGridPane" gridLinesVisible="true" layoutX="207.0" layoutY="160.0" prefHeight="144.0" prefWidth="144.0">
+                                                <GridPane fx:id="focusGridPane" gridLinesVisible="true" layoutX="207.0" layoutY="160.0" onMouseDragged="#focusGridPaneOnMouseDragged" prefHeight="144.0" prefWidth="144.0">
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

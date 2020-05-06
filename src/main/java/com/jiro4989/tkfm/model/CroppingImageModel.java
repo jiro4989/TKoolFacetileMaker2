@@ -22,10 +22,10 @@ public class CroppingImageModel {
   }
 
   public Image crop() {
-    var x = cropPos.getX();
-    var y = cropPos.getY();
-    var width = cropRect.getWidth();
-    var height = cropRect.getHeight();
+    double x = cropPos.getX();
+    double y = cropPos.getY();
+    double width = cropRect.getWidth();
+    double height = cropRect.getHeight();
     double scale = this.scale.get() / 100;
     width /= scale;
     x /= scale;
@@ -35,7 +35,7 @@ public class CroppingImageModel {
   }
 
   public void moveUp(double n) {
-    var y = cropPos.getY();
+    double y = cropPos.getY();
     y -= n;
     if (y < 0) {
       y = 0;
@@ -44,12 +44,12 @@ public class CroppingImageModel {
   }
 
   public void moveRight(double n) {
-    var x = cropPos.getX();
+    double x = cropPos.getX();
     x += n;
 
     Image bImg = image.get();
     double w = bImg.getWidth();
-    var rectWidth = cropRect.getWidth();
+    double rectWidth = cropRect.getWidth();
     if (w < x + rectWidth) {
       x = w - rectWidth;
     }
@@ -58,12 +58,12 @@ public class CroppingImageModel {
   }
 
   public void moveDown(double n) {
-    var y = cropPos.getY();
+    double y = cropPos.getY();
     y += n;
 
     Image bImg = image.get();
     double h = bImg.getHeight();
-    var rectHeight = cropRect.getHeight();
+    double rectHeight = cropRect.getHeight();
     if (h < y + rectHeight) {
       y = h - rectHeight;
     }
@@ -72,7 +72,7 @@ public class CroppingImageModel {
   }
 
   public void moveLeft(double n) {
-    var x = this.cropPos.getX();
+    double x = this.cropPos.getX();
     x -= n;
 
     if (x < 0) {

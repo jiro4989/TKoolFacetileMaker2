@@ -132,22 +132,13 @@ public class MainController {
   // **************************************************
   @FXML private MenuItem versionInfoItem;
 
-  // **************************************************
-  // 拡張パネルクラス
-  // **************************************************
-  private ImageViewerBorderPane imageViewerBorderPane = new ImageViewerBorderPane(this);
-
-  // **************************************************
-  // 拡張パネルコントローラー
-  // **************************************************
-  private ImageViewerBorderPaneController imageViewerBorderPaneController;
-
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
   private TileImageModel tileImage;
 
   @FXML
   private void initialize() {
+    // TODO
     openMenuItem.setOnAction(e -> openFile());
     saveMenuItem.setOnAction(e -> saveFile());
     saveAsMenuItem.setOnAction(e -> saveAsFile());
@@ -160,12 +151,12 @@ public class MainController {
     // listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
     // listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
 
-    upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
-    leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
-    downMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveDown());
-    rightMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveRight());
-    zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
-    zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
+    // upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
+    // leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
+    // downMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveDown());
+    // rightMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveRight());
+    // zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
+    // zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
 
     // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
     // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
@@ -181,17 +172,21 @@ public class MainController {
     mvRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.MV));
     vxaceRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.VXACE));
 
-    // 各種親パネルに拡張パネルを登録
-    imageViewerPane.setContent(imageViewerBorderPane);
-    // outputViewerPane.setContent(outputViewerAnchorPane);
-
-    // fileListHBoxController = fileListHBox.getController();
-    imageViewerBorderPaneController = imageViewerBorderPane.getController();
-
-    cropImage = imageViewerBorderPaneController.getCroppingImageModel();
+    // initialize models
+    cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
-    // fileListHBoxController.setImageFilesModel(imageFiles);
     tileImage = new TileImageModel();
+
+    // bindigns
+    var pos = cropImage.getPosition();
+    var rect = cropImage.getRectangle();
+    // Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty());
+    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
+    Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
+    Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
 
     prop.load();
@@ -217,9 +212,18 @@ public class MainController {
     File dir = new File(OUTPUT_DIR);
     dir.mkdirs();
 
+    // configurations
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
+
+    // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
+    // slider.valueProperty().addListener(e -> updateImage());
+    // 
+    // axisComboBox.setItems(axisItems);
+    // zoomRateComboBox.setItems(zoomRateItems);
+    // axisComboBox.getSelectionModel().select(1);
+    // zoomRateComboBox.getSelectionModel().select(1);
   }
 
   /**
@@ -230,7 +234,7 @@ public class MainController {
   private void changeTKoolVersion(TKoolVersion aVersion) {
     version = aVersion;
     double width = (double) version.getWidth();
-    imageViewerBorderPaneController.changeVersion(width);
+    // imageViewerBorderPaneController.changeVersion(width);
   }
 
   /** オプション設定画面を開く。 */
@@ -367,23 +371,23 @@ public class MainController {
    * @param filePath
    */
   public void sendFileName(String filePath) {
-    imageViewerBorderPaneController.setImage(filePath);
+    // imageViewerBorderPaneController.setImage(filePath);
   }
 
   public double getX() {
-    return imageViewerBorderPaneController.getX();
+    return 0;
   }
 
   public double getY() {
-    return imageViewerBorderPaneController.getY();
+    return 0;
   }
 
   public double getRate() {
-    return imageViewerBorderPaneController.getRate();
+    return 0;
   }
 
   public Image getTrimmingImage() {
-    return imageViewerBorderPaneController.getTrimmingImage();
+    return 0;
   }
 
   public TKoolVersion getTKoolVersion() {
@@ -403,7 +407,7 @@ public class MainController {
   }
 
   public void clearImageView() {
-    imageViewerBorderPaneController.clearImageView();
+    // imageViewerBorderPaneController.clearImageView();
   }
 
   /** プロパティファイルを書き出す。 呼び出し元はMainクラスで、ウィンドウを閉じるときに呼び出される。 */
@@ -468,4 +472,16 @@ public class MainController {
   private void removeButtonOnClicked(MouseEvent e) {
   }
 
+  @FXML
+  private void focusGridPaneOnMouseDragged(MouseEvent event) {
+    double x = event.getX();
+    double y = event.getY();
+    var rect = cropImage.getRectangle();
+    var w = rect.getWidth();
+    var h = rect.getHeight();
+    var pos = cropImage.getPosition();
+    pos.setX(x - w / 2);
+    pos.setY(y - h / 2);
+    cropImageView.setImage(cropImage.crop());
+  }
 }
