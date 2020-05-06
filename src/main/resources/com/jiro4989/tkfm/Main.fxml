@@ -177,6 +177,7 @@
                               <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefWidth="140.0" text="Bulk insert" />
                               <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefWidth="140.0" text="Clear" />
                               <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefWidth="140.0" text="Remove" />
+                              <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefWidth="140.0" text="Clear output" />
                            </children>
                         </VBox>
                      </children>

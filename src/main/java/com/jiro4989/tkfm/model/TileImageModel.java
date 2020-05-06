@@ -85,4 +85,20 @@ public class TileImageModel {
     images.get(y).set(x, img);
     draw();
   }
+
+  public void bulkInsert(List<Image> images) {
+    int i = 0;
+    int size = images.size();
+    for (int y = 0; y < colCount; y++) {
+      for (int x = 0; x < rowCount; x++) {
+        if (size <= i) {
+          return;
+        }
+
+        var img = images.get(i);
+        setImage(img, x, y);
+        i++;
+      }
+    }
+  }
 }

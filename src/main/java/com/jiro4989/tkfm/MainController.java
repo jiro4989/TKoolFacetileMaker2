@@ -9,6 +9,7 @@ import com.jiro4989.tkfm.version.VersionStage;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.*;
 import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -63,6 +64,7 @@ public class MainController {
   @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
   @FXML private Button removeButton;
+  @FXML private Button clearOutputButton;
   @FXML private GridPane cropImageGridPane;
   @FXML private ImageView cropImageView;
   @FXML private ImageView croppedImageView;
@@ -453,13 +455,32 @@ public class MainController {
   }
 
   @FXML
-  private void bulkInsertButtonOnClicked(MouseEvent e) {}
+  private void bulkInsertButtonOnClicked(MouseEvent e) {
+    var images =
+        fileListView
+            .getSelectionModel()
+            .getSelectedItems()
+            .stream()
+            .map(f -> f.readImage())
+            .collect(Collectors.toList());
+    tileImage.bulkInsert(images);
+  }
 
   @FXML
-  private void clearButtonOnClicked(MouseEvent e) {}
+  private void clearButtonOnClicked(MouseEvent e) {
+    imageFiles.clear();
+  }
 
   @FXML
-  private void removeButtonOnClicked(MouseEvent e) {}
+  private void removeButtonOnClicked(MouseEvent e) {
+    var i = fileListView.getSelectionModel().getSelectedIndex();
+    imageFiles.remove(i);
+  }
+
+  @FXML
+  private void clearOutputButtonOnClicked(MouseEvent e) {
+    tileImage.clear();
+  }
 
   // TODO: Bad method name
   @FXML
