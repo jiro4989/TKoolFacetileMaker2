@@ -36,7 +36,7 @@ jobs:
           java-package: jdk
           architecture: x64
       - name: Install xvfb
-        run: apt install -y xvfb
+        run: sudo apt install -y xvfb
       - name: Build
         run: xvfb-run ./gradlew build
 
