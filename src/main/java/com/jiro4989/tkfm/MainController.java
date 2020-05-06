@@ -14,14 +14,8 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.*;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -66,10 +60,12 @@ public class MainController {
   private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
 
   @FXML private ListView<ImageFileModel> fileListView;
-  @FXML private Button insertButton;
+  @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
-  @FXML private Button listDeleteButton;
-  @FXML private Button listClearButton;
+  @FXML private Button removeButton;
+  @FXML private Label cropXLabel;
+  @FXML private Label cropYLabel;
+  @FXML private Label cropScaleLabel;
 
   // **************************************************
   // ファイル
@@ -215,16 +211,9 @@ public class MainController {
     File dir = new File(OUTPUT_DIR);
     dir.mkdirs();
 
-    fileListView.setOnDragOver(e -> dragOver(e));
-    fileListView.setOnDragDropped(e -> dragDropped(e));
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
-
-    // insertButton.setOnAction(e -> insertImages(0));
-    // clearButton.setOnAction(e -> clearOutputImages());
-    // listDeleteButton.setOnAction(e -> deleteFile());
-    // listClearButton.setOnAction(e -> clearFiles());
   }
 
   /**
@@ -431,7 +420,8 @@ public class MainController {
   }
 
   /** ドラッグオーバーでファイルを受け取る */
-  private void dragOver(DragEvent event) {
+  @FXML
+  private void fileListViewOnDragOver(DragEvent event) {
     Dragboard board = event.getDragboard();
     if (board.hasFiles()) {
       event.acceptTransferModes(TransferMode.COPY);
@@ -439,7 +429,8 @@ public class MainController {
   }
 
   /** ドロップでリストに格納 */
-  private void dragDropped(DragEvent event) {
+  @FXML
+  private void fileListViewOnDragDropped(DragEvent event) {
     Dragboard board = event.getDragboard();
     if (board.hasFiles()) {
       List<File> list = board.getFiles();
@@ -458,4 +449,17 @@ public class MainController {
       imageFiles.select(i);
     }
   }
+
+  @FXML
+  private void bulkInsertButtonOnClicked(MouseEvent e) {
+  }
+
+  @FXML
+  private void clearButtonOnClicked(MouseEvent e) {
+  }
+
+  @FXML
+  private void removeButtonOnClicked(MouseEvent e) {
+  }
+
 }
