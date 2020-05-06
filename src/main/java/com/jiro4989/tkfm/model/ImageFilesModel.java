@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm.model;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,10 @@ public class ImageFilesModel {
   public void add(ImageFileModel file) {
     files.add(file);
     select(selectedIndex);
+  }
+
+  public void add(File file) {
+    add(new ImageFileModel(file));
   }
 
   public void remove(int i) {
@@ -50,5 +55,9 @@ public class ImageFilesModel {
 
   public void selectPrev() {
     select(selectedIndex - 1);
+  }
+
+  public List<ImageFileModel> getFiles() {
+    return files;
   }
 }

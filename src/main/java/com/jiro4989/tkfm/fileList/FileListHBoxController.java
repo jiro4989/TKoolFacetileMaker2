@@ -1,8 +1,8 @@
 package com.jiro4989.tkfm.fileList;
 
 import com.jiro4989.tkfm.MainController;
+import com.jiro4989.tkfm.model.*;
 import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import javafx.collections.FXCollections;
@@ -23,15 +23,15 @@ import javafx.scene.input.TransferMode;
  */
 public class FileListHBoxController {
   private MainController mainController;
-  private LinkedList<String> fileNameList = new LinkedList<>();
-  private LinkedList<String> filePathList = new LinkedList<>();
 
-  @FXML ListView<String> fileListView;
-  private ObservableList<String> observableList = FXCollections.observableArrayList();
+  @FXML ListView<ImageFileModel> fileListView;
+  // private ObservableList<ImageFileModel> observableList = FXCollections.observableArrayList();
   @FXML private Button insertButton;
   @FXML private Button clearButton;
   @FXML private Button listDeleteButton;
   @FXML private Button listClearButton;
+
+  private ImageFilesModel imageFiles;
 
   @FXML
   private void initialize() {
@@ -44,7 +44,7 @@ public class FileListHBoxController {
     listDeleteButton.setOnAction(e -> deleteFile());
     listClearButton.setOnAction(e -> clearFiles());
 
-    fileListView.setItems(observableList);
+    // fileListView.setItems(observableList);
   }
 
   /**
@@ -63,10 +63,10 @@ public class FileListHBoxController {
                 int index = fileIndices.get(i - min);
                 fileListView.getSelectionModel().select(index);
                 changeSelection();
-                String filePath = filePathList.get(index);
-                int column = 3 < i ? i - 4 : i;
-                int row = i / 4;
-                mainController.setTrimmingImage(filePath, column, row);
+                // String filePath = filePathList.get(index);
+                // int column = 3 < i ? i - 4 : i;
+                // int row = i / 4;
+                // mainController.setTrimmingImage(filePath, column, row);
               });
     }
   }
@@ -78,36 +78,40 @@ public class FileListHBoxController {
 
   /** 最初に選択したファイルをリストから削除する。 */
   public void deleteFile() {
-    if (!fileListView.getSelectionModel().isEmpty()) {
-      int index = fileListView.getSelectionModel().getSelectedIndex();
-      fileListView.getItems().remove(index);
-      fileNameList.remove(index);
-      filePathList.remove(index);
-    }
-    clearImageView();
+    // TODO
+    imageFiles.remove(0);
+    // if (!fileListView.getSelectionModel().isEmpty()) {
+    //   int index = fileListView.getSelectionModel().getSelectedIndex();
+    //   fileListView.getItems().remove(index);
+    //   // fileNameList.remove(index);
+    //   // filePathList.remove(index);
+    // }
+    // clearImageView();
   }
 
   /** リストの全てのファイルを削除する。 */
   public void clearFiles() {
-    if (!fileListView.getSelectionModel().isEmpty()) {
-      fileListView.getItems().clear();
-      fileNameList.clear();
-      filePathList.clear();
-    }
-    clearImageView();
+    imageFiles.clear();
+    // if (!fileListView.getSelectionModel().isEmpty()) {
+    //   fileListView.getItems().clear();
+    //   // fileNameList.clear();
+    //   // filePathList.clear();
+    // }
+    // clearImageView();
   }
 
   /** イメージビューに登録している画像をクリアする。 */
   private void clearImageView() {
-    if (fileListView.getSelectionModel().isEmpty()) {
-      mainController.clearImageView();
-    }
+    // if (fileListView.getSelectionModel().isEmpty()) {
+    //   mainController.clearImageView();
+    // }
   }
 
   /** リストビューの選択が変更された場合に呼び出される。 */
   private void changeSelection() {
     if (!fileListView.getSelectionModel().isEmpty()) {
-      mainController.sendFileName(getFilePath());
+      int i = fileListView.getSelectionModel().getSelectedIndex();
+      imageFiles.select(i);
     }
   }
 
@@ -126,7 +130,7 @@ public class FileListHBoxController {
     Dragboard board = event.getDragboard();
     if (board.hasFiles()) {
       List<File> list = board.getFiles();
-      addFiles(list);
+      list.stream().forEach(f -> imageFiles.add(f));
       event.setDropCompleted(true);
       event.acceptTransferModes(TransferMode.COPY);
     } else {
@@ -140,16 +144,16 @@ public class FileListHBoxController {
    * @param files
    */
   public void addFiles(List<File> files) {
-    files
-        .stream()
-        .filter(f -> f.getName().endsWith(".png"))
-        .sorted()
-        .forEach(
-            f -> {
-              fileNameList.add(f.getName());
-              filePathList.add(f.getPath());
-              fileListView.getItems().add(f.getName());
-            });
+    // files
+    //     .stream()
+    //     .filter(f -> f.getName().endsWith(".png"))
+    //     .sorted()
+    //     .forEach(
+    //         f -> {
+    //           // fileNameList.add(f.getName());
+    //           // filePathList.add(f.getPath());
+    //           // fileListView.getItems().add(f.getName());
+    //         });
   }
 
   /**
@@ -160,8 +164,8 @@ public class FileListHBoxController {
   public String getFilePath() {
     if (!fileListView.getSelectionModel().isEmpty()) {
       int index = fileListView.getSelectionModel().getSelectedIndex();
-      String filePath = filePathList.get(index);
-      return filePath;
+      // String filePath = filePathList.get(index);
+      return "";
     }
     return null;
   }
@@ -173,5 +177,11 @@ public class FileListHBoxController {
    */
   public void setMainController(MainController aMainController) {
     mainController = aMainController;
+  }
+
+  public void setImageFilesModel(ImageFilesModel m) {
+    imageFiles = m;
+    var arr = FXCollections.observableArrayList(imageFiles.getFiles());
+    fileListView.setItems(arr);
   }
 }

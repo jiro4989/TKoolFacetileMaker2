@@ -4,6 +4,7 @@ import com.jiro4989.tkfm.fileList.FileListHBox;
 import com.jiro4989.tkfm.fileList.FileListHBoxController;
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
 import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
+import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
 import com.jiro4989.tkfm.options.OptionsStage;
@@ -143,6 +144,9 @@ public class MainController {
   private ImageViewerBorderPaneController imageViewerBorderPaneController;
   private OutputViewerAnchorPaneController outputViewerAnchorPaneController;
 
+  private ImageFilesModel imageFiles;
+  private CroppingImageModel cropImage;
+
   @FXML
   private void initialize() {
     openMenuItem.setOnAction(e -> openFile());
@@ -187,6 +191,10 @@ public class MainController {
     fileListHBoxController = fileListHBox.getController();
     imageViewerBorderPaneController = imageViewerBorderPane.getController();
     outputViewerAnchorPaneController = outputViewerAnchorPane.getController();
+
+    cropImage = imageViewerBorderPaneController.getCroppingImageModel();
+    imageFiles = new ImageFilesModel(cropImage);
+    fileListHBoxController.setImageFilesModel(imageFiles);
 
     prop.load();
     options =

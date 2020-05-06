@@ -311,4 +311,8 @@ public class ImageViewerBorderPaneController {
     double plus = zoomRateComboBox.getSelectionModel().getSelectedItem();
     changeZoomRate(rate - plus);
   }
+
+  public CroppingImageModel getCroppingImageModel() {
+    return cropImage;
+  }
 }
