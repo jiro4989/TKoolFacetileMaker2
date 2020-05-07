@@ -137,10 +137,12 @@ public class CroppingImageModel {
     this.image.set(image);
     this.imageWidth.set(image.getWidth());
     this.imageHeight.set(image.getHeight());
+    croppedImage.set(crop());
   }
 
   public void setScale(double scale) {
     this.scale.set(scale);
+    croppedImage.set(crop());
   }
 
   // private method ////////////////////////////////////////////////////////////
