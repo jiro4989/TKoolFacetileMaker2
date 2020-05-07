@@ -26,20 +26,18 @@ public class CroppingImageModel {
   }
 
   public Image crop() {
-    double x = cropPos.getX();
-    double y = cropPos.getY();
-    double width = cropRect.getWidth();
-    double height = cropRect.getHeight();
     double scale = this.scale.get() / 100;
-    width /= scale;
-    x /= scale;
-    y /= scale;
+    double x = cropPos.getX() / scale;
+    double y = cropPos.getY() / scale;
+    double width = cropRect.getWidth() / scale;
+    double height = cropRect.getHeight() / scale;
     var pix = image.get().getPixelReader();
-    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) width);
+    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
   }
 
   private void move(double x, double y) {
     Image bImg = image.get();
+    double s = scale.get() / 100;
     double w = bImg.getWidth();
     double h = bImg.getHeight();
     double rectWidth = cropRect.getWidth();
@@ -47,14 +45,14 @@ public class CroppingImageModel {
 
     if (x < 0) {
       x = 0;
-    } else if (w < x + rectWidth) {
-      x = w - rectWidth;
+    } else if (w * s - rectWidth < x) {
+      x = w * s - rectWidth;
     }
 
     if (y < 0) {
       y = 0;
-    } else if (h < y + rectHeight) {
-      y = h - rectHeight;
+    } else if (h * s - rectHeight < y) {
+      y = h * s - rectHeight;
     }
 
     cropPos.setX(x);
