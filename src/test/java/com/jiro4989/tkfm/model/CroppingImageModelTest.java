@@ -8,6 +8,8 @@ import java.io.File;
 import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.*;
+import org.junit.jupiter.params.provider.*;
 import org.testfx.framework.junit5.*;
 
 @ExtendWith(ApplicationExtension.class)
@@ -27,8 +29,14 @@ public class CroppingImageModelTest {
     assertEquals(got.getHeight(), 20.0);
   }
 
-  @Test
-  public void testMoveUpPosition() throws Exception {
+  @ParameterizedTest
+  @CsvSource({
+    "0,10",
+    "5,5",
+    "10,0",
+    "20,0",
+  })
+  public void testMoveUpPosition(int moveWidth, int expect) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
@@ -36,24 +44,9 @@ public class CroppingImageModelTest {
     var rect = new Rectangle(20, 20);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
-    c.moveUp(5);
+    c.moveUp(moveWidth);
 
     assertEquals(pos.getX(), 10);
-    assertEquals(pos.getY(), 5);
-  }
-
-  @Test
-  public void testMoveUpPositionAndLimit() throws Exception {
-    var path = getClass().getResource("/sample1.png").getPath();
-    var file = new File(path);
-    var img = new Image(file.toURI().toString());
-    var pos = new Position(10, 10);
-    var rect = new Rectangle(20, 20);
-    var scale = 100.0;
-    var c = new CroppingImageModel(img, pos, rect, scale);
-    c.moveUp(100);
-
-    assertEquals(pos.getX(), 10);
-    assertEquals(pos.getY(), 0);
+    assertEquals(pos.getY(), expect);
   }
 }
