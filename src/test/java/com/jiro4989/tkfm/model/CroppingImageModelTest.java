@@ -82,7 +82,7 @@ public class CroppingImageModelTest {
     "40, 40, 30, 20",
     "1000, 1000, 130, 26",
   })
-  public void testMovePosition(int x, int y, int wantX, int wantY) throws Exception {
+  public void testMoveByMouse(int x, int y, int wantX, int wantY) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
