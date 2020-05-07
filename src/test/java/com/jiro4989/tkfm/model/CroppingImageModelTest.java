@@ -26,4 +26,34 @@ public class CroppingImageModelTest {
     assertEquals(got.getWidth(), 20.0);
     assertEquals(got.getHeight(), 20.0);
   }
+
+  @Test
+  public void testMoveUpPosition() throws Exception {
+    var path = getClass().getResource("/sample1.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(10, 10);
+    var rect = new Rectangle(20, 20);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    c.moveUp(5);
+
+    assertEquals(pos.getX(), 10);
+    assertEquals(pos.getY(), 5);
+  }
+
+  @Test
+  public void testMoveUpPositionAndLimit() throws Exception {
+    var path = getClass().getResource("/sample1.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(10, 10);
+    var rect = new Rectangle(20, 20);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    c.moveUp(100);
+
+    assertEquals(pos.getX(), 10);
+    assertEquals(pos.getY(), 0);
+  }
 }
