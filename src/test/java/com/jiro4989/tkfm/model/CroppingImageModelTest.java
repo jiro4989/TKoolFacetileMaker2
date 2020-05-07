@@ -75,4 +75,23 @@ public class CroppingImageModelTest {
     assertEquals(wantX, pos.getX());
     assertEquals(wantY, pos.getY());
   }
+
+  @ParameterizedTest
+  @CsvSource({
+    "0, 0, 0, 0",
+    "40, 40, 30, 20",
+    "1000, 1000, 130, 26",
+  })
+  public void testMovePosition(int x, int y, int wantX, int wantY) throws Exception {
+    var path = getClass().getResource("/sample1.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(20, 30);
+    var rect = new Rectangle(20, 40);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    c.moveByMouse(x, y);
+    assertEquals(wantX, pos.getX());
+    assertEquals(wantY, pos.getY());
+  }
 }
