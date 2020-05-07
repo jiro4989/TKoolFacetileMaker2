@@ -25,28 +25,54 @@ public class CroppingImageModelTest {
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();
 
-    assertEquals(got.getWidth(), 20.0);
-    assertEquals(got.getHeight(), 20.0);
+    assertEquals(20.0, got.getWidth());
+    assertEquals(20.0, got.getHeight());
   }
 
   @ParameterizedTest
   @CsvSource({
-    "0,10",
-    "5,5",
-    "10,0",
-    "20,0",
+    "up    , 0   , 10  , 10" ,
+    "up    , 5   , 10  , 5"  ,
+    "up    , 10  , 10  , 0"  ,
+    "up    , 20  , 10  , 0"  ,
+    "right , 0   , 10  , 10" ,
+    "right , 5   , 15  , 10" ,
+    "right , 10  , 20  , 10" ,
+    "right , 200 , 130 , 10" ,
+    "down  , 0   , 10  , 10" ,
+    "down  , 5   , 10  , 15" ,
+    "down  , 10  , 10  , 20" ,
+    "down  , 200 , 10  , 36" ,
+    "left  , 0   , 10  , 10" ,
+    "left  , 5   , 5   , 10" ,
+    "left  , 10  , 0   , 10" ,
+    "left  , 20  , 0   , 10" ,
   })
-  public void testMoveUpPosition(int moveWidth, int expect) throws Exception {
+  public void testMovePosition(String act, int moveWidth, int wantX, int wantY) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new Position(10, 10);
-    var rect = new Rectangle(20, 20);
+    var rect = new Rectangle(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
-    c.moveUp(moveWidth);
 
-    assertEquals(pos.getX(), 10);
-    assertEquals(pos.getY(), expect);
+    switch (act) {
+      case "up":
+        c.moveUp(moveWidth);
+        break;
+      case "right":
+        c.moveRight(moveWidth);
+        break;
+      case "down":
+        c.moveDown(moveWidth);
+        break;
+      case "left":
+        c.moveLeft(moveWidth);
+        break;
+    }
+
+    assertEquals(wantX, pos.getX());
+    assertEquals(wantY, pos.getY());
   }
 }
