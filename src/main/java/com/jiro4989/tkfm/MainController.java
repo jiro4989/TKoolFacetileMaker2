@@ -184,13 +184,34 @@ public class MainController {
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
     // Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty());
-    Bindings.bindBidirectional(
-        cropImageGridPane.prefWidthProperty(), cropImage.imageWidthProperty());
-    Bindings.bindBidirectional(
-        cropImageGridPane.prefHeightProperty(), cropImage.imageHeightProperty());
+
+    cropImageGridPane
+        .prefWidthProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageWidthProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+    cropImageGridPane
+        .prefHeightProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageHeightProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+
     Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
-    Bindings.bindBidirectional(cropImageView.fitWidthProperty(), cropImage.imageWidthProperty());
-    Bindings.bindBidirectional(cropImageView.fitHeightProperty(), cropImage.imageHeightProperty());
+    cropImageView
+        .fitWidthProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageWidthProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+    cropImageView
+        .fitHeightProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageHeightProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+
     Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
