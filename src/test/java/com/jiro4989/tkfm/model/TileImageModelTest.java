@@ -2,11 +2,8 @@ package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.*;
 import java.lang.reflect.*;
-import com.jiro4989.tkfm.data.Position;
-import com.jiro4989.tkfm.data.Rectangle;
-import java.io.File;
+import java.util.*;
 import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
