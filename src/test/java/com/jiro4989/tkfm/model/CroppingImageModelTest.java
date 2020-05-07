@@ -31,22 +31,22 @@ public class CroppingImageModelTest {
 
   @ParameterizedTest
   @CsvSource({
-    "up    , 0   , 10  , 10" ,
-    "up    , 5   , 10  , 5"  ,
-    "up    , 10  , 10  , 0"  ,
-    "up    , 20  , 10  , 0"  ,
-    "right , 0   , 10  , 10" ,
-    "right , 5   , 15  , 10" ,
-    "right , 10  , 20  , 10" ,
-    "right , 200 , 130 , 10" ,
-    "down  , 0   , 10  , 10" ,
-    "down  , 5   , 10  , 15" ,
-    "down  , 10  , 10  , 20" ,
-    "down  , 200 , 10  , 36" ,
-    "left  , 0   , 10  , 10" ,
-    "left  , 5   , 5   , 10" ,
-    "left  , 10  , 0   , 10" ,
-    "left  , 20  , 0   , 10" ,
+    "up    , 0   , 10  , 10",
+    "up    , 5   , 10  , 5",
+    "up    , 10  , 10  , 0",
+    "up    , 20  , 10  , 0",
+    "right , 0   , 10  , 10",
+    "right , 5   , 15  , 10",
+    "right , 10  , 20  , 10",
+    "right , 200 , 130 , 10",
+    "down  , 0   , 10  , 10",
+    "down  , 5   , 10  , 15",
+    "down  , 10  , 10  , 20",
+    "down  , 200 , 10  , 36",
+    "left  , 0   , 10  , 10",
+    "left  , 5   , 5   , 10",
+    "left  , 10  , 0   , 10",
+    "left  , 20  , 0   , 10",
   })
   public void testMovePosition(String act, int moveWidth, int wantX, int wantY) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
