@@ -14,19 +14,21 @@ import org.testfx.framework.junit5.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class CroppingImageModelTest {
-  @Test
-  public void testCroppedImageWidthAndHeightEqualsRectangle() throws Exception {
+  @ParameterizedTest
+  @CsvSource({
+    "100.0, 20.0, 20.0",
+  })
+  public void testCroppedImageWidthAndHeightEqualsRectangle(double scale, double wantWidth, double wantHeight) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new Position(0, 0);
     var rect = new Rectangle(20, 20);
-    var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();
 
-    assertEquals(20.0, got.getWidth());
-    assertEquals(20.0, got.getHeight());
+    assertEquals(wantWidth, got.getWidth());
+    assertEquals(wantHeight, got.getHeight());
   }
 
   @ParameterizedTest
