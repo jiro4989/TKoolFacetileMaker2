@@ -23,10 +23,6 @@ public class TileImageModel {
     }
   }
 
-  public ObjectProperty<Image> imageProperty() {
-    return image;
-  }
-
   public void swap(int x, int y, int x2, int y2) {
     var img = images.get(y).get(x);
     var img2 = images.get(y2).get(x2);
@@ -57,6 +53,37 @@ public class TileImageModel {
     draw();
   }
 
+  public void bulkInsert(List<Image> images) {
+    int i = 0;
+    int size = images.size();
+    for (int y = 0; y < rowCount; y++) {
+      for (int x = 0; x < colCount; x++) {
+        if (size <= i) {
+          return;
+        }
+
+        var img = images.get(i);
+        setImage(img, x, y);
+        i++;
+      }
+    }
+  }
+
+  // property /////////////////////////////////////////////////////////////////
+
+  public ObjectProperty<Image> imageProperty() {
+    return image;
+  }
+
+  // setter ///////////////////////////////////////////////////////////////////
+
+  public void setImage(Image img, int x, int y) {
+    images.get(y).set(x, img);
+    draw();
+  }
+
+  // private methods //////////////////////////////////////////////////////////
+
   private void draw() {
     var rawImg = image.get();
     if (rawImg instanceof WritableImage) {
@@ -81,24 +108,4 @@ public class TileImageModel {
     }
   }
 
-  public void setImage(Image img, int x, int y) {
-    images.get(y).set(x, img);
-    draw();
-  }
-
-  public void bulkInsert(List<Image> images) {
-    int i = 0;
-    int size = images.size();
-    for (int y = 0; y < rowCount; y++) {
-      for (int x = 0; x < colCount; x++) {
-        if (size <= i) {
-          return;
-        }
-
-        var img = images.get(i);
-        setImage(img, x, y);
-        i++;
-      }
-    }
-  }
 }
