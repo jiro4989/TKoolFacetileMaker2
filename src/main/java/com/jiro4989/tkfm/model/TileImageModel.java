@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm.model;
 
+import com.jiro4989.tkfm.data.Rectangle;
 import java.util.*;
 import javafx.beans.property.*;
 import javafx.scene.image.*;
@@ -7,24 +8,21 @@ import javafx.scene.image.*;
 public class TileImageModel {
   private int rowCount = 2;
   private int colCount = 4;
-  private final int size = 144;
+  private final Rectangle rect;
 
   private final List<List<Image>> images = new LinkedList<>();
-  private final ObjectProperty<Image> image =
-      new SimpleObjectProperty<>(new WritableImage(colCount * size, rowCount * size));
+  private final ObjectProperty<Image> image;
 
-  public TileImageModel() {
-    for (int i = 0; i < rowCount; i++) {
-      List<Image> row = new LinkedList<>();
-      for (int j = 0; j < colCount; j++) {
-        row.add(new WritableImage(size, size));
-      }
-      images.add(row);
-    }
+  public TileImageModel(Rectangle rect) {
+    this.rect = rect;
+
+    var img = outputTileImage();
+    this.image = new SimpleObjectProperty<>(img);
+    resetImages();
   }
 
   public void remove(int x, int y) {
-    var img = new WritableImage(size, size);
+    var img = tileImage();
     images.get(y).set(x, img);
     draw();
   }
@@ -32,7 +30,7 @@ public class TileImageModel {
   public void clear() {
     for (int y = 0; y < rowCount; y++) {
       for (int x = 0; x < colCount; x++) {
-        var img = new WritableImage(size, size);
+        var img = tileImage();
         images.get(y).set(x, img);
       }
     }
@@ -51,6 +49,11 @@ public class TileImageModel {
       var img = images.get(i - startIndex);
       setImage(img, x, y);
     }
+  }
+
+  public void resetImage() {
+    image.set(outputTileImage());
+    resetImages();
   }
 
   // property /////////////////////////////////////////////////////////////////
@@ -89,6 +92,29 @@ public class TileImageModel {
           writer.setPixels(x2, y2, w, h, fmt, buf, offset, stride);
         }
       }
+    }
+  }
+
+  private Image tileImage() {
+    var w = (int) rect.getWidth();
+    var h = (int) rect.getHeight();
+    return new WritableImage(w, h);
+  }
+
+  private Image outputTileImage() {
+    int w = (int) rect.getWidth();
+    int h = (int) rect.getHeight();
+    return new WritableImage(colCount * w, rowCount * h);
+  }
+
+  private void resetImages() {
+    images.clear();
+    for (int i = 0; i < rowCount; i++) {
+      List<Image> row = new LinkedList<>();
+      for (int j = 0; j < colCount; j++) {
+        row.add(tileImage());
+      }
+      images.add(row);
     }
   }
 }
