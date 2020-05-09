@@ -82,12 +82,12 @@
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="zoomOutMenuItem" mnemonicParsing="false" text="縮小">
+            <MenuItem mnemonicParsing="false" onAction="#scaleDown" text="縮小">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="Q" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="zoomInMenuItem" mnemonicParsing="false" text="拡大">
+            <MenuItem mnemonicParsing="false" onAction="#scaleUp" text="拡大">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="E" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>

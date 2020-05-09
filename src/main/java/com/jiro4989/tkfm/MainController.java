@@ -99,12 +99,6 @@ public class MainController {
   @FXML private MenuItem closeMenuItem;
 
   // **************************************************
-  // イメージビュー
-  // **************************************************
-  @FXML private MenuItem zoomOutMenuItem;
-  @FXML private MenuItem zoomInMenuItem;
-
-  // **************************************************
   // 出力画像ビュー
   // **************************************************
   @FXML private MenuItem insertMenuItem1;
@@ -147,9 +141,6 @@ public class MainController {
     cropAxisComboBox.getSelectionModel().select(1);
     cropScaleComboBox.setItems(cropScaleItems);
     cropScaleComboBox.getSelectionModel().select(1);
-
-    // zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
-    // zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
 
     // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
     // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
@@ -523,4 +514,17 @@ public class MainController {
     double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
     cropImage.moveLeft(n);
   }
+
+  @FXML
+  private void scaleUp() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleUp(n);
+  }
+
+  @FXML
+  private void scaleDown() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleDown(n);
+  }
+
 }
