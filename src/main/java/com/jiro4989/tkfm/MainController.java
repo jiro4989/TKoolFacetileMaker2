@@ -485,7 +485,7 @@ public class MainController {
             .map(
                 i -> {
                   imageFiles.select(i);
-                  return cropImage.crop();
+                  return cropImage.cropByBufferedImage();
                 })
             .collect(Collectors.toList());
     tileImage.bulkInsert(images);

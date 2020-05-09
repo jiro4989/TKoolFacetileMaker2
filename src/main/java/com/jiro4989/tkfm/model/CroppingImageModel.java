@@ -1,14 +1,14 @@
 package com.jiro4989.tkfm.model;
 
+import com.jiro4989.tkfm.data.Position;
+import com.jiro4989.tkfm.data.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import com.jiro4989.tkfm.data.Position;
-import com.jiro4989.tkfm.data.Rectangle;
 import javafx.beans.property.*;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.embed.swing.SwingFXUtils;
 
 public class CroppingImageModel {
   private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
@@ -31,6 +31,16 @@ public class CroppingImageModel {
 
   public Image crop() {
     double scale = this.scale.get() / 100;
+    double x = cropPos.getX() / scale;
+    double y = cropPos.getY() / scale;
+    double width = cropRect.getWidth() / scale;
+    double height = cropRect.getHeight() / scale;
+    var pix = image.get().getPixelReader();
+    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
+  }
+
+  public Image cropByBufferedImage() {
+    double scale = this.scale.get() / 100;
     var x = (int) (cropPos.getX() / scale);
     var y = (int) (cropPos.getY() / scale);
     var width = (int) (cropRect.getWidth());
@@ -38,10 +48,9 @@ public class CroppingImageModel {
 
     BufferedImage bImg = SwingFXUtils.fromFXImage(image.get(), null);
     BufferedImage scaledImg = scaledImage(bImg, scale);
-    BufferedImage subImg = scaledImg.getSubimage( x,  y, width, height);
+    BufferedImage subImg = scaledImg.getSubimage(x, y, width, height);
 
-    BufferedImage dstImg =
-        new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+    BufferedImage dstImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
     Graphics2D g = (Graphics2D) dstImg.getGraphics();
     g.setRenderingHint(
         RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -167,9 +176,7 @@ public class CroppingImageModel {
     return new WritableImage(100, 100);
   }
 
-  /**
-   * 拡大した画像を返す。
-   */
+  /** 拡大した画像を返す。 */
   private static BufferedImage scaledImage(BufferedImage image, double scale) {
     double width = image.getWidth();
     width *= scale;

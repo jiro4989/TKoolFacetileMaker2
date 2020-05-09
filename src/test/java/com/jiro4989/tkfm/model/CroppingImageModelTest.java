@@ -6,7 +6,6 @@ import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
 import java.io.File;
 import javafx.scene.image.Image;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
@@ -16,10 +15,11 @@ import org.testfx.framework.junit5.*;
 public class CroppingImageModelTest {
   @ParameterizedTest
   @CsvSource({
-    "50.0, 20.0, 20.0",
+    "50.0, 40.0, 40.0",
     "100.0, 20.0, 20.0",
   })
-  public void testCroppedImageWidthAndHeightEqualsRectangle(double scale, double wantWidth, double wantHeight) throws Exception {
+  public void testCroppedImageWidthAndHeightEqualsRectangle(
+      double scale, double wantWidth, double wantHeight) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
