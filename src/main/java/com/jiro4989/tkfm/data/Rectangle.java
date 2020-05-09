@@ -7,10 +7,6 @@ public class Rectangle {
   private DoubleProperty width = new SimpleDoubleProperty(0.0);
   private DoubleProperty height = new SimpleDoubleProperty(0.0);
 
-  public Rectangle() {
-    this(0, 0);
-  }
-
   public Rectangle(double w, double h) {
     setWidth(w);
     setHeight(h);

@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.data.CropSize;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
@@ -71,6 +72,7 @@ public class MainController {
   // Crop view
   @FXML private GridPane cropImageGridPane;
   @FXML private ImageView cropImageView;
+  @FXML private GridPane croppedGridPane;
   @FXML private ImageView croppedImageView;
   @FXML private GridPane focusGridPane;
   @FXML private Label cropXLabel;
@@ -103,8 +105,6 @@ public class MainController {
   // ツクールバージョン
   // **************************************************
   @FXML private ToggleGroup group;
-  @FXML private MenuItem mvRadioMenuItem;
-  @FXML private MenuItem vxaceRadioMenuItem;
 
   // **************************************************
   // ヘルプ
@@ -142,13 +142,10 @@ public class MainController {
 
     versionInfoItem.setOnAction(e -> openVersionWindow());
 
-    mvRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.MV));
-    vxaceRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.VXACE));
-
     // initialize models
     cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
-    tileImage = new TileImageModel();
+    tileImage = new TileImageModel(cropImage.getRectangle());
 
     // bindigns
     var pos = cropImage.getPosition();
@@ -182,7 +179,11 @@ public class MainController {
                 cropImage.imageHeightProperty(),
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)));
 
+    Bindings.bindBidirectional(croppedGridPane.prefWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(croppedGridPane.prefHeightProperty(), rect.heightProperty());
     Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
+    Bindings.bindBidirectional(croppedImageView.fitWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(croppedImageView.fitHeightProperty(), rect.heightProperty());
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
@@ -202,7 +203,6 @@ public class MainController {
     Toggle toggle = group.getToggles().get(index);
     group.selectToggle(toggle);
 
-    changeTKoolVersion(version);
     openedFileName = prop.getValue(KEYS[5]);
     openedDirPath = prop.getValue(KEYS[6]);
     savedFileName = prop.getValue(KEYS[7]);
@@ -220,17 +220,6 @@ public class MainController {
 
     // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
     // slider.valueProperty().addListener(e -> updateImage());
-  }
-
-  /**
-   * ツクールのバージョンを変更し、各種パネルのサイズを変更する。
-   *
-   * @param aVersion
-   */
-  private void changeTKoolVersion(TKoolVersion aVersion) {
-    version = aVersion;
-    double width = (double) version.getWidth();
-    // imageViewerBorderPaneController.changeVersion(width);
   }
 
   /** オプション設定画面を開く。 */
@@ -565,5 +554,19 @@ public class MainController {
   private void scaleDown() {
     double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
     cropImage.scaleDown(n);
+  }
+
+  @FXML
+  private void setCropSizeTkoolMV() {
+    var rect = cropImage.getRectangle();
+    rect.setWidth(CropSize.TKOOL_MV_WIDHT);
+    rect.setHeight(CropSize.TKOOL_MV_HEIGHT);
+  }
+
+  @FXML
+  private void setCropSizeTkoolVXACE() {
+    var rect = cropImage.getRectangle();
+    rect.setWidth(CropSize.TKOOL_VXACE_WIDHT);
+    rect.setHeight(CropSize.TKOOL_VXACE_HEIGHT);
   }
 }

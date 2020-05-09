@@ -140,12 +140,12 @@
         </Menu>
         <Menu mnemonicParsing="false" text="ツクール">
           <items>
-            <RadioMenuItem fx:id="mvRadioMenuItem" disable="false" mnemonicParsing="false" selected="true" text="ＭＶ">
+            <RadioMenuItem disable="false" mnemonicParsing="false" onAction="#setCropSizeTkoolMV" selected="true" text="ＭＶ">
               <toggleGroup>
                 <ToggleGroup fx:id="group" />
               </toggleGroup>
             </RadioMenuItem>
-            <RadioMenuItem fx:id="vxaceRadioMenuItem" mnemonicParsing="false" text="ＶＸＡＣＥ" toggleGroup="$group" />
+            <RadioMenuItem mnemonicParsing="false" onAction="#setCropSizeTkoolVXACE" text="ＶＸＡＣＥ" toggleGroup="$group" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="ヘルプ">
@@ -267,7 +267,7 @@
                                           <FlowPane alignment="BOTTOM_LEFT" columnHalignment="LEFT" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="149.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
                                              <children>
                                                 <Label id="" prefHeight="30.0" prefWidth="106.0" text="トリミング：" />
-                                                <GridPane fx:id="trimmingGridPane" gridLinesVisible="true" prefHeight="144.0" prefWidth="144.0">
+                                                <GridPane fx:id="croppedGridPane" gridLinesVisible="true" prefHeight="144.0" prefWidth="144.0">
                                                    <children>
                                                       <ImageView fx:id="croppedImageView" fitHeight="144.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                    </children>
