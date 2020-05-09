@@ -53,7 +53,7 @@ jobs:
           java-package: jdk
           architecture: x64
       - name: Build
-        run: ./gradlew build -x test
+        run: ./gradlew build -Pversion="${GITHUB_REF##*/}" -PcommitHash="$(git rev-parse HEAD)" -x test
 
       - name: Create artifact
         if: startsWith(github.ref, 'refs/tags/')
