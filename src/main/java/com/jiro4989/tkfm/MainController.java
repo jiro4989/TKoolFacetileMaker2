@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.input.DragEvent;
@@ -97,18 +98,6 @@ public class MainController {
   @FXML private MenuItem numberingSaveAsMenuItem;
   @FXML private MenuItem optionsMenuItem;
   @FXML private MenuItem closeMenuItem;
-
-  // **************************************************
-  // 出力画像ビュー
-  // **************************************************
-  @FXML private MenuItem insertMenuItem1;
-  @FXML private MenuItem insertMenuItem2;
-  @FXML private MenuItem insertMenuItem3;
-  @FXML private MenuItem insertMenuItem4;
-  @FXML private MenuItem insertMenuItem5;
-  @FXML private MenuItem insertMenuItem6;
-  @FXML private MenuItem insertMenuItem7;
-  @FXML private MenuItem insertMenuItem8;
 
   // **************************************************
   // ツクールバージョン
@@ -451,20 +440,71 @@ public class MainController {
     }
   }
 
+  private List<Image> getSelectedImages() {
+    return fileListView
+        .getSelectionModel()
+        .getSelectedIndices()
+        .stream()
+        .map(
+            i -> {
+              imageFiles.select(i);
+              return cropImage.cropByBufferedImage();
+            })
+        .collect(Collectors.toList());
+  }
+
   @FXML
   private void bulkInsertButtonOnClicked() {
-    var images =
-        fileListView
-            .getSelectionModel()
-            .getSelectedIndices()
-            .stream()
-            .map(
-                i -> {
-                  imageFiles.select(i);
-                  return cropImage.cropByBufferedImage();
-                })
-            .collect(Collectors.toList());
+    var images = getSelectedImages();
     tileImage.bulkInsert(images);
+  }
+
+  @FXML
+  private void bulkInsert1() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 0);
+  }
+
+  @FXML
+  private void bulkInsert2() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 1);
+  }
+
+  @FXML
+  private void bulkInsert3() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 2);
+  }
+
+  @FXML
+  private void bulkInsert4() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 3);
+  }
+
+  @FXML
+  private void bulkInsert5() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 4);
+  }
+
+  @FXML
+  private void bulkInsert6() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 5);
+  }
+
+  @FXML
+  private void bulkInsert7() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 6);
+  }
+
+  @FXML
+  private void bulkInsert8() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 7);
   }
 
   @FXML

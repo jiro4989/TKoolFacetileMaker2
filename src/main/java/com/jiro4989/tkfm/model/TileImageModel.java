@@ -23,24 +23,6 @@ public class TileImageModel {
     }
   }
 
-  public ObjectProperty<Image> imageProperty() {
-    return image;
-  }
-
-  public void swap(int x, int y, int x2, int y2) {
-    var img = images.get(y).get(x);
-    var img2 = images.get(y2).get(x2);
-
-    // swap
-    var tmp = img;
-    img = img2;
-    img2 = tmp;
-
-    images.get(y).set(x, img);
-    images.get(y2).set(x2, img2);
-    draw();
-  }
-
   public void remove(int x, int y) {
     var img = new WritableImage(size, size);
     images.get(y).set(x, img);
@@ -56,6 +38,35 @@ public class TileImageModel {
     }
     draw();
   }
+
+  public void bulkInsert(List<Image> images) {
+    bulkInsert(images, 0);
+  }
+
+  public void bulkInsert(List<Image> images, int startIndex) {
+    int size = images.size();
+    for (int i = startIndex; i < size; i++) {
+      var x = i % colCount;
+      var y = i / colCount;
+      var img = images.get(i - startIndex);
+      setImage(img, x, y);
+    }
+  }
+
+  // property /////////////////////////////////////////////////////////////////
+
+  public ObjectProperty<Image> imageProperty() {
+    return image;
+  }
+
+  // setter ///////////////////////////////////////////////////////////////////
+
+  public void setImage(Image img, int x, int y) {
+    images.get(y).set(x, img);
+    draw();
+  }
+
+  // private methods //////////////////////////////////////////////////////////
 
   private void draw() {
     var rawImg = image.get();
@@ -77,27 +88,6 @@ public class TileImageModel {
           reader.getPixels(0, 0, w, h, fmt, buf, offset, stride);
           writer.setPixels(x2, y2, w, h, fmt, buf, offset, stride);
         }
-      }
-    }
-  }
-
-  public void setImage(Image img, int x, int y) {
-    images.get(y).set(x, img);
-    draw();
-  }
-
-  public void bulkInsert(List<Image> images) {
-    int i = 0;
-    int size = images.size();
-    for (int y = 0; y < rowCount; y++) {
-      for (int x = 0; x < colCount; x++) {
-        if (size <= i) {
-          return;
-        }
-
-        var img = images.get(i);
-        setImage(img, x, y);
-        i++;
       }
     }
   }

@@ -96,42 +96,42 @@
         </Menu>
         <Menu mnemonicParsing="false" text="出力画像プレビュー">
           <items>
-            <MenuItem fx:id="insertMenuItem1" mnemonicParsing="false" text="1番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert1" text="1番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT1" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem2" mnemonicParsing="false" text="2番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert2" text="2番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT2" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem3" mnemonicParsing="false" text="3番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert3" text="3番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT3" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem4" mnemonicParsing="false" text="4番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert4" text="4番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT4" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem5" mnemonicParsing="false" text="5番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert5" text="5番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT5" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem6" mnemonicParsing="false" text="6番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert6" text="6番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT6" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem7" mnemonicParsing="false" text="7番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert7" text="7番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT7" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="insertMenuItem8" mnemonicParsing="false" text="8番パネルから一括挿入">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert8" text="8番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT8" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
