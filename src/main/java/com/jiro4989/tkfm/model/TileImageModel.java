@@ -23,20 +23,6 @@ public class TileImageModel {
     }
   }
 
-  public void swap(int x, int y, int x2, int y2) {
-    var img = images.get(y).get(x);
-    var img2 = images.get(y2).get(x2);
-
-    // swap
-    var tmp = img;
-    img = img2;
-    img2 = tmp;
-
-    images.get(y).set(x, img);
-    images.get(y2).set(x2, img2);
-    draw();
-  }
-
   public void remove(int x, int y) {
     var img = new WritableImage(size, size);
     images.get(y).set(x, img);
