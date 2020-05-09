@@ -37,24 +37,22 @@
       <menus>
         <Menu mnemonicParsing="false" text="ファイル">
           <items>
-            <MenuItem fx:id="openMenuItem" mnemonicParsing="false" text="開く">
+            <MenuItem mnemonicParsing="false" onAction="#openFile" text="開く">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" text="保存する">
+            <MenuItem mnemonicParsing="false" onAction="#saveFile" text="保存する">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" text="別名で保存する">
+            <MenuItem mnemonicParsing="false" onAction="#saveAsFile" text="別名で保存する">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="numberingSaveMenuItem" mnemonicParsing="false" text="ナンバリングで保存する" />
-            <MenuItem fx:id="numberingSaveAsMenuItem" mnemonicParsing="false" text="別名を指定してナンバリングで保存する" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="設定" />
             <SeparatorMenuItem mnemonicParsing="false" />
