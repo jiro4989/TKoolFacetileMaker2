@@ -59,14 +59,6 @@
             <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="終了" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="ファイルリスト">
-          <items>
-            <MenuItem fx:id="insertMenuItem" mnemonicParsing="false" text="一括挿入" />
-            <MenuItem fx:id="clearMenuItem" mnemonicParsing="false" text="クリア" />
-            <MenuItem fx:id="listDeleteMenuItem" mnemonicParsing="false" text="リスト削除" />
-            <MenuItem fx:id="listClearMenuItem" mnemonicParsing="false" text="リストクリア" />
-          </items>
-        </Menu>
         <Menu mnemonicParsing="false" text="画像ビューワ">
           <items>
             <MenuItem fx:id="upMenuItem" mnemonicParsing="false" text="上に移動">
