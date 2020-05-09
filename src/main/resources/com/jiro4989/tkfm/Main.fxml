@@ -61,22 +61,22 @@
         </Menu>
         <Menu mnemonicParsing="false" text="画像ビューワ">
           <items>
-            <MenuItem fx:id="upMenuItem" mnemonicParsing="false" text="上に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveUpCropPosition" text="上に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="W" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="leftMenuItem" mnemonicParsing="false" text="左に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveLeftCropPosition" text="左に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="A" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="downMenuItem" mnemonicParsing="false" text="下に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveDownCropPosition" text="下に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="rightMenuItem" mnemonicParsing="false" text="右に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveRightCropPosition" text="右に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="D" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>

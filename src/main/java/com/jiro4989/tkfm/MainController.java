@@ -96,10 +96,6 @@ public class MainController {
   // **************************************************
   // イメージビュー
   // **************************************************
-  @FXML private MenuItem upMenuItem;
-  @FXML private MenuItem leftMenuItem;
-  @FXML private MenuItem downMenuItem;
-  @FXML private MenuItem rightMenuItem;
   @FXML private MenuItem zoomOutMenuItem;
   @FXML private MenuItem zoomInMenuItem;
 
@@ -142,10 +138,8 @@ public class MainController {
     optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
-    // upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
-    // leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
-    // downMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveDown());
-    // rightMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveRight());
+    cropAxisComboBox.setItems(cropAxisItems);
+
     // zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
     // zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
 
@@ -501,5 +495,29 @@ public class MainController {
     double x = event.getX();
     double y = event.getY();
     cropImage.moveByMouse(x, y);
+  }
+
+  @FXML
+  private void moveUpCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveUp(n);
+  }
+
+  @FXML
+  private void moveRightCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveRight(n);
+  }
+
+  @FXML
+  private void moveDownCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveDown(n);
+  }
+
+  @FXML
+  private void moveLeftCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveLeft(n);
   }
 }
