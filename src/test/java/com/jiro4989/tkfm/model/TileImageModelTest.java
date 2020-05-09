@@ -49,4 +49,22 @@ public class TileImageModelTest {
         t.bulkInsert(images, index);
     }
   }
+
+  @Test
+  public void testResetImage() throws Exception {
+    var rect = new Rectangle(20, 20);
+    var t = new TileImageModel(rect);
+    var img = t.imageProperty().get();
+
+    assertEquals(80, img.getWidth());
+    assertEquals(40, img.getHeight());
+
+    rect.setWidth(40);
+    rect.setHeight(30);
+    t.resetImage();
+
+    img = t.imageProperty().get();
+    assertEquals(160, img.getWidth());
+    assertEquals(60, img.getHeight());
+  }
 }
