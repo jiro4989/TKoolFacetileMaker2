@@ -2,10 +2,6 @@ package com.jiro4989.tkfm;
 
 import com.jiro4989.tkfm.data.CropSize;
 import com.jiro4989.tkfm.model.*;
-import com.jiro4989.tkfm.options.Numberings;
-import com.jiro4989.tkfm.options.Options;
-import com.jiro4989.tkfm.options.OptionsStage;
-import com.jiro4989.tkfm.options.Separators;
 import com.jiro4989.tkfm.util.ImageUtil;
 import java.io.File;
 import java.io.IOException;
@@ -31,26 +27,6 @@ import javafx.stage.StageStyle;
 
 public class MainController {
   private Main main;
-  private Options options;
-
-  private final String OUTPUT_DIR = "." + File.separator + "output" + File.separator;
-
-  private static final String[] KEYS = {
-    "separator_switch",
-    "separator",
-    "numberings",
-    "font_size",
-    "tkool_version",
-    "opened_file_name",
-    "opened_dir_path",
-    "saved_file_name",
-    "saved_dir_path",
-    "numbering_file_name"
-  };
-  private static final String[] INITIAL_VALUES = {
-    "false", "UNDER_SCORE", "NUMBERING01", "12", "MV", "", ".", "", ".", "MyActor.png"
-  };
-  private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
 
   // List view
   @FXML private ListView<ImageFileModel> fileListView;
@@ -98,7 +74,6 @@ public class MainController {
   @FXML
   private void initialize() {
     // TODO
-    optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
     cropAxisComboBox.setItems(cropAxisItems);
@@ -157,34 +132,10 @@ public class MainController {
     outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
     outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
 
-    prop.load();
-    options =
-        new Options(
-            Boolean.valueOf(prop.getValue(KEYS[0])),
-            Separators.getMatchedConstant(prop.getValue(KEYS[1])),
-            Numberings.getMatchedConstant(prop.getValue(KEYS[2])),
-            Integer.valueOf(prop.getValue(KEYS[3])));
-    int index = 0;
-    Toggle toggle = group.getToggles().get(index);
-    group.selectToggle(toggle);
-
-    File dir = new File(OUTPUT_DIR);
-    dir.mkdirs();
-
     // configurations
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
-  }
-
-  /** オプション設定画面を開く。 */
-  private void openOptionsWindow() {
-    OptionsStage optionsStage = new OptionsStage(options);
-    optionsStage.showAndWait();
-    options = new Options(optionsStage.getControlelr().getOptions());
-    optionsStage = null;
-
-    main.changeFontSize(options.getFontSize());
   }
 
   /** 取り込むファイルを選択する。 */
@@ -243,14 +194,6 @@ public class MainController {
    */
   public void sendFileName(String filePath) {
     // imageViewerBorderPaneController.setImage(filePath);
-  }
-
-  public Options getOptions() {
-    return options;
-  }
-
-  public int getFontSize() {
-    return Integer.valueOf(prop.getValue(KEYS[3]));
   }
 
   public void setMain(Main aMain) {

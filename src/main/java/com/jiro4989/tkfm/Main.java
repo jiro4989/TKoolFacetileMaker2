@@ -41,7 +41,6 @@ public class Main extends Application {
           .add(new Image(getClass().getResource("resources/logo.png").toExternalForm()));
       primaryStage.setTitle(TITLE);
       primaryStage.setOnCloseRequest(r -> controller.makePropertiesFile());
-      changeFontSize(controller.getFontSize());
       setStageOptions();
       primaryStage.show();
     } catch (Exception e) {
@@ -59,15 +58,6 @@ public class Main extends Application {
     System.out.println("contact: https://twitter.com/jiro_saburomaru");
     System.out.println("--------------------------------------------");
     launch(args);
-  }
-
-  /**
-   * フォントサイズを変更する。
-   *
-   * @param fontSize フォントサイズ
-   */
-  void changeFontSize(int fontSize) {
-    root.setStyle(String.format("-fx-font-size: %dpt;", fontSize));
   }
 
   /** ウインドウ位置やウインドウサイズを変更する。 */
