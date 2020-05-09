@@ -526,5 +526,4 @@ public class MainController {
     double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
     cropImage.scaleDown(n);
   }
-
 }
