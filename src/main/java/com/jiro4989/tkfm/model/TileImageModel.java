@@ -40,18 +40,19 @@ public class TileImageModel {
   }
 
   public void bulkInsert(List<Image> images) {
-    int i = 0;
-    int size = images.size();
-    for (int y = 0; y < rowCount; y++) {
-      for (int x = 0; x < colCount; x++) {
-        if (size <= i) {
-          return;
-        }
+    bulkInsert(images, 0);
+  }
 
-        var img = images.get(i);
-        setImage(img, x, y);
-        i++;
+  public void bulkInsert(List<Image> images, int startIndex) {
+    int size = images.size();
+    for (int i = startIndex; i < size; i++) {
+      if (size <= i) {
+        return;
       }
+      var x = i % colCount;
+      var y = i / colCount;
+      var img = images.get(i);
+      setImage(img, x, y);
     }
   }
 
