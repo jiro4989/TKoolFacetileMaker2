@@ -1,28 +1,20 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.model.PropertiesModel;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-/**
- * プログラムを実行する最初のクラス。
- *
- * @author jiro
- * @version 2.1
- */
 public class Main extends Application {
   public static final String TITLE = "TKoolFacetileMaker2";
   private MainController controller;
   private BorderPane root;
   private Stage stage;
 
-  private static final String[] KEYS = {"x", "y", "width", "height"};
-  private static final String[] INITIAL_VALUES = {"90", "26", "1280", "880"};
-  private PropertiesHandler prop = new PropertiesHandler("window_options", KEYS, INITIAL_VALUES);
+  private PropertiesModel.Window prop = new PropertiesModel.Window();
 
   @Override
   public void start(Stage primaryStage) {
@@ -32,17 +24,20 @@ public class Main extends Application {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
       root = (BorderPane) loader.load();
       controller = (MainController) loader.getController();
-      controller.setMain(this);
+
       Scene scene = new Scene(root, 1280, 880);
       scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
       primaryStage.setScene(scene);
       primaryStage
           .getIcons()
           .add(new Image(getClass().getResource("resources/logo.png").toExternalForm()));
+
       primaryStage.setTitle(TITLE);
-      primaryStage.setOnCloseRequest(r -> controller.makePropertiesFile());
-      changeFontSize(controller.getFontSize());
-      setStageOptions();
+      primaryStage.setX(prop.getX());
+      primaryStage.setY(prop.getY());
+      primaryStage.setWidth(prop.getWidth());
+      primaryStage.setHeight(prop.getHeight());
+
       primaryStage.show();
     } catch (Exception e) {
       e.printStackTrace();
@@ -51,7 +46,7 @@ public class Main extends Application {
 
   public static void main(String[] args) {
     System.out.println("--------------------------------------------");
-    System.out.println("application_name: TKoolFacetileMaker2");
+    System.out.println("application_name: " + TITLE);
     System.out.println("version: " + Version.version);
     System.out.println("commit_hash: " + Version.commitHash);
     System.out.println("document: README.txt");
@@ -61,34 +56,12 @@ public class Main extends Application {
     launch(args);
   }
 
-  /**
-   * フォントサイズを変更する。
-   *
-   * @param fontSize フォントサイズ
-   */
-  void changeFontSize(int fontSize) {
-    root.setStyle(String.format("-fx-font-size: %dpt;", fontSize));
-  }
-
-  /** ウインドウ位置やウインドウサイズを変更する。 */
-  void setStageOptions() {
-    stage.setX(Double.valueOf(prop.getValue("x")));
-    stage.setY(Double.valueOf(prop.getValue("y")));
-    stage.setWidth(Double.valueOf(prop.getValue("width")));
-    stage.setHeight(Double.valueOf(prop.getValue("height")));
-  }
-
-  /** プログラム停止時にプロパティファイルを生成しexitする。 */
-  void closeAction() {
-    // String[] values = new String[KEYS.length];
-    // values[0] = String.valueOf(stage.getX());
-    // values[1] = String.valueOf(stage.getY());
-    // values[2] = String.valueOf(stage.getWidth());
-    // values[3] = String.valueOf(stage.getHeight());
-
-    // IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
-    // prop.write();
-
-    Platform.exit();
+  @Override
+  public void stop() {
+    prop.setX(stage.getX());
+    prop.setY(stage.getY());
+    prop.setWidth(stage.getWidth());
+    prop.setHeight(stage.getHeight());
+    prop.store();
   }
 }

@@ -54,9 +54,7 @@
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="設定" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="終了" />
+            <MenuItem mnemonicParsing="false" onAction="#quit" text="終了" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="画像ビューワ">
