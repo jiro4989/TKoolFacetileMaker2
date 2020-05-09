@@ -1,6 +1,5 @@
 package com.jiro4989.tkfm;
 
-import java.util.stream.IntStream;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -73,14 +72,14 @@ public class Main extends Application {
 
   /** プログラム停止時にプロパティファイルを生成しexitする。 */
   void closeAction() {
-    String[] values = new String[KEYS.length];
-    values[0] = String.valueOf(stage.getX());
-    values[1] = String.valueOf(stage.getY());
-    values[2] = String.valueOf(stage.getWidth());
-    values[3] = String.valueOf(stage.getHeight());
+    // String[] values = new String[KEYS.length];
+    // values[0] = String.valueOf(stage.getX());
+    // values[1] = String.valueOf(stage.getY());
+    // values[2] = String.valueOf(stage.getWidth());
+    // values[3] = String.valueOf(stage.getHeight());
 
-    IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
-    prop.write();
+    // IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
+    // prop.write();
 
     Platform.exit();
   }

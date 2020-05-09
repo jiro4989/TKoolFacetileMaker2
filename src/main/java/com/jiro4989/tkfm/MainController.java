@@ -6,12 +6,13 @@ import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
 import com.jiro4989.tkfm.options.OptionsStage;
 import com.jiro4989.tkfm.options.Separators;
+import com.jiro4989.tkfm.util.ImageUtil;
 import com.jiro4989.tkfm.version.VersionStage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.*;
-import java.util.stream.IntStream;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,17 +34,7 @@ public class MainController {
   private Main main;
   private Options options;
 
-  private TKoolVersion version = TKoolVersion.MV;
-
-  private Optional<File> savedFileOpt = Optional.empty();
-  private String openedFileName = "";
-  private String openedDirPath = "";
-  private String savedFileName = "";
-  private String savedDirPath = "";
   private final String OUTPUT_DIR = "." + File.separator + "output" + File.separator;
-  private String numberingFileName = "";
-  private String numberingInitialFileName = "";
-  private String initialSavedFileName = "";
 
   private static final String[] KEYS = {
     "separator_switch",
@@ -93,11 +84,6 @@ public class MainController {
   // **************************************************
   // ファイル
   // **************************************************
-  @FXML private MenuItem openMenuItem;
-  @FXML private MenuItem saveMenuItem;
-  @FXML private MenuItem saveAsMenuItem;
-  @FXML private MenuItem numberingSaveMenuItem;
-  @FXML private MenuItem numberingSaveAsMenuItem;
   @FXML private MenuItem optionsMenuItem;
   @FXML private MenuItem closeMenuItem;
 
@@ -118,11 +104,6 @@ public class MainController {
   @FXML
   private void initialize() {
     // TODO
-    openMenuItem.setOnAction(e -> openFile());
-    saveMenuItem.setOnAction(e -> saveFile());
-    saveAsMenuItem.setOnAction(e -> saveAsFile());
-    numberingSaveMenuItem.setOnAction(e -> numberingSaveFile());
-    numberingSaveAsMenuItem.setOnAction(e -> numberingSaveAsFile());
     optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
@@ -130,15 +111,6 @@ public class MainController {
     cropAxisComboBox.getSelectionModel().select(1);
     cropScaleComboBox.setItems(cropScaleItems);
     cropScaleComboBox.getSelectionModel().select(1);
-
-    // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
-    // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
-    // insertMenuItem3.setOnAction(e -> fileListHBoxController.insertImages(2));
-    // insertMenuItem4.setOnAction(e -> fileListHBoxController.insertImages(3));
-    // insertMenuItem5.setOnAction(e -> fileListHBoxController.insertImages(4));
-    // insertMenuItem6.setOnAction(e -> fileListHBoxController.insertImages(5));
-    // insertMenuItem7.setOnAction(e -> fileListHBoxController.insertImages(6));
-    // insertMenuItem8.setOnAction(e -> fileListHBoxController.insertImages(7));
 
     versionInfoItem.setOnAction(e -> openVersionWindow());
 
@@ -200,17 +172,9 @@ public class MainController {
             Separators.getMatchedConstant(prop.getValue(KEYS[1])),
             Numberings.getMatchedConstant(prop.getValue(KEYS[2])),
             Integer.valueOf(prop.getValue(KEYS[3])));
-    version = TKoolVersion.getMatchedConstant(prop.getValue(KEYS[4]));
-    int index = version.ordinal();
+    int index = 0;
     Toggle toggle = group.getToggles().get(index);
     group.selectToggle(toggle);
-
-    openedFileName = prop.getValue(KEYS[5]);
-    openedDirPath = prop.getValue(KEYS[6]);
-    savedFileName = prop.getValue(KEYS[7]);
-    savedDirPath = prop.getValue(KEYS[8]);
-    savedFileOpt = Optional.ofNullable(new File(savedDirPath + File.separator + savedFileName));
-    numberingFileName = prop.getValue(KEYS[9]);
 
     File dir = new File(OUTPUT_DIR);
     dir.mkdirs();
@@ -219,9 +183,6 @@ public class MainController {
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
-
-    // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
-    // slider.valueProperty().addListener(e -> updateImage());
   }
 
   /** オプション設定画面を開く。 */
@@ -241,115 +202,52 @@ public class MainController {
   }
 
   /** 取り込むファイルを選択する。 */
+  @FXML
   private void openFile() {
     Stage stage = new Stage(StageStyle.UTILITY);
     FileChooser fc = new FileChooser();
     fc.setTitle("ファイルを開く");
     fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    File dir = new File(openedDirPath);
+
+    File dir = new File(".");
     dir = dir.exists() ? dir : new File(".");
     fc.setInitialDirectory(dir);
 
     List<File> files = fc.showOpenMultipleDialog(stage);
     Optional<List<File>> filesOpt = Optional.ofNullable(files);
-    // filesOpt.ifPresent(fileListHBoxController::addFiles);
     filesOpt.ifPresent(
         list -> {
-          File file = list.get(0);
-          openedFileName = file.getName();
-          openedDirPath = file.getParent();
+          list.stream().forEach(f -> imageFiles.add(f));
         });
   }
 
   /** ファイルを保存する。 ファイル名が存在しなかった場合は別名で保存が呼び出される。 */
-  private void saveFile() {
-    if ("".equals(initialSavedFileName)) {
-      saveAsFile();
-      return;
-    }
-  }
+  @FXML
+  private void saveFile() {}
 
   /** 別名で保存する。 */
+  @FXML
   private void saveAsFile() {
-    // List<MyImageView> images = getPanelImages();
-    // BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-    //
-    // FileChooser fc = new FileChooser();
-    // fc.setTitle("名前をつけて保存");
-    // fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    // File dir = new File(savedDirPath);
-    // dir = dir.exists() ? dir : new File(".");
-    // fc.setInitialDirectory(dir);
-    // fc.setInitialFileName(savedFileName);
-    //
-    // Stage stage = new Stage(StageStyle.UTILITY);
-    // savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
-    // savedFileOpt.ifPresent(
-    //     file -> {
-    //       savedFileName = file.getName();
-    //       initialSavedFileName = file.getName();
-    //       savedDirPath = file.getParent();
-    //       try {
-    //         ImageIO.write(image, "png", file);
-    //       } catch (IOException e) {
-    //         e.printStackTrace();
-    //       }
-    //     });
-  }
+    FileChooser fc = new FileChooser();
+    fc.setTitle("名前をつけて保存");
+    fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
 
-  /** ナンバリングしてファイルを保存する。 ファイル名が存在しなかった場合は定義するためのダイアログを呼び出す。 */
-  private void numberingSaveFile() {
-    if ("".equals(numberingInitialFileName)) {
-      numberingSaveAsFile();
-      return;
-    }
-    numberingSave();
-  }
+    File dir = new File(".");
+    dir = dir.exists() ? dir : new File(".");
+    fc.setInitialDirectory(dir);
 
-  /** ナンバリングして保存する際にファイル名を指定して保存する。 ダイアログを表示してファイル名の入力を強制する。 */
-  private void numberingSaveAsFile() {
-    TextInputDialog dialog = new TextInputDialog(numberingFileName);
-    dialog.setTitle("ナンバリング別名保存");
-    dialog.setHeaderText("保存するファイル名を入力してください。");
-    dialog.setContentText("ファイル名：");
-    Optional<String> name = dialog.showAndWait();
-    name.ifPresent(
-        f -> {
-          numberingFileName = f;
-          numberingFileName =
-              numberingFileName.endsWith(".png") ? numberingFileName : numberingFileName + ".png";
-          numberingInitialFileName = numberingFileName;
-          numberingSave();
+    Stage stage = new Stage(StageStyle.UTILITY);
+    var savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
+    savedFileOpt.ifPresent(
+        file -> {
+          try {
+            var img = outputImageView.getImage();
+            ImageUtil.writeFile(img, file);
+          } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+          }
         });
-  }
-
-  /** ファイル末尾にナンバリングを付与して画像を出力する処理。 */
-  private void numberingSave() {
-    // List<MyImageView> images = getPanelImages();
-    // BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-    //
-    // File file = new File(OUTPUT_DIR + numberingFileName);
-    // int index = 1;
-    // file = options.makeFormatedFile(file, index);
-    // while (file.exists() && index <= 100) {
-    //   index++;
-    //   file = options.makeFormatedFile(file, index);
-    // }
-    //
-    // if (index <= 100) {
-    //   try {
-    //     ImageIO.write(image, "png", file);
-    //   } catch (IOException e) {
-    //     e.printStackTrace();
-    //   }
-    //   return;
-    // }
-    //
-    // Alert alert = new Alert(AlertType.ERROR);
-    // alert.setTitle("エラー");
-    // alert.getDialogPane().setHeaderText("ファイルのナンバリングが100を超えました。");
-    // alert.getDialogPane().setContentText("ファイルを整理してから再度実行してください。");
-    // alert.showAndWait();
   }
 
   /**
@@ -359,10 +257,6 @@ public class MainController {
    */
   public void sendFileName(String filePath) {
     // imageViewerBorderPaneController.setImage(filePath);
-  }
-
-  public TKoolVersion getTKoolVersion() {
-    return version;
   }
 
   public Options getOptions() {
@@ -383,19 +277,13 @@ public class MainController {
 
   /** プロパティファイルを書き出す。 呼び出し元はMainクラスで、ウィンドウを閉じるときに呼び出される。 */
   public void makePropertiesFile() {
-    String[] values = new String[KEYS.length];
-    values[0] = String.valueOf(options.getSeparatorSwitch());
-    values[1] = options.getSeparator().name();
-    values[2] = options.getNumbering().name();
-    values[3] = String.valueOf(options.getFontSize());
-    values[4] = version.name();
-    values[5] = openedFileName;
-    values[6] = openedDirPath;
-    values[7] = savedFileName;
-    values[8] = savedDirPath;
-    values[9] = numberingFileName;
-    IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
-    prop.write();
+    // String[] values = new String[KEYS.length];
+    // values[0] = String.valueOf(options.getSeparatorSwitch());
+    // values[1] = options.getSeparator().name();
+    // values[2] = options.getNumbering().name();
+    // values[3] = String.valueOf(options.getFontSize());
+    // IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
+    // prop.write();
 
     main.closeAction();
   }
