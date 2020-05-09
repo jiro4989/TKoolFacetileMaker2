@@ -1,10 +1,14 @@
 package com.jiro4989.tkfm.model;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.embed.swing.SwingFXUtils;
 
 public class CroppingImageModel {
   private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
@@ -27,12 +31,26 @@ public class CroppingImageModel {
 
   public Image crop() {
     double scale = this.scale.get() / 100;
-    double x = cropPos.getX() / scale;
-    double y = cropPos.getY() / scale;
-    double width = cropRect.getWidth() / scale;
-    double height = cropRect.getHeight() / scale;
-    var pix = image.get().getPixelReader();
-    return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
+    var x = (int) (cropPos.getX() / scale);
+    var y = (int) (cropPos.getY() / scale);
+    var width = (int) (cropRect.getWidth());
+    var height = (int) (cropRect.getHeight());
+
+    BufferedImage bImg = SwingFXUtils.fromFXImage(image.get(), null);
+    BufferedImage scaledImg = scaledImage(bImg, scale);
+    BufferedImage subImg = scaledImg.getSubimage( x,  y, width, height);
+
+    BufferedImage dstImg =
+        new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+    Graphics2D g = (Graphics2D) dstImg.getGraphics();
+    g.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    g.drawImage(subImg, 0, 0, null);
+
+    g.dispose();
+
+    WritableImage wImg = SwingFXUtils.toFXImage(dstImg, null);
+    return wImg;
   }
 
   private void move(double x, double y) {
@@ -147,5 +165,26 @@ public class CroppingImageModel {
 
   private static Image createEmptyImage() {
     return new WritableImage(100, 100);
+  }
+
+  /**
+   * 拡大した画像を返す。
+   */
+  private static BufferedImage scaledImage(BufferedImage image, double scale) {
+    double width = image.getWidth();
+    width *= scale;
+    double height = image.getHeight();
+    height *= scale;
+    BufferedImage newImage =
+        new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
+
+    Graphics2D g = newImage.createGraphics();
+    g.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    g.scale(scale, scale);
+    g.drawImage(image, 0, 0, null);
+    g.dispose();
+
+    return newImage;
   }
 }

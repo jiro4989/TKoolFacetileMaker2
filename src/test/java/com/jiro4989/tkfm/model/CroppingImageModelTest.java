@@ -16,6 +16,7 @@ import org.testfx.framework.junit5.*;
 public class CroppingImageModelTest {
   @ParameterizedTest
   @CsvSource({
+    "50.0, 20.0, 20.0",
     "100.0, 20.0, 20.0",
   })
   public void testCroppedImageWidthAndHeightEqualsRectangle(double scale, double wantWidth, double wantHeight) throws Exception {
