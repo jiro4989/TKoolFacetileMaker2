@@ -41,8 +41,8 @@ public class CroppingImageModel {
 
   public Image cropByBufferedImage() {
     double scale = this.scale.get() / 100;
-    var x = (int) (cropPos.getX() / scale);
-    var y = (int) (cropPos.getY() / scale);
+    var x = (int) (cropPos.getX());
+    var y = (int) (cropPos.getY());
     var width = (int) (cropRect.getWidth());
     var height = (int) (cropRect.getHeight());
 
