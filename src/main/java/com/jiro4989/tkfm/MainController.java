@@ -60,11 +60,14 @@ public class MainController {
   };
   private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
 
+  // List view
   @FXML private ListView<ImageFileModel> fileListView;
   @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
   @FXML private Button removeButton;
   @FXML private Button clearOutputButton;
+
+  // Crop view
   @FXML private GridPane cropImageGridPane;
   @FXML private ImageView cropImageView;
   @FXML private ImageView croppedImageView;
@@ -80,6 +83,8 @@ public class MainController {
   @FXML private ComboBox<Integer> cropScaleComboBox;
   private ObservableList<Integer> cropScaleItems =
       FXCollections.observableArrayList(1, 5, 10, 25, 50);
+
+  // Output view
   @FXML private ImageView outputImageView;
 
   // **************************************************
@@ -139,6 +144,9 @@ public class MainController {
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
     cropAxisComboBox.setItems(cropAxisItems);
+    cropAxisComboBox.getSelectionModel().select(1);
+    cropScaleComboBox.setItems(cropScaleItems);
+    cropScaleComboBox.getSelectionModel().select(1);
 
     // zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
     // zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
@@ -232,11 +240,6 @@ public class MainController {
 
     // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
     // slider.valueProperty().addListener(e -> updateImage());
-    //
-    // axisComboBox.setItems(axisItems);
-    // zoomRateComboBox.setItems(zoomRateItems);
-    // axisComboBox.getSelectionModel().select(1);
-    // zoomRateComboBox.getSelectionModel().select(1);
   }
 
   /**
