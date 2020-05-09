@@ -81,9 +81,11 @@ jobs:
           cp -r .github/dist/* LICENSE build/libs/tkfm.jar jre tkfm_${os_name}/
           mkdir dist
           if [ ${os_name} = windows ]; then
+            sed -i "s/{tag}/${GITHUB_REF##*/}/g" tkfm_${os_name}/tkfm.bat
             7z a tkfm_${os_name}.zip tkfm_${os_name}
             mv tkfm_${os_name}.zip dist/
           else
+            sed -i "s/{tag}/${GITHUB_REF##*/}/g" tkfm_${os_name}/tkfm
             tar czf tkfm_${os_name}.tar.gz tkfm_${os_name}
             mv tkfm_${os_name}.tar.gz dist/
           fi
