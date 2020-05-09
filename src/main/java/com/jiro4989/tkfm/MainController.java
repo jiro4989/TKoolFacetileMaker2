@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.*;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,8 +27,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class MainController {
-  private Main main;
-
   // List view
   @FXML private ListView<ImageFileModel> fileListView;
   @FXML private Button bulkInsertButton;
@@ -57,12 +56,6 @@ public class MainController {
   @FXML private ImageView outputImageView;
 
   // **************************************************
-  // ファイル
-  // **************************************************
-  @FXML private MenuItem optionsMenuItem;
-  @FXML private MenuItem closeMenuItem;
-
-  // **************************************************
   // ツクールバージョン
   // **************************************************
   @FXML private ToggleGroup group;
@@ -73,9 +66,6 @@ public class MainController {
 
   @FXML
   private void initialize() {
-    // TODO
-    closeMenuItem.setOnAction(e -> makePropertiesFile());
-
     cropAxisComboBox.setItems(cropAxisItems);
     cropAxisComboBox.getSelectionModel().select(1);
     cropScaleComboBox.setItems(cropScaleItems);
@@ -196,25 +186,8 @@ public class MainController {
     // imageViewerBorderPaneController.setImage(filePath);
   }
 
-  public void setMain(Main aMain) {
-    main = aMain;
-  }
-
   public void clearImageView() {
     // imageViewerBorderPaneController.clearImageView();
-  }
-
-  /** プロパティファイルを書き出す。 呼び出し元はMainクラスで、ウィンドウを閉じるときに呼び出される。 */
-  public void makePropertiesFile() {
-    // String[] values = new String[KEYS.length];
-    // values[0] = String.valueOf(options.getSeparatorSwitch());
-    // values[1] = options.getSeparator().name();
-    // values[2] = options.getNumbering().name();
-    // values[3] = String.valueOf(options.getFontSize());
-    // IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
-    // prop.write();
-
-    main.closeAction();
   }
 
   /** ドラッグオーバーでファイルを受け取る */
@@ -397,5 +370,10 @@ public class MainController {
     var y = event.getY();
     var img = cropImage.cropByBufferedImage();
     tileImage.setImageByAxis(img, x, y);
+  }
+
+  @FXML
+  private void quit() {
+    Platform.exit();
   }
 }
