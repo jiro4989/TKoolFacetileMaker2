@@ -111,3 +111,23 @@ jacocoTestReport {
     html.enabled = true
   }
 }
+
+version = 'dev'
+def commitHash = 'dev'
+
+def VERSION_JAVA_FILE = 'Version.java'
+def SRC_FILE = 'template/' + VERSION_JAVA_FILE
+
+def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
+def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
+
+task versionSet(type: Copy) {
+  doFirst {
+    delete DST_FILE
+  }
+  from SRC_FILE
+  into DST_DIR
+  expand(version: version, commitHash: commitHash)
+}
+
+compileJava.dependsOn(['versionSet'])
