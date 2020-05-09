@@ -94,14 +94,6 @@ public class MainController {
   @FXML private MenuItem closeMenuItem;
 
   // **************************************************
-  // リストビュー
-  // **************************************************
-  @FXML private MenuItem insertMenuItem;
-  @FXML private MenuItem clearMenuItem;
-  @FXML private MenuItem listDeleteMenuItem;
-  @FXML private MenuItem listClearMenuItem;
-
-  // **************************************************
   // イメージビュー
   // **************************************************
   @FXML private MenuItem upMenuItem;
@@ -149,10 +141,6 @@ public class MainController {
     numberingSaveAsMenuItem.setOnAction(e -> numberingSaveAsFile());
     optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
-
-    // insertMenuItem.setOnAction(e -> fileListHBoxController.insertImages(0));
-    // listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
-    // listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
 
     // upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
     // leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
