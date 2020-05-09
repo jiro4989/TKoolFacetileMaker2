@@ -51,7 +51,7 @@ public class TileImageModel {
       }
       var x = i % colCount;
       var y = i / colCount;
-      var img = images.get(i);
+      var img = images.get(i - startIndex);
       setImage(img, x, y);
     }
   }
