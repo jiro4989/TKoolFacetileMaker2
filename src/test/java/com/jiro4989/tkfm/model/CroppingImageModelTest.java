@@ -97,4 +97,34 @@ public class CroppingImageModelTest {
     assertEquals(wantX, pos.getX());
     assertEquals(wantY, pos.getY());
   }
+
+  @ParameterizedTest
+  @CsvSource({
+    "up, 0, 100.0",
+    "up, 5, 105.0",
+    "up, 1000, 200.0",
+    "down, 0, 100.0",
+    "down, 5, 95.0",
+    "down, 1000, 50.0",
+  })
+  public void testScaling(String act, double n, double wantScale) throws Exception {
+    var path = getClass().getResource("/sample1.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(10, 10);
+    var rect = new Rectangle(20, 30);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+
+    switch (act) {
+      case "up":
+        c.scaleUp(n);
+        break;
+      case "down":
+        c.scaleDown(n);
+        break;
+    }
+
+    assertEquals(wantScale, c.scaleProperty().get());
+  }
 }

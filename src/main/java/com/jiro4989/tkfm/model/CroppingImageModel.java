@@ -35,7 +35,13 @@ public class CroppingImageModel {
     double y = cropPos.getY() / scale;
     double width = cropRect.getWidth() / scale;
     double height = cropRect.getHeight() / scale;
-    var pix = image.get().getPixelReader();
+    var img = image.get();
+    var w = img.getWidth();
+    var h = img.getHeight();
+    if (w <= 0 || w < x + width || h <= 0 || h < y + height) {
+      return img;
+    }
+    var pix = img.getPixelReader();
     return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
   }
 
