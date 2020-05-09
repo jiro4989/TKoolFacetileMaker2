@@ -293,7 +293,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                        <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" onMouseClicked="#setTileImageOnClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
               </content>
