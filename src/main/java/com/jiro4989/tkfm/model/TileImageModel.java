@@ -16,18 +16,9 @@ public class TileImageModel {
   public TileImageModel(Rectangle rect) {
     this.rect = rect;
 
-    int w = (int) rect.getWidth();
-    int h = (int) rect.getHeight();
-    var img = new WritableImage(colCount * w, rowCount * h);
+    var img = outputTileImage();
     this.image = new SimpleObjectProperty<>(img);
-
-    for (int i = 0; i < rowCount; i++) {
-      List<Image> row = new LinkedList<>();
-      for (int j = 0; j < colCount; j++) {
-        row.add(tileImage());
-      }
-      images.add(row);
-    }
+    resetImages();
   }
 
   public void remove(int x, int y) {
@@ -58,6 +49,11 @@ public class TileImageModel {
       var img = images.get(i - startIndex);
       setImage(img, x, y);
     }
+  }
+
+  public void resetImage() {
+    image.set(outputTileImage());
+    resetImages();
   }
 
   // property /////////////////////////////////////////////////////////////////
@@ -103,5 +99,22 @@ public class TileImageModel {
     var w = (int) rect.getWidth();
     var h = (int) rect.getHeight();
     return new WritableImage(w, h);
+  }
+
+  private Image outputTileImage() {
+    int w = (int) rect.getWidth();
+    int h = (int) rect.getHeight();
+    return new WritableImage(colCount * w, rowCount * h);
+  }
+
+  private void resetImages() {
+    images.clear();
+    for (int i = 0; i < rowCount; i++) {
+      List<Image> row = new LinkedList<>();
+      for (int j = 0; j < colCount; j++) {
+        row.add(tileImage());
+      }
+      images.add(row);
+    }
   }
 }

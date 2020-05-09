@@ -190,6 +190,8 @@ public class MainController {
     Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
+    outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
+    outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
 
     prop.load();
     options =
@@ -561,6 +563,7 @@ public class MainController {
     var rect = cropImage.getRectangle();
     rect.setWidth(CropSize.TKOOL_MV_WIDHT);
     rect.setHeight(CropSize.TKOOL_MV_HEIGHT);
+    tileImage.resetImage();
   }
 
   @FXML
@@ -568,5 +571,6 @@ public class MainController {
     var rect = cropImage.getRectangle();
     rect.setWidth(CropSize.TKOOL_VXACE_WIDHT);
     rect.setHeight(CropSize.TKOOL_VXACE_HEIGHT);
+    tileImage.resetImage();
   }
 }
