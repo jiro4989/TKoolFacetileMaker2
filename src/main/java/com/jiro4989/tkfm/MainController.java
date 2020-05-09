@@ -112,15 +112,6 @@ public class MainController {
     cropScaleComboBox.setItems(cropScaleItems);
     cropScaleComboBox.getSelectionModel().select(1);
 
-    // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
-    // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
-    // insertMenuItem3.setOnAction(e -> fileListHBoxController.insertImages(2));
-    // insertMenuItem4.setOnAction(e -> fileListHBoxController.insertImages(3));
-    // insertMenuItem5.setOnAction(e -> fileListHBoxController.insertImages(4));
-    // insertMenuItem6.setOnAction(e -> fileListHBoxController.insertImages(5));
-    // insertMenuItem7.setOnAction(e -> fileListHBoxController.insertImages(6));
-    // insertMenuItem8.setOnAction(e -> fileListHBoxController.insertImages(7));
-
     versionInfoItem.setOnAction(e -> openVersionWindow());
 
     // initialize models
