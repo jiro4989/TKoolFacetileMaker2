@@ -573,4 +573,12 @@ public class MainController {
     rect.setHeight(CropSize.TKOOL_VXACE_HEIGHT);
     tileImage.resetImage();
   }
+
+  @FXML
+  private void setTileImageOnClick(MouseEvent event) {
+    var x = event.getX();
+    var y = event.getY();
+    var img = cropImage.cropByBufferedImage();
+    tileImage.setImageByAxis(img, x, y);
+  }
 }

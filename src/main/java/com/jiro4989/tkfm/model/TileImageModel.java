@@ -56,6 +56,15 @@ public class TileImageModel {
     resetImages();
   }
 
+  public void setImageByAxis(Image img, double mx, double my) {
+    var i = image.get();
+    double w = i.getWidth();
+    double h = i.getHeight();
+    var x = (int) (mx / (w / colCount));
+    var y = (int) (my / (h / rowCount));
+    setImage(img, x, y);
+  }
+
   // property /////////////////////////////////////////////////////////////////
 
   public ObjectProperty<Image> imageProperty() {
