@@ -61,33 +61,33 @@
         </Menu>
         <Menu mnemonicParsing="false" text="画像ビューワ">
           <items>
-            <MenuItem fx:id="upMenuItem" mnemonicParsing="false" text="上に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveUpCropPosition" text="上に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="W" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="leftMenuItem" mnemonicParsing="false" text="左に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveLeftCropPosition" text="左に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="A" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="downMenuItem" mnemonicParsing="false" text="下に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveDownCropPosition" text="下に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="rightMenuItem" mnemonicParsing="false" text="右に移動">
+            <MenuItem mnemonicParsing="false" onAction="#moveRightCropPosition" text="右に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="D" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="zoomOutMenuItem" mnemonicParsing="false" text="縮小">
+            <MenuItem mnemonicParsing="false" onAction="#scaleDown" text="縮小">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="Q" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem fx:id="zoomInMenuItem" mnemonicParsing="false" text="拡大">
+            <MenuItem mnemonicParsing="false" onAction="#scaleUp" text="拡大">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="E" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>

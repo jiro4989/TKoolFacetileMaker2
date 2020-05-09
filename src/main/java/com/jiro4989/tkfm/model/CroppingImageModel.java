@@ -35,7 +35,13 @@ public class CroppingImageModel {
     double y = cropPos.getY() / scale;
     double width = cropRect.getWidth() / scale;
     double height = cropRect.getHeight() / scale;
-    var pix = image.get().getPixelReader();
+    var img = image.get();
+    var w = img.getWidth();
+    var h = img.getHeight();
+    if (w <= 0 || w < x + width || h <= 0 || h < y + height) {
+      return img;
+    }
+    var pix = img.getPixelReader();
     return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
   }
 
@@ -124,6 +130,18 @@ public class CroppingImageModel {
     setImage(createEmptyImage());
   }
 
+  public void scaleUp(double n) {
+    double s = scale.get();
+    double scale = s + n;
+    setScale(scale);
+  }
+
+  public void scaleDown(double n) {
+    double s = scale.get();
+    double scale = s - n;
+    setScale(scale);
+  }
+
   // property /////////////////////////////////////////////////////////////////
 
   public ObjectProperty<Image> imageProperty() {
@@ -166,6 +184,15 @@ public class CroppingImageModel {
   }
 
   public void setScale(double scale) {
+    final double MIN_SCALE = 50.0;
+    final double MAX_SCALE = 200.0;
+
+    if (scale < MIN_SCALE) {
+      scale = MIN_SCALE;
+    } else if (MAX_SCALE < scale) {
+      scale = MAX_SCALE;
+    }
+
     this.scale.set(scale);
     croppedImage.set(crop());
   }

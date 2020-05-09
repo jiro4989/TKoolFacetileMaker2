@@ -8,3 +8,4 @@ build
 
 **/.metadata/
 **/jdt.ls*/
+/bin/

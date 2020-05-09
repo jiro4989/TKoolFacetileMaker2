@@ -60,11 +60,14 @@ public class MainController {
   };
   private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
 
+  // List view
   @FXML private ListView<ImageFileModel> fileListView;
   @FXML private Button bulkInsertButton;
   @FXML private Button clearButton;
   @FXML private Button removeButton;
   @FXML private Button clearOutputButton;
+
+  // Crop view
   @FXML private GridPane cropImageGridPane;
   @FXML private ImageView cropImageView;
   @FXML private ImageView croppedImageView;
@@ -80,6 +83,8 @@ public class MainController {
   @FXML private ComboBox<Integer> cropScaleComboBox;
   private ObservableList<Integer> cropScaleItems =
       FXCollections.observableArrayList(1, 5, 10, 25, 50);
+
+  // Output view
   @FXML private ImageView outputImageView;
 
   // **************************************************
@@ -92,16 +97,6 @@ public class MainController {
   @FXML private MenuItem numberingSaveAsMenuItem;
   @FXML private MenuItem optionsMenuItem;
   @FXML private MenuItem closeMenuItem;
-
-  // **************************************************
-  // イメージビュー
-  // **************************************************
-  @FXML private MenuItem upMenuItem;
-  @FXML private MenuItem leftMenuItem;
-  @FXML private MenuItem downMenuItem;
-  @FXML private MenuItem rightMenuItem;
-  @FXML private MenuItem zoomOutMenuItem;
-  @FXML private MenuItem zoomInMenuItem;
 
   // **************************************************
   // 出力画像ビュー
@@ -142,12 +137,10 @@ public class MainController {
     optionsMenuItem.setOnAction(e -> openOptionsWindow());
     closeMenuItem.setOnAction(e -> makePropertiesFile());
 
-    // upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
-    // leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
-    // downMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveDown());
-    // rightMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveRight());
-    // zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
-    // zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
+    cropAxisComboBox.setItems(cropAxisItems);
+    cropAxisComboBox.getSelectionModel().select(1);
+    cropScaleComboBox.setItems(cropScaleItems);
+    cropScaleComboBox.getSelectionModel().select(1);
 
     // insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
     // insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
@@ -238,11 +231,6 @@ public class MainController {
 
     // slider.setOnScroll(e -> changeZoomRateWithScroll(e));
     // slider.valueProperty().addListener(e -> updateImage());
-    //
-    // axisComboBox.setItems(axisItems);
-    // zoomRateComboBox.setItems(zoomRateItems);
-    // axisComboBox.getSelectionModel().select(1);
-    // zoomRateComboBox.getSelectionModel().select(1);
   }
 
   /**
@@ -501,5 +489,41 @@ public class MainController {
     double x = event.getX();
     double y = event.getY();
     cropImage.moveByMouse(x, y);
+  }
+
+  @FXML
+  private void moveUpCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveUp(n);
+  }
+
+  @FXML
+  private void moveRightCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveRight(n);
+  }
+
+  @FXML
+  private void moveDownCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveDown(n);
+  }
+
+  @FXML
+  private void moveLeftCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveLeft(n);
+  }
+
+  @FXML
+  private void scaleUp() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleUp(n);
+  }
+
+  @FXML
+  private void scaleDown() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleDown(n);
   }
 }
