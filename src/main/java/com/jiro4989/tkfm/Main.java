@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * @version 2.1
  */
 public class Main extends Application {
-  public static final String TITLE = "TKoolFacetileMaker ver2.0";
+  public static final String TITLE = "TKoolFacetileMaker2";
   private MainController controller;
   private BorderPane root;
   private Stage stage;
@@ -50,6 +50,13 @@ public class Main extends Application {
   }
 
   public static void main(String[] args) {
+    System.out.println("--------------------------------------------");
+    System.out.println("application_name: TKoolFacetileMaker2");
+    System.out.println("version: 3.0.0");
+    System.out.println("document: README.txt");
+    System.out.println("author: 次郎 (jiro)");
+    System.out.println("contact: https://twitter.com/jiro_saburomaru");
+    System.out.println("--------------------------------------------");
     launch(args);
   }
 

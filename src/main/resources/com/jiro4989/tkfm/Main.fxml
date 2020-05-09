@@ -150,7 +150,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="ヘルプ">
           <items>
-            <MenuItem fx:id="versionInfoItem" mnemonicParsing="false" text="バージョン情報" />
+            <MenuItem mnemonicParsing="false" text="README" />
           </items>
         </Menu>
       </menus>

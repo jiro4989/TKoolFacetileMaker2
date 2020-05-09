@@ -7,7 +7,6 @@ import com.jiro4989.tkfm.options.Options;
 import com.jiro4989.tkfm.options.OptionsStage;
 import com.jiro4989.tkfm.options.Separators;
 import com.jiro4989.tkfm.util.ImageUtil;
-import com.jiro4989.tkfm.version.VersionStage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -92,11 +91,6 @@ public class MainController {
   // **************************************************
   @FXML private ToggleGroup group;
 
-  // **************************************************
-  // ヘルプ
-  // **************************************************
-  @FXML private MenuItem versionInfoItem;
-
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
   private TileImageModel tileImage;
@@ -111,8 +105,6 @@ public class MainController {
     cropAxisComboBox.getSelectionModel().select(1);
     cropScaleComboBox.setItems(cropScaleItems);
     cropScaleComboBox.getSelectionModel().select(1);
-
-    versionInfoItem.setOnAction(e -> openVersionWindow());
 
     // initialize models
     cropImage = new CroppingImageModel();
@@ -193,12 +185,6 @@ public class MainController {
     optionsStage = null;
 
     main.changeFontSize(options.getFontSize());
-  }
-
-  /** バージョン画面を開く。 */
-  private void openVersionWindow() {
-    VersionStage stage = new VersionStage();
-    stage.showAndWait();
   }
 
   /** 取り込むファイルを選択する。 */
