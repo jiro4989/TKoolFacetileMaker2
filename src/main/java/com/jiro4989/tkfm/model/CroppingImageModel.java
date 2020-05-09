@@ -41,10 +41,10 @@ public class CroppingImageModel {
 
   public Image cropByBufferedImage() {
     double scale = this.scale.get() / 100;
-    var x = (int) (cropPos.getX());
-    var y = (int) (cropPos.getY());
-    var width = (int) (cropRect.getWidth());
-    var height = (int) (cropRect.getHeight());
+    var x = (int) cropPos.getX();
+    var y = (int) cropPos.getY();
+    var width = (int) cropRect.getWidth();
+    var height = (int) cropRect.getHeight();
 
     BufferedImage bImg = SwingFXUtils.fromFXImage(image.get(), null);
     BufferedImage scaledImg = scaledImage(bImg, scale);
