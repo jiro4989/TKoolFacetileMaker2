@@ -6,8 +6,10 @@ import com.jiro4989.tkfm.options.Numberings;
 import com.jiro4989.tkfm.options.Options;
 import com.jiro4989.tkfm.options.OptionsStage;
 import com.jiro4989.tkfm.options.Separators;
+import com.jiro4989.tkfm.util.ImageUtil;
 import com.jiro4989.tkfm.version.VersionStage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.*;
@@ -270,31 +272,32 @@ public class MainController {
   }
 
   /** 別名で保存する。 */
+  @FXML
   private void saveAsFile() {
-    // List<MyImageView> images = getPanelImages();
-    // BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-    //
-    // FileChooser fc = new FileChooser();
-    // fc.setTitle("名前をつけて保存");
-    // fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    // File dir = new File(savedDirPath);
-    // dir = dir.exists() ? dir : new File(".");
-    // fc.setInitialDirectory(dir);
-    // fc.setInitialFileName(savedFileName);
-    //
-    // Stage stage = new Stage(StageStyle.UTILITY);
-    // savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
-    // savedFileOpt.ifPresent(
-    //     file -> {
-    //       savedFileName = file.getName();
-    //       initialSavedFileName = file.getName();
-    //       savedDirPath = file.getParent();
-    //       try {
-    //         ImageIO.write(image, "png", file);
-    //       } catch (IOException e) {
-    //         e.printStackTrace();
-    //       }
-    //     });
+    FileChooser fc = new FileChooser();
+    fc.setTitle("名前をつけて保存");
+    fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
+
+    File dir = new File(savedDirPath);
+    dir = dir.exists() ? dir : new File(".");
+    fc.setInitialDirectory(dir);
+    fc.setInitialFileName(savedFileName);
+
+    Stage stage = new Stage(StageStyle.UTILITY);
+    savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
+    savedFileOpt.ifPresent(
+        file -> {
+          savedFileName = file.getName();
+          initialSavedFileName = file.getName();
+          savedDirPath = file.getParent();
+          try {
+            var img = outputImageView.getImage();
+            ImageUtil.writeFile(img, file);
+          } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+          }
+        });
   }
 
   /** ナンバリングしてファイルを保存する。 ファイル名が存在しなかった場合は定義するためのダイアログを呼び出す。 */
