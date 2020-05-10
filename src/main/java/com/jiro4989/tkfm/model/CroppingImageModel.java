@@ -93,6 +93,12 @@ public class CroppingImageModel {
     croppedImage.set(crop());
   }
 
+  public void move() {
+    double x = cropPos.getX();
+    double y = cropPos.getY();
+    move(x, y);
+  }
+
   public void moveUp(double n) {
     double x = cropPos.getX();
     double y = cropPos.getY() - n;
@@ -194,7 +200,7 @@ public class CroppingImageModel {
     }
 
     this.scale.set(scale);
-    croppedImage.set(crop());
+    move();
   }
 
   // private method ////////////////////////////////////////////////////////////

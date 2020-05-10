@@ -68,11 +68,6 @@ public class MainController {
 
   @FXML
   private void initialize() {
-    cropAxisComboBox.setItems(cropAxisItems);
-    cropAxisComboBox.getSelectionModel().select(1);
-    cropScaleComboBox.setItems(cropScaleItems);
-    cropScaleComboBox.getSelectionModel().select(1);
-
     // initialize models
     cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
@@ -128,6 +123,11 @@ public class MainController {
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
+    cropAxisComboBox.setItems(cropAxisItems);
+    cropAxisComboBox.getSelectionModel().select(1);
+    cropScaleComboBox.setItems(cropScaleItems);
+    cropScaleComboBox.getSelectionModel().select(1);
+    cropScaleSlider.valueProperty().addListener(e -> cropImage.move());
 
     // properties
     prop.load();
