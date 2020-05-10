@@ -2,7 +2,9 @@
 :toc: left
 :sectnums:
 
-image::https://codecov.io/gh/jiro4989/TKoolFacetileMaker2/branch/master/graph/badge.svg[https://codecov.io/gh/jiro4989/TKoolFacetileMaker2[codecov]]
+image:https://github.com/jiro4989/TKoolFacetileMaker2/workflows/build/badge.svg[build]
+image:https://codecov.io/gh/jiro4989/TKoolFacetileMaker2/branch/master/graph/badge.svg[codecov, link=https://codecov.io/gh/jiro4989/TKoolFacetileMaker2]
+
 image::./docs/demo.gif[]
 
 == 概要
