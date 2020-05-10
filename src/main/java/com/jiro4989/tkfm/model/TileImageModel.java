@@ -21,11 +21,14 @@ public class TileImageModel {
     resetImages();
   }
 
+  /*
+  作るだけ作ったけれど今は使っていない
   public void remove(int x, int y) {
     var img = tileImage();
     __images.get(y).set(x, img);
     draw();
   }
+  */
 
   public void clear() {
     for (int y = 0; y < rowCount; y++) {

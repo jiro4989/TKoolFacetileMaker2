@@ -83,4 +83,39 @@ public class TileImageModelTest {
     assertEquals(160, img.getWidth());
     assertEquals(60, img.getHeight());
   }
+
+  @Test
+  public void testClearImage() throws Exception {
+    var t = new TileImageModel(new Rectangle(20, 20));
+    var images = new LinkedList<Image>();
+    for (int i = 0; i < 8; i++) images.add(new Image("20x20.png"));
+    t.bulkInsert(images);
+    t.clear();
+
+    final var colCount = 4;
+    for (int i = 0; i < 8; i++) {
+      var x = i % colCount;
+      var y = i / colCount;
+      var reader = t.__images.get(y).get(x).getPixelReader();
+      var got = reader.getArgb(0, 0);
+      assertEquals(0, got);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "0,0,0", "10,10,0", "20,10,1", "70,10,3", "0,20,4", "20,20,5", "79,20,7", "79,39,7",
+  })
+  public void testSetImageByAxis(double x, double y, int wantIndex) {
+    var t = new TileImageModel(new Rectangle(20, 20));
+    var image = new Image("20x20.png");
+    t.setImageByAxis(image, x, y);
+
+    final var colCount = 4;
+    var xx = wantIndex % colCount;
+    var yy = wantIndex / colCount;
+    var reader = t.__images.get(yy).get(xx).getPixelReader();
+    var got = reader.getArgb(0, 0);
+    assertEquals(-65536, got);
+  }
 }
