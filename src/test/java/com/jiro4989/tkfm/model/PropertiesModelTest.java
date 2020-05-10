@@ -19,8 +19,8 @@ public class PropertiesModelTest {
   @Test
   public void testWindowConstructor() {
     var p = new PropertiesModel.Window();
-    assertEquals(200.0, p.getX());
-    assertEquals(200.0, p.getY());
+    assertEquals(100.0, p.getX());
+    assertEquals(100.0, p.getY());
     assertEquals(1280.0, p.getWidth());
     assertEquals(760.0, p.getHeight());
   }
@@ -55,8 +55,8 @@ public class PropertiesModelTest {
 
     var p = new PropertiesModel.Window("test_window_empty");
     p.load();
-    assertEquals(200.0, p.getX());
-    assertEquals(200.0, p.getY());
+    assertEquals(100.0, p.getX());
+    assertEquals(100.0, p.getY());
     assertEquals(1280.0, p.getWidth());
     assertEquals(760.0, p.getHeight());
   }
@@ -76,7 +76,7 @@ public class PropertiesModelTest {
     var p = new PropertiesModel.Window("test_window_empty");
     p.load();
     assertEquals(90.0, p.getX());
-    assertEquals(200.0, p.getY());
+    assertEquals(100.0, p.getY());
     assertEquals(1280.0, p.getWidth());
     assertEquals(760.0, p.getHeight());
   }
@@ -85,8 +85,8 @@ public class PropertiesModelTest {
   public void testLoadEmptyFile() throws IOException {
     var p = new PropertiesModel.Window("test_window_not_exists");
     p.load();
-    assertEquals(200.0, p.getX());
-    assertEquals(200.0, p.getY());
+    assertEquals(100.0, p.getX());
+    assertEquals(100.0, p.getY());
     assertEquals(1280.0, p.getWidth());
     assertEquals(760.0, p.getHeight());
   }
