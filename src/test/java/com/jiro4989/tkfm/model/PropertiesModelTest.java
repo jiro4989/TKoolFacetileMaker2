@@ -12,6 +12,11 @@ import org.testfx.framework.junit5.*;
 @ExtendWith(ApplicationExtension.class)
 public class PropertiesModelTest {
   @Test
+  public void testConstructor() {
+    new PropertiesModel();
+  }
+
+  @Test
   public void testWindowConstructor() {
     var p = new PropertiesModel.Window();
     assertEquals(200.0, p.getX());
@@ -91,6 +96,7 @@ public class PropertiesModelTest {
     var p = new PropertiesModel.ChoosedFile();
     assertFalse(p.getOpenedFile().isPresent());
     assertFalse(p.getSavedFile().isPresent());
+    p.load();
   }
 
   @Test
@@ -106,5 +112,13 @@ public class PropertiesModelTest {
     assertEquals("main.yml", p.getOpenedFile().get().getName());
     assertTrue(p.getSavedFile().isPresent());
     assertEquals("Main.java", p.getSavedFile().get().getName());
+  }
+
+  @Test
+  public void testLoadNotExistsChoosedFile() {
+    var p = new PropertiesModel.ChoosedFile("test_not_exists_choosed_file");
+    p.load(); // エラーが出ないことを検証
+    assertFalse(p.getOpenedFile().isPresent());
+    assertFalse(p.getSavedFile().isPresent());
   }
 }

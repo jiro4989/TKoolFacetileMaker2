@@ -108,6 +108,8 @@ public class CroppingImageModelTest {
 
     assertEquals(wantX, pos.getX());
     assertEquals(wantY, pos.getY());
+    assertEquals(20.0, c.croppedImageProperty().get().getWidth());
+    assertEquals(30.0, c.croppedImageProperty().get().getHeight());
   }
 
   @ParameterizedTest
