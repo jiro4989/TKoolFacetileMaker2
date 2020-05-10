@@ -164,10 +164,10 @@
                         <ListView fx:id="fileListView" onDragDropped="#fileListViewOnDragDropped" onDragOver="#fileListViewOnDragOver" prefWidth="300.0" />
                         <VBox>
                            <children>
-                              <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefWidth="140.0" text="一括挿入" />
-                              <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefWidth="140.0" text="ファイルクリア" />
-                              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefWidth="140.0" text="選択ファイルの削除" />
-                              <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefWidth="140.0" text="出力画像のクリア" />
+                              <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="一括挿入" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="ファイルクリア" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="選択ファイル削除" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="出力画像クリア" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </VBox>
                      </children>
