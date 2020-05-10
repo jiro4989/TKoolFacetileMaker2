@@ -219,7 +219,7 @@
                            <center>
                               <BorderPane prefHeight="200.0" prefWidth="200.0">
                                  <bottom>
-                                    <Slider fx:id="cropScaleSlider" blockIncrement="5.0" majorTickUnit="25.0" max="200.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+                                    <Slider fx:id="cropScaleSlider" blockIncrement="5.0" majorTickUnit="25.0" max="200.0" min="50.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
                                  </bottom>
                                  <center>
                                     <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
