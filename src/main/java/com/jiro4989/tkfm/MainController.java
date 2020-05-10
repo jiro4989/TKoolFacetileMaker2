@@ -59,6 +59,7 @@ public class MainController {
       FXCollections.observableArrayList(1, 5, 10, 25, 50);
 
   // Output view
+  @FXML private GridPane outputGridPane;
   @FXML private ImageView outputImageView;
 
   // models ///////////////////////////////////////////////////////////////////
@@ -124,6 +125,8 @@ public class MainController {
         cropScaleLabel.textProperty(), cropImage.scaleProperty(), cropScaleConv);
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
+    outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
+    outputGridPane.prefHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
     outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
     outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
 

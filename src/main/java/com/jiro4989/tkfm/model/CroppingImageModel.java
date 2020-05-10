@@ -51,17 +51,15 @@ public class CroppingImageModel {
     var y = (int) cropPos.getY();
     var width = (int) cropRect.getWidth();
     var height = (int) cropRect.getHeight();
-    var img = image.get();
-    var w = img.getWidth() / scale;
-    var h = img.getHeight() / scale;
 
+    BufferedImage bImg = SwingFXUtils.fromFXImage(image.get(), null);
+    BufferedImage scaledImg = scaledImage(bImg, scale);
+    var w = scaledImg.getWidth();
+    var h = scaledImg.getHeight();
     if (x < 0) x = 0;
     if (y < 0) y = 0;
-    if (w < x + width) width = (int) (w - x);
-    if (h < y + height) height = (int) (h - y);
-
-    BufferedImage bImg = SwingFXUtils.fromFXImage(img, null);
-    BufferedImage scaledImg = scaledImage(bImg, scale);
+    if (w < x + width) width = (int) (width - ((x + width) - w));
+    if (h < y + height) height = (int) (height - ((y + height) - h));
     BufferedImage subImg = scaledImg.getSubimage(x, y, width, height);
 
     BufferedImage dstImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);

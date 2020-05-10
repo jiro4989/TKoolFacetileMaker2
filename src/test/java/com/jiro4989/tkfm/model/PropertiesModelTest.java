@@ -6,8 +6,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.*;
 
+@ExtendWith(ApplicationExtension.class)
 public class PropertiesModelTest {
+  @Test
+  public void testConstructor() {
+    new PropertiesModel();
+  }
+
   @Test
   public void testWindowConstructor() {
     var p = new PropertiesModel.Window();
@@ -88,6 +96,7 @@ public class PropertiesModelTest {
     var p = new PropertiesModel.ChoosedFile();
     assertFalse(p.getOpenedFile().isPresent());
     assertFalse(p.getSavedFile().isPresent());
+    p.load();
   }
 
   @Test
@@ -103,5 +112,32 @@ public class PropertiesModelTest {
     assertEquals("main.yml", p.getOpenedFile().get().getName());
     assertTrue(p.getSavedFile().isPresent());
     assertEquals("Main.java", p.getSavedFile().get().getName());
+  }
+
+  @Test
+  public void testLoadNotExistsChoosedFile() {
+    var p = new PropertiesModel.ChoosedFile("test_not_exists_choosed_file");
+    p.load(); // エラーが出ないことを検証
+    assertFalse(p.getOpenedFile().isPresent());
+    assertFalse(p.getSavedFile().isPresent());
+  }
+
+  @Test
+  public void testReadFileFromProperties() throws IOException {
+    var dir = new File("config");
+    dir.mkdirs();
+
+    var filename = "config/test_choosed_file_no_file.properties";
+    var file = new File(filename);
+    var fw = new FileWriter(file);
+    var body =
+        "opened_file_dir=config\nopened_file_file=not_exists_file.png\nsaved_file_dir=sushi\nsaved_file_file=sushi.png";
+    fw.write(body);
+    fw.close();
+
+    var p = new PropertiesModel.ChoosedFile("test_choosed_file_no_file");
+    p.load();
+    assertTrue(p.getOpenedFile().isPresent());
+    assertFalse(p.getSavedFile().isPresent());
   }
 }

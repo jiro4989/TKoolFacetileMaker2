@@ -3,7 +3,6 @@ package com.jiro4989.tkfm.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.jiro4989.tkfm.data.Rectangle;
-import java.lang.reflect.*;
 import java.util.*;
 import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
