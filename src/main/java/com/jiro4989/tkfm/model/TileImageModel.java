@@ -10,7 +10,7 @@ public class TileImageModel {
   private int colCount = 4;
   private final Rectangle rect;
 
-  private final List<List<Image>> images = new LinkedList<>();
+  final List<List<Image>> __images = new LinkedList<>();
   private final ObjectProperty<Image> image;
 
   public TileImageModel(Rectangle rect) {
@@ -23,7 +23,7 @@ public class TileImageModel {
 
   public void remove(int x, int y) {
     var img = tileImage();
-    images.get(y).set(x, img);
+    __images.get(y).set(x, img);
     draw();
   }
 
@@ -31,7 +31,7 @@ public class TileImageModel {
     for (int y = 0; y < rowCount; y++) {
       for (int x = 0; x < colCount; x++) {
         var img = tileImage();
-        images.get(y).set(x, img);
+        __images.get(y).set(x, img);
       }
     }
     draw();
@@ -75,7 +75,7 @@ public class TileImageModel {
   // setter ///////////////////////////////////////////////////////////////////
 
   public void setImage(Image img, int x, int y) {
-    images.get(y).set(x, img);
+    __images.get(y).set(x, img);
     draw();
   }
 
@@ -88,7 +88,7 @@ public class TileImageModel {
       var writer = img.getPixelWriter();
       for (int y = 0; y < rowCount; y++) {
         for (int x = 0; x < colCount; x++) {
-          var image = images.get(y).get(x);
+          var image = __images.get(y).get(x);
           var w = (int) image.getWidth();
           var h = (int) image.getHeight();
           var x2 = x * w;
@@ -118,13 +118,13 @@ public class TileImageModel {
   }
 
   private void resetImages() {
-    images.clear();
+    __images.clear();
     for (int i = 0; i < rowCount; i++) {
       List<Image> row = new LinkedList<>();
       for (int j = 0; j < colCount; j++) {
         row.add(tileImage());
       }
-      images.add(row);
+      __images.add(row);
     }
   }
 }
