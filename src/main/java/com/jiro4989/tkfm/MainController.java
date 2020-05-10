@@ -1,459 +1,422 @@
 package com.jiro4989.tkfm;
 
-import com.jiro4989.tkfm.fileList.FileListHBox;
-import com.jiro4989.tkfm.fileList.FileListHBoxController;
-import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPane;
-import com.jiro4989.tkfm.imageViewer.ImageViewerBorderPaneController;
-import com.jiro4989.tkfm.options.Numberings;
-import com.jiro4989.tkfm.options.Options;
-import com.jiro4989.tkfm.options.OptionsStage;
-import com.jiro4989.tkfm.options.Separators;
-import com.jiro4989.tkfm.outputViewer.MyImageView;
-import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPane;
-import com.jiro4989.tkfm.outputViewer.OutputViewerAnchorPaneController;
-import com.jiro4989.tkfm.version.VersionStage;
-import java.awt.image.BufferedImage;
+import com.jiro4989.tkfm.data.CropSize;
+import com.jiro4989.tkfm.model.*;
+import com.jiro4989.tkfm.util.ImageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.*;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.imageio.ImageIO;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 public class MainController {
-  private Main main;
-  private Options options;
+  // UI parts /////////////////////////////////////////////////////////////////
 
-  private TKoolVersion version = TKoolVersion.MV;
-
-  private Optional<File> savedFileOpt = Optional.empty();
-  private String openedFileName = "";
-  private String openedDirPath = "";
-  private String savedFileName = "";
-  private String savedDirPath = "";
-  private final String OUTPUT_DIR = "." + File.separator + "output" + File.separator;
-  private String numberingFileName = "";
-  private String numberingInitialFileName = "";
-  private String initialSavedFileName = "";
-
-  private static final String[] KEYS = {
-    "separator_switch",
-    "separator",
-    "numberings",
-    "font_size",
-    "tkool_version",
-    "opened_file_name",
-    "opened_dir_path",
-    "saved_file_name",
-    "saved_dir_path",
-    "numbering_file_name"
-  };
-  private static final String[] INITIAL_VALUES = {
-    "false", "UNDER_SCORE", "NUMBERING01", "12", "MV", "", ".", "", ".", "MyActor.png"
-  };
-  private PropertiesHandler prop = new PropertiesHandler("options", KEYS, INITIAL_VALUES);
-
-  // **************************************************
-  // ファイル
-  // **************************************************
-  @FXML private MenuItem openMenuItem;
-  @FXML private MenuItem saveMenuItem;
-  @FXML private MenuItem saveAsMenuItem;
-  @FXML private MenuItem numberingSaveMenuItem;
-  @FXML private MenuItem numberingSaveAsMenuItem;
-  @FXML private MenuItem optionsMenuItem;
-  @FXML private MenuItem closeMenuItem;
-
-  // **************************************************
-  // リストビュー
-  // **************************************************
-  @FXML private MenuItem insertMenuItem;
-  @FXML private MenuItem clearMenuItem;
-  @FXML private MenuItem listDeleteMenuItem;
-  @FXML private MenuItem listClearMenuItem;
-
-  // **************************************************
-  // イメージビュー
-  // **************************************************
-  @FXML private MenuItem upMenuItem;
-  @FXML private MenuItem leftMenuItem;
-  @FXML private MenuItem downMenuItem;
-  @FXML private MenuItem rightMenuItem;
-  @FXML private MenuItem zoomOutMenuItem;
-  @FXML private MenuItem zoomInMenuItem;
-
-  // **************************************************
-  // 出力画像ビュー
-  // **************************************************
-  @FXML private MenuItem insertMenuItem1;
-  @FXML private MenuItem insertMenuItem2;
-  @FXML private MenuItem insertMenuItem3;
-  @FXML private MenuItem insertMenuItem4;
-  @FXML private MenuItem insertMenuItem5;
-  @FXML private MenuItem insertMenuItem6;
-  @FXML private MenuItem insertMenuItem7;
-  @FXML private MenuItem insertMenuItem8;
-
-  // **************************************************
-  // ツクールバージョン
-  // **************************************************
+  // Menu
   @FXML private ToggleGroup group;
-  @FXML private MenuItem mvRadioMenuItem;
-  @FXML private MenuItem vxaceRadioMenuItem;
 
-  // **************************************************
-  // ヘルプ
-  // **************************************************
-  @FXML private MenuItem versionInfoItem;
+  // List view
+  @FXML private ListView<ImageFileModel> fileListView;
+  @FXML private Button bulkInsertButton;
+  @FXML private Button clearButton;
+  @FXML private Button removeButton;
+  @FXML private Button clearOutputButton;
 
-  // **************************************************
-  // レイアウト定義用
-  // **************************************************
-  @FXML private TitledPane fileListPane;
-  @FXML private TitledPane imageViewerPane;
-  @FXML private TitledPane outputViewerPane;
+  // Crop view
+  @FXML private GridPane cropImageGridPane;
+  @FXML private ImageView cropImageView;
+  @FXML private GridPane croppedGridPane;
+  @FXML private ImageView croppedImageView;
+  @FXML private GridPane focusGridPane;
+  @FXML private Label cropXLabel;
+  @FXML private Label cropYLabel;
+  @FXML private Label cropScaleLabel;
+  @FXML private Slider cropScaleSlider;
+  @FXML private ComboBox<Integer> cropAxisComboBox;
+  private ObservableList<Integer> cropAxisItems =
+      FXCollections.observableArrayList(1, 5, 10, 25, 50);
+  @FXML private ComboBox<Integer> cropScaleComboBox;
+  private ObservableList<Integer> cropScaleItems =
+      FXCollections.observableArrayList(1, 5, 10, 25, 50);
 
-  // **************************************************
-  // 拡張パネルクラス
-  // **************************************************
-  private FileListHBox fileListHBox = new FileListHBox(this);
-  private ImageViewerBorderPane imageViewerBorderPane = new ImageViewerBorderPane(this);
-  private OutputViewerAnchorPane outputViewerAnchorPane = new OutputViewerAnchorPane(this);
+  // Output view
+  @FXML private GridPane outputGridPane;
+  @FXML private ImageView outputImageView;
 
-  // **************************************************
-  // 拡張パネルコントローラー
-  // **************************************************
-  private FileListHBoxController fileListHBoxController;
-  private ImageViewerBorderPaneController imageViewerBorderPaneController;
-  private OutputViewerAnchorPaneController outputViewerAnchorPaneController;
+  // models ///////////////////////////////////////////////////////////////////
+
+  private ImageFilesModel imageFiles;
+  private CroppingImageModel cropImage;
+  private TileImageModel tileImage;
+  private PropertiesModel.ChoosedFile prop = new PropertiesModel.ChoosedFile();
 
   @FXML
   private void initialize() {
-    openMenuItem.setOnAction(e -> openFile());
-    saveMenuItem.setOnAction(e -> saveFile());
-    saveAsMenuItem.setOnAction(e -> saveAsFile());
-    numberingSaveMenuItem.setOnAction(e -> numberingSaveFile());
-    numberingSaveAsMenuItem.setOnAction(e -> numberingSaveAsFile());
-    optionsMenuItem.setOnAction(e -> openOptionsWindow());
-    closeMenuItem.setOnAction(e -> makePropertiesFile());
+    // initialize models
+    cropImage = new CroppingImageModel();
+    imageFiles = new ImageFilesModel(cropImage);
+    tileImage = new TileImageModel(cropImage.getRectangle());
 
-    insertMenuItem.setOnAction(e -> fileListHBoxController.insertImages(0));
-    clearMenuItem.setOnAction(e -> clearOutputImages());
-    listDeleteMenuItem.setOnAction(e -> fileListHBoxController.deleteFile());
-    listClearMenuItem.setOnAction(e -> fileListHBoxController.clearFiles());
+    // bindigns
+    var pos = cropImage.getPosition();
+    var rect = cropImage.getRectangle();
 
-    upMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveUp());
-    leftMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveLeft());
-    downMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveDown());
-    rightMenuItem.setOnAction(e -> imageViewerBorderPaneController.moveRight());
-    zoomInMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomIn());
-    zoomOutMenuItem.setOnAction(e -> imageViewerBorderPaneController.zoomOut());
+    cropImageGridPane
+        .prefWidthProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageWidthProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+    cropImageGridPane
+        .prefHeightProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageHeightProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
 
-    insertMenuItem1.setOnAction(e -> fileListHBoxController.insertImages(0));
-    insertMenuItem2.setOnAction(e -> fileListHBoxController.insertImages(1));
-    insertMenuItem3.setOnAction(e -> fileListHBoxController.insertImages(2));
-    insertMenuItem4.setOnAction(e -> fileListHBoxController.insertImages(3));
-    insertMenuItem5.setOnAction(e -> fileListHBoxController.insertImages(4));
-    insertMenuItem6.setOnAction(e -> fileListHBoxController.insertImages(5));
-    insertMenuItem7.setOnAction(e -> fileListHBoxController.insertImages(6));
-    insertMenuItem8.setOnAction(e -> fileListHBoxController.insertImages(7));
+    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty());
+    cropImageView
+        .fitWidthProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageWidthProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
+    cropImageView
+        .fitHeightProperty()
+        .bind(
+            Bindings.multiply(
+                cropImage.imageHeightProperty(),
+                Bindings.divide(cropScaleSlider.valueProperty(), 100)));
 
-    versionInfoItem.setOnAction(e -> openVersionWindow());
+    Bindings.bindBidirectional(croppedGridPane.prefWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(croppedGridPane.prefHeightProperty(), rect.heightProperty());
+    Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty());
+    Bindings.bindBidirectional(croppedImageView.fitWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(croppedImageView.fitHeightProperty(), rect.heightProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty());
+    Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
+    Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
+    Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
+    StringConverter<Number> cropXConv = new NumberStringConverter();
+    Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty(), cropXConv);
+    StringConverter<Number> cropYConv = new NumberStringConverter();
+    Bindings.bindBidirectional(cropYLabel.textProperty(), pos.yProperty(), cropYConv);
+    StringConverter<Number> cropScaleConv = new NumberStringConverter();
+    Bindings.bindBidirectional(
+        cropScaleLabel.textProperty(), cropImage.scaleProperty(), cropScaleConv);
+    Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
+    Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
+    outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
+    outputGridPane.prefHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
+    outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
+    outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
 
-    mvRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.MV));
-    vxaceRadioMenuItem.setOnAction(e -> changeTKoolVersion(TKoolVersion.VXACE));
+    // configurations
+    fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
+    fileListView.setItems(imageFiles.getFiles());
+    cropAxisComboBox.setItems(cropAxisItems);
+    cropAxisComboBox.getSelectionModel().select(1);
+    cropScaleComboBox.setItems(cropScaleItems);
+    cropScaleComboBox.getSelectionModel().select(1);
+    cropScaleSlider.valueProperty().addListener(e -> cropImage.move());
 
-    // 各種親パネルに拡張パネルを登録
-    fileListPane.setContent(fileListHBox);
-    imageViewerPane.setContent(imageViewerBorderPane);
-    outputViewerPane.setContent(outputViewerAnchorPane);
-
-    fileListHBoxController = fileListHBox.getController();
-    imageViewerBorderPaneController = imageViewerBorderPane.getController();
-    outputViewerAnchorPaneController = outputViewerAnchorPane.getController();
-
+    // properties
     prop.load();
-    options =
-        new Options(
-            Boolean.valueOf(prop.getValue(KEYS[0])),
-            Separators.getMatchedConstant(prop.getValue(KEYS[1])),
-            Numberings.getMatchedConstant(prop.getValue(KEYS[2])),
-            Integer.valueOf(prop.getValue(KEYS[3])));
-    version = TKoolVersion.getMatchedConstant(prop.getValue(KEYS[4]));
-    int index = version.ordinal();
-    Toggle toggle = group.getToggles().get(index);
-    group.selectToggle(toggle);
-
-    changeTKoolVersion(version);
-    openedFileName = prop.getValue(KEYS[5]);
-    openedDirPath = prop.getValue(KEYS[6]);
-    savedFileName = prop.getValue(KEYS[7]);
-    savedDirPath = prop.getValue(KEYS[8]);
-    savedFileOpt = Optional.ofNullable(new File(savedDirPath + File.separator + savedFileName));
-    numberingFileName = prop.getValue(KEYS[9]);
-
-    File dir = new File(OUTPUT_DIR);
-    dir.mkdirs();
-  }
-
-  /**
-   * ツクールのバージョンを変更し、各種パネルのサイズを変更する。
-   *
-   * @param aVersion
-   */
-  private void changeTKoolVersion(TKoolVersion aVersion) {
-    version = aVersion;
-    double width = (double) version.getWidth();
-    imageViewerBorderPaneController.changeVersion(width);
-    outputViewerAnchorPaneController.changeVersion(width);
-    clearOutputImages();
-  }
-
-  /** オプション設定画面を開く。 */
-  private void openOptionsWindow() {
-    OptionsStage optionsStage = new OptionsStage(options);
-    optionsStage.showAndWait();
-    options = new Options(optionsStage.getControlelr().getOptions());
-    optionsStage = null;
-
-    main.changeFontSize(options.getFontSize());
-  }
-
-  /** バージョン画面を開く。 */
-  private void openVersionWindow() {
-    VersionStage stage = new VersionStage();
-    stage.showAndWait();
-  }
-
-  /**
-   * 出力画像プレビューのイメージのリストを取得する。
-   *
-   * @return イメージのリスト
-   */
-  private List<MyImageView> getPanelImages() {
-    ObservableList<Node> imageList = outputViewerAnchorPaneController.getPanelImagesList();
-    List<MyImageView> images =
-        imageList
-            .stream()
-            .filter(n -> n instanceof MyImageView)
-            .map(n -> (MyImageView) n)
-            .collect(Collectors.toList());
-    return images;
   }
 
   /** 取り込むファイルを選択する。 */
+  @FXML
   private void openFile() {
-    Stage stage = new Stage(StageStyle.UTILITY);
     FileChooser fc = new FileChooser();
     fc.setTitle("ファイルを開く");
     fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    File dir = new File(openedDirPath);
-    dir = dir.exists() ? dir : new File(".");
-    fc.setInitialDirectory(dir);
 
+    prop.getOpenedFile()
+        .ifPresent(
+            f -> {
+              File dir = new File(".");
+              if (f.isDirectory()) {
+                dir = f;
+              } else if (f.isFile()) {
+                dir = f.getParentFile();
+              }
+              fc.setInitialDirectory(dir);
+            });
+
+    Stage stage = new Stage(StageStyle.UTILITY);
     List<File> files = fc.showOpenMultipleDialog(stage);
     Optional<List<File>> filesOpt = Optional.ofNullable(files);
-    filesOpt.ifPresent(fileListHBoxController::addFiles);
     filesOpt.ifPresent(
         list -> {
-          File file = list.get(0);
-          openedFileName = file.getName();
-          openedDirPath = file.getParent();
+          list.stream()
+              .forEach(
+                  file -> {
+                    imageFiles.add(file);
+                    prop.setOpenedFile(file);
+                  });
         });
   }
 
   /** ファイルを保存する。 ファイル名が存在しなかった場合は別名で保存が呼び出される。 */
+  @FXML
   private void saveFile() {
-    if ("".equals(initialSavedFileName)) {
-      saveAsFile();
-      return;
-    }
+    prop.getSavedFile()
+        .ifPresent(
+            file -> {
+              if (file.isFile()) {
+                try {
+                  var img = outputImageView.getImage();
+                  ImageUtil.writeFile(img, file);
+                } catch (IOException e) {
+                  // TODO
+                  e.printStackTrace();
+                }
+                return;
+              }
 
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
-    savedFileOpt.ifPresent(
-        file -> {
-          try {
-            ImageIO.write(image, "png", file);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
+              saveAsFile();
+            });
   }
 
   /** 別名で保存する。 */
+  @FXML
   private void saveAsFile() {
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
     FileChooser fc = new FileChooser();
     fc.setTitle("名前をつけて保存");
     fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
-    File dir = new File(savedDirPath);
-    dir = dir.exists() ? dir : new File(".");
-    fc.setInitialDirectory(dir);
-    fc.setInitialFileName(savedFileName);
+
+    prop.getSavedFile()
+        .ifPresent(
+            f -> {
+              File dir = new File(".");
+              if (f.isDirectory()) {
+                dir = f;
+              } else if (f.isFile()) {
+                dir = f.getParentFile();
+              }
+              fc.setInitialDirectory(dir);
+            });
 
     Stage stage = new Stage(StageStyle.UTILITY);
-    savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
+    var savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
     savedFileOpt.ifPresent(
         file -> {
-          savedFileName = file.getName();
-          initialSavedFileName = file.getName();
-          savedDirPath = file.getParent();
           try {
-            ImageIO.write(image, "png", file);
+            var img = outputImageView.getImage();
+            ImageUtil.writeFile(img, file);
+            prop.setSavedFile(file);
           } catch (IOException e) {
+            // TODO
             e.printStackTrace();
           }
         });
   }
 
-  /** ナンバリングしてファイルを保存する。 ファイル名が存在しなかった場合は定義するためのダイアログを呼び出す。 */
-  private void numberingSaveFile() {
-    if ("".equals(numberingInitialFileName)) {
-      numberingSaveAsFile();
-      return;
+  /** ドラッグオーバーでファイルを受け取る */
+  @FXML
+  private void fileListViewOnDragOver(DragEvent event) {
+    Dragboard board = event.getDragboard();
+    if (board.hasFiles()) {
+      event.acceptTransferModes(TransferMode.COPY);
     }
-    numberingSave();
   }
 
-  /** ナンバリングして保存する際にファイル名を指定して保存する。 ダイアログを表示してファイル名の入力を強制する。 */
-  private void numberingSaveAsFile() {
-    TextInputDialog dialog = new TextInputDialog(numberingFileName);
-    dialog.setTitle("ナンバリング別名保存");
-    dialog.setHeaderText("保存するファイル名を入力してください。");
-    dialog.setContentText("ファイル名：");
-    Optional<String> name = dialog.showAndWait();
-    name.ifPresent(
-        f -> {
-          numberingFileName = f;
-          numberingFileName =
-              numberingFileName.endsWith(".png") ? numberingFileName : numberingFileName + ".png";
-          numberingInitialFileName = numberingFileName;
-          numberingSave();
-        });
-  }
-
-  /** ファイル末尾にナンバリングを付与して画像を出力する処理。 */
-  private void numberingSave() {
-    List<MyImageView> images = getPanelImages();
-    BufferedImage image = MyImageView.makeTKoolFacetileImage(images, version.getWidth());
-
-    File file = new File(OUTPUT_DIR + numberingFileName);
-    int index = 1;
-    file = options.makeFormatedFile(file, index);
-    while (file.exists() && index <= 100) {
-      index++;
-      file = options.makeFormatedFile(file, index);
+  /** ドロップでリストに格納 */
+  @FXML
+  private void fileListViewOnDragDropped(DragEvent event) {
+    Dragboard board = event.getDragboard();
+    if (board.hasFiles()) {
+      List<File> list = board.getFiles();
+      list.stream().forEach(f -> imageFiles.add(f));
+      event.setDropCompleted(true);
+      event.acceptTransferModes(TransferMode.COPY);
+    } else {
+      event.setDropCompleted(false);
     }
+  }
 
-    if (index <= 100) {
-      try {
-        ImageIO.write(image, "png", file);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return;
+  /** リストビューの選択が変更された場合に呼び出される。 */
+  private void changeSelection() {
+    if (!fileListView.getSelectionModel().isEmpty()) {
+      int i = fileListView.getSelectionModel().getSelectedIndex();
+      imageFiles.select(i);
     }
-
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("エラー");
-    alert.getDialogPane().setHeaderText("ファイルのナンバリングが100を超えました。");
-    alert.getDialogPane().setContentText("ファイルを整理してから再度実行してください。");
-    alert.showAndWait();
   }
 
-  /**
-   * ImageViewerクラスにリストの選択中のファイルパスを送る。
-   *
-   * @param filePath
-   */
-  public void sendFileName(String filePath) {
-    imageViewerBorderPaneController.setImage(filePath);
+  private List<Image> getSelectedImages() {
+    return fileListView
+        .getSelectionModel()
+        .getSelectedIndices()
+        .stream()
+        .map(
+            i -> {
+              imageFiles.select(i);
+              return cropImage.cropByBufferedImage();
+            })
+        .collect(Collectors.toList());
   }
 
-  public double getX() {
-    return imageViewerBorderPaneController.getX();
+  @FXML
+  private void bulkInsertButtonOnClicked() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images);
   }
 
-  public double getY() {
-    return imageViewerBorderPaneController.getY();
+  @FXML
+  private void bulkInsert1() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 0);
   }
 
-  public double getRate() {
-    return imageViewerBorderPaneController.getRate();
+  @FXML
+  private void bulkInsert2() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 1);
   }
 
-  public String getFilePath() {
-    return fileListHBoxController.getFilePath();
+  @FXML
+  private void bulkInsert3() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 2);
   }
 
-  public Image getTrimmingImage() {
-    return imageViewerBorderPaneController.getTrimmingImage();
+  @FXML
+  private void bulkInsert4() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 3);
   }
 
-  public TKoolVersion getTKoolVersion() {
-    return version;
+  @FXML
+  private void bulkInsert5() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 4);
   }
 
-  public Options getOptions() {
-    return options;
+  @FXML
+  private void bulkInsert6() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 5);
   }
 
-  public int getFontSize() {
-    return Integer.valueOf(prop.getValue(KEYS[3]));
+  @FXML
+  private void bulkInsert7() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 6);
   }
 
-  public void setMain(Main aMain) {
-    main = aMain;
+  @FXML
+  private void bulkInsert8() {
+    var images = getSelectedImages();
+    tileImage.bulkInsert(images, 7);
   }
 
-  public void setTrimmingImage(String filePath, int column, int row) {
-    outputViewerAnchorPaneController.setTrimmingImage(filePath, column, row);
+  @FXML
+  private void clearButtonOnClicked() {
+    imageFiles.clear();
   }
 
-  public void clearImageView() {
-    imageViewerBorderPaneController.clearImageView();
+  @FXML
+  private void removeButtonOnClicked() {
+    var i = fileListView.getSelectionModel().getSelectedIndex();
+    imageFiles.remove(i);
   }
 
-  public void clearOutputImages() {
-    outputViewerAnchorPaneController.clearImages();
+  @FXML
+  private void clearOutputButtonOnClicked() {
+    tileImage.clear();
   }
 
-  /** プロパティファイルを書き出す。 呼び出し元はMainクラスで、ウィンドウを閉じるときに呼び出される。 */
-  public void makePropertiesFile() {
-    String[] values = new String[KEYS.length];
-    values[0] = String.valueOf(options.getSeparatorSwitch());
-    values[1] = options.getSeparator().name();
-    values[2] = options.getNumbering().name();
-    values[3] = String.valueOf(options.getFontSize());
-    values[4] = version.name();
-    values[5] = openedFileName;
-    values[6] = openedDirPath;
-    values[7] = savedFileName;
-    values[8] = savedDirPath;
-    values[9] = numberingFileName;
-    IntStream.range(0, KEYS.length).forEach(i -> prop.setValue(KEYS[i], values[i]));
-    prop.write();
+  // TODO: Bad method name
+  @FXML
+  private void focusGridPaneOnMouseDragged(MouseEvent event) {
+    double x = event.getX();
+    double y = event.getY();
+    cropImage.moveByMouse(x, y);
+  }
 
-    main.closeAction();
+  @FXML
+  private void moveUpCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveUp(n);
+  }
+
+  @FXML
+  private void moveRightCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveRight(n);
+  }
+
+  @FXML
+  private void moveDownCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveDown(n);
+  }
+
+  @FXML
+  private void moveLeftCropPosition() {
+    double n = cropAxisComboBox.getSelectionModel().getSelectedItem();
+    cropImage.moveLeft(n);
+  }
+
+  @FXML
+  private void scaleUp() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleUp(n);
+  }
+
+  @FXML
+  private void scaleDown() {
+    double n = cropScaleComboBox.getSelectionModel().getSelectedItem();
+    cropImage.scaleDown(n);
+  }
+
+  @FXML
+  private void setCropSizeTkoolMV() {
+    var rect = cropImage.getRectangle();
+    rect.setWidth(CropSize.TKOOL_MV_WIDHT);
+    rect.setHeight(CropSize.TKOOL_MV_HEIGHT);
+    tileImage.resetImage();
+  }
+
+  @FXML
+  private void setCropSizeTkoolVXACE() {
+    var rect = cropImage.getRectangle();
+    rect.setWidth(CropSize.TKOOL_VXACE_WIDHT);
+    rect.setHeight(CropSize.TKOOL_VXACE_HEIGHT);
+    tileImage.resetImage();
+  }
+
+  @FXML
+  private void setTileImageOnClick(MouseEvent event) {
+    var x = event.getX();
+    var y = event.getY();
+    var img = cropImage.cropByBufferedImage();
+    tileImage.setImageByAxis(img, x, y);
+  }
+
+  @FXML
+  private void quit() {
+    prop.store();
+    Platform.exit();
   }
 }

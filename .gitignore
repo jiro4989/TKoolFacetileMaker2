@@ -4,4 +4,8 @@
 # Ignore Gradle build output directory
 build
 
-/properties/
+/config/
+
+**/.metadata/
+**/jdt.ls*/
+/bin/

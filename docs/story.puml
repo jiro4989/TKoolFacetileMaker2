@@ -1,0 +1,33 @@
+@startuml
+
+actor User as user
+participant application as app
+participant files as f
+participant image as i
+participant images as ii
+
+activate app
+user -> app : ファイルのドラッグアンドドロップ
+activate user
+app -> f : ファイル追加
+activate f
+user -> app : ファイル一覧のファイルを1つ選択
+app -> f : 対象ファイルを選択
+f -> i : 描画画像のセット
+activate i
+note right
+  画像が描画される
+end note
+user -> app : トリミング位置調整ビューの操作
+app -> i : 座標の更新
+user -> app : 一括挿入ボタンを押下
+app -> ii : 画像追加
+activate ii
+note right
+  画像が描画される
+end note
+user -> app : 出力プレビューの確認
+user -> app : 出力
+deactivate user
+
+@enduml

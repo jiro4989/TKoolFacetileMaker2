@@ -1,109 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jiro4989.tkfm.MainController">
-  <center>
-    <BorderPane prefHeight="847.0" prefWidth="808.0">
-      <bottom>
-        <TitledPane fx:id="outputViewerPane" animated="false" collapsible="false" content="$null" prefHeight="330.0" prefWidth="896.0" text="出力画像プレビュー">
-          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
-          </BorderPane.margin>
-        </TitledPane>
-      </bottom>
-      <center>
-        <TitledPane fx:id="imageViewerPane" animated="false" collapsible="false" content="$null" prefHeight="2000.0" prefWidth="916.0" text="画像ビューワ">
-          <BorderPane.margin>
-            <Insets right="5.0" top="5.0" />
-          </BorderPane.margin>
-        </TitledPane>
-      </center>
-      <BorderPane.margin>
-        <Insets />
-      </BorderPane.margin>
-    </BorderPane>
-  </center>
-  <left>
-    <TitledPane fx:id="fileListPane" animated="false" collapsible="false" content="$null" expanded="true" prefHeight="2000.0" prefWidth="397.0" text="ファイルリスト">
-      <BorderPane.margin>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
-      </BorderPane.margin>
-    </TitledPane>
-  </left>
+<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
   <top>
     <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
       <menus>
         <Menu mnemonicParsing="false" text="ファイル">
           <items>
-            <MenuItem mnemonicParsing="false" text="開く" fx:id="openMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#openFile" text="開く">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="保存する" fx:id="saveMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#saveFile" text="保存する">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="別名で保存する" fx:id="saveAsMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#saveAsFile" text="別名で保存する">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="ナンバリングで保存する" fx:id="numberingSaveMenuItem" />
-            <MenuItem mnemonicParsing="false" text="別名を指定してナンバリングで保存する" fx:id="numberingSaveAsMenuItem" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="設定" fx:id="optionsMenuItem" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="終了" fx:id="closeMenuItem" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="ファイルリスト">
-          <items>
-            <MenuItem mnemonicParsing="false" text="一括挿入" fx:id="insertMenuItem" />
-            <MenuItem mnemonicParsing="false" text="クリア" fx:id="clearMenuItem" />
-            <MenuItem mnemonicParsing="false" text="リスト削除" fx:id="listDeleteMenuItem" />
-            <MenuItem mnemonicParsing="false" text="リストクリア" fx:id="listClearMenuItem" />
+            <MenuItem mnemonicParsing="false" onAction="#quit" text="終了" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="画像ビューワ">
           <items>
-            <MenuItem mnemonicParsing="false" text="上に移動" fx:id="upMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#moveUpCropPosition" text="上に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="W" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="左に移動" fx:id="leftMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#moveLeftCropPosition" text="左に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="A" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="下に移動" fx:id="downMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#moveDownCropPosition" text="下に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="S" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="右に移動" fx:id="rightMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#moveRightCropPosition" text="右に移動">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="D" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="縮小" fx:id="zoomOutMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#scaleDown" text="縮小">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="Q" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="拡大" fx:id="zoomInMenuItem">
+            <MenuItem mnemonicParsing="false" onAction="#scaleUp" text="拡大">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="E" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -112,42 +94,42 @@
         </Menu>
         <Menu mnemonicParsing="false" text="出力画像プレビュー">
           <items>
-            <MenuItem mnemonicParsing="false" text="1番パネルから一括挿入" fx:id="insertMenuItem1">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert1" text="1番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT1" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="2番パネルから一括挿入" fx:id="insertMenuItem2">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert2" text="2番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT2" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="3番パネルから一括挿入" fx:id="insertMenuItem3">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert3" text="3番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT3" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="4番パネルから一括挿入" fx:id="insertMenuItem4">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert4" text="4番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT4" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="5番パネルから一括挿入" fx:id="insertMenuItem5">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert5" text="5番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT5" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="6番パネルから一括挿入" fx:id="insertMenuItem6">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert6" text="6番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT6" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="7番パネルから一括挿入" fx:id="insertMenuItem7">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert7" text="7番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT7" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="8番パネルから一括挿入" fx:id="insertMenuItem8">
+            <MenuItem mnemonicParsing="false" onAction="#bulkInsert8" text="8番パネルから一括挿入">
               <accelerator>
                 <KeyCodeCombination alt="UP" code="DIGIT8" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
@@ -156,20 +138,223 @@
         </Menu>
         <Menu mnemonicParsing="false" text="ツクール">
           <items>
-            <RadioMenuItem disable="false" mnemonicParsing="false" selected="true" text="ＭＶ" fx:id="mvRadioMenuItem">
+            <RadioMenuItem disable="false" mnemonicParsing="false" onAction="#setCropSizeTkoolMV" selected="true" text="ＭＶ">
               <toggleGroup>
                 <ToggleGroup fx:id="group" />
               </toggleGroup>
             </RadioMenuItem>
-            <RadioMenuItem mnemonicParsing="false" text="ＶＸＡＣＥ" toggleGroup="$group" fx:id="vxaceRadioMenuItem" />
+            <RadioMenuItem mnemonicParsing="false" onAction="#setCropSizeTkoolVXACE" text="ＶＸＡＣＥ" toggleGroup="$group" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="ヘルプ">
           <items>
-            <MenuItem mnemonicParsing="false" text="バージョン情報" fx:id="versionInfoItem" />
+            <MenuItem mnemonicParsing="false" text="README" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
   </top>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <TitledPane animated="false" collapsible="false" text="ファイルリスト" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <content>
+                  <HBox>
+                     <children>
+                        <ListView fx:id="fileListView" onDragDropped="#fileListViewOnDragDropped" onDragOver="#fileListViewOnDragOver" prefWidth="300.0" />
+                        <VBox>
+                           <children>
+                              <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="一括挿入" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="ファイルクリア" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="選択ファイル削除" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="出力画像クリア" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+              </content>
+            </TitledPane>
+            <TitledPane animated="false" collapsible="false" text="画像ビューワ" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="461.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="478.0" prefWidth="862.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <ToolBar BorderPane.alignment="CENTER">
+                                 <items>
+                                    <Label text="Ｘ：" />
+                                    <Label fx:id="cropXLabel" prefWidth="75.0" text="0.0" />
+                                    <Label text="Ｙ：" />
+                                    <Label fx:id="cropYLabel" prefWidth="75.0" text="0.0" />
+                                    <Separator orientation="VERTICAL" prefHeight="14.0" />
+                                    <Label text="移動幅：" />
+                                    <ComboBox fx:id="cropAxisComboBox" prefWidth="100.0">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="アイテム1" />
+                                             <String fx:value="アイテム2" />
+                                             <String fx:value="アイテム3" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                    <Separator orientation="VERTICAL" prefHeight="14.0" />
+                                    <Label text="拡大率：" />
+                                    <Label fx:id="cropScaleLabel" prefWidth="75.0" text="100.0" />
+                                    <Label text="拡大幅：" />
+                                    <ComboBox fx:id="cropScaleComboBox" prefWidth="100.0">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="アイテム1" />
+                                             <String fx:value="アイテム2" />
+                                             <String fx:value="アイテム3" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                 </items>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </ToolBar>
+                           </bottom>
+                           <center>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <bottom>
+                                    <Slider fx:id="cropScaleSlider" blockIncrement="5.0" majorTickUnit="25.0" max="200.0" min="50.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+                                 </bottom>
+                                 <center>
+                                    <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
+                                       <content>
+                                          <AnchorPane id="AnchorPane">
+                                             <children>
+                                                <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                   </children>
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                </GridPane>
+                                                <AnchorPane layoutX="206.5" layoutY="159.5" onMouseDragged="#focusGridPaneOnMouseDragged" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <GridPane fx:id="focusGridPane" gridLinesVisible="true" layoutX="0.5" layoutY="0.5" prefHeight="144.0" prefWidth="144.0">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                      </GridPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                       <BorderPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </BorderPane.margin>
+                                    </ScrollPane>
+                                 </center>
+                                 <left>
+                                    <AnchorPane prefHeight="435.0" prefWidth="163.0">
+                                       <children>
+                                          <FlowPane alignment="BOTTOM_LEFT" columnHalignment="LEFT" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="149.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
+                                             <children>
+                                                <Label id="" prefHeight="30.0" prefWidth="106.0" text="トリミング：" />
+                                                <GridPane fx:id="croppedGridPane" gridLinesVisible="true" prefHeight="144.0" prefWidth="144.0">
+                                                   <children>
+                                                      <ImageView fx:id="croppedImageView" fitHeight="144.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                   </children>
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                </GridPane>
+                                             </children>
+                                          </FlowPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </left>
+                              </BorderPane>
+                           </center>
+                        </BorderPane>
+                     </children></AnchorPane>
+              </content>
+            </TitledPane>
+            <TitledPane animated="false" collapsible="false" prefHeight="350.0" text="出力画像プレビュー" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="461.0" AnchorPane.rightAnchor="0.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <StackPane layoutX="15.399999618530273" layoutY="15.399999618530273">
+                           <children>
+                              <GridPane fx:id="outputGridPane" gridLinesVisible="true" StackPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="1" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="2" textAlignment="CENTER" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="3" textAlignment="CENTER" GridPane.columnIndex="2">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="4" textAlignment="CENTER" GridPane.columnIndex="3">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="5" textAlignment="CENTER" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="6" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="7" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="8" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" onMouseClicked="#setTileImageOnClick" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
