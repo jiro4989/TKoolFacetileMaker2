@@ -25,6 +25,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 public class MainController {
   // UI parts /////////////////////////////////////////////////////////////////
@@ -76,7 +78,6 @@ public class MainController {
     // bindigns
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
-    // Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty());
 
     cropImageGridPane
         .prefWidthProperty()
@@ -114,6 +115,13 @@ public class MainController {
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty());
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty());
     Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty());
+    StringConverter<Number> cropXConv = new NumberStringConverter();
+    Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty(), cropXConv);
+    StringConverter<Number> cropYConv = new NumberStringConverter();
+    Bindings.bindBidirectional(cropYLabel.textProperty(), pos.yProperty(), cropYConv);
+    StringConverter<Number> cropScaleConv = new NumberStringConverter();
+    Bindings.bindBidirectional(
+        cropScaleLabel.textProperty(), cropImage.scaleProperty(), cropScaleConv);
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
     outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
@@ -219,19 +227,6 @@ public class MainController {
             e.printStackTrace();
           }
         });
-  }
-
-  /**
-   * ImageViewerクラスにリストの選択中のファイルパスを送る。
-   *
-   * @param filePath
-   */
-  public void sendFileName(String filePath) {
-    // imageViewerBorderPaneController.setImage(filePath);
-  }
-
-  public void clearImageView() {
-    // imageViewerBorderPaneController.clearImageView();
   }
 
   /** ドラッグオーバーでファイルを受け取る */
