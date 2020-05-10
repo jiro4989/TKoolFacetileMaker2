@@ -113,7 +113,13 @@ jacocoTestReport {
 }
 
 version = 'dev'
+if (project.hasProperty('CI_VERSION')) {
+  version = CI_VERSION
+}
 def commitHash = 'dev'
+if (project.hasProperty('CI_COMMIT_HASH')) {
+  commitHash = CI_COMMIT_HASH
+}
 
 def VERSION_JAVA_FILE = 'Version.java'
 def SRC_FILE = 'template/' + VERSION_JAVA_FILE
