@@ -16,14 +16,17 @@ import org.testfx.framework.junit5.*;
 public class CroppingImageModelTest {
   @ParameterizedTest
   @CsvSource({
-    "50.0, 40.0, 40.0",
-    "100.0, 20.0, 20.0",
+    "50.0, 0.0, 0.0, 40.0, 40.0",
+    "100.0, -5.0, 0.0, 20.0, 20.0",
+    "100.0, 0.0, -5.0, 20.0, 20.0",
+    "100.0, 0.0, 0.0, 20.0, 20.0",
   })
-  public void testCrop(double scale, double wantWidth, double wantHeight) throws Exception {
+  public void testCrop(double scale, double x, double y, double wantWidth, double wantHeight)
+      throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(0, 0);
+    var pos = new Position(x, y);
     var rect = new Rectangle(20, 20);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();

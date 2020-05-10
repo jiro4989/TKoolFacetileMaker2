@@ -3,7 +3,6 @@ package com.jiro4989.tkfm.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
-import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.*;
