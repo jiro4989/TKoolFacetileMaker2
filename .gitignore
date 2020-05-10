@@ -9,3 +9,6 @@ build
 **/.metadata/
 **/jdt.ls*/
 /bin/
+.classpath
+.project
+.settings/org.eclipse.buildship.core.prefs

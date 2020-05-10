@@ -16,8 +16,8 @@ public class PropertiesModel {
   public static class Window implements PropertiesInterface {
     private Properties prop = new Properties();
     private File file = configFile("window");
-    private double x = 200;
-    private double y = 200;
+    private double x = 100;
+    private double y = 100;
     private double width = 1280;
     private double height = 760;
 
@@ -152,13 +152,13 @@ public class PropertiesModel {
 
       openedFile.ifPresent(
           f -> {
-            prop.setProperty("opened_file_dir", "" + f.getParent());
+            prop.setProperty("opened_file_dir", "" + f.getParentFile().getAbsolutePath());
             prop.setProperty("opened_file_file", "" + f.getName());
           });
 
       savedFile.ifPresent(
           f -> {
-            prop.setProperty("saved_file_dir", "" + f.getParent());
+            prop.setProperty("saved_file_dir", "" + f.getParentFile().getAbsolutePath());
             prop.setProperty("saved_file_file", "" + f.getName());
           });
 
