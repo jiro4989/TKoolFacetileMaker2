@@ -39,7 +39,7 @@ public class CroppingImageModel {
     var w = img.getWidth() / scale;
     var h = img.getHeight() / scale;
     if (x < 0 || y < 0 || w <= 0 || w < x + width || h <= 0 || h < y + height) {
-      return img;
+      return croppedImage.get();
     }
     var pix = img.getPixelReader();
     return new WritableImage(pix, (int) x, (int) y, (int) width, (int) height);
@@ -51,8 +51,16 @@ public class CroppingImageModel {
     var y = (int) cropPos.getY();
     var width = (int) cropRect.getWidth();
     var height = (int) cropRect.getHeight();
+    var img = image.get();
+    var w = img.getWidth() / scale;
+    var h = img.getHeight() / scale;
 
-    BufferedImage bImg = SwingFXUtils.fromFXImage(image.get(), null);
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (w < x + width) width = (int) (w - x);
+    if (h < y + height) height = (int) (h - y);
+
+    BufferedImage bImg = SwingFXUtils.fromFXImage(img, null);
     BufferedImage scaledImg = scaledImage(bImg, scale);
     BufferedImage subImg = scaledImg.getSubimage(x, y, width, height);
 
@@ -76,21 +84,11 @@ public class CroppingImageModel {
     double rectWidth = cropRect.getWidth();
     double rectHeight = cropRect.getHeight();
 
-    if (w * s - rectWidth < x) {
-      x = w * s - rectWidth;
-    }
+    if (w * s - rectWidth < x) x = w * s - rectWidth;
+    if (h * s - rectHeight < y) y = h * s - rectHeight;
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
 
-    if (x < 0) {
-      x = 0;
-    }
-
-    if (h * s - rectHeight < y) {
-      y = h * s - rectHeight;
-    }
-
-    if (y < 0) {
-      y = 0;
-    }
     cropPos.setX(x);
     cropPos.setY(y);
     croppedImage.set(crop());
