@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 public class ImageFilesModel {
   private ObservableList<ImageFileModel> files =
       FXCollections.observableArrayList(new LinkedList<>());
-  private int selectedIndex = 0;
   private final CroppingImageModel croppingImage;
 
   public ImageFilesModel(CroppingImageModel ci) {
@@ -17,7 +16,7 @@ public class ImageFilesModel {
 
   public void add(ImageFileModel file) {
     files.add(file);
-    select(selectedIndex);
+    select(0);
   }
 
   public void add(File file) {
@@ -25,8 +24,9 @@ public class ImageFilesModel {
   }
 
   public void remove(int i) {
+    if (i < 0 || files.size() <= i) return;
     files.remove(i);
-    select(selectedIndex);
+    select(i);
   }
 
   public void clear() {
@@ -41,8 +41,7 @@ public class ImageFilesModel {
       return;
     }
 
-    selectedIndex = i;
-    var file = files.get(selectedIndex);
+    var file = files.get(i);
     var img = file.readImage();
     croppingImage.setImage(img);
   }
