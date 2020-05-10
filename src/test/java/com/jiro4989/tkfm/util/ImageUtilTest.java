@@ -25,6 +25,11 @@ public class ImageUtilTest {
   }
 
   @Test
+  public void testConstructor() throws IOException {
+    new ImageUtil();
+  }
+
+  @Test
   public void testWriteFile() throws IOException {
     var image = new Image("20x20.png");
     var path = "tmp" + File.separator + "out.png";
