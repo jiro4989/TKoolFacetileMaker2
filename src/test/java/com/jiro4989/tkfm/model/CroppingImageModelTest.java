@@ -18,8 +18,7 @@ public class CroppingImageModelTest {
     "50.0, 40.0, 40.0",
     "100.0, 20.0, 20.0",
   })
-  public void testCroppedImageWidthAndHeightEqualsRectangle(
-      double scale, double wantWidth, double wantHeight) throws Exception {
+  public void testCrop(double scale, double wantWidth, double wantHeight) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
@@ -27,6 +26,25 @@ public class CroppingImageModelTest {
     var rect = new Rectangle(20, 20);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();
+
+    assertEquals(wantWidth, got.getWidth());
+    assertEquals(wantHeight, got.getHeight());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "50.0, 20.0, 20.0",
+    "100.0, 20.0, 20.0",
+  })
+  public void testCropByBufferedImage(double scale, double wantWidth, double wantHeight)
+      throws Exception {
+    var path = getClass().getResource("/sample1.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(0, 0);
+    var rect = new Rectangle(20, 20);
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    var got = c.cropByBufferedImage();
 
     assertEquals(wantWidth, got.getWidth());
     assertEquals(wantHeight, got.getHeight());
