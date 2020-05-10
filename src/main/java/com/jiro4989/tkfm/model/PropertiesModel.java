@@ -1,6 +1,7 @@
 package com.jiro4989.tkfm.model;
 
 import java.io.*;
+import java.util.Optional;
 import java.util.Properties;
 
 public class PropertiesModel {
@@ -110,6 +111,97 @@ public class PropertiesModel {
 
     public void setHeight(double height) {
       this.height = height;
+    }
+  }
+
+  public static class ChoosedFile implements PropertiesInterface {
+    private Properties prop = new Properties();
+    private File file = configFile("choosed_file");
+    private Optional<File> openedFile = Optional.ofNullable(null);
+    private Optional<File> savedFile = Optional.ofNullable(null);
+
+    public ChoosedFile() {}
+
+    public ChoosedFile(String filename) {
+      file = configFile(filename);
+    }
+
+    @Override
+    public void load() {
+      if (!file.exists()) {
+        return;
+      }
+
+      try (InputStream is = new FileInputStream(file)) {
+        prop.load(new InputStreamReader(is, "UTF-8"));
+
+        var of = readFileFromProperties(prop, "opened_file_dir", "opened_file_file");
+        openedFile = Optional.ofNullable(of);
+
+        var sf = readFileFromProperties(prop, "saved_file_dir", "saved_file_file");
+        savedFile = Optional.ofNullable(sf);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    @Override
+    public void store() {
+      var dir = file.getParentFile();
+      dir.mkdirs();
+
+      openedFile.ifPresent(
+          f -> {
+            prop.setProperty("opened_file_dir", "" + f.getParent());
+            prop.setProperty("opened_file_file", "" + f.getName());
+          });
+
+      savedFile.ifPresent(
+          f -> {
+            prop.setProperty("saved_file_dir", "" + f.getParent());
+            prop.setProperty("saved_file_file", "" + f.getName());
+          });
+
+      try (FileOutputStream fos = new FileOutputStream(file)) {
+        prop.store(new OutputStreamWriter(fos, "UTF-8"), null);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    // getter /////////////////////////////////////////////////////////////////
+
+    public Optional<File> getOpenedFile() {
+      return openedFile;
+    }
+
+    public Optional<File> getSavedFile() {
+      return savedFile;
+    }
+
+    // setter /////////////////////////////////////////////////////////////////
+
+    public void setOpenedFile(File file) {
+      openedFile = Optional.ofNullable(file);
+    }
+
+    public void setSavedFile(File file) {
+      savedFile = Optional.ofNullable(file);
+    }
+
+    // private methods ////////////////////////////////////////////////////////
+
+    private static File readFileFromProperties(Properties prop, String dirKey, String fileKey) {
+      var dir = prop.getProperty(dirKey);
+      var file = prop.getProperty(fileKey);
+      var path = dir + File.separator + file;
+      var of = new File(path);
+      if (of.exists()) {
+        return of;
+      } else if (of.getParentFile().exists()) {
+        return of.getParentFile();
+      }
+      return null;
     }
   }
 
