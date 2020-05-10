@@ -31,7 +31,7 @@ public class ImageFilesModel {
 
   public void clear() {
     files.clear();
-    croppingImage.setImage(null);
+    croppingImage.clearImage();
   }
 
   public void select(int i) {
