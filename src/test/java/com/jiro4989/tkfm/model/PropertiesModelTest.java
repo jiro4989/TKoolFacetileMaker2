@@ -121,4 +121,23 @@ public class PropertiesModelTest {
     assertFalse(p.getOpenedFile().isPresent());
     assertFalse(p.getSavedFile().isPresent());
   }
+
+  @Test
+  public void testReadFileFromProperties() throws IOException {
+    var dir = new File("config");
+    dir.mkdirs();
+
+    var filename = "config/test_choosed_file_no_file.properties";
+    var file = new File(filename);
+    var fw = new FileWriter(file);
+    var body =
+        "opened_file_dir=config\nopened_file_file=not_exists_file.png\nsaved_file_dir=sushi\nsaved_file_file=sushi.png";
+    fw.write(body);
+    fw.close();
+
+    var p = new PropertiesModel.ChoosedFile("test_choosed_file_no_file");
+    p.load();
+    assertTrue(p.getOpenedFile().isPresent());
+    assertFalse(p.getSavedFile().isPresent());
+  }
 }
