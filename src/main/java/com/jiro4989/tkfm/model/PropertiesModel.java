@@ -16,10 +16,10 @@ public class PropertiesModel {
   public static class Window implements PropertiesInterface {
     private Properties prop = new Properties();
     private File file = configFile("window");
-    private double x = 0;
-    private double y = 0;
+    private double x = 200;
+    private double y = 200;
     private double width = 1280;
-    private double height = 880;
+    private double height = 760;
 
     public Window() {}
 

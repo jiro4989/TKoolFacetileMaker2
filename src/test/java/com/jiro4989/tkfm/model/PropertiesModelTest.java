@@ -3,9 +3,20 @@ package com.jiro4989.tkfm.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class PropertiesModelTest {
+  @Test
+  public void testWindowConstructor() {
+    var p = new PropertiesModel.Window();
+    assertEquals(200.0, p.getX());
+    assertEquals(200.0, p.getY());
+    assertEquals(1280.0, p.getWidth());
+    assertEquals(760.0, p.getHeight());
+  }
+
   @Test
   public void testLoadStoreWindow() {
     var p = new PropertiesModel.Window("test_window");
@@ -20,6 +31,63 @@ public class PropertiesModelTest {
     assertEquals(200.2, p.getY());
     assertEquals(300.3, p.getWidth());
     assertEquals(400.4, p.getHeight());
+  }
+
+  @Test
+  public void testLoadEmptyProperties() throws IOException {
+    var dir = new File("config");
+    dir.mkdirs();
+
+    var filename = "config/test_window_empty.properties";
+    var file = new File(filename);
+    var fw = new FileWriter(file);
+    var body = "x=\ny=\nwidth=\nheight=\n";
+    fw.write(body);
+    fw.close();
+
+    var p = new PropertiesModel.Window("test_window_empty");
+    p.load();
+    assertEquals(200.0, p.getX());
+    assertEquals(200.0, p.getY());
+    assertEquals(1280.0, p.getWidth());
+    assertEquals(760.0, p.getHeight());
+  }
+
+  @Test
+  public void testLoadEmptyProperties2() throws IOException {
+    var dir = new File("config");
+    dir.mkdirs();
+
+    var filename = "config/test_window_empty.properties";
+    var file = new File(filename);
+    var fw = new FileWriter(file);
+    var body = "x=90.0\ny=\nwidth=\nheight=\n";
+    fw.write(body);
+    fw.close();
+
+    var p = new PropertiesModel.Window("test_window_empty");
+    p.load();
+    assertEquals(90.0, p.getX());
+    assertEquals(200.0, p.getY());
+    assertEquals(1280.0, p.getWidth());
+    assertEquals(760.0, p.getHeight());
+  }
+
+  @Test
+  public void testLoadEmptyFile() throws IOException {
+    var p = new PropertiesModel.Window("test_window_not_exists");
+    p.load();
+    assertEquals(200.0, p.getX());
+    assertEquals(200.0, p.getY());
+    assertEquals(1280.0, p.getWidth());
+    assertEquals(760.0, p.getHeight());
+  }
+
+  @Test
+  public void testChosedFileConstructor() {
+    var p = new PropertiesModel.ChoosedFile();
+    assertFalse(p.getOpenedFile().isPresent());
+    assertFalse(p.getSavedFile().isPresent());
   }
 
   @Test
