@@ -27,6 +27,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class MainController {
+  // UI parts /////////////////////////////////////////////////////////////////
+
+  // Menu
+  @FXML private ToggleGroup group;
+
   // List view
   @FXML private ListView<ImageFileModel> fileListView;
   @FXML private Button bulkInsertButton;
@@ -47,7 +52,6 @@ public class MainController {
   @FXML private ComboBox<Integer> cropAxisComboBox;
   private ObservableList<Integer> cropAxisItems =
       FXCollections.observableArrayList(1, 5, 10, 25, 50);
-
   @FXML private ComboBox<Integer> cropScaleComboBox;
   private ObservableList<Integer> cropScaleItems =
       FXCollections.observableArrayList(1, 5, 10, 25, 50);
@@ -55,14 +59,12 @@ public class MainController {
   // Output view
   @FXML private ImageView outputImageView;
 
-  // **************************************************
-  // ツクールバージョン
-  // **************************************************
-  @FXML private ToggleGroup group;
+  // models ///////////////////////////////////////////////////////////////////
 
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
   private TileImageModel tileImage;
+  private PropertiesModel.ChoosedFile prop = new PropertiesModel.ChoosedFile();
 
   @FXML
   private void initialize() {
@@ -126,31 +128,64 @@ public class MainController {
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     fileListView.getSelectionModel().selectedItemProperty().addListener(e -> changeSelection());
     fileListView.setItems(imageFiles.getFiles());
+
+    // properties
+    prop.load();
   }
 
   /** 取り込むファイルを選択する。 */
   @FXML
   private void openFile() {
-    Stage stage = new Stage(StageStyle.UTILITY);
     FileChooser fc = new FileChooser();
     fc.setTitle("ファイルを開く");
     fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
 
-    File dir = new File(".");
-    dir = dir.exists() ? dir : new File(".");
-    fc.setInitialDirectory(dir);
+    prop.getOpenedFile()
+        .ifPresent(
+            f -> {
+              File dir = new File(".");
+              if (f.isDirectory()) {
+                dir = f;
+              } else if (f.isFile()) {
+                dir = f.getParentFile();
+              }
+              fc.setInitialDirectory(dir);
+            });
 
+    Stage stage = new Stage(StageStyle.UTILITY);
     List<File> files = fc.showOpenMultipleDialog(stage);
     Optional<List<File>> filesOpt = Optional.ofNullable(files);
     filesOpt.ifPresent(
         list -> {
-          list.stream().forEach(f -> imageFiles.add(f));
+          list.stream()
+              .forEach(
+                  file -> {
+                    imageFiles.add(file);
+                    prop.setOpenedFile(file);
+                  });
         });
   }
 
   /** ファイルを保存する。 ファイル名が存在しなかった場合は別名で保存が呼び出される。 */
   @FXML
-  private void saveFile() {}
+  private void saveFile() {
+    prop.getSavedFile()
+        .ifPresent(
+            file -> {
+              if (file.isFile()) {
+                try {
+                  var img = outputImageView.getImage();
+                  ImageUtil.writeFile(img, file);
+                } catch (IOException e) {
+                  // TODO
+                  e.printStackTrace();
+                }
+                return;
+              }
+
+              saveAsFile();
+            });
+  }
 
   /** 別名で保存する。 */
   @FXML
@@ -159,9 +194,17 @@ public class MainController {
     fc.setTitle("名前をつけて保存");
     fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png"));
 
-    File dir = new File(".");
-    dir = dir.exists() ? dir : new File(".");
-    fc.setInitialDirectory(dir);
+    prop.getSavedFile()
+        .ifPresent(
+            f -> {
+              File dir = new File(".");
+              if (f.isDirectory()) {
+                dir = f;
+              } else if (f.isFile()) {
+                dir = f.getParentFile();
+              }
+              fc.setInitialDirectory(dir);
+            });
 
     Stage stage = new Stage(StageStyle.UTILITY);
     var savedFileOpt = Optional.ofNullable(fc.showSaveDialog(stage));
@@ -170,6 +213,7 @@ public class MainController {
           try {
             var img = outputImageView.getImage();
             ImageUtil.writeFile(img, file);
+            prop.setSavedFile(file);
           } catch (IOException e) {
             // TODO
             e.printStackTrace();
@@ -374,6 +418,7 @@ public class MainController {
 
   @FXML
   private void quit() {
+    prop.store();
     Platform.exit();
   }
 }
