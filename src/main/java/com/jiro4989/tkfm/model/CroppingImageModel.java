@@ -36,9 +36,9 @@ public class CroppingImageModel {
     double width = cropRect.getWidth() / scale;
     double height = cropRect.getHeight() / scale;
     var img = image.get();
-    var w = img.getWidth();
-    var h = img.getHeight();
-    if (w <= 0 || w < x + width || h <= 0 || h < y + height) {
+    var w = img.getWidth() / scale;
+    var h = img.getHeight() / scale;
+    if (x < 0 || y < 0 || w <= 0 || w < x + width || h <= 0 || h < y + height) {
       return img;
     }
     var pix = img.getPixelReader();
@@ -76,18 +76,21 @@ public class CroppingImageModel {
     double rectWidth = cropRect.getWidth();
     double rectHeight = cropRect.getHeight();
 
+    if (w * s - rectWidth < x) {
+      x = w * s - rectWidth;
+    }
+
     if (x < 0) {
       x = 0;
-    } else if (w * s - rectWidth < x) {
-      x = w * s - rectWidth;
+    }
+
+    if (h * s - rectHeight < y) {
+      y = h * s - rectHeight;
     }
 
     if (y < 0) {
       y = 0;
-    } else if (h * s - rectHeight < y) {
-      y = h * s - rectHeight;
     }
-
     cropPos.setX(x);
     cropPos.setY(y);
     croppedImage.set(crop());
