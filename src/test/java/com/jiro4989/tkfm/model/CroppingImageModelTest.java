@@ -6,6 +6,7 @@ import com.jiro4989.tkfm.data.Position;
 import com.jiro4989.tkfm.data.Rectangle;
 import java.io.File;
 import javafx.scene.image.Image;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
@@ -33,16 +34,28 @@ public class CroppingImageModelTest {
 
   @ParameterizedTest
   @CsvSource({
-    "50.0, 20.0, 20.0",
-    "100.0, 20.0, 20.0",
+    "50.0, 0.0, 0.0, 10.0, 10.0, 10.0, 10.0",
+    "50.0, 5.0, 5.0, 10.0, 10.0, 5.0, 5.0",
+    "100.0, 0.0, 0.0, 20.0, 20.0, 20.0, 20.0",
+    "100.0, -10.0, 0.0, 20.0, 20.0, 20.0, 20.0",
+    "100.0, 0.0, -10.0, 20.0, 20.0, 20.0, 20.0",
+    "100.0, 10.0, 0.0, 20.0, 20.0, 10.0, 20.0",
+    "100.0, 0.0, 10.0, 20.0, 20.0, 20.0, 10.0",
   })
-  public void testCropByBufferedImage(double scale, double wantWidth, double wantHeight)
+  public void testCropByBufferedImage(
+      double scale,
+      double x,
+      double y,
+      double width,
+      double height,
+      double wantWidth,
+      double wantHeight)
       throws Exception {
-    var path = getClass().getResource("/sample1.png").getPath();
+    var path = getClass().getResource("/20x20.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(0, 0);
-    var rect = new Rectangle(20, 20);
+    var pos = new Position(x, y);
+    var rect = new Rectangle(width, height);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.cropByBufferedImage();
 
@@ -144,5 +157,51 @@ public class CroppingImageModelTest {
     }
 
     assertEquals(wantScale, c.scaleProperty().get());
+  }
+
+  @Test
+  public void testImageSize() throws Exception {
+    var path = getClass().getResource("/20x20.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(0, 0);
+    var rect = new Rectangle(20, 20);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+
+    assertEquals(20.0, c.imageProperty().get().getWidth());
+    assertEquals(20.0, c.imageProperty().get().getHeight());
+    assertEquals(288.0, c.imageWidthProperty().get());
+    assertEquals(288.0, c.imageHeightProperty().get());
+  }
+
+  @Test
+  public void testPosition() throws Exception {
+    var path = getClass().getResource("/20x20.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(30, 50);
+    var rect = new Rectangle(20, 20);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    var p = c.getPosition();
+
+    assertEquals(30.0, p.getX());
+    assertEquals(50.0, p.getY());
+  }
+
+  @Test
+  public void testRectangle() throws Exception {
+    var path = getClass().getResource("/20x20.png").getPath();
+    var file = new File(path);
+    var img = new Image(file.toURI().toString());
+    var pos = new Position(30, 50);
+    var rect = new Rectangle(20, 30);
+    var scale = 100.0;
+    var c = new CroppingImageModel(img, pos, rect, scale);
+    var r = c.getRectangle();
+
+    assertEquals(20.0, r.getWidth());
+    assertEquals(30.0, r.getHeight());
   }
 }
