@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.*;
 
+@ExtendWith(ApplicationExtension.class)
 public class PropertiesModelTest {
   @Test
   public void testWindowConstructor() {

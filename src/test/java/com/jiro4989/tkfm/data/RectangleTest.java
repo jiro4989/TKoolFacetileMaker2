@@ -3,7 +3,6 @@ package com.jiro4989.tkfm.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.*;
-import org.testfx.framework.junit5.*;
 
 public class RectangleTest {
   @Test
