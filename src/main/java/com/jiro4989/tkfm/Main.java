@@ -58,6 +58,7 @@ public class Main extends Application {
 
   @Override
   public void stop() {
+    controller.storeProperties();
     prop.setX(stage.getX());
     prop.setY(stage.getY());
     prop.setWidth(stage.getWidth());
