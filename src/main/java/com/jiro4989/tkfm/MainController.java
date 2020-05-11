@@ -416,7 +416,10 @@ public class MainController {
 
   @FXML
   private void quit() {
-    prop.store();
     Platform.exit();
+  }
+
+  public void storeProperties() {
+    prop.store();
   }
 }
