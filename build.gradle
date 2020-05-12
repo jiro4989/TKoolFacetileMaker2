@@ -138,6 +138,24 @@ task versionSet(type: Copy) {
 
 compileJava.dependsOn(['versionSet'])
 
+def libDir = 'lib'
+
+task clearDependencies {
+  delete libDir
+}
+
+task dumpDependencies(dependsOn: clearDependencies) {
+  doLast {
+    configurations.compileClasspath.each {
+      def jarFile = it.absolutePath
+      copy {
+        from jarFile
+        into libDir
+      }
+    }
+  } 
+} 
+
 def appMods = [
   'javafx.base',
   'javafx.controls',
@@ -146,9 +164,9 @@ def appMods = [
   'javafx.fxml',
   ]
 
-task runApp(type: Exec) {
+task runApp(type: Exec, dependsOn: dumpDependencies) {
   commandLine 'java',
-    '--module-path', './lib/javafx-sdk-11.0.2/lib',
+    '--module-path', './' + libDir,
     '--add-modules', appMods.join(','),
     '-jar', 'build/libs/tkfm-dev.jar'
 }
