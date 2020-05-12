@@ -1,5 +1,0 @@
-javafx.base
-javafx.controls
-javafx.swing
-javafx.graphics
-javafx.fxml

@@ -97,6 +97,25 @@ GPL-2.0
 
 == 開発者向け
 
+=== 前提条件
+
+* Java 14
+
+環境変数JAVA_HOMEも設定すること。
+以下のコマンドでUbuntuでは環境が整う。
+
+[source,bash]
+----
+curl -O https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_linux-x64_bin.tar.gz
+tar xvf openjdk-14_linux-x64_bin.tar.gz
+
+mkdir -p /opt/java
+mv jdk-14 /opt/java/
+ln -sfn /opt/java/jdk-14 /opt/java/current
+
+export JAVA_HOME=/opt/java/current
+---
+
 === ビルド手順
 
 以下のコマンドを実行する。
@@ -117,7 +136,7 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 
 [source,bash]
 ----
-./script/start.sh
+./gradlew clean build runApp
 ----
 
 === カスタムJREの作成手順
@@ -127,14 +146,14 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 アプリが依存しているモジュールは `modules.txt`
 に記載。ここに追記するとスクリプトにも反映される。
 
-実行する前提条件として、下記スクリプトにかかれている `module-path`
-のパスにJavaFX JMODSがインストールされている必要がある。 JavaFX JMODSは
-前述のJavaFXのサイトにて配布されている。こちらをダウンロードしてきて、
-スクリプトに指定のパスに配置する。
+実行する前提条件として、前述のJavaFXのサイトにて配布されているJMODSが必要。
+こちらをダウンロードしてきて、 `./jmods/javafx-jmods-11.0.2` に配置する。
+
+配置後に以下のコマンドを実行する。
 
 [source,bash]
 ----
-./script/link.sh
+./gradlew jlink
 ----
 
 === カスタムJREを使用してアプリを起動する手順
@@ -148,7 +167,7 @@ https://gluonhq.com/products/javafx/[JavaFXのサイト]
 
 [source,bash]
 ----
-./jre/bin/java -jar build/libs/tkfm.jar com.jiro4989.tkfm.Main
+./jre/bin/java -jar build/libs/tkfm-dev.jar com.jiro4989.tkfm.Main
 ----
 
 これで起動しなければ何かがおかしい。
