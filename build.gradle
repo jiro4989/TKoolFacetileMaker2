@@ -127,6 +127,11 @@ def SRC_FILE = 'template/' + VERSION_JAVA_FILE
 def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
 def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
 
+// Version.javaにバージョン番号とコミットハッシュを埋め込んでコピーする。
+//
+// 環境変数を指定せずにビルドするとdevがデフォルトでセットされる。
+// CIでのビルド時にはタグ番号とコミットハッシュが埋め込まれる。
+// こうすることでタグ番号の二重管理を防ぐことができる。
 task versionSet(type: Copy) {
   doFirst {
     delete DST_FILE
@@ -144,6 +149,9 @@ task clearDependencies {
   delete libDir
 }
 
+// dependenciesで取得したjarファイルをlib配下にコピーする。
+//
+// runAppで実行するときにライブラリのパスを指定するために使用する。
 task dumpDependencies(dependsOn: clearDependencies) {
   doLast {
     configurations.compileClasspath.each {
@@ -182,6 +190,7 @@ task clearCustomJRE {
   delete customJREDir
 }
 
+// カスタムJREを作成する。
 task jlink(type: Exec, dependsOn: clearCustomJRE) {
   commandLine 'jlink',
     '--module-path', jmodsDir,
