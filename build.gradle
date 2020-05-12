@@ -138,7 +138,7 @@ task versionSet(type: Copy) {
 
 compileJava.dependsOn(['versionSet'])
 
-def libDir = 'lib'
+def libDir = './lib'
 
 task clearDependencies {
   delete libDir
@@ -166,7 +166,22 @@ def appMods = [
 
 task runApp(type: Exec, dependsOn: dumpDependencies) {
   commandLine 'java',
-    '--module-path', './' + libDir,
+    '--module-path', libDir,
     '--add-modules', appMods.join(','),
     '-jar', 'build/libs/tkfm-dev.jar'
+}
+
+def jmodsDir = './jmods/javafx-jmods-11.0.2'
+def customJREDir = 'jre'
+
+task clearCustomJRE {
+  delete customJREDir
+}
+
+task jlink(type: Exec, dependsOn: clearCustomJRE) {
+  commandLine 'jlink',
+    '--module-path', jmodsDir,
+    '--add-modules', appMods.join(','),
+    '--compress=2',
+    '--output', customJREDir
 }

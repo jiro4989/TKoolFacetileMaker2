@@ -13,3 +13,5 @@ build
 .project
 .settings/org.eclipse.buildship.core.prefs
 /lib/
+/jmods/
+/jre/
