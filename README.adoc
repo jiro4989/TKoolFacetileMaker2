@@ -114,7 +114,7 @@ mv jdk-14 /opt/java/
 ln -sfn /opt/java/jdk-14 /opt/java/current
 
 export JAVA_HOME=/opt/java/current
----
+----
 
 === ビルド手順
 
