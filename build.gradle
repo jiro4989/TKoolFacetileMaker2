@@ -63,6 +63,9 @@ dependencies {
     implementation "org.openjfx:javafx-swing:$javafx_version"
 }
 
+sourceCompatibility = 14
+targetCompatibility = 14
+
 application {
     // Define the main class for the application.
     mainClassName = 'com.jiro4989.tkfm.Main'
