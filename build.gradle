@@ -138,9 +138,17 @@ task versionSet(type: Copy) {
 
 compileJava.dependsOn(['versionSet'])
 
+def appMods = [
+  'javafx.base',
+  'javafx.controls',
+  'javafx.swing',
+  'javafx.graphics',
+  'javafx.fxml',
+  ]
+
 task runApp(type: Exec) {
   commandLine 'java',
     '--module-path', './lib/javafx-sdk-11.0.2/lib',
-    '--add-modules', 'javafx.base,javafx.controls,javafx.swing,javafx.graphics,javafx.fxml',
+    '--add-modules', appMods.join(','),
     '-jar', 'build/libs/tkfm-dev.jar'
 }
