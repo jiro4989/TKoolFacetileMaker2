@@ -63,6 +63,7 @@ https://github.com/jiro4989/TKoolFacetileMaker2/releases[Releases]から各プ�
 
 [options="header"]
 |=========
+|キー|説明
 |W|プレビューの画像を上にずらす。
 |A|プレビューの画像を左にずらす。
 |S|プレビューの画像を下にずらす。
