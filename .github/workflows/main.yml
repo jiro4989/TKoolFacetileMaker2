@@ -12,8 +12,8 @@ on:
 
 env:
   APP_NAME: 'tkfm'
-  JAVA_VERSION: '14'
-  JAVAFX_VERSION: '14.0.1'
+  JAVA_VERSION: '16'
+  JAVAFX_VERSION: '16'
 
 jobs:
   before:

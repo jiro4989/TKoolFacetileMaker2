@@ -7,7 +7,7 @@
  */
 
 buildscript {
-    ext.javafx_version = '14'
+    ext.javafx_version = '16'
 
     repositories {
         mavenCentral()
@@ -63,8 +63,8 @@ dependencies {
     implementation "org.openjfx:javafx-swing:$javafx_version"
 }
 
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 16
+targetCompatibility = 16
 
 application {
     // Define the main class for the application.
