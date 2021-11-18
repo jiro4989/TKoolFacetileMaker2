@@ -145,6 +145,11 @@ task versionSet(type: Copy) {
   expand(version: version, commitHash: commitHash)
 }
 
+// 実行順序の明示
+// clean -> googleJavaFormat -> [ versionSet -> compileJava | test ]
+verifyGoogleJavaFormat.dependsOn(['clean'])
+versionSet.dependsOn(['verifyGoogleJavaFormat'])
+test.dependsOn('verifyGoogleJavaFormat')
 compileJava.dependsOn(['versionSet'])
 
 def libDir = './lib'
