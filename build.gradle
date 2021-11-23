@@ -18,6 +18,7 @@ buildscript {
     dependencies {
         classpath "org.openjfx:javafx-plugin:0.0.8"
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
     }
 }
 
@@ -28,14 +29,12 @@ plugins {
     // Apply the application plugin to add support for building a CLI application.
     id 'application'
 
-    // Code formatter
-    id 'com.github.sherter.google-java-format' version '0.8'
-
     id 'jacoco'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "com.diffplug.spotless"
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -116,6 +115,23 @@ jacocoTestReport {
   }
 }
 
+spotless {
+  java {
+    googleJavaFormat()
+
+    trimTrailingWhitespace()
+    endWithNewline()
+    removeUnusedImports()
+  }
+
+  format 'misc', {
+    target '*.gradle'
+
+    indentWithSpaces(2)
+    endWithNewline()
+  }
+}
+
 version = 'dev'
 if (project.hasProperty('CI_VERSION')) {
   version = CI_VERSION
@@ -146,10 +162,10 @@ task versionSet(type: Copy) {
 }
 
 // 実行順序の明示
-// clean -> googleJavaFormat -> [ versionSet -> compileJava | test ]
-verifyGoogleJavaFormat.dependsOn(['clean'])
-versionSet.dependsOn(['verifyGoogleJavaFormat'])
-test.dependsOn('verifyGoogleJavaFormat')
+// clean -> spotlessApply (code format) -> [ versionSet -> compileJava | test ]
+spotlessApply.dependsOn(['clean'])
+versionSet.dependsOn(['spotlessApply'])
+test.dependsOn('spotlessApply')
 compileJava.dependsOn(['versionSet'])
 
 def libDir = './lib'
