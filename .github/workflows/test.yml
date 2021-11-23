@@ -43,6 +43,7 @@ jobs:
         run: xvfb-run ./gradlew test
       - name: Send coverage report
         run: bash <(curl -s https://codecov.io/bash)
+        if: github.ref != 'refs/heads/master'
 
   build-artifact:
     runs-on: ${{ matrix.os }}
@@ -94,3 +95,4 @@ jobs:
           name: artifact
           path: |
             ./dist/*
+        if: github.ref != 'refs/heads/master'
