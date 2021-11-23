@@ -21,6 +21,10 @@ env:
   JAVA_VERSION: '16'
   JAVAFX_VERSION: '16'
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
