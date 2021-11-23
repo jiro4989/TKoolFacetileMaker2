@@ -137,13 +137,14 @@ spotless {
 
 	groovy {
 		importOrder()
-    indentWithSpaces(2)
+		indentWithSpaces(2)
 		excludeJava()
 		greclipse()
 	}
 
 	groovyGradle {
 		target '*.gradle'
+		indentWithSpaces(2)
 		greclipse()
 	}
 }
