@@ -103,13 +103,13 @@ public class PropertiesModelTest {
   public void testLoadStoreChoosedFile() {
     var p = new PropertiesModel.ChoosedFile("test_choosed_file");
     // 存在するファイルなら何でも良い
-    p.setOpenedFile(new File("README.adoc"));
+    p.setOpenedFile(new File("src/main/java/com/jiro4989/tkfm/Version.java"));
     p.setSavedFile(new File("src/main/java/com/jiro4989/tkfm/Main.java"));
     p.store();
 
     p.load();
     assertTrue(p.getOpenedFile().isPresent());
-    assertEquals("main.yml", p.getOpenedFile().get().getName());
+    assertEquals("Version.java", p.getOpenedFile().get().getName());
     assertTrue(p.getSavedFile().isPresent());
     assertEquals("Main.java", p.getSavedFile().get().getName());
   }
