@@ -9,7 +9,8 @@ test -n "${APP_NAME}"
 test -n "${JAVAFX_VERSION}"
 test -n "${ARCHIVE_CMD}"
 test -n "${ARTIFACT_EXT}"
-test -n "${ENTRYPOINT_SCRIPT_EXT}"
+# 空文字を設定する場合があるのでチェックをしない
+# test -n "${ENTRYPOINT_SCRIPT_EXT}"
 test -n "${VERSION}"
 
 jmods_dir="jmods/${OS_NAME}"

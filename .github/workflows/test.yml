@@ -85,7 +85,6 @@ jobs:
           ARCHIVE_CMD="${{ matrix.archive_cmd }}"
           ARTIFACT_EXT="${{ matrix.artifact_ext }}"
           ENTRYPOINT_SCRIPT_EXT="${{ matrix.entrypoint_script_ext }}"
-          VERSION="${{ env.VERSION }}"
           ./script/create_artifact.sh
 
       - uses: actions/upload-artifact@v2
