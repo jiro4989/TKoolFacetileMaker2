@@ -67,7 +67,7 @@ targetCompatibility = 16
 
 application {
   // Define the main class for the application.
-  mainClassName = 'com.jiro4989.tkfm.Main'
+  getMainClass().set('com.jiro4989.tkfm.Main')
 }
 
 compileJava {
