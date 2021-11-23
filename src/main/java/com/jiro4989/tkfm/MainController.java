@@ -264,10 +264,7 @@ public class MainController {
   }
 
   private List<Image> getSelectedImages() {
-    return fileListView
-        .getSelectionModel()
-        .getSelectedIndices()
-        .stream()
+    return fileListView.getSelectionModel().getSelectedIndices().stream()
         .map(
             i -> {
               imageFiles.select(i);
