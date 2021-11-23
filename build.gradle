@@ -40,9 +40,6 @@ apply plugin: "com.diffplug.spotless"
 apply plugin: "groovy"
 
 repositories {
-  // Use jcenter for resolving dependencies.
-  // You can declare any Maven/Ivy/file repository here.
-  jcenter()
   mavenCentral()
 }
 
