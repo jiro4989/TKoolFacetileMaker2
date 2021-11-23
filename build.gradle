@@ -208,9 +208,9 @@ def appMods = [
 
 task runApp(type: Exec, dependsOn: dumpDependencies) {
   commandLine 'java',
-      '--module-path', libDir,
-      '--add-modules', appMods.join(','),
-      '-jar', 'build/libs/tkfm-dev.jar'
+    '--module-path', libDir,
+    '--add-modules', appMods.join(','),
+    '-jar', 'build/libs/tkfm-dev.jar'
 }
 
 def jmodsDir = './jmods/javafx-jmods-11.0.2'
@@ -227,8 +227,8 @@ task clearCustomJRE {
 // カスタムJREを作成する。
 task jlink(type: Exec, dependsOn: clearCustomJRE) {
   commandLine 'jlink',
-      '--module-path', jmodsDir,
-      '--add-modules', appMods.join(','),
-      '--compress=2',
-      '--output', customJREDir
+    '--module-path', jmodsDir,
+    '--add-modules', appMods.join(','),
+    '--compress=2',
+    '--output', customJREDir
 }
