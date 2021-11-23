@@ -117,7 +117,7 @@ jacocoTestReport {
 
 spotless {
   java {
-    googleJavaFormat()
+    googleJavaFormat('1.10.0')
 
     trimTrailingWhitespace()
     endWithNewline()
