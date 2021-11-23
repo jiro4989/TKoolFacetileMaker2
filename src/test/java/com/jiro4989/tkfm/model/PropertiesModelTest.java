@@ -103,7 +103,7 @@ public class PropertiesModelTest {
   public void testLoadStoreChosedFile() {
     var p = new PropertiesModel.ChoosedFile("test_choosed_file");
     // 存在するファイルなら何でも良い
-    p.setOpenedFile(new File(".github/workflows/main.yml"));
+    p.setOpenedFile(new File("README.adoc"));
     p.setSavedFile(new File("src/main/java/com/jiro4989/tkfm/Main.java"));
     p.store();
 
