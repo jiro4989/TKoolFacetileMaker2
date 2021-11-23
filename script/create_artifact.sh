@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ENTRYPOINT_SCRIPT_EXT=${ENTRYPOINT_SCRIPT_EXT:-''}
+
 set -eux
 
 test -n "${OS_NAME}"
