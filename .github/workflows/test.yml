@@ -25,7 +25,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -37,3 +37,54 @@ jobs:
         run: xvfb-run ./gradlew test
       - name: Send coverage report
         run: bash <(curl -s https://codecov.io/bash)
+
+  build-artifact:
+    runs-on: ${{ matrix.os }}
+    env:
+      VERSION: ci
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            os_name: windows
+            archive_cmd: 7z a
+            artifact_ext: .zip
+            entrypoint_script_ext: .bat
+
+          - os: macOS-latest
+            os_name: osx
+            archive_cmd: tar czf
+            artifact_ext: .tar.gz
+            entrypoint_script_ext: ''
+
+          - os: ubuntu-latest
+            os_name: linux
+            archive_cmd: tar czf
+            artifact_ext: .tar.gz
+            entrypoint_script_ext: ''
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          java-package: jdk
+          architecture: x64
+      - name: Build
+        run: >
+          ORG_GRADLE_PROJECT_CI_VERSION="${VERSION}"
+          ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)"
+          ./gradlew build -x test
+
+      - name: Create artifact
+        run: >
+          OS_NAME="${{ matrix.os_name }}"
+          ARCHIVE_CMD="${{ matrix.archive_cmd }}"
+          ARTIFACT_EXT="${{ matrix.artifact_ext }}"
+          ENTRYPOINT_SCRIPT_EXT="${{ matrix.entrypoint_script_ext }}"
+          ./script/create_artifact.sh
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: |
+            ./dist/*
