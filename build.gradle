@@ -7,138 +7,153 @@
  */
 
 buildscript {
-    ext.javafx_version = '16'
+	ext.javafx_version = '16'
 
-    repositories {
-        mavenCentral()
-        maven {
-            setUrl("https://plugins.gradle.org/m2/")
-        }
-    }
-    dependencies {
-        classpath "org.openjfx:javafx-plugin:0.0.8"
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
-    }
+	repositories {
+		mavenCentral()
+		maven {
+			setUrl("https://plugins.gradle.org/m2/")
+		}
+	}
+	dependencies {
+		classpath "org.openjfx:javafx-plugin:0.0.8"
+		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+
+		// Code Format
+		classpath "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
+	}
 }
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
+	// Apply the java plugin to add support for Java
+	id 'java'
 
-    // Apply the application plugin to add support for building a CLI application.
-    id 'application'
+	// Apply the application plugin to add support for building a CLI application.
+	id 'application'
 
-    id 'jacoco'
+	id 'jacoco'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: "com.diffplug.spotless"
+apply plugin: "groovy"
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-    mavenCentral()
+	// Use jcenter for resolving dependencies.
+	// You can declare any Maven/Ivy/file repository here.
+	jcenter()
+	mavenCentral()
 }
 
 dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.2-jre'
+	// This dependency is used by the application.
+	implementation 'com.google.guava:guava:28.2-jre'
 
-    // Use JUnit test framework
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
-    testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2'
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.2'
-    testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
+	// Use JUnit test framework
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+	testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2'
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.2'
+	testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 
-    // JavaFX
-    implementation "org.openjfx:javafx-fxml:$javafx_version"
-    implementation "org.openjfx:javafx-base:$javafx_version"
-    implementation "org.openjfx:javafx-controls:$javafx_version"
-    implementation "org.openjfx:javafx-graphics:$javafx_version"
-    implementation "org.openjfx:javafx-swing:$javafx_version"
+	// JavaFX
+	implementation "org.openjfx:javafx-fxml:$javafx_version"
+	implementation "org.openjfx:javafx-base:$javafx_version"
+	implementation "org.openjfx:javafx-controls:$javafx_version"
+	implementation "org.openjfx:javafx-graphics:$javafx_version"
+	implementation "org.openjfx:javafx-swing:$javafx_version"
 }
 
 sourceCompatibility = 16
 targetCompatibility = 16
 
 application {
-    // Define the main class for the application.
-    mainClassName = 'com.jiro4989.tkfm.Main'
+	// Define the main class for the application.
+	mainClassName = 'com.jiro4989.tkfm.Main'
 }
 
 compileJava {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }
 
 javafx {
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
+	modules = [
+		'javafx.controls',
+		'javafx.fxml',
+		'javafx.swing'
+	]
 }
 
 jar {
-  manifest {
-    attributes 'Main-Class': 'com.jiro4989.tkfm.Main'
-  }
+	manifest {
+		attributes 'Main-Class': 'com.jiro4989.tkfm.Main'
+	}
 
-  archiveBaseName = 'tkfm'
+	archiveBaseName = 'tkfm'
 
-  from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	from {
+		configurations.compileClasspath.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 test {
-  finalizedBy jacocoTestReport
+	finalizedBy jacocoTestReport
 }
 
 jacoco {
-  applyTo junitPlatformTest
+	applyTo junitPlatformTest
 }
 
 task junitPlatformJacocoReport(type: JacocoReport) {
-  sourceSets sourceSets.main
-  executionData junitPlatformTest
+	sourceSets sourceSets.main
+	executionData junitPlatformTest
 }
 
 junitPlatformTest {
-  jacoco {
-    destinationFile = file("${buildDir}/jacoco/test.exec")
-  }
+	jacoco {
+		destinationFile = file("${buildDir}/jacoco/test.exec")
+	}
 }
 
 jacocoTestReport {
-  reports {
-    xml.enabled = true
-    html.enabled = true
-  }
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
 }
 
 spotless {
-  java {
-    googleJavaFormat('1.10.0')
+	java {
+		googleJavaFormat('1.13.0')
 
-    trimTrailingWhitespace()
-    endWithNewline()
-    removeUnusedImports()
-  }
+		trimTrailingWhitespace()
+		endWithNewline()
+		removeUnusedImports()
+	}
 
-  format 'misc', {
-    target '*.gradle'
+	groovy {
+		importOrder()
+		excludeJava()
+		greclipse()
+	}
 
-    indentWithSpaces(2)
-    endWithNewline()
-  }
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
 }
 
 version = 'dev'
 if (project.hasProperty('CI_VERSION')) {
-  version = CI_VERSION
+	version = CI_VERSION
 }
 def commitHash = 'dev'
 if (project.hasProperty('CI_COMMIT_HASH')) {
-  commitHash = CI_COMMIT_HASH
+	commitHash = CI_COMMIT_HASH
 }
 
 def VERSION_JAVA_FILE = 'Version.java'
@@ -153,12 +168,12 @@ def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
 // CIでのビルド時にはタグ番号とコミットハッシュが埋め込まれる。
 // こうすることでタグ番号の二重管理を防ぐことができる。
 task versionSet(type: Copy) {
-  doFirst {
-    delete DST_FILE
-  }
-  from SRC_FILE
-  into DST_DIR
-  expand(version: version, commitHash: commitHash)
+	doFirst {
+		delete DST_FILE
+	}
+	from SRC_FILE
+	into DST_DIR
+	expand(version: version, commitHash: commitHash)
 }
 
 // 実行順序の明示
@@ -171,55 +186,55 @@ compileJava.dependsOn(['versionSet'])
 def libDir = './lib'
 
 task clearDependencies {
-  delete libDir
+	delete libDir
 }
 
 // dependenciesで取得したjarファイルをlib配下にコピーする。
 //
 // runAppで実行するときにライブラリのパスを指定するために使用する。
 task dumpDependencies(dependsOn: clearDependencies) {
-  doLast {
-    configurations.compileClasspath.each {
-      def jarFile = it.absolutePath
-      copy {
-        from jarFile
-        into libDir
-      }
-    }
-  } 
-} 
+	doLast {
+		configurations.compileClasspath.each {
+			def jarFile = it.absolutePath
+			copy {
+				from jarFile
+				into libDir
+			}
+		}
+	}
+}
 
 def appMods = [
-  'javafx.base',
-  'javafx.controls',
-  'javafx.swing',
-  'javafx.graphics',
-  'javafx.fxml',
-  ]
+	'javafx.base',
+	'javafx.controls',
+	'javafx.swing',
+	'javafx.graphics',
+	'javafx.fxml',
+]
 
 task runApp(type: Exec, dependsOn: dumpDependencies) {
-  commandLine 'java',
-    '--module-path', libDir,
-    '--add-modules', appMods.join(','),
-    '-jar', 'build/libs/tkfm-dev.jar'
+	commandLine 'java',
+			'--module-path', libDir,
+			'--add-modules', appMods.join(','),
+			'-jar', 'build/libs/tkfm-dev.jar'
 }
 
 def jmodsDir = './jmods/javafx-jmods-11.0.2'
 def customJREDir = 'jre'
 
 if (project.hasProperty('CI_JMODS_DIR')) {
-  jmodsDir = CI_JMODS_DIR
+	jmodsDir = CI_JMODS_DIR
 }
 
 task clearCustomJRE {
-  delete customJREDir
+	delete customJREDir
 }
 
 // カスタムJREを作成する。
 task jlink(type: Exec, dependsOn: clearCustomJRE) {
-  commandLine 'jlink',
-    '--module-path', jmodsDir,
-    '--add-modules', appMods.join(','),
-    '--compress=2',
-    '--output', customJREDir
+	commandLine 'jlink',
+			'--module-path', jmodsDir,
+			'--add-modules', appMods.join(','),
+			'--compress=2',
+			'--output', customJREDir
 }
