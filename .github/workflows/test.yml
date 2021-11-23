@@ -37,6 +37,8 @@ jobs:
           architecture: x64
       - name: Install xvfb
         run: sudo apt install -y xvfb
+      - name: Check code style
+        run: ./gradlew spotlessCheck
       - name: Test
         run: xvfb-run ./gradlew test
       - name: Send coverage report
