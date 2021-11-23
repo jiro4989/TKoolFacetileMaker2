@@ -100,7 +100,7 @@ public class PropertiesModelTest {
   }
 
   @Test
-  public void testLoadStoreChosedFile() {
+  public void testLoadStoreChoosedFile() {
     var p = new PropertiesModel.ChoosedFile("test_choosed_file");
     // 存在するファイルなら何でも良い
     p.setOpenedFile(new File("README.adoc"));
