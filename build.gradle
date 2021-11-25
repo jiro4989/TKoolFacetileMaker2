@@ -140,6 +140,15 @@ spotless {
   }
 }
 
+gradleLint {
+  rules = [
+    'all-dependency',
+    'duplicate-dependency-class'
+    // 勝手にあげられると心配なのでコメントアウト
+    // 'minimum-dependency-version'
+  ]
+}
+
 version = 'dev'
 if (project.hasProperty('CI_VERSION')) {
   version = CI_VERSION
