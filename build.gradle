@@ -16,7 +16,6 @@ buildscript {
     }
   }
   dependencies {
-    classpath "org.openjfx:javafx-plugin:0.0.8"
     classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
 
     // Code Format
@@ -31,11 +30,13 @@ plugins {
   // Apply the application plugin to add support for building a CLI application.
   id 'application'
 
+  // JavaFX
+  id "org.openjfx.javafxplugin" version "0.0.10"
+
   // Code coverage
   id 'jacoco'
 }
 
-apply plugin: 'org.openjfx.javafxplugin'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: "com.diffplug.spotless"
 apply plugin: "groovy"
