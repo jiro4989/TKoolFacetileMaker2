@@ -17,9 +17,6 @@ buildscript {
   }
   dependencies {
     classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-
-    // Code Format
-    classpath "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
   }
 }
 
@@ -33,12 +30,14 @@ plugins {
   // JavaFX
   id "org.openjfx.javafxplugin" version "0.0.10"
 
+  // Spotless for code formatting
+  id "com.diffplug.spotless" version "6.0.0"
+
   // Code coverage
   id 'jacoco'
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: "com.diffplug.spotless"
 apply plugin: "groovy"
 
 repositories {
