@@ -24,6 +24,9 @@ plugins {
   // Apply the java plugin to add support for Java
   id 'java'
 
+  // Apply the gradle plugin to add support for Gradle
+  id 'groovy'
+
   // Apply the application plugin to add support for building a CLI application.
   id 'application'
 
@@ -38,7 +41,6 @@ plugins {
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: "groovy"
 
 repositories {
   mavenCentral()
