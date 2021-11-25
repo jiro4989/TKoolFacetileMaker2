@@ -32,6 +32,8 @@ plugins {
   id 'application'
 
   id 'jacoco'
+
+  id "nebula.lint" version "17.5.0"
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
