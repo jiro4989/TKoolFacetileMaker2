@@ -15,6 +15,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
@@ -31,7 +32,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
+<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
   <top>
     <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
       <menus>
@@ -155,26 +156,9 @@
     </MenuBar>
   </top>
    <center>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <children>
-            <TitledPane animated="false" collapsible="false" text="ファイルリスト" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <content>
-                  <HBox>
-                     <children>
-                        <ListView fx:id="fileListView" onDragDropped="#fileListViewOnDragDropped" onDragOver="#fileListViewOnDragOver" prefWidth="300.0" />
-                        <VBox>
-                           <children>
-                              <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="一括挿入" textAlignment="CENTER" wrapText="true" />
-                              <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="ファイルクリア" textAlignment="CENTER" wrapText="true" />
-                              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="選択ファイル削除" textAlignment="CENTER" wrapText="true" />
-                              <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="出力画像クリア" textAlignment="CENTER" wrapText="true" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-              </content>
-            </TitledPane>
-            <TitledPane animated="false" collapsible="false" text="画像ビューワ" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="461.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.24615384615384617" orientation="VERTICAL" BorderPane.alignment="CENTER">
+         <items>
+            <TitledPane animated="false" collapsible="false" prefHeight="9999.0" text="画像ビューワ">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -284,10 +268,11 @@
                               </BorderPane>
                            </center>
                         </BorderPane>
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
               </content>
             </TitledPane>
-            <TitledPane animated="false" collapsible="false" prefHeight="350.0" text="出力画像プレビュー" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="461.0" AnchorPane.rightAnchor="0.0">
+            <TitledPane animated="false" collapsible="false" prefHeight="350.0" text="出力画像プレビュー">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -354,7 +339,26 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-         </children>
-      </AnchorPane>
+         </items>
+      </SplitPane>
    </center>
+   <left>
+      <TitledPane animated="false" collapsible="false" text="ファイルリスト" BorderPane.alignment="CENTER">
+        <content>
+            <HBox>
+               <children>
+                  <ListView fx:id="fileListView" onDragDropped="#fileListViewOnDragDropped" onDragOver="#fileListViewOnDragOver" prefWidth="300.0" />
+                  <VBox>
+                     <children>
+                        <Button fx:id="bulkInsertButton" mnemonicParsing="false" onAction="#bulkInsertButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="一括挿入" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="ファイルクリア" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="選択ファイル削除" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="clearOutputButton" mnemonicParsing="false" onAction="#clearOutputButtonOnClicked" prefHeight="60.0" prefWidth="140.0" text="出力画像クリア" textAlignment="CENTER" wrapText="true" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+        </content>
+      </TitledPane>
+   </left>
 </BorderPane>
