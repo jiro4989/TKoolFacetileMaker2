@@ -156,7 +156,7 @@
     </MenuBar>
   </top>
    <center>
-      <SplitPane dividerPositions="0.24615384615384617" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.1" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
             <TitledPane animated="false" collapsible="false" prefHeight="9999.0" text="画像ビューワ">
               <content>
