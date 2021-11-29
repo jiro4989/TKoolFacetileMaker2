@@ -80,7 +80,7 @@ public class CroppingImageModel {
     return wImg;
   }
 
-  private void move(double x, double y) {
+  public void move(double x, double y) {
     Image bImg = image.get();
     double s = scale.get() / 100;
     double w = bImg.getWidth();

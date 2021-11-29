@@ -1,8 +1,9 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.util.Validator;
+import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.beans.value.*;
 
 public class CropImageController {
   @FXML private TextField xInput;
@@ -11,29 +12,50 @@ public class CropImageController {
 
   @FXML
   private void initialize() {
-    xInput.textProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        if (!newValue.matches("\\d*")) {
-          xInput.setText(newValue.replaceAll("[^\\d]", ""));
-        }
-      }
-    });
+    setListener(xInput);
+    setListener(yInput);
+    setListener(scaleInput);
   }
 
-  // TODO
-  public double getX() {
-    return 0;
+  private void setListener(TextField input) {
+    input
+        .textProperty()
+        .addListener(
+            new ChangeListener<String>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!Validator.isDouble(newValue)) {
+                  input.setText(oldValue);
+                }
+              }
+            });
   }
 
-  // TODO
-  public double getY() {
-    return 0;
+  /** Returns x */
+  double getX() {
+    return Double.parseDouble(xInput.getText());
   }
 
-  // TODO
-  public double getScale() {
-    return 0;
+  /** Returns y */
+  double getY() {
+    return Double.parseDouble(yInput.getText());
   }
 
+  /** Returns scale */
+  double getScale() {
+    return Double.parseDouble(scaleInput.getText());
+  }
+
+  void setX(double x) {
+    xInput.setText("" + x);
+  }
+
+  void setY(double y) {
+    yInput.setText("" + y);
+  }
+
+  void setScale(double scale) {
+    scaleInput.setText("" + scale);
+  }
 }

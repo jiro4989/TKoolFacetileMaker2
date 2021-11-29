@@ -419,4 +419,23 @@ public class MainController {
   public void storeProperties() {
     prop.store();
   }
+
+  /** X座標、Y座標、スケール値をUIから入力する。簡単なダイアログなのでハードコードする。 */
+  @FXML
+  private void setCropSizeWithDialog() {
+    var position = cropImage.getPosition();
+    var x = position.getX();
+    var y = position.getY();
+    var scale = cropImage.scaleProperty().getValue();
+
+    CropImage ci = new CropImage(x, y, scale);
+    ci.showAndWait();
+
+    x = ci.getParameterX();
+    y = ci.getParameterY();
+    scale = ci.getParameterScale();
+
+    cropImage.move(x, y);
+    cropImage.setScale(scale);
+  }
 }
