@@ -16,7 +16,7 @@ public class CropImage extends Stage {
 
       // UI conficuration
       final int WIDTH = 800;
-      final int HEIGHT = 600;
+      final int HEIGHT = 300;
       Scene scene = new Scene(root, WIDTH, HEIGHT);
       setScene(scene);
       setMinWidth(WIDTH);
