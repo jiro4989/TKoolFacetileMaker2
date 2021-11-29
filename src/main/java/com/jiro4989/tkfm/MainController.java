@@ -420,7 +420,6 @@ public class MainController {
     prop.store();
   }
 
-  /** X座標、Y座標、スケール値をUIから入力する。簡単なダイアログなのでハードコードする。 */
   @FXML
   private void setCropSizeWithDialog() {
     var position = cropImage.getPosition();
