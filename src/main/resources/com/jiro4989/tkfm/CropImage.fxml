@@ -46,7 +46,7 @@
   <children>
       <AnchorPane>
          <children>
-            <Label text="Set crop size" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label text="トリミング設定を入力してください" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <Separator prefWidth="200.0" />
@@ -65,7 +65,7 @@
             <TextField fx:id="xInput" GridPane.columnIndex="1" />
             <Label text="Y" GridPane.rowIndex="1" />
             <TextField fx:id="yInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Scale" GridPane.rowIndex="2" />
+            <Label text="拡大率" GridPane.rowIndex="2" />
             <TextField fx:id="scaleInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
