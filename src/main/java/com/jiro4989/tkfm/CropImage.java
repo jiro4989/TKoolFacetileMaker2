@@ -15,12 +15,8 @@ public class CropImage extends Stage {
       controller = (CropImageController) loader.getController();
 
       // UI conficuration
-      final int WIDTH = 800;
-      final int HEIGHT = 300;
-      Scene scene = new Scene(root, WIDTH, HEIGHT);
+      Scene scene = new Scene(root);
       setScene(scene);
-      setMinWidth(WIDTH);
-      setMinHeight(HEIGHT);
       initStyle(StageStyle.UTILITY);
       initModality(Modality.APPLICATION_MODAL);
 
@@ -46,5 +42,10 @@ public class CropImage extends Stage {
   /** Returns Scale that was set with controller. But method name getX was defined. */
   public double getParameterScale() {
     return controller.getScale();
+  }
+
+  /** Returns ok button was pressed. */
+  public boolean getOK() {
+    return controller.getOK();
   }
 }

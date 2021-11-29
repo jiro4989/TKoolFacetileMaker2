@@ -9,6 +9,7 @@ public class CropImageController {
   @FXML private TextField xInput;
   @FXML private TextField yInput;
   @FXML private TextField scaleInput;
+  private boolean ok = false;
 
   @FXML
   private void initialize() {
@@ -32,6 +33,22 @@ public class CropImageController {
             });
   }
 
+  @FXML
+  private void okButtonOnClicked() {
+    ok = true;
+    hideUI();
+  }
+
+  @FXML
+  private void cancelButtonOnClicked() {
+    ok = false;
+    hideUI();
+  }
+
+  private void hideUI() {
+    xInput.getScene().getWindow().hide();
+  }
+
   /** Returns x */
   double getX() {
     return Double.parseDouble(xInput.getText());
@@ -45,6 +62,11 @@ public class CropImageController {
   /** Returns scale */
   double getScale() {
     return Double.parseDouble(scaleInput.getText());
+  }
+
+  /** Returns ok button was pressed. */
+  boolean getOK() {
+    return ok;
   }
 
   void setX(double x) {

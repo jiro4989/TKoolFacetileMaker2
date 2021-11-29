@@ -430,6 +430,10 @@ public class MainController {
     CropImage ci = new CropImage(x, y, scale);
     ci.showAndWait();
 
+    if (!ci.getOK()) {
+      return;
+    }
+
     x = ci.getParameterX();
     y = ci.getParameterY();
     scale = ci.getParameterScale();
