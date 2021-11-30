@@ -91,6 +91,8 @@
                 <KeyCodeCombination alt="UP" code="E" control="ANY" meta="UP" shift="UP" shortcut="UP" />
               </accelerator>
             </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#setCropSizeWithDialog" text="直接入力" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="出力画像プレビュー">
