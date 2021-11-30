@@ -55,7 +55,7 @@ def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
 
 def LIB_DIR = './lib'
 
-def appMods = [
+def APP_MODS = [
   'javafx.base',
   'javafx.controls',
   'javafx.swing',
@@ -209,7 +209,7 @@ task runApp(type: Exec) {
   doLast {
     commandLine 'java',
       '--module-path', LIB_DIR,
-      '--add-modules', appMods.join(','),
+      '--add-modules', APP_MODS.join(','),
       '-jar', 'build/libs/tkfm-dev.jar'
   }
 }
@@ -229,7 +229,7 @@ task jlink(type: Exec) {
   doLast {
     commandLine 'jlink',
       '--module-path', jmodsDir,
-      '--add-modules', appMods.join(','),
+      '--add-modules', APP_MODS.join(','),
       '--compress=2',
       '--output', CUSTOM_JRE_DIR
   }
