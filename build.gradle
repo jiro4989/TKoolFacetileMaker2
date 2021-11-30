@@ -224,13 +224,11 @@ task clearCustomJRE {
 
 // カスタムJREを作成する。
 task jlink(type: Exec) {
-  doLast {
-    commandLine 'jlink',
-      '--module-path', jmodsDir,
-      '--add-modules', APP_MODS.join(','),
-      '--compress=2',
-      '--output', CUSTOM_JRE_DIR
-  }
+  commandLine 'jlink',
+    '--module-path', jmodsDir,
+    '--add-modules', APP_MODS.join(','),
+    '--compress=2',
+    '--output', CUSTOM_JRE_DIR
 }
 
 /*
