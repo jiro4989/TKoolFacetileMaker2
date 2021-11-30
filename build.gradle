@@ -64,7 +64,7 @@ def appMods = [
 ]
 
 def jmodsDir = './jmods/javafx-jmods-11.0.2'
-def customJREDir = 'jre'
+def CUSTOM_JRE_DIR = 'jre'
 
 repositories {
   mavenCentral()
@@ -220,7 +220,7 @@ if (project.hasProperty('CI_JMODS_DIR')) {
 
 task clearCustomJRE {
   doLast {
-    delete customJREDir
+    delete CUSTOM_JRE_DIR
   }
 }
 
@@ -231,7 +231,7 @@ task jlink(type: Exec) {
       '--module-path', jmodsDir,
       '--add-modules', appMods.join(','),
       '--compress=2',
-      '--output', customJREDir
+      '--output', CUSTOM_JRE_DIR
   }
 }
 
