@@ -42,6 +42,27 @@ plugins {
 
 apply plugin: 'org.junit.platform.gradle.plugin'
 
+// 変数定義
+
+// ソースコードに埋め込むコミットハッシュ値。デフォルト値はdevで、CIでのビルド時
+// に値を差し替える。
+def commitHash = 'dev'
+
+def VERSION_JAVA_FILE = 'Version.java'
+def SRC_FILE = 'template/' + VERSION_JAVA_FILE
+def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
+def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
+
+def libDir = './lib'
+
+def appMods = [
+  'javafx.base',
+  'javafx.controls',
+  'javafx.swing',
+  'javafx.graphics',
+  'javafx.fxml',
+]
+
 repositories {
   mavenCentral()
 }
@@ -141,16 +162,10 @@ version = 'dev'
 if (project.hasProperty('CI_VERSION')) {
   version = CI_VERSION
 }
-def commitHash = 'dev'
 if (project.hasProperty('CI_COMMIT_HASH')) {
   commitHash = CI_COMMIT_HASH
 }
 
-def VERSION_JAVA_FILE = 'Version.java'
-def SRC_FILE = 'template/' + VERSION_JAVA_FILE
-
-def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
-def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
 
 // Version.javaにバージョン番号とコミットハッシュを埋め込んでコピーする。
 //
@@ -165,8 +180,6 @@ task versionSet(type: Copy) {
   into DST_DIR
   expand(version: version, commitHash: commitHash)
 }
-
-def libDir = './lib'
 
 task clearDependencies {
   delete libDir
@@ -186,14 +199,6 @@ task dumpDependencies {
     }
   }
 }
-
-def appMods = [
-  'javafx.base',
-  'javafx.controls',
-  'javafx.swing',
-  'javafx.graphics',
-  'javafx.fxml',
-]
 
 task runApp(type: Exec) {
   commandLine 'java',
@@ -223,17 +228,13 @@ task jlink(type: Exec) {
 }
 
 /*
-実行順序の明示
-
-clean -> spotlessApply -+-> versionSet -> compileJava
-                        |
-                        +-> test -> jacocoTestReport
-
-clearDependencies -> dumpDependencies -> runApp
-
-clearCustomJRE -> jlink
-
-*/
+ 実行順序の明示
+ clean -> spotlessApply -+-> versionSet -> compileJava
+ |
+ +-> test -> jacocoTestReport
+ clearDependencies -> dumpDependencies -> runApp
+ clearCustomJRE -> jlink
+ */
 spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
