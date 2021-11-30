@@ -63,6 +63,9 @@ def appMods = [
   'javafx.fxml',
 ]
 
+def jmodsDir = './jmods/javafx-jmods-11.0.2'
+def customJREDir = 'jre'
+
 repositories {
   mavenCentral()
 }
@@ -210,9 +213,6 @@ task runApp(type: Exec) {
       '-jar', 'build/libs/tkfm-dev.jar'
   }
 }
-
-def jmodsDir = './jmods/javafx-jmods-11.0.2'
-def customJREDir = 'jre'
 
 if (project.hasProperty('CI_JMODS_DIR')) {
   jmodsDir = CI_JMODS_DIR
