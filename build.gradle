@@ -182,7 +182,9 @@ task versionSet(type: Copy) {
 }
 
 task clearDependencies {
-  delete LIB_DIR
+  doLast {
+    delete LIB_DIR
+  }
 }
 
 // dependenciesで取得したjarファイルをlib配下にコピーする。
@@ -201,10 +203,12 @@ task dumpDependencies {
 }
 
 task runApp(type: Exec) {
-  commandLine 'java',
-    '--module-path', LIB_DIR,
-    '--add-modules', appMods.join(','),
-    '-jar', 'build/libs/tkfm-dev.jar'
+  doLast {
+    commandLine 'java',
+      '--module-path', LIB_DIR,
+      '--add-modules', appMods.join(','),
+      '-jar', 'build/libs/tkfm-dev.jar'
+  }
 }
 
 def jmodsDir = './jmods/javafx-jmods-11.0.2'
@@ -215,16 +219,20 @@ if (project.hasProperty('CI_JMODS_DIR')) {
 }
 
 task clearCustomJRE {
-  delete customJREDir
+  doLast {
+    delete customJREDir
+  }
 }
 
 // カスタムJREを作成する。
 task jlink(type: Exec) {
-  commandLine 'jlink',
-    '--module-path', jmodsDir,
-    '--add-modules', appMods.join(','),
-    '--compress=2',
-    '--output', customJREDir
+  doLast {
+    commandLine 'jlink',
+      '--module-path', jmodsDir,
+      '--add-modules', appMods.join(','),
+      '--compress=2',
+      '--output', customJREDir
+  }
 }
 
 /*
