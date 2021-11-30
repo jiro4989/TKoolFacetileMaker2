@@ -26,7 +26,7 @@ public class CropImageController {
               @Override
               public void changed(
                   ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!Validator.isDouble(newValue)) {
+                if (!Validator.isInteger(newValue.trim())) {
                   input.setText(oldValue);
                 }
               }
