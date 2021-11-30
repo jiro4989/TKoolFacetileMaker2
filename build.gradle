@@ -100,10 +100,6 @@ jar {
   duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-test {
-  finalizedBy jacocoTestReport
-}
-
 jacoco {
   applyTo junitPlatformTest
 }
@@ -170,13 +166,6 @@ task versionSet(type: Copy) {
   expand(version: version, commitHash: commitHash)
 }
 
-// 実行順序の明示
-// clean -> spotlessApply (code format) -> [ versionSet -> compileJava | test ]
-spotlessApply.dependsOn(['clean'])
-versionSet.dependsOn(['spotlessApply'])
-test.dependsOn('spotlessApply')
-compileJava.dependsOn(['versionSet'])
-
 def libDir = './lib'
 
 task clearDependencies {
@@ -186,7 +175,7 @@ task clearDependencies {
 // dependenciesで取得したjarファイルをlib配下にコピーする。
 //
 // runAppで実行するときにライブラリのパスを指定するために使用する。
-task dumpDependencies(dependsOn: clearDependencies) {
+task dumpDependencies {
   doLast {
     configurations.compileClasspath.each {
       def jarFile = it.absolutePath
@@ -206,7 +195,7 @@ def appMods = [
   'javafx.fxml',
 ]
 
-task runApp(type: Exec, dependsOn: dumpDependencies) {
+task runApp(type: Exec) {
   commandLine 'java',
     '--module-path', libDir,
     '--add-modules', appMods.join(','),
@@ -225,10 +214,33 @@ task clearCustomJRE {
 }
 
 // カスタムJREを作成する。
-task jlink(type: Exec, dependsOn: clearCustomJRE) {
+task jlink(type: Exec) {
   commandLine 'jlink',
     '--module-path', jmodsDir,
     '--add-modules', appMods.join(','),
     '--compress=2',
     '--output', customJREDir
 }
+
+/*
+実行順序の明示
+
+clean -> spotlessApply -+-> versionSet -> compileJava
+                        |
+                        +-> test -> jacocoTestReport
+
+clearDependencies -> dumpDependencies -> runApp
+
+clearCustomJRE -> jlink
+
+*/
+spotlessApply.dependsOn(['clean'])
+versionSet.dependsOn(['spotlessApply'])
+test.dependsOn('spotlessApply')
+compileJava.dependsOn(['versionSet'])
+jacocoTestReport.dependsOn(['test'])
+
+dumpDependencies.dependsOn(['clearDependencies'])
+runApp.dependsOn(['dumpDependencies'])
+
+jlink.dependsOn(['clearCustomJRE'])
