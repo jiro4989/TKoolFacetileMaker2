@@ -26,7 +26,7 @@ public class CropImageController {
               @Override
               public void changed(
                   ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!Validator.isInteger(newValue.trim())) {
+                if (!Validator.isInteger(newValue)) {
                   input.setText(oldValue);
                 }
               }
@@ -70,14 +70,14 @@ public class CropImageController {
   }
 
   void setX(double x) {
-    xInput.setText("" + x);
+    xInput.setText("" + (int) x);
   }
 
   void setY(double y) {
-    yInput.setText("" + y);
+    yInput.setText("" + (int) y);
   }
 
   void setScale(double scale) {
-    scaleInput.setText("" + scale);
+    scaleInput.setText("" + (int) scale);
   }
 }
