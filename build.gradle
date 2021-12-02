@@ -189,7 +189,7 @@ tasks.register('versionSet', Copy) {
   }
 }
 
-tasks.register('clearDependencies') {
+tasks.register('cleanDependencies') {
   group = "Build"
   description = "依存ライブラリを削除する"
 
@@ -232,7 +232,7 @@ if (project.hasProperty('CI_JMODS_DIR')) {
   jmodsDir = CI_JMODS_DIR
 }
 
-tasks.register('clearCustomJRE') {
+tasks.register('cleanCustomJRE') {
   group = "Build"
   description = "生成したカスタムJREを削除する"
 
@@ -260,7 +260,7 @@ test.dependsOn('spotlessApply')
 compileJava.dependsOn(['versionSet'])
 jacocoTestReport.dependsOn(['test'])
 
-dumpDependencies.dependsOn(['clearDependencies'])
+dumpDependencies.dependsOn(['cleanDependencies'])
 runApp.dependsOn(['dumpDependencies'])
 
-jlink.dependsOn(['clearCustomJRE'])
+jlink.dependsOn(['cleanCustomJRE'])
