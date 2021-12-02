@@ -126,7 +126,7 @@ jacoco {
   applyTo junitPlatformTest
 }
 
-task junitPlatformJacocoReport(type: JacocoReport) {
+tasks.register('junitPlatformJacocoReport', JacocoReport) {
   sourceSets sourceSets.main
   executionData junitPlatformTest
 }
@@ -173,16 +173,17 @@ if (project.hasProperty('CI_COMMIT_HASH')) {
 // 環境変数を指定せずにビルドするとdevがデフォルトでセットされる。
 // CIでのビルド時にはタグ番号とコミットハッシュが埋め込まれる。
 // こうすることでタグ番号の二重管理を防ぐことができる。
-task versionSet(type: Copy) {
-  doFirst {
-    delete DST_FILE
-  }
+tasks.register('versionSet', Copy) {
   from SRC_FILE
   into DST_DIR
   expand(version: version, commitHash: commitHash)
+
+  doFirst {
+    delete DST_FILE
+  }
 }
 
-task clearDependencies {
+tasks.register('clearDependencies') {
   doLast {
     delete LIB_DIR
   }
@@ -191,7 +192,7 @@ task clearDependencies {
 // dependenciesで取得したjarファイルをlib配下にコピーする。
 //
 // runAppで実行するときにライブラリのパスを指定するために使用する。
-task dumpDependencies {
+tasks.register('dumpDependencies') {
   doLast {
     configurations.compileClasspath.each {
       def jarFile = it.absolutePath
@@ -203,7 +204,7 @@ task dumpDependencies {
   }
 }
 
-task runApp(type: Exec) {
+tasks.register('runApp', Exec) {
   doLast {
     commandLine 'java',
       '--module-path', LIB_DIR,
@@ -216,14 +217,14 @@ if (project.hasProperty('CI_JMODS_DIR')) {
   jmodsDir = CI_JMODS_DIR
 }
 
-task clearCustomJRE {
+tasks.register('clearCustomJRE') {
   doLast {
     delete CUSTOM_JRE_DIR
   }
 }
 
 // カスタムJREを作成する。
-task jlink(type: Exec) {
+tasks.register('jlink', Exec) {
   commandLine 'jlink',
     '--module-path', jmodsDir,
     '--add-modules', APP_MODS.join(','),
