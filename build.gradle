@@ -7,8 +7,6 @@
  */
 
 buildscript {
-  ext.javafx_version = '16'
-
   repositories {
     mavenCentral()
     maven {
@@ -16,11 +14,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "org.openjfx:javafx-plugin:0.0.8"
     classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-
-    // Code Format
-    classpath "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
   }
 }
 
@@ -28,16 +22,47 @@ plugins {
   // Apply the java plugin to add support for Java
   id 'java'
 
+  // Apply the gradle plugin to add support for Gradle
+  id 'groovy'
+
   // Apply the application plugin to add support for building a CLI application.
   id 'application'
 
+  // JavaFX
+  id "org.openjfx.javafxplugin" version "0.0.10"
+
+  // Spotless for code formatting
+  id "com.diffplug.spotless" version "6.0.0"
+
+  // Code coverage
   id 'jacoco'
 }
 
-apply plugin: 'org.openjfx.javafxplugin'
 apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: "com.diffplug.spotless"
-apply plugin: "groovy"
+
+// 変数定義
+
+// ソースコードに埋め込むコミットハッシュ値。デフォルト値はdevで、CIでのビルド時
+// に値を差し替える。
+def commitHash = 'dev'
+
+def VERSION_JAVA_FILE = 'Version.java'
+def SRC_FILE = 'template/' + VERSION_JAVA_FILE
+def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
+def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
+
+def LIB_DIR = './lib'
+
+def APP_MODS = [
+  'javafx.base',
+  'javafx.controls',
+  'javafx.swing',
+  'javafx.graphics',
+  'javafx.fxml',
+]
+
+def jmodsDir = './jmods/javafx-jmods-11.0.2'
+def CUSTOM_JRE_DIR = 'jre'
 
 repositories {
   mavenCentral()
@@ -48,18 +73,18 @@ dependencies {
   implementation 'com.google.guava:guava:28.2-jre'
 
   // Use JUnit test framework
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+  testImplementation 'org.junit.platform:junit-platform-launcher:1.6.2'
   testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 
   // JavaFX
-  implementation "org.openjfx:javafx-fxml:$javafx_version"
-  implementation "org.openjfx:javafx-base:$javafx_version"
-  implementation "org.openjfx:javafx-controls:$javafx_version"
-  implementation "org.openjfx:javafx-graphics:$javafx_version"
-  implementation "org.openjfx:javafx-swing:$javafx_version"
+  implementation "org.openjfx:javafx-fxml:16"
+  implementation "org.openjfx:javafx-base:16"
+  implementation "org.openjfx:javafx-controls:16"
+  implementation "org.openjfx:javafx-graphics:16"
+  implementation "org.openjfx:javafx-swing:16"
 }
 
 sourceCompatibility = 16
@@ -97,15 +122,14 @@ jar {
   duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-test {
-  finalizedBy jacocoTestReport
-}
-
 jacoco {
   applyTo junitPlatformTest
 }
 
-task junitPlatformJacocoReport(type: JacocoReport) {
+tasks.register('junitPlatformJacocoReport', JacocoReport) {
+  group = "Verification"
+  description = "Jacocoを使ってテストのレポートを取得する"
+
   sourceSets sourceSets.main
   executionData junitPlatformTest
 }
@@ -142,90 +166,101 @@ version = 'dev'
 if (project.hasProperty('CI_VERSION')) {
   version = CI_VERSION
 }
-def commitHash = 'dev'
 if (project.hasProperty('CI_COMMIT_HASH')) {
   commitHash = CI_COMMIT_HASH
 }
 
-def VERSION_JAVA_FILE = 'Version.java'
-def SRC_FILE = 'template/' + VERSION_JAVA_FILE
-
-def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
-def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
 
 // Version.javaにバージョン番号とコミットハッシュを埋め込んでコピーする。
 //
 // 環境変数を指定せずにビルドするとdevがデフォルトでセットされる。
 // CIでのビルド時にはタグ番号とコミットハッシュが埋め込まれる。
 // こうすることでタグ番号の二重管理を防ぐことができる。
-task versionSet(type: Copy) {
-  doFirst {
-    delete DST_FILE
-  }
+tasks.register('versionSet', Copy) {
+  group = "Build"
+  description = "ソースコードにビルド時のタグバージョンとコミットハッシュ値を埋め込む"
+
   from SRC_FILE
   into DST_DIR
   expand(version: version, commitHash: commitHash)
+
+  doFirst {
+    delete DST_FILE
+  }
 }
 
-// 実行順序の明示
-// clean -> spotlessApply (code format) -> [ versionSet -> compileJava | test ]
-spotlessApply.dependsOn(['clean'])
-versionSet.dependsOn(['spotlessApply'])
-test.dependsOn('spotlessApply')
-compileJava.dependsOn(['versionSet'])
+tasks.register('cleanDependencies') {
+  group = "Build"
+  description = "依存ライブラリを削除する"
 
-def libDir = './lib'
-
-task clearDependencies {
-  delete libDir
+  doLast {
+    delete LIB_DIR
+  }
 }
 
 // dependenciesで取得したjarファイルをlib配下にコピーする。
 //
 // runAppで実行するときにライブラリのパスを指定するために使用する。
-task dumpDependencies(dependsOn: clearDependencies) {
+tasks.register('dumpDependencies') {
+  group = "Build"
+  description = "依存ライブラリjarをlib配下にコピーする"
+
   doLast {
     configurations.compileClasspath.each {
       def jarFile = it.absolutePath
       copy {
         from jarFile
-        into libDir
+        into LIB_DIR
       }
     }
   }
 }
 
-def appMods = [
-  'javafx.base',
-  'javafx.controls',
-  'javafx.swing',
-  'javafx.graphics',
-  'javafx.fxml',
-]
+tasks.register('runApp', Exec) {
+  group = "Application"
+  description = "アプリケーションを起動する"
 
-task runApp(type: Exec, dependsOn: dumpDependencies) {
-  commandLine 'java',
-    '--module-path', libDir,
-    '--add-modules', appMods.join(','),
-    '-jar', 'build/libs/tkfm-dev.jar'
+  doLast {
+    commandLine 'java',
+      '--module-path', LIB_DIR,
+      '--add-modules', APP_MODS.join(','),
+      '-jar', 'build/libs/tkfm-dev.jar'
+  }
 }
-
-def jmodsDir = './jmods/javafx-jmods-11.0.2'
-def customJREDir = 'jre'
 
 if (project.hasProperty('CI_JMODS_DIR')) {
   jmodsDir = CI_JMODS_DIR
 }
 
-task clearCustomJRE {
-  delete customJREDir
+tasks.register('cleanCustomJRE') {
+  group = "Build"
+  description = "生成したカスタムJREを削除する"
+
+  doLast {
+    delete CUSTOM_JRE_DIR
+  }
 }
 
 // カスタムJREを作成する。
-task jlink(type: Exec, dependsOn: clearCustomJRE) {
+tasks.register('jlink', Exec) {
+  group = "Build"
+  description = "jlinkを使ってカスタムJREを作成する"
+
   commandLine 'jlink',
     '--module-path', jmodsDir,
-    '--add-modules', appMods.join(','),
+    '--add-modules', APP_MODS.join(','),
     '--compress=2',
-    '--output', customJREDir
+    '--output', CUSTOM_JRE_DIR
 }
+
+// 実行順序の明示
+spotlessApply.dependsOn(['clean'])
+versionSet.dependsOn(['spotlessApply'])
+test.dependsOn('spotlessApply')
+compileJava.dependsOn(['versionSet'])
+jacocoTestReport.dependsOn(['test'])
+
+dumpDependencies.dependsOn(['cleanDependencies'])
+runApp.dependsOn(['dumpDependencies'])
+
+jlink.dependsOn(['cleanCustomJRE'])
