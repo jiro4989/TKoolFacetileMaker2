@@ -127,6 +127,9 @@ jacoco {
 }
 
 tasks.register('junitPlatformJacocoReport', JacocoReport) {
+  group = "Verification"
+  description = "Jacocoを使ってテストのレポートを取得する"
+
   sourceSets sourceSets.main
   executionData junitPlatformTest
 }
@@ -174,6 +177,9 @@ if (project.hasProperty('CI_COMMIT_HASH')) {
 // CIでのビルド時にはタグ番号とコミットハッシュが埋め込まれる。
 // こうすることでタグ番号の二重管理を防ぐことができる。
 tasks.register('versionSet', Copy) {
+  group = "Build"
+  description = "ソースコードにビルド時のタグバージョンとコミットハッシュ値を埋め込む"
+
   from SRC_FILE
   into DST_DIR
   expand(version: version, commitHash: commitHash)
@@ -184,6 +190,9 @@ tasks.register('versionSet', Copy) {
 }
 
 tasks.register('clearDependencies') {
+  group = "Build"
+  description = "依存ライブラリを削除する"
+
   doLast {
     delete LIB_DIR
   }
@@ -193,6 +202,9 @@ tasks.register('clearDependencies') {
 //
 // runAppで実行するときにライブラリのパスを指定するために使用する。
 tasks.register('dumpDependencies') {
+  group = "Build"
+  description = "依存ライブラリjarをlib配下にコピーする"
+
   doLast {
     configurations.compileClasspath.each {
       def jarFile = it.absolutePath
@@ -205,6 +217,9 @@ tasks.register('dumpDependencies') {
 }
 
 tasks.register('runApp', Exec) {
+  group = "Application"
+  description = "アプリケーションを起動する"
+
   doLast {
     commandLine 'java',
       '--module-path', LIB_DIR,
@@ -218,6 +233,9 @@ if (project.hasProperty('CI_JMODS_DIR')) {
 }
 
 tasks.register('clearCustomJRE') {
+  group = "Build"
+  description = "生成したカスタムJREを削除する"
+
   doLast {
     delete CUSTOM_JRE_DIR
   }
@@ -225,6 +243,9 @@ tasks.register('clearCustomJRE') {
 
 // カスタムJREを作成する。
 tasks.register('jlink', Exec) {
+  group = "Build"
+  description = "jlinkを使ってカスタムJREを作成する"
+
   commandLine 'jlink',
     '--module-path', jmodsDir,
     '--add-modules', APP_MODS.join(','),
@@ -232,14 +253,7 @@ tasks.register('jlink', Exec) {
     '--output', CUSTOM_JRE_DIR
 }
 
-/*
- 実行順序の明示
- clean -> spotlessApply -+-> versionSet -> compileJava
- |
- +-> test -> jacocoTestReport
- clearDependencies -> dumpDependencies -> runApp
- clearCustomJRE -> jlink
- */
+// 実行順序の明示
 spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
