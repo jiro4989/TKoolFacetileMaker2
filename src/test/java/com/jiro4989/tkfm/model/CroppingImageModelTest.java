@@ -141,7 +141,7 @@ public class CroppingImageModelTest {
     "up, 1000, 200.0",
     "down, 0, 100.0",
     "down, 5, 95.0",
-    "down, 1000, 50.0",
+    "down, 1000, 20.0",
   })
   public void testScaling(String act, double n, double wantScale) throws Exception {
     var path = getClass().getResource("/sample1.png").getPath();

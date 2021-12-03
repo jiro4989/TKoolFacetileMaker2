@@ -195,7 +195,7 @@ public class CroppingImageModel {
   }
 
   public void setScale(double scale) {
-    final double MIN_SCALE = 50.0;
+    final double MIN_SCALE = 20.0;
     final double MAX_SCALE = 200.0;
 
     if (scale < MIN_SCALE) {

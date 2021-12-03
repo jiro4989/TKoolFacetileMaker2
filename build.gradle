@@ -220,12 +220,10 @@ tasks.register('runApp', Exec) {
   group = "Application"
   description = "アプリケーションを起動する"
 
-  doLast {
-    commandLine 'java',
-      '--module-path', LIB_DIR,
-      '--add-modules', APP_MODS.join(','),
-      '-jar', 'build/libs/tkfm-dev.jar'
-  }
+  commandLine 'java',
+    '--module-path', LIB_DIR,
+    '--add-modules', APP_MODS.join(','),
+    '-jar', 'build/libs/tkfm-dev.jar'
 }
 
 if (project.hasProperty('CI_JMODS_DIR')) {
