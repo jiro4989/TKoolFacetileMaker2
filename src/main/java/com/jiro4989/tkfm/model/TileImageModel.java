@@ -6,19 +6,25 @@ import javafx.beans.property.*;
 import javafx.scene.image.*;
 
 public class TileImageModel {
-  private final int rowCount = 2;
-  private final int colCount = 4;
+  private final int rowCount;
+  private final int colCount;
   private final Rectangle rect;
 
   final List<List<Image>> __images = new LinkedList<>();
   private final ObjectProperty<Image> image;
 
-  public TileImageModel(Rectangle rect) {
+  public TileImageModel(int rowCount, int colCount, Rectangle rect) {
+    this.rowCount = rowCount;
+    this.colCount = colCount;
     this.rect = rect;
 
     var img = outputTileImage();
     this.image = new SimpleObjectProperty<>(img);
     resetImages();
+  }
+
+  public TileImageModel(Rectangle rect) {
+    this(2, 4, rect);
   }
 
   /*
