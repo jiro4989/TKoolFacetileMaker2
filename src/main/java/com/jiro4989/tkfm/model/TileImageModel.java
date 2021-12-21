@@ -8,9 +8,9 @@ import javafx.scene.image.*;
 /** リストの画像データをタイル状に並べた1枚の画像ファイルとして出力するロジックを管理する。 */
 public class TileImageModel {
   /** 行数 */
-  private final int rowCount;
+  private final IntegerProperty rowCount;
   /** 列数 */
-  private final int colCount;
+  private final IntegerProperty colCount;
   /** 1タイル画像の矩形 */
   private final Rectangle rect;
 
@@ -28,8 +28,8 @@ public class TileImageModel {
    * @param rect 矩形
    */
   public TileImageModel(int rowCount, int colCount, Rectangle rect) {
-    this.rowCount = rowCount;
-    this.colCount = colCount;
+    this.rowCount = new SimpleIntegerProperty(rowCount);
+    this.colCount = new SimpleIntegerProperty(colCount);
     this.rect = rect;
 
     var img = outputTileImage();
@@ -56,6 +56,8 @@ public class TileImageModel {
   */
 
   public void clear() {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     for (int y = 0; y < rowCount; y++) {
       for (int x = 0; x < colCount; x++) {
         var img = tileImage();
@@ -70,6 +72,8 @@ public class TileImageModel {
   }
 
   public void bulkInsert(List<Image> images, int startIndex) {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     int size = images.size();
     for (int i = startIndex; i < startIndex + size; i++) {
       if (rowCount * colCount <= i) break;
@@ -86,6 +90,8 @@ public class TileImageModel {
   }
 
   public void setImageByAxis(Image img, double mx, double my) {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     var i = image.get();
     double w = i.getWidth();
     double h = i.getHeight();
@@ -100,6 +106,14 @@ public class TileImageModel {
     return image;
   }
 
+  public IntegerProperty rowCountProperty() {
+    return rowCount;
+  }
+
+  public IntegerProperty colCountProperty() {
+    return colCount;
+  }
+
   // setter ///////////////////////////////////////////////////////////////////
 
   public void setImage(Image img, int x, int y) {
@@ -110,6 +124,8 @@ public class TileImageModel {
   // private methods //////////////////////////////////////////////////////////
 
   private void draw() {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     var rawImg = image.get();
     if (rawImg instanceof WritableImage) {
       var img = (WritableImage) rawImg;
@@ -140,12 +156,16 @@ public class TileImageModel {
   }
 
   private Image outputTileImage() {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     int w = (int) rect.getWidth();
     int h = (int) rect.getHeight();
     return new WritableImage(colCount * w, rowCount * h);
   }
 
   private void resetImages() {
+    int rowCount = this.rowCount.get();
+    int colCount = this.colCount.get();
     __images.clear();
     for (int i = 0; i < rowCount; i++) {
       List<Image> row = new LinkedList<>();

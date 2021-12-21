@@ -74,11 +74,13 @@ public class MainController {
     // initialize models
     cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
-    tileImage = new TileImageModel(cropImage.getRectangle());
+    tileImage = new TileImageModel(2, 4, cropImage.getRectangle());
 
     // bindigns
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
+    var rowCount = tileImage.rowCountProperty();
+    var colCount = tileImage.colCountProperty();
 
     cropImageGridPane
         .prefWidthProperty()
@@ -125,10 +127,10 @@ public class MainController {
         cropScaleLabel.textProperty(), cropImage.scaleProperty(), cropScaleConv);
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty());
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty());
-    outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
-    outputGridPane.prefHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
-    outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), 4));
-    outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), 2));
+    outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty(), colCount));
+    outputGridPane.prefHeightProperty().bind(Bindings.multiply(rect.heightProperty(), rowCount));
+    outputImageView.fitWidthProperty().bind(Bindings.multiply(rect.widthProperty(), colCount));
+    outputImageView.fitHeightProperty().bind(Bindings.multiply(rect.heightProperty(), rowCount));
 
     // configurations
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -143,7 +145,7 @@ public class MainController {
     // properties
     prop.load();
 
-    updateOutputView();
+    resetOutputGridPane();
   }
 
   /** 取り込むファイルを選択する。 */
@@ -446,15 +448,19 @@ public class MainController {
   }
 
   /** 出力画像タイルをタイルの列数、行数、矩形サイズに応じた形に更新する。 */
-  private void updateOutputView() {
-    var rect = cropImage.getRectangle();
-    // TODO
-    // 行数を取得
-    // 列数を取得
+  private void resetOutputGridPane() {
     // GridPaneの子供のLabelを全部削除
-    // OutputViewの親のサイズを変更
-    // ImageViewを行数、列数、矩形に基づいて初期化
-    // GridPaneの格子数を変更
-    // GridPaneの子供にLabelを追加
+    outputGridPane.getChildren().clear();
+    // LabelをGridPaneに配置
+    var row = tileImage.rowCountProperty().get();
+    var col = tileImage.colCountProperty().get();
+    for (var y = 0; y < row; y++) {
+      for (var x = 0; x < col; x++) {
+        var num = "" + (1 + x + y * col);
+        var label = new Label(num);
+        outputGridPane.add(label, x, y);
+      }
+    }
+    tileImage.resetImage();
   }
 }
