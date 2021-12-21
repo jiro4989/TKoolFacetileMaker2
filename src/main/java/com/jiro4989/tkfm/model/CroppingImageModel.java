@@ -10,9 +10,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
-/**
- * 画像をトリミングするロジックを管理する。
- */
+/** 画像をトリミングするロジックを管理する。 */
 public class CroppingImageModel {
   /** トリミング対象の画像 */
   private final ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
@@ -30,10 +28,7 @@ public class CroppingImageModel {
   /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
-  /**
-   * デフォルトコンストラクタ。
-   * トリミング座標は 0, 0。矩形はRPGツクールMV基準で144x144。
-   */
+  /** デフォルトコンストラクタ。 トリミング座標は 0, 0。矩形はRPGツクールMV基準で144x144。 */
   public CroppingImageModel() {
     this.cropPos = new Position(0, 0);
     this.cropRect = new Rectangle(144, 144);
@@ -41,6 +36,7 @@ public class CroppingImageModel {
 
   /**
    * トリミング対象の画像、トリミング位置、トリミング矩形、拡縮値をすべて指定する。
+   *
    * @param image トリミング対象画像
    * @param pos トリミング位置
    * @param rect トリミング矩形
