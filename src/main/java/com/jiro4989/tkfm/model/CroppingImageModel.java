@@ -15,14 +15,14 @@ import javafx.scene.image.WritableImage;
  */
 public class CroppingImageModel {
   /** トリミング対象の画像 */
-  private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
+  private final ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
   /** トリミングされた結果のプレビュー画像 */
-  private ObjectProperty<Image> croppedImage =
+  private final ObjectProperty<Image> croppedImage =
       new SimpleObjectProperty<>(new WritableImage(144, 144));
   /** トリミング座標 */
-  private Position cropPos = new Position(0, 0);
+  private final Position cropPos;
   /** トリミング画像の矩形 */
-  private Rectangle cropRect = new Rectangle(144, 144);
+  private final Rectangle cropRect;
   /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageWidth = new SimpleDoubleProperty(288.0);
   /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
@@ -30,8 +30,22 @@ public class CroppingImageModel {
   /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
-  public CroppingImageModel() {}
+  /**
+   * デフォルトコンストラクタ。
+   * トリミング座標は 0, 0。矩形はRPGツクールMV基準で144x144。
+   */
+  public CroppingImageModel() {
+    this.cropPos = new Position(0, 0);
+    this.cropRect = new Rectangle(144, 144);
+  }
 
+  /**
+   * トリミング対象の画像、トリミング位置、トリミング矩形、拡縮値をすべて指定する。
+   * @param image トリミング対象画像
+   * @param pos トリミング位置
+   * @param rect トリミング矩形
+   * @param scale トリミング拡縮
+   */
   public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
     this.image.set(image);
     this.cropPos = pos;
