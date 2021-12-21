@@ -142,6 +142,8 @@ public class MainController {
 
     // properties
     prop.load();
+
+    updateOutputView();
   }
 
   /** 取り込むファイルを選択する。 */
@@ -441,5 +443,20 @@ public class MainController {
 
     cropImage.move(x, y);
     cropImage.setScale(scale);
+  }
+
+  /**
+   * 出力画像タイルをタイルの列数、行数、矩形サイズに応じた形に更新する。
+   */
+  private void updateOutputView() {
+    var rect = cropImage.getRectangle();
+    // TODO
+    // 行数を取得
+    // 列数を取得
+    // GridPaneの子供のLabelを全部削除
+    // OutputViewの親のサイズを変更
+    // ImageViewを行数、列数、矩形に基づいて初期化
+    // GridPaneの格子数を変更
+    // GridPaneの子供にLabelを追加
   }
 }
