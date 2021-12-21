@@ -445,9 +445,7 @@ public class MainController {
     cropImage.setScale(scale);
   }
 
-  /**
-   * 出力画像タイルをタイルの列数、行数、矩形サイズに応じた形に更新する。
-   */
+  /** 出力画像タイルをタイルの列数、行数、矩形サイズに応じた形に更新する。 */
   private void updateOutputView() {
     var rect = cropImage.getRectangle();
     // TODO
