@@ -82,6 +82,10 @@ public class MainController {
     var rowCount = tileImage.rowCountProperty();
     var colCount = tileImage.colCountProperty();
 
+    // 行数、列数が変更されたら出力画像ビューをリセットする
+    rowCount.addListener(e -> resetOutputGridPane());
+    colCount.addListener(e -> resetOutputGridPane());
+
     cropImageGridPane
         .prefWidthProperty()
         .bind(
@@ -405,7 +409,6 @@ public class MainController {
     var rect = cropImage.getRectangle();
     rect.setWidth(width);
     rect.setHeight(height);
-    tileImage.resetImage();
   }
 
   @FXML
