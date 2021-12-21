@@ -5,14 +5,29 @@ import java.util.*;
 import javafx.beans.property.*;
 import javafx.scene.image.*;
 
+/**
+ * リストの画像データをタイル状に並べた1枚の画像ファイルとして出力するロジックを管理する。
+ */
 public class TileImageModel {
+  /** 行数 */
   private final int rowCount;
+  /** 列数 */
   private final int colCount;
+  /** 1タイル画像の矩形 */
   private final Rectangle rect;
 
+  /** タイル画像のリスト */
   final List<List<Image>> __images = new LinkedList<>();
+
+  /** JavaFX用の画像プロパティ */
   private final ObjectProperty<Image> image;
 
+  /**
+   * 行数、列数、矩形を指定してインスタンスを生成する
+   * @param rowCount 行数
+   * @param colCount 列数
+   * @param rect 矩形
+   */
   public TileImageModel(int rowCount, int colCount, Rectangle rect) {
     this.rowCount = rowCount;
     this.colCount = colCount;
@@ -23,6 +38,11 @@ public class TileImageModel {
     resetImages();
   }
 
+  /**
+   * 矩形を指定してインスタンスを生成する。
+   * 行数、列数のデフォルト値はRPGツクールのタイル画像の行数(2)と列数(4)。
+   * @param rect 矩形
+   */
   public TileImageModel(Rectangle rect) {
     this(2, 4, rect);
   }
