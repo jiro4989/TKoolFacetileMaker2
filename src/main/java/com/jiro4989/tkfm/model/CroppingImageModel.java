@@ -10,14 +10,24 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+/**
+ * 画像をトリミングするロジックを管理する。
+ */
 public class CroppingImageModel {
+  /** トリミング対象の画像 */
   private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
+  /** トリミングされた結果のプレビュー画像 */
   private ObjectProperty<Image> croppedImage =
       new SimpleObjectProperty<>(new WritableImage(144, 144));
+  /** トリミング座標 */
   private Position cropPos = new Position(0, 0);
+  /** トリミング画像の矩形 */
   private Rectangle cropRect = new Rectangle(144, 144);
+  /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageWidth = new SimpleDoubleProperty(288.0);
+  /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageHeight = new SimpleDoubleProperty(288.0);
+  /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
   public CroppingImageModel() {}
