@@ -389,12 +389,12 @@ public class MainController {
 
   @FXML
   private void setCropSizeTkoolMV() {
-    setCropSize(CropSize.TKOOL_MV_WIDHT, CropSize.TKOOL_MV_HEIGHT);
+    setCropSize(CropSize.TKOOL_MV_WIDTH, CropSize.TKOOL_MV_HEIGHT);
   }
 
   @FXML
   private void setCropSizeTkoolVXACE() {
-    setCropSize(CropSize.TKOOL_VXACE_WIDHT, CropSize.TKOOL_VXACE_HEIGHT);
+    setCropSize(CropSize.TKOOL_VXACE_WIDTH, CropSize.TKOOL_VXACE_HEIGHT);
   }
 
   private void setCropSize(int width, int height) {
