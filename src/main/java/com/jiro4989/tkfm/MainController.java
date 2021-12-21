@@ -389,17 +389,18 @@ public class MainController {
 
   @FXML
   private void setCropSizeTkoolMV() {
-    var rect = cropImage.getRectangle();
-    rect.setWidth(CropSize.TKOOL_MV_WIDHT);
-    rect.setHeight(CropSize.TKOOL_MV_HEIGHT);
-    tileImage.resetImage();
+    setCropSize(CropSize.TKOOL_MV_WIDHT, CropSize.TKOOL_MV_HEIGHT);
   }
 
   @FXML
   private void setCropSizeTkoolVXACE() {
+    setCropSize(CropSize.TKOOL_VXACE_WIDHT, CropSize.TKOOL_VXACE_HEIGHT);
+  }
+
+  private void setCropSize(int width, int height) {
     var rect = cropImage.getRectangle();
-    rect.setWidth(CropSize.TKOOL_VXACE_WIDHT);
-    rect.setHeight(CropSize.TKOOL_VXACE_HEIGHT);
+    rect.setWidth(width);
+    rect.setHeight(height);
     tileImage.resetImage();
   }
 
