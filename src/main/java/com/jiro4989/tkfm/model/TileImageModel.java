@@ -6,8 +6,8 @@ import javafx.beans.property.*;
 import javafx.scene.image.*;
 
 public class TileImageModel {
-  private int rowCount = 2;
-  private int colCount = 4;
+  private final int rowCount = 2;
+  private final int colCount = 4;
   private final Rectangle rect;
 
   final List<List<Image>> __images = new LinkedList<>();
