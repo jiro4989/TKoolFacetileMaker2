@@ -148,11 +148,6 @@
             <RadioMenuItem mnemonicParsing="false" onAction="#setCropSizeTkoolVXACE" text="ＶＸＡＣＥ" toggleGroup="$group" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="ヘルプ">
-          <items>
-            <MenuItem mnemonicParsing="false" text="README" />
-          </items>
-        </Menu>
       </menus>
     </MenuBar>
   </top>
