@@ -81,7 +81,7 @@ public class ImageFormatConfigModel {
         .set(fmt.getRectangle().widthProperty().get());
     selectedImageFormat
         .getRectangle()
-        .widthProperty()
+        .heightProperty()
         .set(fmt.getRectangle().heightProperty().get());
   }
 
