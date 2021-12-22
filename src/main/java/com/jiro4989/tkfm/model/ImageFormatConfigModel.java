@@ -1,10 +1,21 @@
 package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Rectangle;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 public class ImageFormatConfigModel {
@@ -71,6 +82,58 @@ public class ImageFormatConfigModel {
         .getRectangle()
         .widthProperty()
         .set(fmt.getRectangle().heightProperty().get());
+  }
+
+  /**
+   * XMLファイルを読み込んで画像フォーマットを更新する。
+   *
+   * @param file
+   */
+  public void loadXMLFile(File file)
+      throws ParserConfigurationException, IOException, SAXException {
+    var factory = DocumentBuilderFactory.newInstance();
+    var builder = factory.newDocumentBuilder();
+    var document = builder.parse(file);
+    var root = document.getDocumentElement();
+    var fmts = root.getElementsByTagName("imageFormat");
+    for (var i = 0; i < fmts.getLength(); i++) {
+      var element = (Element) fmts.item(i);
+      var name = element.getAttribute("name");
+      var row = Integer.parseInt(element.getAttribute("row"));
+      var col = Integer.parseInt(element.getAttribute("col"));
+      var tileWidth = Integer.parseInt(element.getAttribute("tileWidth"));
+      var tileHeight = Integer.parseInt(element.getAttribute("tileHeight"));
+      var rect = new Rectangle(tileWidth, tileHeight);
+      var fmt = new ImageFormat(name, row, col, rect);
+      imageFormats.add(fmt);
+    }
+  }
+
+  public void saveXMLFile(File file)
+      throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
+    var factory = DocumentBuilderFactory.newInstance();
+    var builder = factory.newDocumentBuilder();
+    var document = builder.newDocument();
+    var root = document.createElement("imageFormats");
+    document.appendChild(root);
+    imageFormats.stream()
+        .skip(2)
+        .forEach(
+            fmt -> {
+              var item = document.createElement("imageFormat");
+              var rect = fmt.getRectangle();
+              item.setAttribute("name", "" + fmt.getName());
+              item.setAttribute("row", "" + fmt.rowProperty().get());
+              item.setAttribute("col", "" + fmt.colProperty().get());
+              item.setAttribute("tileWidth", "" + rect.widthProperty().get());
+              item.setAttribute("tileHeight", "" + rect.heightProperty().get());
+              root.appendChild(item);
+            });
+    var transformerFactory = TransformerFactory.newInstance();
+    var transformer = transformerFactory.newTransformer();
+    var domSource = new DOMSource(document);
+    var streamResult = new StreamResult(file);
+    transformer.transform(domSource, streamResult);
   }
 
   public List<ImageFormat> getImageFormats() {
