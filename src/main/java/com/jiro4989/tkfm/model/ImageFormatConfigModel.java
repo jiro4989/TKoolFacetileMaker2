@@ -42,7 +42,7 @@ public class ImageFormatConfigModel {
       return col;
     }
 
-    String getName() {
+    public String getName() {
       return name;
     }
 
@@ -71,6 +71,10 @@ public class ImageFormatConfigModel {
         .getRectangle()
         .widthProperty()
         .set(fmt.getRectangle().heightProperty().get());
+  }
+
+  public List<ImageFormat> getImageFormats() {
+    return imageFormats;
   }
 
   public ImageFormat getSelectedImageFormat() {
