@@ -1,6 +1,5 @@
 package com.jiro4989.tkfm;
 
-import com.jiro4989.tkfm.data.CropSize;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.util.ImageUtil;
 import java.io.File;
@@ -32,6 +31,7 @@ public class MainController {
   // UI parts /////////////////////////////////////////////////////////////////
 
   // Menu
+  @FXML private Menu imageFormatMenu;
   @FXML private ToggleGroup group;
 
   // List view
@@ -152,6 +152,7 @@ public class MainController {
     // properties
     prop.load();
 
+    resetImageFormatMenu();
     resetOutputGridPane();
   }
 
@@ -399,22 +400,6 @@ public class MainController {
   }
 
   @FXML
-  private void setCropSizeTkoolMV() {
-    setCropSize(CropSize.TKOOL_MV_WIDTH, CropSize.TKOOL_MV_HEIGHT);
-  }
-
-  @FXML
-  private void setCropSizeTkoolVXACE() {
-    setCropSize(CropSize.TKOOL_VXACE_WIDTH, CropSize.TKOOL_VXACE_HEIGHT);
-  }
-
-  private void setCropSize(int width, int height) {
-    var rect = cropImage.getRectangle();
-    rect.setWidth(width);
-    rect.setHeight(height);
-  }
-
-  @FXML
   private void setTileImageOnClick(MouseEvent event) {
     var x = event.getX();
     var y = event.getY();
@@ -469,5 +454,22 @@ public class MainController {
       }
     }
     tileImage.resetImage();
+  }
+
+  /** 画像フォーマットに基づいて選択可能な画像フォーマットメニューをリセットする */
+  private void resetImageFormatMenu() {
+    imageFormatMenu.getItems().clear();
+
+    var fmts = imageFormat.getImageFormats();
+    for (var i = 0; i < fmts.size(); i++) {
+      // final変数じゃないとsetOnActionの無名関数に渡せないため
+      final var index = i;
+
+      var fmt = fmts.get(index);
+      var item = new RadioMenuItem(fmt.getName());
+      item.setToggleGroup(group);
+      item.setOnAction(e -> imageFormat.select(index));
+      imageFormatMenu.getItems().add(item);
+    }
   }
 }
