@@ -4,8 +4,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class Rectangle {
-  private DoubleProperty width = new SimpleDoubleProperty(0.0);
-  private DoubleProperty height = new SimpleDoubleProperty(0.0);
+  private final DoubleProperty width = new SimpleDoubleProperty(0.0);
+  private final DoubleProperty height = new SimpleDoubleProperty(0.0);
 
   public Rectangle(double w, double h) {
     setWidth(w);
