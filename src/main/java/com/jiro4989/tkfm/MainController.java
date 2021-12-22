@@ -80,8 +80,8 @@ public class MainController {
 
     // bindigns
     var pos = cropImage.getPosition();
-    var rect = cropImage.getRectangle();
     var selectedImageFormat = imageFormat.getSelectedImageFormat();
+    var rect = selectedImageFormat.getRectangle();
     var rowCount = selectedImageFormat.rowProperty();
     var colCount = selectedImageFormat.colProperty();
 
