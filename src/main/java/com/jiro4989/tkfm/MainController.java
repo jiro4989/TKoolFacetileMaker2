@@ -64,6 +64,7 @@ public class MainController {
 
   // models ///////////////////////////////////////////////////////////////////
 
+  private ImageFormatConfigModel imageFormat;
   private ImageFilesModel imageFiles;
   private CroppingImageModel cropImage;
   private TileImageModel tileImage;
@@ -72,15 +73,17 @@ public class MainController {
   @FXML
   private void initialize() {
     // initialize models
+    imageFormat = new ImageFormatConfigModel();
     cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
-    tileImage = new TileImageModel(2, 4, cropImage.getRectangle());
+    tileImage = new TileImageModel(imageFormat);
 
     // bindigns
     var pos = cropImage.getPosition();
     var rect = cropImage.getRectangle();
-    var rowCount = tileImage.rowCountProperty();
-    var colCount = tileImage.colCountProperty();
+    var selectedImageFormat = imageFormat.getSelectedImageFormat();
+    var rowCount = selectedImageFormat.rowProperty();
+    var colCount = selectedImageFormat.colProperty();
 
     // 行数、列数が変更されたら出力画像ビューをリセットする
     rowCount.addListener(e -> resetOutputGridPane());
@@ -454,9 +457,10 @@ public class MainController {
   private void resetOutputGridPane() {
     // GridPaneの子供のLabelを全部削除
     outputGridPane.getChildren().clear();
+    var selectedImageFormat = imageFormat.getSelectedImageFormat();
     // LabelをGridPaneに配置
-    var row = tileImage.rowCountProperty().get();
-    var col = tileImage.colCountProperty().get();
+    var row = selectedImageFormat.rowProperty().get();
+    var col = selectedImageFormat.colProperty().get();
     for (var y = 0; y < row; y++) {
       for (var x = 0; x < col; x++) {
         var num = "" + (1 + x + y * col);
