@@ -156,13 +156,4 @@ public class ImageFormatConfigModel {
   public ImageFormat getSelectedImageFormat() {
     return selectedImageFormat;
   }
-
-  /**
-   * 画像フォーマットの名前一覧を返却する。
-   *
-   * @return フォーマット名の一覧
-   */
-  public List<String> getNames() {
-    return imageFormats.stream().map(e -> e.getName()).toList();
-  }
 }
