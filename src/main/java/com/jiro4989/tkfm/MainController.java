@@ -32,7 +32,7 @@ public class MainController {
 
   // Menu
   @FXML private Menu imageFormatMenu;
-  @FXML private ToggleGroup group;
+  private ToggleGroup group = new ToggleGroup();
 
   // List view
   @FXML private ListView<ImageFileModel> fileListView;
@@ -468,6 +468,7 @@ public class MainController {
       var fmt = fmts.get(index);
       var item = new RadioMenuItem(fmt.getName());
       item.setToggleGroup(group);
+      item.setSelected(index == 0); // 最初の1つ目を選択する
       item.setOnAction(e -> imageFormat.select(index));
       imageFormatMenu.getItems().add(item);
     }
