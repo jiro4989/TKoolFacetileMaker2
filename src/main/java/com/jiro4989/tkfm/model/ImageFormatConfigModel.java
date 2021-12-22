@@ -1,8 +1,9 @@
 package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
@@ -85,15 +86,18 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * XMLファイルを読み込んで画像フォーマットを更新する。
+   * streamを読み込んで画像フォーマット一覧に追加する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
    *
-   * @param file
+   * @param inputStream
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
    */
-  public void loadXMLFile(File file)
+  public void readXML(InputStream inputStream)
       throws ParserConfigurationException, IOException, SAXException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
-    var document = builder.parse(file);
+    var document = builder.parse(inputStream);
     var root = document.getDocumentElement();
     var fmts = root.getElementsByTagName("imageFormat");
     for (var i = 0; i < fmts.getLength(); i++) {
@@ -109,7 +113,16 @@ public class ImageFormatConfigModel {
     }
   }
 
-  public void saveXMLFile(File file)
+  /**
+   * 画像フォーマット一覧をstreamに書き込む。書き込む画像フォーマットはimageFormatsの先頭2つを除外したもののみ。
+   * 先頭2つはRPGツクールMV、VXACEの2つで、組み込みサポートのため書き込む必要がない。 このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
+   *
+   * @param outputStream
+   * @throws ParserConfigurationException
+   * @throws TransformerConfigurationException
+   * @throws TransformerException
+   */
+  public void writeXML(OutputStream outputStream)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
@@ -132,7 +145,7 @@ public class ImageFormatConfigModel {
     var transformerFactory = TransformerFactory.newInstance();
     var transformer = transformerFactory.newTransformer();
     var domSource = new DOMSource(document);
-    var streamResult = new StreamResult(file);
+    var streamResult = new StreamResult(outputStream);
     transformer.transform(domSource, streamResult);
   }
 
