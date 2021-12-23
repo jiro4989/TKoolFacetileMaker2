@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class MainController {
   // UI parts /////////////////////////////////////////////////////////////////
@@ -73,7 +75,22 @@ public class MainController {
   @FXML
   private void initialize() {
     // initialize models
-    imageFormat = new ImageFormatConfigModel();
+    try {
+      imageFormat = new ImageFormatConfigModel();
+    } catch (ParserConfigurationException e) {
+      // TODO: アラートダイアログを出す
+      e.printStackTrace();
+      return;
+    } catch (IOException e) {
+      // TODO: アラートダイアログを出す
+      e.printStackTrace();
+      return;
+    } catch (SAXException e) {
+      // TODO: アラートダイアログを出す
+      e.printStackTrace();
+      return;
+    }
+
     cropImage = new CroppingImageModel();
     imageFiles = new ImageFilesModel(cropImage);
     tileImage = new TileImageModel(imageFormat);

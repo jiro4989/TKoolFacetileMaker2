@@ -1,9 +1,14 @@
 package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Rectangle;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
@@ -24,12 +29,15 @@ public class ImageFormatConfigModel {
   private final List<ImageFormat> imageFormats;
   /** 選択中の画像フォーマット */
   private final ImageFormat selectedImageFormat;
+  /** 設定ファイルの配置先 */
+  private static final Path CONFIG_FILE_PATH = Paths.get(".", "config", "image_format.xml");
 
-  public ImageFormatConfigModel() {
+  public ImageFormatConfigModel() throws ParserConfigurationException, IOException, SAXException {
     this.imageFormats = new ArrayList<>();
     this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
     this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
     this.selectedImageFormat = this.imageFormats.get(0);
+    loadXMLFile(CONFIG_FILE_PATH);
   }
 
   public class ImageFormat {
@@ -86,6 +94,32 @@ public class ImageFormatConfigModel {
   }
 
   /**
+   * 指定パスのXMLファイルを読み込み、画像フォーマットリストに追加する。ファイルが存在しなかった場合は何もしない。例外が発生しても確実に開いたファイルを閉じる。
+   *
+   * @param path
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
+   */
+  public void loadXMLFile(Path path)
+      throws ParserConfigurationException, IOException, SAXException {
+    if (Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
+      return;
+    }
+
+    // 例外を投げる前に確実にcloseしておきたいため
+    try (InputStream is = new FileInputStream(path.toFile())) {
+      loadXML(is);
+    } catch (ParserConfigurationException e) {
+      throw e;
+    } catch (IOException e) {
+      throw e;
+    } catch (SAXException e) {
+      throw e;
+    }
+  }
+
+  /**
    * streamを読み込んで画像フォーマットリストに追加する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
    *
    * @param inputStream
@@ -134,26 +168,26 @@ public class ImageFormatConfigModel {
    * 画像フォーマット一覧をstreamに書き込む。書き込む画像フォーマットはimageFormatsの先頭2つを除外したもののみ。
    * 先頭2つはRPGツクールMV、VXACEの2つで、組み込みサポートのため書き込む必要がない。 このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
    *
-   * @param outputStream
+   * @param writer
    * @throws ParserConfigurationException
    * @throws TransformerConfigurationException
    * @throws TransformerException
    */
-  public void writeXML(OutputStream outputStream)
+  public void writeXML(Writer writer)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
-    writeXML(outputStream, imageFormats.stream().skip(2).toList());
+    writeXML(writer, imageFormats.stream().skip(2).toList());
   }
 
   /**
    * 引数の画像フォーマット一覧をstreamに書き込む。
    *
-   * @param outputStream
+   * @param writer
    * @param formats 画像フォーマットのリスト
    * @throws ParserConfigurationException
    * @throws TransformerConfigurationException
    * @throws TransformerException
    */
-  private void writeXML(OutputStream outputStream, List<ImageFormat> formats)
+  private void writeXML(Writer writer, List<ImageFormat> formats)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
@@ -175,7 +209,7 @@ public class ImageFormatConfigModel {
     var transformerFactory = TransformerFactory.newInstance();
     var transformer = transformerFactory.newTransformer();
     var domSource = new DOMSource(document);
-    var streamResult = new StreamResult(outputStream);
+    var streamResult = new StreamResult(writer);
     transformer.transform(domSource, streamResult);
   }
 
