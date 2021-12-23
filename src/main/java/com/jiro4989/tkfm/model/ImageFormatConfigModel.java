@@ -150,7 +150,7 @@ public class ImageFormatConfigModel {
    * @throws IOException
    * @throws SAXException
    */
-  private List<ImageFormat> readXML(InputStream inputStream)
+  public List<ImageFormat> readXML(InputStream inputStream)
       throws ParserConfigurationException, IOException, SAXException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
@@ -195,7 +195,7 @@ public class ImageFormatConfigModel {
    * @throws TransformerConfigurationException
    * @throws TransformerException
    */
-  private void writeXML(Writer writer, List<ImageFormat> formats)
+  public void writeXML(Writer writer, List<ImageFormat> formats)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
