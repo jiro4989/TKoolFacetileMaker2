@@ -2,9 +2,11 @@ package com.jiro4989.tkfm.model;
 
 import com.jiro4989.tkfm.data.Rectangle;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -170,6 +172,51 @@ public class ImageFormatConfigModel {
       result.add(fmt);
     }
     return result;
+  }
+
+  /**
+   * 組み込みのPathのファイルに設定を書き込む。配置先ディレクトリが存在しなかったら作成する。
+   *
+   * @throws ParserConfigurationException
+   * @throws TransformerConfigurationException
+   * @throws TransformerException
+   * @throws IOException
+   */
+  public void writeXMLFile()
+      throws ParserConfigurationException, TransformerConfigurationException, TransformerException,
+          IOException {
+    writeXMLFile(CONFIG_FILE_PATH);
+  }
+
+  /**
+   * 指定のPathのファイルに設定を書き込む。配置先ディレクトリが存在しなかったら作成する。
+   *
+   * @param path
+   * @throws ParserConfigurationException
+   * @throws TransformerConfigurationException
+   * @throws TransformerException
+   * @throws IOException
+   */
+  public void writeXMLFile(Path path)
+      throws ParserConfigurationException, TransformerConfigurationException, TransformerException,
+          IOException {
+    Path dir = path.getParent();
+    if (Files.notExists(dir, LinkOption.NOFOLLOW_LINKS)) {
+      Files.createDirectories(dir);
+    }
+
+    // 例外を投げる前に確実にcloseしておきたいため
+    try (Writer w = new FileWriter(CONFIG_FILE_PATH.toFile(), StandardCharsets.UTF_8)) {
+      writeXML(w, imageFormats.stream().skip(2).toList());
+    } catch (ParserConfigurationException e) {
+      throw e;
+    } catch (TransformerConfigurationException e) {
+      throw e;
+    } catch (TransformerException e) {
+      throw e;
+    } catch (IOException e) {
+      throw e;
+    }
   }
 
   /**
