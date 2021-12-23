@@ -86,20 +86,36 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * streamを読み込んで画像フォーマット一覧に追加する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
+   * streamを読み込んで画像フォーマットリストに追加する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
    *
    * @param inputStream
    * @throws ParserConfigurationException
    * @throws IOException
    * @throws SAXException
    */
-  public void readXML(InputStream inputStream)
+  public void loadXML(InputStream inputStream)
+      throws ParserConfigurationException, IOException, SAXException {
+    var formats = readXML(inputStream);
+    imageFormats.addAll(formats);
+  }
+
+  /**
+   * streamを読み込んで画像フォーマットリストを返却する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
+   *
+   * @param inputStream
+   * @return 画像フォーマットオブジェクトのリスト
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
+   */
+  private List<ImageFormat> readXML(InputStream inputStream)
       throws ParserConfigurationException, IOException, SAXException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
     var document = builder.parse(inputStream);
     var root = document.getDocumentElement();
     var fmts = root.getElementsByTagName("imageFormat");
+    List<ImageFormat> result = new ArrayList<>();
     for (var i = 0; i < fmts.getLength(); i++) {
       var element = (Element) fmts.item(i);
       var name = element.getAttribute("name");
@@ -109,8 +125,9 @@ public class ImageFormatConfigModel {
       var tileHeight = Integer.parseInt(element.getAttribute("tileHeight"));
       var rect = new Rectangle(tileWidth, tileHeight);
       var fmt = new ImageFormat(name, row, col, rect);
-      imageFormats.add(fmt);
+      result.add(fmt);
     }
+    return result;
   }
 
   /**
@@ -124,13 +141,26 @@ public class ImageFormatConfigModel {
    */
   public void writeXML(OutputStream outputStream)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
+    writeXML(outputStream, imageFormats.stream().skip(2).toList());
+  }
+
+  /**
+   * 引数の画像フォーマット一覧をstreamに書き込む。
+   *
+   * @param outputStream
+   * @param formats 画像フォーマットのリスト
+   * @throws ParserConfigurationException
+   * @throws TransformerConfigurationException
+   * @throws TransformerException
+   */
+  private void writeXML(OutputStream outputStream, List<ImageFormat> formats)
+      throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
     var document = builder.newDocument();
     var root = document.createElement("imageFormats");
     document.appendChild(root);
-    imageFormats.stream()
-        .skip(2)
+    formats.stream()
         .forEach(
             fmt -> {
               var item = document.createElement("imageFormat");
