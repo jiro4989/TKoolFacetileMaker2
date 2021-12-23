@@ -32,6 +32,14 @@ public class ImageFormatConfigModel {
   /** 設定ファイルの配置先 */
   private static final Path CONFIG_FILE_PATH = Paths.get(".", "config", "image_format.xml");
 
+  /**
+   * 画像フォーマットを初期設定してインスタンスを生成する。 組み込みでRPGツクールMV・MZと、RPGツクールVXACEの規格をサポートする。
+   * ユーザ定義の設定ファイルが存在した場合は設定ファイルを読み込んで追加する。
+   *
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
+   */
   public ImageFormatConfigModel() throws ParserConfigurationException, IOException, SAXException {
     this.imageFormats = new ArrayList<>();
     this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
