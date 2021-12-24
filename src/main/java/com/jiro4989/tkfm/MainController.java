@@ -489,5 +489,48 @@ public class MainController {
       item.setOnAction(e -> imageFormat.select(index));
       imageFormatMenu.getItems().add(item);
     }
+    var sep = new SeparatorMenuItem();
+    imageFormatMenu.getItems().add(sep);
+
+    var addButton = new MenuItem("画像フォーマットを追加");
+    addButton.setOnAction(e -> addNewImageFormat());
+    imageFormatMenu.getItems().add(addButton);
+
+    var deleteButton = new MenuItem("画像フォーマットを削除");
+    deleteButton.setOnAction(e -> deleteImageFormat());
+    imageFormatMenu.getItems().add(deleteButton);
+  }
+
+  private void addNewImageFormat() {
+    var stage = new ImageFormatStage();
+    stage.showAndWait();
+
+    if (!stage.getOK()) {
+      return;
+    }
+
+    var fmt = stage.getImageFormat();
+    imageFormat.addImageFormats(fmt);
+    resetImageFormatMenu();
+    imageFormat.selectLast();
+    resetOutputGridPane();
+  }
+
+  private void deleteImageFormat() {
+    if (!imageFormat.existsDeletableImageFormats()) {
+      // TODO
+      return;
+    }
+
+    var deletables = imageFormat.getDeletableImageFormatNames();
+    var defaultDeletable = deletables.get(0);
+    var dialog = new ChoiceDialog<>(defaultDeletable, deletables);
+    dialog
+        .showAndWait()
+        .ifPresent(
+            selected -> {
+              var index = deletables.indexOf(selected);
+              imageFormat.deleteImageFormat(index);
+            });
   }
 }

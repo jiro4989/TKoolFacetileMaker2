@@ -1,6 +1,5 @@
 package com.jiro4989.tkfm.model;
 
-import com.jiro4989.tkfm.model.ImageFormatConfigModel.ImageFormat;
 import java.util.*;
 import javafx.beans.property.*;
 import javafx.scene.image.*;

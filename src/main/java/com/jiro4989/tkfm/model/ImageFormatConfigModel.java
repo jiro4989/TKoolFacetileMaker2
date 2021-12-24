@@ -13,8 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -35,6 +33,8 @@ public class ImageFormatConfigModel {
   /** 設定ファイルの配置先 */
   private static final Path CONFIG_FILE_PATH = Paths.get(".", "config", "image_format.xml");
 
+  private static final int SKIP_COUNT = 2;
+
   /**
    * 画像フォーマットを初期設定してインスタンスを生成する。 組み込みでRPGツクールMV・MZと、RPGツクールVXACEの規格をサポートする。
    * ユーザ定義の設定ファイルが存在した場合は設定ファイルを読み込んで追加する。
@@ -49,37 +49,6 @@ public class ImageFormatConfigModel {
     this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
     this.selectedImageFormat = this.imageFormats.get(0);
     loadXMLFile(CONFIG_FILE_PATH);
-  }
-
-  public class ImageFormat {
-    private final String name;
-    private final IntegerProperty row;
-    private final IntegerProperty col;
-    private final Rectangle rect;
-
-    /** インスタンスの生成はこのモデルクラスでしかできない。 */
-    private ImageFormat(String name, int row, int col, Rectangle rect) {
-      this.name = name;
-      this.row = new SimpleIntegerProperty(row);
-      this.col = new SimpleIntegerProperty(col);
-      this.rect = rect;
-    }
-
-    public IntegerProperty rowProperty() {
-      return row;
-    }
-
-    public IntegerProperty colProperty() {
-      return col;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public Rectangle getRectangle() {
-      return rect;
-    }
   }
 
   /**
@@ -102,6 +71,11 @@ public class ImageFormatConfigModel {
         .getRectangle()
         .heightProperty()
         .set(fmt.getRectangle().heightProperty().get());
+  }
+
+  public void selectLast() {
+    var index = imageFormats.size() - 1;
+    select(index);
   }
 
   /**
@@ -208,7 +182,7 @@ public class ImageFormatConfigModel {
 
     // 例外を投げる前に確実にcloseしておきたいため
     try (Writer w = new FileWriter(CONFIG_FILE_PATH.toFile(), StandardCharsets.UTF_8)) {
-      writeXML(w, imageFormats.stream().skip(2).toList());
+      writeXML(w, getSkippedImageFormats());
     } catch (ParserConfigurationException e) {
       throw e;
     } catch (TransformerConfigurationException e) {
@@ -231,7 +205,7 @@ public class ImageFormatConfigModel {
    */
   public void writeXML(Writer writer)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
-    writeXML(writer, imageFormats.stream().skip(2).toList());
+    writeXML(writer, getSkippedImageFormats());
   }
 
   /**
@@ -270,11 +244,40 @@ public class ImageFormatConfigModel {
     transformer.transform(domSource, streamResult);
   }
 
+  public void addImageFormats(ImageFormat fmt) {
+    imageFormats.add(fmt);
+  }
+
   public List<ImageFormat> getImageFormats() {
     return imageFormats;
   }
 
   public ImageFormat getSelectedImageFormat() {
     return selectedImageFormat;
+  }
+
+  public boolean existsDeletableImageFormats() {
+    return 0 < imageFormats.size() - SKIP_COUNT;
+  }
+
+  public List<String> getDeletableImageFormatNames() {
+    var fmts = getSkippedImageFormats();
+    var i = 1;
+    List<String> result = new ArrayList<>();
+    for (var fmt : fmts) {
+      result.add(i + ". " + fmt.getName());
+      i++;
+    }
+    return result;
+  }
+
+  public void deleteImageFormat(int index) {
+    // デフォルトで設定される個数スキップが必要
+    index += 2;
+    imageFormats.remove(index);
+  }
+
+  private List<ImageFormat> getSkippedImageFormats() {
+    return imageFormats.stream().skip(SKIP_COUNT).toList();
   }
 }
