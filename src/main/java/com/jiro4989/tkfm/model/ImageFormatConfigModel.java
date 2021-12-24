@@ -17,6 +17,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -257,14 +258,15 @@ public class ImageFormatConfigModel {
               item.setAttribute("name", "" + fmt.getName());
               item.setAttribute("row", "" + fmt.rowProperty().get());
               item.setAttribute("col", "" + fmt.colProperty().get());
-              item.setAttribute("tileWidth", "" + rect.widthProperty().get());
-              item.setAttribute("tileHeight", "" + rect.heightProperty().get());
+              item.setAttribute("tileWidth", "" + (int) rect.widthProperty().get());
+              item.setAttribute("tileHeight", "" + (int) rect.heightProperty().get());
               root.appendChild(item);
             });
     var transformerFactory = TransformerFactory.newInstance();
     var transformer = transformerFactory.newTransformer();
     var domSource = new DOMSource(document);
     var streamResult = new StreamResult(writer);
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     transformer.transform(domSource, streamResult);
   }
 
