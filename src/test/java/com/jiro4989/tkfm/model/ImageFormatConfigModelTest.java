@@ -46,6 +46,11 @@ public class ImageFormatConfigModelTest {
         });
   }
 
+  @Test
+  public void testConstructor() throws Exception {
+    new ImageFormatConfigModel();
+  }
+
   @ParameterizedTest
   @CsvSource({
     "0, 144.0, 144.0",
@@ -82,6 +87,16 @@ public class ImageFormatConfigModelTest {
   }
 
   @Test
+  public void testLoadXMLFileSkipped() throws Exception {
+    var path = Paths.get(".", "not_found", "not_found.xml");
+    var fmt = new ImageFormatConfigModel(false);
+    fmt.loadXMLFile(path);
+
+    var got = fmt.getAdditionalImageFormatNames().size();
+    assertEquals(0, got);
+  }
+
+  @Test
   public void testLoadXMLFileSAXParseException() throws Exception {
     var path = Paths.get(getClass().getResource("/image_format_illegal.xml").getPath());
     var fmt = new ImageFormatConfigModel(false);
@@ -99,6 +114,12 @@ public class ImageFormatConfigModelTest {
     fmt.writeXMLFile(path);
     assertTrue(Files.exists(path));
     assertTrue(Files.isDirectory(Paths.get(".", "tmp")));
+  }
+
+  @Test
+  public void testWriteXMLFileDefault() throws Exception {
+    var fmt = new ImageFormatConfigModel(false);
+    fmt.writeXMLFile();
   }
 
   @Test
