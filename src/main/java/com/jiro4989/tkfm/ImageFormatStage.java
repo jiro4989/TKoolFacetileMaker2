@@ -11,7 +11,7 @@ public class ImageFormatStage extends Stage {
 
   public ImageFormatStage() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ImageFormat.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("image_format_view.fxml"));
       VBox root = loader.load();
       controller = (ImageFormatController) loader.getController();
 
