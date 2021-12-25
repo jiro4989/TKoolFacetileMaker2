@@ -18,7 +18,7 @@ public class CroppingImageModel {
   private final ObjectProperty<Image> croppedImage =
       new SimpleObjectProperty<>(new WritableImage(144, 144));
   /** トリミング座標 */
-  private final Position cropPos;
+  private final Position cropPos = new Position(0, 0);
   /** トリミング画像の矩形 */
   private final Rectangle cropRect;
   /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
@@ -28,25 +28,8 @@ public class CroppingImageModel {
   /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
-  /** デフォルトコンストラクタ。 トリミング座標は 0, 0。矩形はRPGツクールMV基準で144x144。 */
-  public CroppingImageModel() {
-    this.cropPos = new Position(0, 0);
-    this.cropRect = new Rectangle(144, 144);
-  }
-
-  /**
-   * トリミング対象の画像、トリミング位置、トリミング矩形、拡縮値をすべて指定する。
-   *
-   * @param image トリミング対象画像
-   * @param pos トリミング位置
-   * @param rect トリミング矩形
-   * @param scale トリミング拡縮
-   */
-  public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
-    this.image.set(image);
-    this.cropPos = pos;
+  public CroppingImageModel(Rectangle rect) {
     this.cropRect = rect;
-    this.scale.set(scale);
   }
 
   public Image crop() {
@@ -152,6 +135,8 @@ public class CroppingImageModel {
   public void moveByMouse(double x, double y) {
     double w = cropRect.getWidth();
     double h = cropRect.getHeight();
+    System.out.println("w:" + w);
+    System.out.println("h:" + h);
     x = x - w / 2;
     y = y - h / 2;
     move(x, y);

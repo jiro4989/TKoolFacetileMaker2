@@ -93,14 +93,15 @@ public class MainController {
       return;
     }
 
-    cropImage = new CroppingImageModel();
+    var selectedImageFormat = imageFormat.getSelectedImageFormat();
+    var rect = selectedImageFormat.getRectangle();
+
+    cropImage = new CroppingImageModel(rect);
     imageFiles = new ImageFilesModel(cropImage);
     tileImage = new TileImageModel(imageFormat);
 
     // bindigns
     var pos = cropImage.getPosition();
-    var selectedImageFormat = imageFormat.getSelectedImageFormat();
-    var rect = selectedImageFormat.getRectangle();
     var rowCount = selectedImageFormat.rowProperty();
     var colCount = selectedImageFormat.colProperty();
 
