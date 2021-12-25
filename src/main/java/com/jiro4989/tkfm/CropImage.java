@@ -10,7 +10,7 @@ public class CropImage extends Stage {
 
   public CropImage(double x, double y, double scale) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("crop_image_view.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/crop_image_view.fxml"));
       VBox root = loader.load();
       controller = (CropImageController) loader.getController();
 
