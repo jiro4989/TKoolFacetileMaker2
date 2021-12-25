@@ -41,7 +41,7 @@ jobs:
       - name: Check code style
         run: ./gradlew spotlessCheck
       - name: Test
-        run: xvfb-run ./gradlew test
+        run: xvfb-run ./gradlew test jacocoTestReport
       - name: Send coverage report
         run: bash <(curl -s https://codecov.io/bash)
 
