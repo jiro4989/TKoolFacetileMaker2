@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.controller.CropImageController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.*;

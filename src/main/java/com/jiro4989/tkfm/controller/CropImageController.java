@@ -1,4 +1,4 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
 import com.jiro4989.tkfm.util.Validator;
 import javafx.beans.value.*;
@@ -50,34 +50,34 @@ public class CropImageController {
   }
 
   /** Returns x */
-  double getX() {
+  public double getX() {
     return Double.parseDouble(xInput.getText());
   }
 
   /** Returns y */
-  double getY() {
+  public double getY() {
     return Double.parseDouble(yInput.getText());
   }
 
   /** Returns scale */
-  double getScale() {
+  public double getScale() {
     return Double.parseDouble(scaleInput.getText());
   }
 
   /** Returns ok button was pressed. */
-  boolean getOK() {
+  public boolean getOK() {
     return ok;
   }
 
-  void setX(double x) {
+  public void setX(double x) {
     xInput.setText("" + (int) x);
   }
 
-  void setY(double y) {
+  public void setY(double y) {
     yInput.setText("" + (int) y);
   }
 
-  void setScale(double scale) {
+  public void setScale(double scale) {
     scaleInput.setText("" + (int) scale);
   }
 }
