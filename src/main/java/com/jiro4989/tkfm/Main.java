@@ -26,7 +26,7 @@ public class Main extends Application {
       controller = (MainController) loader.getController();
 
       Scene scene = new Scene(root, 1280, 880);
-      scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+      scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());
       primaryStage.setScene(scene);
       primaryStage
           .getIcons()
