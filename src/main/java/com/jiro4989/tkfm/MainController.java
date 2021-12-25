@@ -81,17 +81,31 @@ public class MainController {
     try {
       imageFormat = new ImageFormatConfigModel();
     } catch (ParserConfigurationException e) {
-      // TODO: アラートダイアログを出す
       e.printStackTrace();
-      return;
+      DialogUtil.showAndWaitCommonExceptionDialog("ParserConfigurationException");
+      Platform.exit();
     } catch (IOException e) {
-      // TODO: アラートダイアログを出す
       e.printStackTrace();
-      return;
+
+      var exception = "IOException";
+      var msg =
+          "画像フォーマットファイルの読み込みに失敗しました。\n"
+              + "以下の観点で確認してください。\n\n"
+              + "- configフォルダが存在するか\n"
+              + "- 特別なフォルダ (システムフォルダなど)で実行していないか";
+      DialogUtil.showAndWaitExceptionDialog(exception, msg);
+      Platform.exit();
     } catch (SAXException e) {
-      // TODO: アラートダイアログを出す
       e.printStackTrace();
-      return;
+
+      var exception = "SAXException";
+      var msg =
+          "画像フォーマットファイルの読込に失敗しました。\n"
+              + "config/image_format.xmlファイルを手動で書き換えるなどして、"
+              + "不正なXMLファイルになっている可能性があります。"
+              + "当該ファイルを削除してアプリケーションを再起動してみてください";
+      DialogUtil.showAndWaitExceptionDialog(exception, msg);
+      Platform.exit();
     }
 
     var selectedImageFormat = imageFormat.getSelectedImageFormat();
