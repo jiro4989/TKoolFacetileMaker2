@@ -67,8 +67,7 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * 組み込み画像フォーマットとユーザ定義の画像フォーマットを合わせたListの中からインデックスでフォーマットを選択して切り替える。
-   * Listの範囲外を指定した場合はエラーにはしないで無視する。
+   * 組み込み画像フォーマットとユーザ定義の画像フォーマットを合わせたListの中からインデックスでフォーマットを選択して切り替える。 Listの範囲外を指定した場合はエラーにはしないで無視する。
    *
    * @param index 画像フォーマットのインデックス
    */
@@ -131,8 +130,7 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * streamを読み込んで画像フォーマットリストとして返却する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
-   * 主にユニットテスト時に使う想定。
+   * streamを読み込んで画像フォーマットリストとして返却する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。 主にユニットテスト時に使う想定。
    *
    * @param inputStream
    * @return 画像フォーマットオブジェクトのリスト
@@ -246,6 +244,7 @@ public class ImageFormatConfigModel {
 
   /**
    * ユーザ定義の画像フォーマットリストに追加する。
+   *
    * @param fmt 画像フォーマット
    */
   public void addAdditionalImageFormat(ImageFormat fmt) {
@@ -253,8 +252,8 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * 削除可能な画像フォーマットが存在する場合にtrueを返す。
-   * これはユーザ定義の画像フォーマットが存在することと同義である。
+   * 削除可能な画像フォーマットが存在する場合にtrueを返す。 これはユーザ定義の画像フォーマットが存在することと同義である。
+   *
    * @return 削除可能な画像フォーマットが存在するか否か
    */
   public boolean existsDeletableImageFormats() {
@@ -263,6 +262,7 @@ public class ImageFormatConfigModel {
 
   /**
    * ユーザ定義の画像フォーマットの名前のリストを返却する。
+   *
    * @return ユーザ定義の画像フォーマットの名前のリスト
    */
   public List<String> getAdditionalImageFormatNames() {
@@ -277,6 +277,7 @@ public class ImageFormatConfigModel {
 
   /**
    * ユーザ定義の画像フォーマットリストの要素をインデックス指定で削除する。
+   *
    * @param index
    */
   public void deleteAdditionalImageFormat(int index) {
@@ -299,10 +300,10 @@ public class ImageFormatConfigModel {
 
   /**
    * 選択中の画像フォーマットを返却する。
+   *
    * @return 選択中の画像フォーマット
    */
   public ImageFormat getSelectedImageFormat() {
     return selectedImageFormat;
   }
-
 }
