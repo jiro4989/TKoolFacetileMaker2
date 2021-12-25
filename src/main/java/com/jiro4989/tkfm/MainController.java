@@ -561,6 +561,7 @@ public class MainController {
     var deletables = imageFormat.getAdditionalImageFormatNames();
     var defaultDeletable = deletables.get(0);
     var dialog = new ChoiceDialog<>(defaultDeletable, deletables);
+    dialog.setHeaderText("削除する画像フォーマットを選択してください");
     dialog
         .showAndWait()
         .ifPresent(
