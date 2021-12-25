@@ -114,10 +114,11 @@ public class ImageFormatConfigModelTest {
     "0, 20.0, 30.0",
     "1, 100.0, 100.0",
   })
-  public void testDeleteAdditionalImageFormat(int selectIndex, double wantWidth, double wantHeight) throws Exception {
+  public void testDeleteAdditionalImageFormat(int selectIndex, double wantWidth, double wantHeight)
+      throws Exception {
     var fmt = new ImageFormatConfigModel(false);
     fmt.addAdditionalImageFormat(new ImageFormat("3x3", 3, 3, new Rectangle(100, 100)));
-    fmt.addAdditionalImageFormat(new ImageFormat("3x4", 3, 3, new Rectangle(20,30)));
+    fmt.addAdditionalImageFormat(new ImageFormat("3x4", 3, 3, new Rectangle(20, 30)));
     fmt.deleteAdditionalImageFormat(selectIndex);
     fmt.select(2);
     var got = fmt.getSelectedImageFormat();
