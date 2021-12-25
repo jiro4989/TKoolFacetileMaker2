@@ -49,7 +49,8 @@ public class ImageFormatConfigModel {
 
   /**
    * 画像フォーマットを初期設定してインスタンスを生成する。 組み込みでRPGツクールMV・MZと、RPGツクールVXACEの規格をサポートする。
-   * ユーザ定義の設定ファイルが存在した場合は設定ファイルを読み込んで追加する。
+   * ユーザ定義の設定ファイルが存在した場合は設定ファイルを読み込んで追加する。loadXMLがtrueの場合は規定の設定ファイルを読み込む。
+   * loadXMLがfalseの場合は設定ファイルを読み込まない。falseにするケースは主にユニットテストの場合のみを想定している。
    *
    * @throws ParserConfigurationException
    * @throws IOException
@@ -66,7 +67,8 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * 画像フォーマット一覧の中からインデックスでフォーマットを選択して切り替える。
+   * 組み込み画像フォーマットとユーザ定義の画像フォーマットを合わせたListの中からインデックスでフォーマットを選択して切り替える。
+   * Listの範囲外を指定した場合はエラーにはしないで無視する。
    *
    * @param index 画像フォーマットのインデックス
    */
@@ -129,7 +131,8 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * streamを読み込んで画像フォーマットリストを返却する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
+   * streamを読み込んで画像フォーマットリストとして返却する。このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
+   * 主にユニットテスト時に使う想定。
    *
    * @param inputStream
    * @return 画像フォーマットオブジェクトのリスト
@@ -241,18 +244,35 @@ public class ImageFormatConfigModel {
     transformer.transform(domSource, streamResult);
   }
 
+  /**
+   * ユーザ定義の画像フォーマットリストに追加する。
+   * @param fmt 画像フォーマット
+   */
   public void addAdditionalImageFormat(ImageFormat fmt) {
     additionalImageFormats.add(fmt);
   }
 
+  /**
+   * 選択中の画像フォーマットを返却する。
+   * @return 選択中の画像フォーマット
+   */
   public ImageFormat getSelectedImageFormat() {
     return selectedImageFormat;
   }
 
+  /**
+   * 削除可能な画像フォーマットが存在する場合にtrueを返す。
+   * これはユーザ定義の画像フォーマットが存在することと同義である。
+   * @return 削除可能な画像フォーマットが存在するか否か
+   */
   public boolean existsDeletableImageFormats() {
     return 0 < additionalImageFormats.size();
   }
 
+  /**
+   * ユーザ定義の画像フォーマットの名前のリストを返却する。
+   * @return ユーザ定義の画像フォーマットの名前のリスト
+   */
   public List<String> getAdditionalImageFormatNames() {
     var i = 1;
     List<String> result = new ArrayList<>();
@@ -263,6 +283,10 @@ public class ImageFormatConfigModel {
     return result;
   }
 
+  /**
+   * ユーザ定義の画像フォーマットリストの要素をインデックス指定で削除する。
+   * @param index
+   */
   public void deleteAdditionalImageFormat(int index) {
     additionalImageFormats.remove(index);
   }
