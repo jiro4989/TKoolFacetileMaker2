@@ -3,20 +3,49 @@ package com.jiro4989.tkfm.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.jiro4989.tkfm.data.Rectangle;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 import org.testfx.framework.junit5.*;
+import org.xml.sax.SAXParseException;
 
 @ExtendWith(ApplicationExtension.class)
 public class ImageFormatConfigModelTest {
+  @AfterAll
+  public static void afterAll() throws Exception {
+    var dir = Paths.get(".", "tmp");
+    // 再帰的にフォルダを削除
+    Files.walkFileTree(
+        dir,
+        new SimpleFileVisitor<>() {
+          @Override
+          public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+              throws IOException {
+            Files.delete(file);
+            return FileVisitResult.CONTINUE;
+          }
+
+          @Override
+          public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+            Files.delete(dir);
+            return FileVisitResult.CONTINUE;
+          }
+        });
+  }
+
   @ParameterizedTest
   @CsvSource({
     "0, 144.0, 144.0",
@@ -50,6 +79,26 @@ public class ImageFormatConfigModelTest {
     var rect = selected.getRectangle();
     assertEquals(wantWidth, rect.getWidth());
     assertEquals(wantHeight, rect.getHeight());
+  }
+
+  @Test
+  public void testLoadXMLFileSAXParseException() throws Exception {
+    var path = Paths.get(getClass().getResource("/image_format_illegal.xml").getPath());
+    var fmt = new ImageFormatConfigModel(false);
+    assertThrows(
+        SAXParseException.class,
+        () -> {
+          fmt.loadXMLFile(path);
+        });
+  }
+
+  @Test
+  public void testWriteXMLFile() throws Exception {
+    var fmt = new ImageFormatConfigModel(false);
+    var path = Paths.get(".", "tmp", "sushi.xml");
+    fmt.writeXMLFile(path);
+    assertTrue(Files.exists(path));
+    assertTrue(Files.isDirectory(Paths.get(".", "tmp")));
   }
 
   @Test

@@ -192,7 +192,7 @@ public class ImageFormatConfigModel {
     }
 
     // 例外を投げる前に確実にcloseしておきたいため
-    try (Writer w = new FileWriter(CONFIG_FILE_PATH.toFile(), StandardCharsets.UTF_8)) {
+    try (Writer w = new FileWriter(path.toFile(), StandardCharsets.UTF_8)) {
       writeXML(w, additionalImageFormats);
     } catch (ParserConfigurationException e) {
       throw e;
