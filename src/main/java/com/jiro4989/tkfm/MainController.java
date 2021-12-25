@@ -1,6 +1,7 @@
 package com.jiro4989.tkfm;
 
 import com.jiro4989.tkfm.model.*;
+import com.jiro4989.tkfm.util.DialogUtil;
 import com.jiro4989.tkfm.util.ImageUtil;
 import java.io.File;
 import java.io.IOException;
@@ -561,17 +562,24 @@ public class MainController {
     try {
       imageFormat.writeXMLFile();
     } catch (ParserConfigurationException e) {
-      // TODO
       e.printStackTrace();
+      DialogUtil.showAndWaitCommonExceptionDialog("ParserConfigurationException");
     } catch (TransformerConfigurationException e) {
-      // TODO
       e.printStackTrace();
+      DialogUtil.showAndWaitCommonExceptionDialog("TransformerConfigurationException");
     } catch (TransformerException e) {
-      // TODO
       e.printStackTrace();
+      DialogUtil.showAndWaitCommonExceptionDialog("TransformerException");
     } catch (IOException e) {
-      // TODO
       e.printStackTrace();
+      var exception = "IOException";
+      var msg =
+          "画像フォーマットファイルの保存に失敗しました。\n"
+              + "以下の観点で確認してください。\n\n"
+              + "- configフォルダが存在するか\n"
+              + "- 特別なフォルダ (システムフォルダなど)で実行していないか\n"
+              + "- 設定ファイルが壊れていないか";
+      DialogUtil.showAndWaitExceptionDialog(exception, msg);
     }
   }
 }
