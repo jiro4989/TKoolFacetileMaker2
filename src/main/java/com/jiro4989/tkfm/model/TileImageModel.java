@@ -7,7 +7,7 @@ import javafx.scene.image.*;
 /** リストの画像データをタイル状に並べた1枚の画像ファイルとして出力するロジックを管理する。 */
 public class TileImageModel {
   /** 画像フォーマット */
-  private final ImageFormat imageFormat;
+  private final ImageFormatModel imageFormat;
 
   /** タイル画像のリスト */
   final List<List<Image>> __images = new LinkedList<>();

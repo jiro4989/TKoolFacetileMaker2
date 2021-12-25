@@ -1,7 +1,7 @@
 package com.jiro4989.tkfm;
 
 import com.jiro4989.tkfm.controller.ImageFormatViewController;
-import com.jiro4989.tkfm.model.ImageFormat;
+import com.jiro4989.tkfm.model.ImageFormatModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.*;
@@ -26,7 +26,7 @@ public class ImageFormatStage extends Stage {
     }
   }
 
-  public ImageFormat getImageFormat() {
+  public ImageFormatModel getImageFormat() {
     return controller.getImageFormat();
   }
 

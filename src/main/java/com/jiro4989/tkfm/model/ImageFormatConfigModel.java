@@ -27,11 +27,11 @@ import org.xml.sax.SAXException;
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 public class ImageFormatConfigModel {
   /** 規定済み画像フォーマット */
-  private final List<ImageFormat> imageFormats;
+  private final List<ImageFormatModel> imageFormats;
   /** ユーザ定義の画像フォーマット */
-  private final List<ImageFormat> additionalImageFormats;
+  private final List<ImageFormatModel> additionalImageFormats;
   /** 選択中の画像フォーマット */
-  private final ImageFormat selectedImageFormat;
+  private final ImageFormatModel selectedImageFormat;
   /** 設定ファイルの配置先 */
   private static final Path CONFIG_FILE_PATH = Paths.get(".", "config", "image_format.xml");
 
@@ -59,10 +59,10 @@ public class ImageFormatConfigModel {
   public ImageFormatConfigModel(boolean loadXML)
       throws ParserConfigurationException, IOException, SAXException {
     this.imageFormats = new ArrayList<>();
-    this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
-    this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
+    this.imageFormats.add(new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
+    this.imageFormats.add(new ImageFormatModel("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
     this.additionalImageFormats = new ArrayList<>();
-    this.selectedImageFormat = new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144));
+    this.selectedImageFormat = new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144));
     if (loadXML) loadXMLFile(CONFIG_FILE_PATH);
   }
 
@@ -138,14 +138,14 @@ public class ImageFormatConfigModel {
    * @throws IOException
    * @throws SAXException
    */
-  public List<ImageFormat> readXML(InputStream inputStream)
+  public List<ImageFormatModel> readXML(InputStream inputStream)
       throws ParserConfigurationException, IOException, SAXException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
     var document = builder.parse(inputStream);
     var root = document.getDocumentElement();
     var fmts = root.getElementsByTagName("imageFormat");
-    List<ImageFormat> result = new ArrayList<>();
+    List<ImageFormatModel> result = new ArrayList<>();
     for (var i = 0; i < fmts.getLength(); i++) {
       var element = (Element) fmts.item(i);
       var name = element.getAttribute("name");
@@ -154,7 +154,7 @@ public class ImageFormatConfigModel {
       var tileWidth = Integer.parseInt(element.getAttribute("tileWidth"));
       var tileHeight = Integer.parseInt(element.getAttribute("tileHeight"));
       var rect = new Rectangle(tileWidth, tileHeight);
-      var fmt = new ImageFormat(name, row, col, rect);
+      var fmt = new ImageFormatModel(name, row, col, rect);
       result.add(fmt);
     }
     return result;
@@ -215,7 +215,7 @@ public class ImageFormatConfigModel {
    * @throws TransformerConfigurationException
    * @throws TransformerException
    */
-  public void writeXML(Writer writer, List<ImageFormat> formats)
+  public void writeXML(Writer writer, List<ImageFormatModel> formats)
       throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
     var factory = DocumentBuilderFactory.newInstance();
     var builder = factory.newDocumentBuilder();
@@ -247,7 +247,7 @@ public class ImageFormatConfigModel {
    *
    * @param fmt 画像フォーマット
    */
-  public void addAdditionalImageFormat(ImageFormat fmt) {
+  public void addAdditionalImageFormat(ImageFormatModel fmt) {
     additionalImageFormats.add(fmt);
   }
 
@@ -289,8 +289,8 @@ public class ImageFormatConfigModel {
    *
    * @return 全部の画像フォーマット
    */
-  public List<ImageFormat> createTotalImageFormats() {
-    List<ImageFormat> totalFormats = new ArrayList<>();
+  public List<ImageFormatModel> createTotalImageFormats() {
+    List<ImageFormatModel> totalFormats = new ArrayList<>();
     totalFormats.addAll(imageFormats);
     totalFormats.addAll(additionalImageFormats);
     return totalFormats;
@@ -303,7 +303,7 @@ public class ImageFormatConfigModel {
    *
    * @return 選択中の画像フォーマット
    */
-  public ImageFormat getSelectedImageFormat() {
+  public ImageFormatModel getSelectedImageFormat() {
     return selectedImageFormat;
   }
 }
