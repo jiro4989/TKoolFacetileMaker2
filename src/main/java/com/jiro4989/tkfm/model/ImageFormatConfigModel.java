@@ -48,7 +48,7 @@ public class ImageFormatConfigModel {
     this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
     this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
     this.additionalImageFormats = new ArrayList<>();
-    this.selectedImageFormat = this.imageFormats.get(0);
+    this.selectedImageFormat = new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144));
     loadXMLFile(CONFIG_FILE_PATH);
   }
 
@@ -251,7 +251,6 @@ public class ImageFormatConfigModel {
   }
 
   public void deleteAdditionalImageFormat(int index) {
-    // デフォルトで設定される個数スキップが必要
     additionalImageFormats.remove(index);
   }
 
