@@ -500,6 +500,7 @@ public class MainController {
     imageFormatMenu.getItems().clear();
 
     var fmts = imageFormat.createTotalImageFormats();
+    var selectIndex = selectLast ? fmts.size() - 1 : 0;
     for (var i = 0; i < fmts.size(); i++) {
       // final変数じゃないとsetOnActionの無名関数に渡せないため
       final var index = i;
@@ -507,7 +508,7 @@ public class MainController {
       var fmt = fmts.get(index);
       var item = new RadioMenuItem(fmt.getName());
       item.setToggleGroup(group);
-      item.setSelected(index == 0); // 最初の1つ目を選択する
+      item.setSelected(index == selectIndex);
       item.setOnAction(e -> imageFormat.select(index));
       imageFormatMenu.getItems().add(item);
     }
@@ -522,12 +523,7 @@ public class MainController {
     deleteButton.setOnAction(e -> deleteImageFormat());
     imageFormatMenu.getItems().add(deleteButton);
 
-    if (imageFormat.getAdditionalImageFormatNames().size() < 1) return;
-    if (selectLast) {
-      var lastIndex = fmts.size() - 1;
-      var lastToggle = group.getToggles().get(lastIndex);
-      group.selectToggle(lastToggle);
-    }
+    imageFormat.select(selectIndex);
   }
 
   private void addNewImageFormat() {
@@ -541,7 +537,6 @@ public class MainController {
     var fmt = stage.getImageFormat();
     imageFormat.addAdditionalImageFormat(fmt);
     resetImageFormatMenu(true);
-    resetOutputGridPane();
     writeImageFormat();
   }
 
@@ -561,7 +556,6 @@ public class MainController {
               var index = deletables.indexOf(selected);
               imageFormat.deleteAdditionalImageFormat(index);
               resetImageFormatMenu(false);
-              resetOutputGridPane();
               writeImageFormat();
             });
   }
