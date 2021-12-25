@@ -539,9 +539,8 @@ public class MainController {
         .ifPresent(
             selected -> {
               var index = deletables.indexOf(selected);
-              imageFormat.deleteImageFormat(index);
+              imageFormat.deleteAdditionalImageFormat(index);
               resetImageFormatMenu(false);
-              imageFormat.select(0);
               resetOutputGridPane();
               writeImageFormat();
             });

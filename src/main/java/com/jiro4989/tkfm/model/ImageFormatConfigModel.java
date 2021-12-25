@@ -250,7 +250,7 @@ public class ImageFormatConfigModel {
     return result;
   }
 
-  public void deleteImageFormat(int index) {
+  public void deleteAdditionalImageFormat(int index) {
     // デフォルトで設定される個数スキップが必要
     additionalImageFormats.remove(index);
   }
