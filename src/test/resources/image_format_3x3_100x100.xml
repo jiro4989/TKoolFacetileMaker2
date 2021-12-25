@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<imageFormats>
+    <imageFormat col="3" name="3x3" row="3" tileHeight="100" tileWidth="100"/>
+</imageFormats>
