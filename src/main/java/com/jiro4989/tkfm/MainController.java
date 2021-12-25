@@ -104,9 +104,11 @@ public class MainController {
     var rowCount = selectedImageFormat.rowProperty();
     var colCount = selectedImageFormat.colProperty();
 
-    // 行数、列数が変更されたら出力画像ビューをリセットする
+    // 行数、列数、タイル幅が変更されたら出力画像ビューをリセットする
     rowCount.addListener(e -> resetOutputGridPane());
     colCount.addListener(e -> resetOutputGridPane());
+    rect.widthProperty().addListener(e -> resetOutputGridPane());
+    rect.heightProperty().addListener(e -> resetOutputGridPane());
 
     cropImageGridPane
         .prefWidthProperty()
