@@ -1,5 +1,7 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
+import com.jiro4989.tkfm.CropImage;
+import com.jiro4989.tkfm.ImageFormatStage;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.util.DialogUtil;
 import com.jiro4989.tkfm.util.ImageUtil;

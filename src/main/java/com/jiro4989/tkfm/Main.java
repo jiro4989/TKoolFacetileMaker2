@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.controller.MainController;
 import com.jiro4989.tkfm.model.PropertiesModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
