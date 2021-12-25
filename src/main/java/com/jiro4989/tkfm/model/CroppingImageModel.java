@@ -10,23 +10,42 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
+/** 画像をトリミングするロジックを管理する。 */
 public class CroppingImageModel {
-  private ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
-  private ObjectProperty<Image> croppedImage =
+  /** トリミング対象の画像 */
+  private final ObjectProperty<Image> image = new SimpleObjectProperty<>(createEmptyImage());
+  /** トリミングされた結果のプレビュー画像 */
+  private final ObjectProperty<Image> croppedImage =
       new SimpleObjectProperty<>(new WritableImage(144, 144));
-  private Position cropPos = new Position(0, 0);
-  private Rectangle cropRect = new Rectangle(144, 144);
+  /** トリミング座標 */
+  private final Position cropPos = new Position(0, 0);
+  /** トリミング画像の矩形 */
+  private final Rectangle cropRect;
+  /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageWidth = new SimpleDoubleProperty(288.0);
+  /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageHeight = new SimpleDoubleProperty(288.0);
+  /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
-  public CroppingImageModel() {}
-
+  /**
+   * 単体テストで使う目的。通常プログラムでは使わない。
+   *
+   * @param image
+   * @param pos
+   * @param rect
+   * @param scale
+   */
   public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
     this.image.set(image);
-    this.cropPos = pos;
+    this.cropPos.setX(pos.getX());
+    this.cropPos.setY(pos.getY());
     this.cropRect = rect;
     this.scale.set(scale);
+  }
+
+  public CroppingImageModel(Rectangle rect) {
+    this.cropRect = rect;
   }
 
   public Image crop() {

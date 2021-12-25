@@ -7,3 +7,11 @@
 .titled-pane .title {
 	-fx-font-weight: bold;
 }
+
+GridPane > .label {
+    -fx-font-size: 20pt;
+    -fx-pref-width: 1000px;
+    -fx-pref-height: 1000px;
+    -fx-alignment: center;
+    -fx-border-style: solid;
+}

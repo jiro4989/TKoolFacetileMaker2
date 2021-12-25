@@ -1,20 +1,22 @@
 package com.jiro4989.tkfm.model;
 
-import com.jiro4989.tkfm.data.Rectangle;
 import java.util.*;
 import javafx.beans.property.*;
 import javafx.scene.image.*;
 
+/** リストの画像データをタイル状に並べた1枚の画像ファイルとして出力するロジックを管理する。 */
 public class TileImageModel {
-  private int rowCount = 2;
-  private int colCount = 4;
-  private final Rectangle rect;
+  /** 画像フォーマット */
+  private final ImageFormat imageFormat;
 
+  /** タイル画像のリスト */
   final List<List<Image>> __images = new LinkedList<>();
+
+  /** JavaFX用の画像プロパティ */
   private final ObjectProperty<Image> image;
 
-  public TileImageModel(Rectangle rect) {
-    this.rect = rect;
+  public TileImageModel(ImageFormatConfigModel model) {
+    this.imageFormat = model.getSelectedImageFormat();
 
     var img = outputTileImage();
     this.image = new SimpleObjectProperty<>(img);
@@ -31,6 +33,8 @@ public class TileImageModel {
   */
 
   public void clear() {
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
     for (int y = 0; y < rowCount; y++) {
       for (int x = 0; x < colCount; x++) {
         var img = tileImage();
@@ -45,6 +49,8 @@ public class TileImageModel {
   }
 
   public void bulkInsert(List<Image> images, int startIndex) {
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
     int size = images.size();
     for (int i = startIndex; i < startIndex + size; i++) {
       if (rowCount * colCount <= i) break;
@@ -61,6 +67,8 @@ public class TileImageModel {
   }
 
   public void setImageByAxis(Image img, double mx, double my) {
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
     var i = image.get();
     double w = i.getWidth();
     double h = i.getHeight();
@@ -85,6 +93,8 @@ public class TileImageModel {
   // private methods //////////////////////////////////////////////////////////
 
   private void draw() {
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
     var rawImg = image.get();
     if (rawImg instanceof WritableImage) {
       var img = (WritableImage) rawImg;
@@ -109,18 +119,22 @@ public class TileImageModel {
   }
 
   private Image tileImage() {
-    var w = (int) rect.getWidth();
-    var h = (int) rect.getHeight();
+    var w = (int) imageFormat.getRectangle().getWidth();
+    var h = (int) imageFormat.getRectangle().getHeight();
     return new WritableImage(w, h);
   }
 
   private Image outputTileImage() {
-    int w = (int) rect.getWidth();
-    int h = (int) rect.getHeight();
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
+    var w = (int) imageFormat.getRectangle().getWidth();
+    var h = (int) imageFormat.getRectangle().getHeight();
     return new WritableImage(colCount * w, rowCount * h);
   }
 
   private void resetImages() {
+    var rowCount = imageFormat.rowProperty().get();
+    var colCount = imageFormat.colProperty().get();
     __images.clear();
     for (int i = 0; i < rowCount; i++) {
       List<Image> row = new LinkedList<>();

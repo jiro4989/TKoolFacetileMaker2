@@ -10,14 +10,12 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -30,7 +28,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
   <top>
@@ -139,21 +136,7 @@
             </MenuItem>
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="ツクール">
-          <items>
-            <RadioMenuItem disable="false" mnemonicParsing="false" onAction="#setCropSizeTkoolMV" selected="true" text="ＭＶ">
-              <toggleGroup>
-                <ToggleGroup fx:id="group" />
-              </toggleGroup>
-            </RadioMenuItem>
-            <RadioMenuItem mnemonicParsing="false" onAction="#setCropSizeTkoolVXACE" text="ＶＸＡＣＥ" toggleGroup="$group" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="ヘルプ">
-          <items>
-            <MenuItem mnemonicParsing="false" text="README" />
-          </items>
-        </Menu>
+        <Menu fx:id="imageFormatMenu" mnemonicParsing="false" text="画像フォーマット" />
       </menus>
     </MenuBar>
   </top>
@@ -278,65 +261,27 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <StackPane layoutX="15.399999618530273" layoutY="15.399999618530273">
-                           <children>
-                              <GridPane fx:id="outputGridPane" gridLinesVisible="true" StackPane.alignment="CENTER">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                        <ScrollPane layoutX="14.899999618530273" layoutY="14.899999618530273" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <StackPane>
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="1" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="2" textAlignment="CENTER" GridPane.columnIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="3" textAlignment="CENTER" GridPane.columnIndex="2">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="4" textAlignment="CENTER" GridPane.columnIndex="3">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="5" textAlignment="CENTER" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="6" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="7" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" text="8" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
+                                    <GridPane fx:id="outputGridPane" gridLinesVisible="true" StackPane.alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                    </GridPane>
+                                    <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" onMouseClicked="#setTileImageOnClick" pickOnBounds="true" preserveRatio="true" />
                                  </children>
-                              </GridPane>
-                              <ImageView fx:id="outputImageView" fitHeight="288.0" fitWidth="576.0" onMouseClicked="#setTileImageOnClick" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </StackPane>
+                              </StackPane>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </content>

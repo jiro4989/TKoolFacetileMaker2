@@ -29,7 +29,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+        # codecovからrevを参照されるのでv2にはしない
+      - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -40,7 +41,7 @@ jobs:
       - name: Check code style
         run: ./gradlew spotlessCheck
       - name: Test
-        run: xvfb-run ./gradlew test
+        run: xvfb-run ./gradlew test jacocoTestReport
       - name: Send coverage report
         run: bash <(curl -s https://codecov.io/bash)
 

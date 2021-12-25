@@ -3,19 +3,22 @@ package com.jiro4989.tkfm.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.jiro4989.tkfm.data.Rectangle;
+import java.io.IOException;
 import java.util.*;
 import javafx.scene.image.Image;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 import org.testfx.framework.junit5.*;
+import org.xml.sax.SAXException;
 
 @ExtendWith(ApplicationExtension.class)
 public class TileImageModelTest {
   @Test
   public void testConstructor() throws Exception {
-    var t = new TileImageModel(new Rectangle(20, 20));
+    var t = new TileImageModel(createImageFormatConfigModel());
     assertEquals(2, t.__images.size());
     assertEquals(4, t.__images.get(0).size());
     assertEquals(4, t.__images.get(1).size());
@@ -34,7 +37,7 @@ public class TileImageModelTest {
     "8,0,0,0",
   })
   public void testBulkInsert(int index, int want1, int want2, int want3) throws Exception {
-    var t = new TileImageModel(new Rectangle(20, 20));
+    var t = new TileImageModel(createImageFormatConfigModel());
     var images = new LinkedList<Image>();
     for (int i = 0; i < 8; i++) images.add(new Image("20x20.png"));
 
@@ -67,13 +70,14 @@ public class TileImageModelTest {
 
   @Test
   public void testResetImage() throws Exception {
-    var rect = new Rectangle(20, 20);
-    var t = new TileImageModel(rect);
+    var fmt = createImageFormatConfigModel();
+    var t = new TileImageModel(fmt);
     var img = t.imageProperty().get();
 
     assertEquals(80, img.getWidth());
     assertEquals(40, img.getHeight());
 
+    var rect = fmt.getSelectedImageFormat().getRectangle();
     rect.setWidth(40);
     rect.setHeight(30);
     t.resetImage();
@@ -85,7 +89,7 @@ public class TileImageModelTest {
 
   @Test
   public void testClearImage() throws Exception {
-    var t = new TileImageModel(new Rectangle(20, 20));
+    var t = new TileImageModel(createImageFormatConfigModel());
     var images = new LinkedList<Image>();
     for (int i = 0; i < 8; i++) images.add(new Image("20x20.png"));
     t.bulkInsert(images);
@@ -105,8 +109,8 @@ public class TileImageModelTest {
   @CsvSource({
     "0,0,0", "10,10,0", "20,10,1", "70,10,3", "0,20,4", "20,20,5", "79,20,7", "79,39,7",
   })
-  public void testSetImageByAxis(double x, double y, int wantIndex) {
-    var t = new TileImageModel(new Rectangle(20, 20));
+  public void testSetImageByAxis(double x, double y, int wantIndex) throws Exception {
+    var t = new TileImageModel(createImageFormatConfigModel());
     var image = new Image("20x20.png");
     t.setImageByAxis(image, x, y);
 
@@ -116,5 +120,14 @@ public class TileImageModelTest {
     var reader = t.__images.get(yy).get(xx).getPixelReader();
     var got = reader.getArgb(0, 0);
     assertEquals(-65536, got);
+  }
+
+  private ImageFormatConfigModel createImageFormatConfigModel()
+      throws ParserConfigurationException, IOException, SAXException {
+    var rect = new Rectangle(20, 20);
+    var fmt = new ImageFormatConfigModel(false);
+    fmt.addAdditionalImageFormat(new ImageFormat("test", 2, 4, rect));
+    fmt.select(2);
+    return fmt;
   }
 }
