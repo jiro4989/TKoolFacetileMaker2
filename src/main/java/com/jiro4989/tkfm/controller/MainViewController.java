@@ -34,7 +34,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-public class MainController {
+public class MainViewController {
   // UI parts /////////////////////////////////////////////////////////////////
 
   // Menu
