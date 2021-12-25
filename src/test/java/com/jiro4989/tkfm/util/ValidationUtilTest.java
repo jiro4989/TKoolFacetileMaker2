@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.*;
 import org.testfx.framework.junit5.*;
 
 @ExtendWith(ApplicationExtension.class)
-public class ValidatorTest {
+public class ValidationUtilTest {
   @Test
   public void testConstructor() throws IOException {
-    new Validator();
+    new ValidationUtil();
   }
 
   @ParameterizedTest
@@ -29,7 +29,7 @@ public class ValidatorTest {
     "false, 010",
   })
   public void testIsInteger(boolean want, String input) throws Exception {
-    var got = Validator.isInteger(input);
+    var got = ValidationUtil.isInteger(input);
     assertEquals(want, got);
   }
 
@@ -49,7 +49,7 @@ public class ValidatorTest {
     "false, ---",
   })
   public void testIsDouble(boolean want, String input) throws Exception {
-    var got = Validator.isDouble(input);
+    var got = ValidationUtil.isDouble(input);
     assertEquals(want, got);
   }
 }

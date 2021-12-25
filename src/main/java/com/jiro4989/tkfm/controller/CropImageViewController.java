@@ -1,6 +1,6 @@
 package com.jiro4989.tkfm.controller;
 
-import com.jiro4989.tkfm.util.Validator;
+import com.jiro4989.tkfm.util.ValidationUtil;
 import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -26,7 +26,7 @@ public class CropImageViewController {
               @Override
               public void changed(
                   ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!Validator.isInteger(newValue)) {
+                if (!ValidationUtil.isInteger(newValue)) {
                   input.setText(oldValue);
                 }
               }
