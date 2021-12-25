@@ -461,12 +461,29 @@ public class MainController {
 
   /** 出力画像タイルをタイルの列数、行数、矩形サイズに応じた形に更新する。 */
   private void resetOutputGridPane() {
-    // GridPaneの子供のLabelを全部削除
+    // 子供のLabelを全部削除
     outputGridPane.getChildren().clear();
+    // 格子を削除
+    outputGridPane.getRowConstraints().clear();
+    outputGridPane.getColumnConstraints().clear();
+
     var selectedImageFormat = imageFormat.getSelectedImageFormat();
-    // LabelをGridPaneに配置
     var row = selectedImageFormat.rowProperty().get();
     var col = selectedImageFormat.colProperty().get();
+    var width = selectedImageFormat.getRectangle().widthProperty().get();
+    var height = selectedImageFormat.getRectangle().heightProperty().get();
+
+    // 格子を設定
+    for (var i = 0; i < row; i++) {
+      RowConstraints c = new RowConstraints(height);
+      outputGridPane.getRowConstraints().add(c);
+    }
+    for (var i = 0; i < col; i++) {
+      ColumnConstraints c = new ColumnConstraints(width);
+      outputGridPane.getColumnConstraints().add(c);
+    }
+
+    // Labelを配置
     for (var y = 0; y < row; y++) {
       for (var x = 0; x < col; x++) {
         var num = "" + (1 + x + y * col);
@@ -474,6 +491,7 @@ public class MainController {
         outputGridPane.add(label, x, y);
       }
     }
+
     tileImage.resetImage();
   }
 
