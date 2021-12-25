@@ -1,4 +1,4 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
 import com.jiro4989.tkfm.data.Rectangle;
 import com.jiro4989.tkfm.model.ImageFormat;
@@ -55,7 +55,7 @@ public class ImageFormatController {
   }
 
   /** Returns x */
-  ImageFormat getImageFormat() {
+  public ImageFormat getImageFormat() {
     var name = nameInput.getText().trim();
     var row = Integer.parseInt(rowInput.getText());
     var col = Integer.parseInt(colInput.getText());
@@ -67,7 +67,7 @@ public class ImageFormatController {
   }
 
   /** Returns ok button was pressed. */
-  boolean getOK() {
+  public boolean getOK() {
     return ok;
   }
 }
