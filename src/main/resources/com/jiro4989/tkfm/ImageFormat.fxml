@@ -44,11 +44,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.ImageFormatController">
+<VBox prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.ImageFormatController">
   <children>
       <AnchorPane>
          <children>
-            <Label text="Image format" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label text="画像フォーマット" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <Separator prefWidth="200.0" />
@@ -66,15 +66,15 @@
         </rowConstraints>
          <children>
             <Label text="フォーマット名" />
-            <TextField text="My format" GridPane.columnIndex="1" fx:id="xInput1" />
+            <TextField fx:id="nameInput" text="My format" GridPane.columnIndex="1" />
             <Label text="行数" GridPane.rowIndex="1" />
-            <TextField text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xInput" />
+            <TextField fx:id="rowInput" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="列数" GridPane.rowIndex="2" />
-            <TextField fx:id="yInput" text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="colInput" text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="1タイルあたりの横幅(px)" GridPane.rowIndex="3" />
-            <TextField fx:id="scaleInput" text="144" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="tileWidthInput" text="144" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="1タイルあたりの縦幅(px)" GridPane.rowIndex="4" />
-            <TextField fx:id="scaleInput1" text="144" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="tileHeightInput" text="144" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Separator prefWidth="200.0" />

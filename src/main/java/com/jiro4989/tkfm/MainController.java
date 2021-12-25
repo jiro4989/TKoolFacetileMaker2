@@ -27,6 +27,8 @@ import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 public class MainController {
@@ -169,7 +171,7 @@ public class MainController {
     // properties
     prop.load();
 
-    resetImageFormatMenu();
+    resetImageFormatMenu(false);
     resetOutputGridPane();
   }
 
@@ -474,10 +476,10 @@ public class MainController {
   }
 
   /** 画像フォーマットに基づいて選択可能な画像フォーマットメニューをリセットする */
-  private void resetImageFormatMenu() {
+  private void resetImageFormatMenu(boolean selectLast) {
     imageFormatMenu.getItems().clear();
 
-    var fmts = imageFormat.getImageFormats();
+    var fmts = imageFormat.createTotalImageFormats();
     for (var i = 0; i < fmts.size(); i++) {
       // final変数じゃないとsetOnActionの無名関数に渡せないため
       final var index = i;
@@ -499,6 +501,13 @@ public class MainController {
     var deleteButton = new MenuItem("画像フォーマットを削除");
     deleteButton.setOnAction(e -> deleteImageFormat());
     imageFormatMenu.getItems().add(deleteButton);
+
+    if (imageFormat.getAdditionalImageFormatNames().size() < 1) return;
+    if (selectLast) {
+      var lastIndex = fmts.size() - 1;
+      var lastToggle = group.getToggles().get(lastIndex);
+      group.selectToggle(lastToggle);
+    }
   }
 
   private void addNewImageFormat() {
@@ -510,10 +519,10 @@ public class MainController {
     }
 
     var fmt = stage.getImageFormat();
-    imageFormat.addImageFormats(fmt);
-    resetImageFormatMenu();
-    imageFormat.selectLast();
+    imageFormat.addAdditionalImageFormat(fmt);
+    resetImageFormatMenu(true);
     resetOutputGridPane();
+    writeImageFormat();
   }
 
   private void deleteImageFormat() {
@@ -522,7 +531,7 @@ public class MainController {
       return;
     }
 
-    var deletables = imageFormat.getDeletableImageFormatNames();
+    var deletables = imageFormat.getAdditionalImageFormatNames();
     var defaultDeletable = deletables.get(0);
     var dialog = new ChoiceDialog<>(defaultDeletable, deletables);
     dialog
@@ -531,6 +540,28 @@ public class MainController {
             selected -> {
               var index = deletables.indexOf(selected);
               imageFormat.deleteImageFormat(index);
+              resetImageFormatMenu(false);
+              imageFormat.select(0);
+              resetOutputGridPane();
+              writeImageFormat();
             });
+  }
+
+  private void writeImageFormat() {
+    try {
+      imageFormat.writeXMLFile();
+    } catch (ParserConfigurationException e) {
+      // TODO
+      e.printStackTrace();
+    } catch (TransformerConfigurationException e) {
+      // TODO
+      e.printStackTrace();
+    } catch (TransformerException e) {
+      // TODO
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO
+      e.printStackTrace();
+    }
   }
 }

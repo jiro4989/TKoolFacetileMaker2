@@ -28,12 +28,12 @@ import org.xml.sax.SAXException;
 public class ImageFormatConfigModel {
   /** 規定済み画像フォーマット */
   private final List<ImageFormat> imageFormats;
+  /** ユーザ定義の画像フォーマット */
+  private final List<ImageFormat> additionalImageFormats;
   /** 選択中の画像フォーマット */
   private final ImageFormat selectedImageFormat;
   /** 設定ファイルの配置先 */
   private static final Path CONFIG_FILE_PATH = Paths.get(".", "config", "image_format.xml");
-
-  private static final int SKIP_COUNT = 2;
 
   /**
    * 画像フォーマットを初期設定してインスタンスを生成する。 組み込みでRPGツクールMV・MZと、RPGツクールVXACEの規格をサポートする。
@@ -47,6 +47,7 @@ public class ImageFormatConfigModel {
     this.imageFormats = new ArrayList<>();
     this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
     this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
+    this.additionalImageFormats = new ArrayList<>();
     this.selectedImageFormat = this.imageFormats.get(0);
     loadXMLFile(CONFIG_FILE_PATH);
   }
@@ -57,10 +58,11 @@ public class ImageFormatConfigModel {
    * @param index 画像フォーマットのインデックス
    */
   public void select(int index) {
-    var max = imageFormats.size();
+    var total = createTotalImageFormats();
+    var max = total.size();
     if (index < 0) return;
     if (max <= index) return;
-    var fmt = imageFormats.get(index);
+    var fmt = total.get(index);
     selectedImageFormat.rowProperty().set(fmt.rowProperty().get());
     selectedImageFormat.colProperty().set(fmt.colProperty().get());
     selectedImageFormat
@@ -71,11 +73,6 @@ public class ImageFormatConfigModel {
         .getRectangle()
         .heightProperty()
         .set(fmt.getRectangle().heightProperty().get());
-  }
-
-  public void selectLast() {
-    var index = imageFormats.size() - 1;
-    select(index);
   }
 
   /**
@@ -115,7 +112,7 @@ public class ImageFormatConfigModel {
   public void loadXML(InputStream inputStream)
       throws ParserConfigurationException, IOException, SAXException {
     var formats = readXML(inputStream);
-    imageFormats.addAll(formats);
+    additionalImageFormats.addAll(formats);
   }
 
   /**
@@ -164,7 +161,8 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * 指定のPathのファイルに設定を書き込む。配置先ディレクトリが存在しなかったら作成する。
+   * 指定のPathのファイルに画像フォーマット一覧を書き込む。配置先ディレクトリが存在しなかったら作成する。
+   * 組み込み画像フォーマットは保存する意味が無いため、ユーザ定義の画像フォーマットのみ書き込む。
    *
    * @param path
    * @throws ParserConfigurationException
@@ -182,7 +180,7 @@ public class ImageFormatConfigModel {
 
     // 例外を投げる前に確実にcloseしておきたいため
     try (Writer w = new FileWriter(CONFIG_FILE_PATH.toFile(), StandardCharsets.UTF_8)) {
-      writeXML(w, getSkippedImageFormats());
+      writeXML(w, additionalImageFormats);
     } catch (ParserConfigurationException e) {
       throw e;
     } catch (TransformerConfigurationException e) {
@@ -192,20 +190,6 @@ public class ImageFormatConfigModel {
     } catch (IOException e) {
       throw e;
     }
-  }
-
-  /**
-   * 画像フォーマット一覧をstreamに書き込む。書き込む画像フォーマットはimageFormatsの先頭2つを除外したもののみ。
-   * 先頭2つはRPGツクールMV、VXACEの2つで、組み込みサポートのため書き込む必要がない。 このメソッド内ではstreamを閉じないため、メソッド呼び出し元でstreamを閉じること。
-   *
-   * @param writer
-   * @throws ParserConfigurationException
-   * @throws TransformerConfigurationException
-   * @throws TransformerException
-   */
-  public void writeXML(Writer writer)
-      throws ParserConfigurationException, TransformerConfigurationException, TransformerException {
-    writeXML(writer, getSkippedImageFormats());
   }
 
   /**
@@ -244,12 +228,8 @@ public class ImageFormatConfigModel {
     transformer.transform(domSource, streamResult);
   }
 
-  public void addImageFormats(ImageFormat fmt) {
-    imageFormats.add(fmt);
-  }
-
-  public List<ImageFormat> getImageFormats() {
-    return imageFormats;
+  public void addAdditionalImageFormat(ImageFormat fmt) {
+    additionalImageFormats.add(fmt);
   }
 
   public ImageFormat getSelectedImageFormat() {
@@ -257,14 +237,13 @@ public class ImageFormatConfigModel {
   }
 
   public boolean existsDeletableImageFormats() {
-    return 0 < imageFormats.size() - SKIP_COUNT;
+    return 0 < additionalImageFormats.size();
   }
 
-  public List<String> getDeletableImageFormatNames() {
-    var fmts = getSkippedImageFormats();
+  public List<String> getAdditionalImageFormatNames() {
     var i = 1;
     List<String> result = new ArrayList<>();
-    for (var fmt : fmts) {
+    for (var fmt : additionalImageFormats) {
       result.add(i + ". " + fmt.getName());
       i++;
     }
@@ -273,11 +252,18 @@ public class ImageFormatConfigModel {
 
   public void deleteImageFormat(int index) {
     // デフォルトで設定される個数スキップが必要
-    index += 2;
-    imageFormats.remove(index);
+    additionalImageFormats.remove(index);
   }
 
-  private List<ImageFormat> getSkippedImageFormats() {
-    return imageFormats.stream().skip(SKIP_COUNT).toList();
+  /**
+   * 規定済み画像フォーマットと、ユーザ定義の画像フォーマットを合わせたListを新規に生成して返却する。
+   *
+   * @return 全部の画像フォーマット
+   */
+  public List<ImageFormat> createTotalImageFormats() {
+    List<ImageFormat> totalFormats = new ArrayList<>();
+    totalFormats.addAll(imageFormats);
+    totalFormats.addAll(additionalImageFormats);
+    return totalFormats;
   }
 }
