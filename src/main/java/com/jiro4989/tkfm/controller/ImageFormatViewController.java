@@ -7,7 +7,7 @@ import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class ImageFormatController {
+public class ImageFormatViewController {
   @FXML private TextField nameInput;
   @FXML private TextField rowInput;
   @FXML private TextField colInput;
