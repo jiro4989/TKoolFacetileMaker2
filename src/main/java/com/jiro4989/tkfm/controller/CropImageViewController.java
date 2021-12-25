@@ -5,7 +5,7 @@ import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class CropImageController {
+public class CropImageViewController {
   @FXML private TextField xInput;
   @FXML private TextField yInput;
   @FXML private TextField scaleInput;
