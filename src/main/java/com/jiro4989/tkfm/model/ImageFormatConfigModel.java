@@ -253,14 +253,6 @@ public class ImageFormatConfigModel {
   }
 
   /**
-   * 選択中の画像フォーマットを返却する。
-   * @return 選択中の画像フォーマット
-   */
-  public ImageFormat getSelectedImageFormat() {
-    return selectedImageFormat;
-  }
-
-  /**
    * 削除可能な画像フォーマットが存在する場合にtrueを返す。
    * これはユーザ定義の画像フォーマットが存在することと同義である。
    * @return 削除可能な画像フォーマットが存在するか否か
@@ -302,4 +294,15 @@ public class ImageFormatConfigModel {
     totalFormats.addAll(additionalImageFormats);
     return totalFormats;
   }
+
+  // Getter //
+
+  /**
+   * 選択中の画像フォーマットを返却する。
+   * @return 選択中の画像フォーマット
+   */
+  public ImageFormat getSelectedImageFormat() {
+    return selectedImageFormat;
+  }
+
 }
