@@ -30,7 +30,7 @@ public class Main extends Application {
       primaryStage.setScene(scene);
       primaryStage
           .getIcons()
-          .add(new Image(getClass().getResource("resources/logo.png").toExternalForm()));
+          .add(new Image(getClass().getResource("img/logo.png").toExternalForm()));
 
       primaryStage.setTitle(TITLE);
       primaryStage.setX(prop.getX());
