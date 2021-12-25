@@ -109,6 +109,7 @@ public class CroppingImageModelTest {
         break;
     }
 
+    pos = c.getPosition();
     assertEquals(wantX, pos.getX());
     assertEquals(wantY, pos.getY());
     assertEquals(20.0, c.croppedImageProperty().get().getWidth());
@@ -130,6 +131,7 @@ public class CroppingImageModelTest {
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
     c.moveByMouse(x, y);
+    pos = c.getPosition();
     assertEquals(wantX, pos.getX());
     assertEquals(wantY, pos.getY());
   }

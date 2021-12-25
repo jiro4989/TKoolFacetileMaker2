@@ -44,12 +44,25 @@ public class ImageFormatConfigModel {
    * @throws SAXException
    */
   public ImageFormatConfigModel() throws ParserConfigurationException, IOException, SAXException {
+    this(true);
+  }
+
+  /**
+   * 画像フォーマットを初期設定してインスタンスを生成する。 組み込みでRPGツクールMV・MZと、RPGツクールVXACEの規格をサポートする。
+   * ユーザ定義の設定ファイルが存在した場合は設定ファイルを読み込んで追加する。
+   *
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
+   */
+  public ImageFormatConfigModel(boolean loadXML)
+      throws ParserConfigurationException, IOException, SAXException {
     this.imageFormats = new ArrayList<>();
     this.imageFormats.add(new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
     this.imageFormats.add(new ImageFormat("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
     this.additionalImageFormats = new ArrayList<>();
     this.selectedImageFormat = new ImageFormat("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144));
-    loadXMLFile(CONFIG_FILE_PATH);
+    if (loadXML) loadXMLFile(CONFIG_FILE_PATH);
   }
 
   /**

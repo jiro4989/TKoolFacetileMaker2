@@ -28,6 +28,22 @@ public class CroppingImageModel {
   /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty scale = new SimpleDoubleProperty(100.0);
 
+  /**
+   * 単体テストで使う目的。通常プログラムでは使わない。
+   *
+   * @param image
+   * @param pos
+   * @param rect
+   * @param scale
+   */
+  public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
+    this.image.set(image);
+    this.cropPos.setX(pos.getX());
+    this.cropPos.setY(pos.getY());
+    this.cropRect = rect;
+    this.scale.set(scale);
+  }
+
   public CroppingImageModel(Rectangle rect) {
     this.cropRect = rect;
   }
@@ -135,8 +151,6 @@ public class CroppingImageModel {
   public void moveByMouse(double x, double y) {
     double w = cropRect.getWidth();
     double h = cropRect.getHeight();
-    System.out.println("w:" + w);
-    System.out.println("h:" + h);
     x = x - w / 2;
     y = y - h / 2;
     move(x, y);
