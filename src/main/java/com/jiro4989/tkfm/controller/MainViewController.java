@@ -1,6 +1,6 @@
 package com.jiro4989.tkfm.controller;
 
-import com.jiro4989.tkfm.CropImage;
+import com.jiro4989.tkfm.CropImageStage;
 import com.jiro4989.tkfm.ImageFormatStage;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.util.DialogUtil;
@@ -462,7 +462,7 @@ public class MainViewController {
     var y = position.getY();
     var scale = cropImage.scaleProperty().getValue();
 
-    CropImage ci = new CropImage(x, y, scale);
+    CropImageStage ci = new CropImageStage(x, y, scale);
     ci.showAndWait();
 
     if (!ci.getOK()) {
