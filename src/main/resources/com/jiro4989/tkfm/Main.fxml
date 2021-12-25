@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
+<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.MainController">
   <top>
     <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
       <menus>
