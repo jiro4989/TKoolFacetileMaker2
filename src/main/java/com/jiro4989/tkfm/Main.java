@@ -21,7 +21,7 @@ public class Main extends Application {
     prop.load();
     stage = primaryStage;
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("main_view.fxml"));
       root = (BorderPane) loader.load();
       controller = (MainController) loader.getController();
 
