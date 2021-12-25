@@ -522,6 +522,7 @@ public class MainController {
 
     var deleteButton = new MenuItem("画像フォーマットを削除");
     deleteButton.setOnAction(e -> deleteImageFormat());
+    deleteButton.setDisable(!imageFormat.existsDeletableImageFormats());
     imageFormatMenu.getItems().add(deleteButton);
 
     imageFormat.select(selectIndex);
@@ -542,11 +543,6 @@ public class MainController {
   }
 
   private void deleteImageFormat() {
-    if (!imageFormat.existsDeletableImageFormats()) {
-      // TODO
-      return;
-    }
-
     var deletables = imageFormat.getAdditionalImageFormatNames();
     var defaultDeletable = deletables.get(0);
     var dialog = new ChoiceDialog<>(defaultDeletable, deletables);
