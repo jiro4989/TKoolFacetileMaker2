@@ -27,66 +27,66 @@ private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
 }
 
 /** 画像をトリミングするロジックを管理する。 */
-class CroppingImageModel {
-  /** トリミング対象の画像 */
-  private val image: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage())
-  /** トリミングされた結果のプレビュー画像 */
-  private val croppedImage: ObjectProperty<Image> = SimpleObjectProperty(WritableImage(144, 144))
-  /** トリミング座標 */
-  private val cropPos = PositionModel(0.0, 0.0)
-  /** トリミング画像の矩形 */
-  private val cropRect: RectangleModel
-  /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
-  private val imageWidth: DoubleProperty = SimpleDoubleProperty(288.0)
-  /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
-  private val imageHeight: DoubleProperty = SimpleDoubleProperty(288.0)
-  /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
-  private val scale: DoubleProperty = SimpleDoubleProperty(100.0)
+data class CroppingImageModel(
+    // Properties
 
-  /**
-   * 単体テストで使う目的。通常プログラムでは使わない。
-   *
-   * @param image
-   * @param pos
-   * @param rect
-   * @param scale
-   */
-  constructor(image: Image, pos: PositionModel, rect: RectangleModel, scale: Double) {
-    this.image.set(image)
-    this.cropPos.setX(pos.getX())
-    this.cropPos.setY(pos.getY())
-    this.cropRect = rect
-    this.scale.set(scale)
-  }
+    /** トリミング対象の画像 */
+    val imageProperty: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage()),
+    /** トリミングされた結果のプレビュー画像 */
+    val croppedImageProperty: ObjectProperty<Image> = SimpleObjectProperty(WritableImage(144, 144)),
+    /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
+    val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
+    val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
+    val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
 
-  constructor(rect: RectangleModel) {
-    this.cropRect = rect
-  }
+    /** トリミング座標 */
+    val position: PositionModel = PositionModel(0.0, 0.0),
+    /** トリミング画像の矩形 */
+    val rectangle: RectangleModel
+) {
+
+  // /**
+  //  * 単体テストで使う目的。通常プログラムでは使わない。
+  //  *
+  //  * @param image
+  //  * @param pos
+  //  * @param rect
+  //  * @param scale
+  //  */
+  // constructor(image: Image, pos: PositionModel, rect: RectangleModel, scale: Double) {
+  //   this.image.set(image)
+  //   this.position.setX(pos.getX())
+  //   this.position.setY(pos.getY())
+  //   this.rectangle = rect
+  //   scaleProperty.set(scale)
+  // }
 
   fun crop(): Image {
     // 画面上は百分率で表示しているため少数に変換
-    val scale = this.scale.get() / 100
+    val scale = scaleProperty.get() / 100
 
     // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var x = cropPos.x / scale
-    var y = cropPos.y / scale
-    val width = cropRect.width / scale
-    val height = cropRect.height / scale
+    var x = position.x / scale
+    var y = position.y / scale
+    val width = rectangle.width / scale
+    val height = rectangle.height / scale
 
     // 0未満の座標はNGなので0で上書きして調整
     if (x < 0) x = 0.0
     if (y < 0) y = 0.0
 
-    val img = image.get()
+    val img = imageProperty.get()
 
     // 画像サイズ0は通常起こり得ないはず
     if (img.width <= 0 || img.height <= 0) {
-      return croppedImage.get()
+      return croppedImageProperty.get()
     }
 
     // 座標に矩形幅を足した値が画像全体の幅より大きくなってはいけない
     if (img.width < x + width || img.height < y + height) {
-      return croppedImage.get()
+      return croppedImageProperty.get()
     }
 
     val pix = img.pixelReader
@@ -94,13 +94,13 @@ class CroppingImageModel {
   }
 
   fun cropByBufferedImage(): Image {
-    val scale = this.scale.get() / 100
-    var x = cropPos.x.toInt()
-    var y = cropPos.y.toInt()
-    var width = cropRect.width.toInt()
-    var height = cropRect.height.toInt()
+    val scale = scaleProperty.get() / 100
+    var x = position.x.toInt()
+    var y = position.y.toInt()
+    var width = rectangle.width.toInt()
+    var height = rectangle.height.toInt()
 
-    val bImg = SwingFXUtils.fromFXImage(image.get(), null)
+    val bImg = SwingFXUtils.fromFXImage(imageProperty.get(), null)
     val scaledImg = scaledImage(bImg, scale)
     var w = scaledImg.width
     var h = scaledImg.height
@@ -122,12 +122,12 @@ class CroppingImageModel {
   }
 
   fun move(x: Double, y: Double) {
-    val bImg = image.get()
-    val s = scale.get() / 100
+    val bImg = imageProperty.get()
+    val s = scaleProperty.get() / 100
     val w = bImg.width
     val h = bImg.height
-    val rectWidth = cropRect.width
-    val rectHeight = cropRect.height
+    val rectWidth = rectangle.width
+    val rectHeight = rectangle.height
 
     var xx = x
     var yy = y
@@ -137,45 +137,45 @@ class CroppingImageModel {
     if (xx < 0) xx = 0.0
     if (yy < 0) yy = 0.0
 
-    cropPos.setX(xx)
-    cropPos.setY(yy)
-    croppedImage.set(crop())
+    position.setX(xx)
+    position.setY(yy)
+    croppedImageProperty.set(crop())
   }
 
   fun move() {
-    val x = cropPos.x
-    val y = cropPos.y
+    val x = position.x
+    val y = position.y
     move(x, y)
   }
 
   fun moveUp(n: Double) {
-    val x = cropPos.x
-    val y = cropPos.y - n
+    val x = position.x
+    val y = position.y - n
     move(x, y)
   }
 
   fun moveRight(n: Double) {
-    val x = cropPos.x + n
-    val y = cropPos.y
+    val x = position.x + n
+    val y = position.y
     move(x, y)
   }
 
   fun moveDown(n: Double) {
-    val x = cropPos.x
-    val y = cropPos.y + n
+    val x = position.x
+    val y = position.y + n
     move(x, y)
   }
 
   fun moveLeft(n: Double) {
-    val x = cropPos.x - n
-    val y = cropPos.y
+    val x = position.x - n
+    val y = position.y
     move(x, y)
   }
 
   /** Centering */
   fun moveByMouse(x: Double, y: Double) {
-    val w = cropRect.getWidth()
-    val h = cropRect.getHeight()
+    val w = rectangle.getWidth()
+    val h = rectangle.getHeight()
     val xx = x - w / 2
     val yy = y - h / 2
     move(xx, yy)
@@ -186,37 +186,24 @@ class CroppingImageModel {
   }
 
   fun scaleUp(n: Double) {
-    val s = scale.get()
+    val s = scaleProperty.get()
     val scale = s + n
     setScale(scale)
   }
 
   fun scaleDown(n: Double) {
-    val s = scale.get()
+    val s = scaleProperty.get()
     val scale = s - n
     setScale(scale)
   }
 
-  // property /////////////////////////////////////////////////////////////////
-
-  fun imageProperty() = image
-  fun croppedImageProperty() = croppedImage
-  fun imageWidthProperty() = imageWidth
-  fun imageHeightProperty() = imageHeight
-  fun scaleProperty() = scale
-
-  // getter ///////////////////////////////////////////////////////////////////
-
-  fun getPosition() = cropPos
-  fun getRectangle() = cropRect
-
   // setter ///////////////////////////////////////////////////////////////////
 
   fun setImage(image: Image) {
-    this.image.set(image)
-    this.imageWidth.set(image.getWidth())
-    this.imageHeight.set(image.getHeight())
-    croppedImage.set(crop())
+    imageProperty.set(image)
+    imageWidthProperty.set(image.getWidth())
+    imageHeightProperty.set(image.getHeight())
+    croppedImageProperty.set(crop())
   }
 
   fun setScale(scale: Double) {
@@ -230,7 +217,7 @@ class CroppingImageModel {
       scale2 = MAX_SCALE
     }
 
-    this.scale.set(scale2)
+    scaleProperty.set(scale2)
     move()
   }
 }
