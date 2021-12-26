@@ -23,8 +23,8 @@ class TileImageModel {
   }
 
   fun clear() {
-    val rowCount = imageFormat.rowProperty().get()
-    val colCount = imageFormat.colProperty().get()
+    val rowCount = getRow()
+    val colCount = getCol()
     (0 until rowCount).forEach { y ->
       (0 until colCount).forEach { x ->
         var img = tileImage()
@@ -39,8 +39,8 @@ class TileImageModel {
   }
 
   fun bulkInsert(images: List<Image>, startIndex: Int) {
-    val rowCount = imageFormat.rowProperty().get()
-    val colCount = imageFormat.colProperty().get()
+    val rowCount = getRow()
+    val colCount = getCol()
     val size = images.size
     (startIndex until startIndex + size).forEach(
         fun(i: Int) {
@@ -60,8 +60,8 @@ class TileImageModel {
   }
 
   fun setImageByAxis(img: Image, mx: Double, my: Double) {
-    val rowCount = imageFormat.rowProperty().get()
-    val colCount = imageFormat.colProperty().get()
+    val rowCount = getRow()
+    val colCount = getCol()
     val i = image.get()
     val w = i.getWidth()
     val h = i.getHeight()
