@@ -121,8 +121,8 @@ data class CroppingImageModel(
     if (xx < 0) xx = 0.0
     if (yy < 0) yy = 0.0
 
-    position.setX(xx)
-    position.setY(yy)
+    position.x = xx
+    position.y = yy
     croppedImageProperty.set(crop())
   }
 
