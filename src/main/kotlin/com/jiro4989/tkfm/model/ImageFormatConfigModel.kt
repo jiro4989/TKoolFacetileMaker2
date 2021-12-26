@@ -54,8 +54,8 @@ data class ImageFormatConfigModel(
     if (index < 0) return
     if (max <= index) return
     val fmt = total.get(index)
-    selectedImageFormat.rowProperty().set(fmt.rowProperty().get())
-    selectedImageFormat.colProperty().set(fmt.colProperty().get())
+    selectedImageFormat.rowProperty.set(fmt.rowProperty.get())
+    selectedImageFormat.colProperty.set(fmt.colProperty.get())
     selectedImageFormat.rectangle.widthProperty().set(fmt.rectangle.widthProperty().get())
     selectedImageFormat.rectangle.heightProperty().set(fmt.rectangle.heightProperty().get())
   }
@@ -180,9 +180,9 @@ data class ImageFormatConfigModel(
     formats.forEach { fmt ->
       val item = document.createElement("imageFormat")
       val rect = fmt.rectangle
-      item.setAttribute("name", fmt.getName())
-      item.setAttribute("row", fmt.rowProperty().get().toString())
-      item.setAttribute("col", fmt.colProperty().get().toString())
+      item.setAttribute("name", fmt.name)
+      item.setAttribute("row", fmt.rowProperty.get().toString())
+      item.setAttribute("col", fmt.colProperty.get().toString())
       item.setAttribute("tileWidth", "" + rect.widthProperty().get().toInt().toString())
       item.setAttribute("tileHeight", "" + rect.heightProperty().get().toInt().toString())
       root.appendChild(item)

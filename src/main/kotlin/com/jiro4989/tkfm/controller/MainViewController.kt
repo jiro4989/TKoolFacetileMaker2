@@ -126,7 +126,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     }
 
     val selectedImageFormat = imageFormat.selectedImageFormat
-    val rect = selectedImageFormat.getRectangle()
+    val rect = selectedImageFormat.rectangle
 
     cropImage = CroppingImageModel(rectangle = rect)
     imageFiles = ImageFilesModel(cropImage)
@@ -134,8 +134,8 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
 
     // bindigns
     val pos = cropImage.position
-    val rowCount = selectedImageFormat.rowProperty()
-    val colCount = selectedImageFormat.colProperty()
+    val rowCount = selectedImageFormat.rowProperty
+    val colCount = selectedImageFormat.colProperty
 
     // 行数、列数、タイル幅が変更されたら出力画像ビューをリセットする
     rowCount.addListener { _ -> resetOutputGridPane() }
@@ -473,10 +473,10 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     outputGridPane.getColumnConstraints().clear()
 
     val selectedImageFormat = imageFormat.selectedImageFormat
-    val row = selectedImageFormat.rowProperty().get()
-    val col = selectedImageFormat.colProperty().get()
-    val width = selectedImageFormat.getRectangle().widthProperty().get()
-    val height = selectedImageFormat.getRectangle().heightProperty().get()
+    val row = selectedImageFormat.rowProperty.get()
+    val col = selectedImageFormat.colProperty.get()
+    val width = selectedImageFormat.rectangle.widthProperty().get()
+    val height = selectedImageFormat.rectangle.heightProperty().get()
 
     // 格子を設定
     outputGridPane.rowConstraints += (0 until row).map { RowConstraints(height) }

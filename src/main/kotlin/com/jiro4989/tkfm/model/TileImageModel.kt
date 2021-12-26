@@ -129,8 +129,8 @@ class TileImageModel {
     (0 until rowCount).forEach { images += (0 until colCount).map { tileImage() }.toMutableList() }
   }
 
-  private fun getRow() = imageFormat.rowProperty().get()
-  private fun getCol() = imageFormat.colProperty().get()
+  private fun getRow() = imageFormat.rowProperty.get()
+  private fun getCol() = imageFormat.colProperty.get()
   private fun getWidth() = imageFormat.rectangle.width.toInt()
   private fun getHeight() = imageFormat.rectangle.height.toInt()
   internal fun getImages() = images
