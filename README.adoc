@@ -23,6 +23,9 @@ image::./docs/demo.gif[]
 また、MZ,MV,VXACEと記載しているとおり、MZ,MV,VXACE両方の規格に合わせて出力するこ
 とが可能になっています。
 
+後述しますが、ユーザ独自の画像フォーマットを定義してタイル画像を生成することも可
+能です。
+
 == インストール
 
 https://github.com/jiro4989/TKoolFacetileMaker2/releases[Releases]から各プラッ
@@ -62,6 +65,8 @@ https://github.com/jiro4989/TKoolFacetileMaker2/releases[Releases]から各プ�
    正常に保存されていることが確認できれば、作業は終了です。お疲れ様でした。
 
 === ユーザ独自の画像フォーマットの追加
+
+image::./docs/demo2.gif[]
 
 ツクール以外のソフト用に独自のタイル画像を生成することが可能です。
 
