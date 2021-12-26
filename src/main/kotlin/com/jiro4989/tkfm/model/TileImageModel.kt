@@ -15,7 +15,7 @@ class TileImageModel {
   private val image: ObjectProperty<Image>
 
   constructor(model: ImageFormatConfigModel) {
-    this.imageFormat = model.getSelectedImageFormat()
+    this.imageFormat = model.selectedImageFormat
 
     var img = outputTileImage()
     this.image = SimpleObjectProperty(img)

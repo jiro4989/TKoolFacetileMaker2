@@ -118,7 +118,7 @@ public class TileImageModelTest {
   private fun createImageFormatConfigModel(): ImageFormatConfigModel {
     val rect = RectangleModel(20.0, 20.0)
     val fmt =
-        ImageFormatConfigModel(false).apply {
+        ImageFormatConfigModel(loadXML = false).apply {
           addAdditionalImageFormat(ImageFormatModel("test", 2, 4, rect))
           select(2)
         }
