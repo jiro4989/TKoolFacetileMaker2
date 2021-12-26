@@ -133,12 +133,12 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     val selectedImageFormat = imageFormat.getSelectedImageFormat()
     val rect = selectedImageFormat.getRectangle()
 
-    cropImage = CroppingImageModel(rect)
+    cropImage = CroppingImageModel(rectangle = rect)
     imageFiles = ImageFilesModel(cropImage)
     tileImage = TileImageModel(imageFormat)
 
     // bindigns
-    val pos = cropImage.getPosition()
+    val pos = cropImage.position
     val rowCount = selectedImageFormat.rowProperty()
     val colCount = selectedImageFormat.colProperty()
 
@@ -151,29 +151,29 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     cropImageGridPane.prefWidthProperty()
         .bind(
             Bindings.multiply(
-                cropImage.imageWidthProperty(),
+                cropImage.imageWidthProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
     cropImageGridPane.prefHeightProperty()
         .bind(
             Bindings.multiply(
-                cropImage.imageHeightProperty(),
+                cropImage.imageHeightProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
 
-    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty())
+    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty)
     cropImageView.fitWidthProperty()
         .bind(
             Bindings.multiply(
-                cropImage.imageWidthProperty(),
+                cropImage.imageWidthProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
     cropImageView.fitHeightProperty()
         .bind(
             Bindings.multiply(
-                cropImage.imageHeightProperty(),
+                cropImage.imageHeightProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
 
     Bindings.bindBidirectional(croppedGridPane.prefWidthProperty(), rect.widthProperty())
     Bindings.bindBidirectional(croppedGridPane.prefHeightProperty(), rect.heightProperty())
-    Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty())
+    Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty)
     Bindings.bindBidirectional(croppedImageView.fitWidthProperty(), rect.widthProperty())
     Bindings.bindBidirectional(croppedImageView.fitHeightProperty(), rect.heightProperty())
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty())
@@ -186,8 +186,8 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     Bindings.bindBidirectional(cropYLabel.textProperty(), pos.yProperty(), cropYConv)
     val cropScaleConv: StringConverter<Number> = NumberStringConverter()
     Bindings.bindBidirectional(
-        cropScaleLabel.textProperty(), cropImage.scaleProperty(), cropScaleConv)
-    Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty())
+        cropScaleLabel.textProperty(), cropImage.scaleProperty, cropScaleConv)
+    Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty)
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty())
     outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty(), colCount))
     outputGridPane.prefHeightProperty().bind(Bindings.multiply(rect.heightProperty(), rowCount))
@@ -464,7 +464,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     val ci =
         cropImage.let {
           val pos = it.position
-          val stage = CropImageStage(pos.x, pos.y, it.scaleProperty().value)
+          val stage = CropImageStage(pos.x, pos.y, it.scaleProperty.value)
           stage.showAndWait()
           stage
         }
