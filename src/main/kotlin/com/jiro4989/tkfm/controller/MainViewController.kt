@@ -197,7 +197,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     // configurations
     fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
     fileListView.getSelectionModel().selectedItemProperty().addListener { _ -> changeSelection() }
-    fileListView.setItems(imageFiles.getFiles())
+    fileListView.setItems(imageFiles.files)
     cropAxisComboBox.setItems(cropAxisItems)
     cropAxisComboBox.getSelectionModel().select(1 as Int?)
     cropScaleComboBox.setItems(cropScaleItems)
