@@ -25,7 +25,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(x, y);
-    var rect = new Rectangle(20, 20);
+    var rect = new RectangleModel(20, 20);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();
 
@@ -56,7 +56,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(x, y);
-    var rect = new Rectangle(width, height);
+    var rect = new RectangleModel(width, height);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.cropByBufferedImage();
 
@@ -88,7 +88,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(10, 10);
-    var rect = new Rectangle(20, 30);
+    var rect = new RectangleModel(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
 
@@ -125,7 +125,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(20, 30);
-    var rect = new Rectangle(20, 40);
+    var rect = new RectangleModel(20, 40);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
     c.moveByMouse(x, y);
@@ -148,7 +148,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(10, 10);
-    var rect = new Rectangle(20, 30);
+    var rect = new RectangleModel(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
 
@@ -170,7 +170,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(0, 0);
-    var rect = new Rectangle(20, 20);
+    var rect = new RectangleModel(20, 20);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
 
@@ -186,7 +186,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(30, 50);
-    var rect = new Rectangle(20, 20);
+    var rect = new RectangleModel(20, 20);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
     var p = c.getPosition();
@@ -201,7 +201,7 @@ public class CroppingImageModelTest {
     var file = new File(path);
     var img = new Image(file.toURI().toString());
     var pos = new PositionModel(30, 50);
-    var rect = new Rectangle(20, 30);
+    var rect = new RectangleModel(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
     var r = c.getRectangle();

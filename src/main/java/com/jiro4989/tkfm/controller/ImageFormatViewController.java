@@ -1,7 +1,7 @@
 package com.jiro4989.tkfm.controller;
 
 import com.jiro4989.tkfm.model.ImageFormatModel;
-import com.jiro4989.tkfm.model.Rectangle;
+import com.jiro4989.tkfm.model.RectangleModel;
 import com.jiro4989.tkfm.util.ValidationUtil;
 import javafx.beans.value.*;
 import javafx.fxml.FXML;
@@ -61,7 +61,7 @@ public class ImageFormatViewController {
     var col = Integer.parseInt(colInput.getText());
     var width = Integer.parseInt(tileWidthInput.getText());
     var height = Integer.parseInt(tileHeightInput.getText());
-    var rect = new Rectangle(width, height);
+    var rect = new RectangleModel(width, height);
     var fmt = new ImageFormatModel(name, row, col, rect);
     return fmt;
   }

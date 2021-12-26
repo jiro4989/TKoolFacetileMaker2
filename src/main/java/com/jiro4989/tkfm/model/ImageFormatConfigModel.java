@@ -58,10 +58,11 @@ public class ImageFormatConfigModel {
   public ImageFormatConfigModel(boolean loadXML)
       throws ParserConfigurationException, IOException, SAXException {
     this.imageFormats = new ArrayList<>();
-    this.imageFormats.add(new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144)));
-    this.imageFormats.add(new ImageFormatModel("RPGツクールVXACE", 2, 4, new Rectangle(96, 96)));
+    this.imageFormats.add(new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new RectangleModel(144, 144)));
+    this.imageFormats.add(new ImageFormatModel("RPGツクールVXACE", 2, 4, new RectangleModel(96, 96)));
     this.additionalImageFormats = new ArrayList<>();
-    this.selectedImageFormat = new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new Rectangle(144, 144));
+    this.selectedImageFormat =
+        new ImageFormatModel("RPGツクールMV・MZ", 2, 4, new RectangleModel(144, 144));
     if (loadXML) loadXMLFile(CONFIG_FILE_PATH);
   }
 
@@ -152,7 +153,7 @@ public class ImageFormatConfigModel {
       var col = Integer.parseInt(element.getAttribute("col"));
       var tileWidth = Integer.parseInt(element.getAttribute("tileWidth"));
       var tileHeight = Integer.parseInt(element.getAttribute("tileHeight"));
-      var rect = new Rectangle(tileWidth, tileHeight);
+      var rect = new RectangleModel(tileWidth, tileHeight);
       var fmt = new ImageFormatModel(name, row, col, rect);
       result.add(fmt);
     }

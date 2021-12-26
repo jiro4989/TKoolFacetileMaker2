@@ -11,9 +11,9 @@ public class ImageFormatModel {
   /** 列数 */
   private final IntegerProperty col;
   /** 1タイルあたりの矩形 */
-  private final Rectangle rect;
+  private final RectangleModel rect;
 
-  public ImageFormatModel(String name, int row, int col, Rectangle rect) {
+  public ImageFormatModel(String name, int row, int col, RectangleModel rect) {
     this.name = name;
     this.row = new SimpleIntegerProperty(row);
     this.col = new SimpleIntegerProperty(col);
@@ -32,7 +32,7 @@ public class ImageFormatModel {
     return name;
   }
 
-  public Rectangle getRectangle() {
+  public RectangleModel getRectangle() {
     return rect;
   }
 }

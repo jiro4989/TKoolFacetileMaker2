@@ -123,7 +123,7 @@ public class TileImageModelTest {
 
   private ImageFormatConfigModel createImageFormatConfigModel()
       throws ParserConfigurationException, IOException, SAXException {
-    var rect = new Rectangle(20, 20);
+    var rect = new RectangleModel(20, 20);
     var fmt = new ImageFormatConfigModel(false);
     fmt.addAdditionalImageFormat(new ImageFormatModel("test", 2, 4, rect));
     fmt.select(2);

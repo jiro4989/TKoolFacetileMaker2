@@ -3,11 +3,11 @@ package com.jiro4989.tkfm.model;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class Rectangle {
+public class RectangleModel {
   private final DoubleProperty width = new SimpleDoubleProperty(0.0);
   private final DoubleProperty height = new SimpleDoubleProperty(0.0);
 
-  public Rectangle(double w, double h) {
+  public RectangleModel(double w, double h) {
     setWidth(w);
     setHeight(h);
   }

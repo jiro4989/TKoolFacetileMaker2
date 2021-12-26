@@ -18,7 +18,7 @@ public class CroppingImageModel {
   /** トリミング座標 */
   private final PositionModel cropPos = new PositionModel(0, 0);
   /** トリミング画像の矩形 */
-  private final Rectangle cropRect;
+  private final RectangleModel cropRect;
   /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
   private DoubleProperty imageWidth = new SimpleDoubleProperty(288.0);
   /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
@@ -34,7 +34,7 @@ public class CroppingImageModel {
    * @param rect
    * @param scale
    */
-  public CroppingImageModel(Image image, PositionModel pos, Rectangle rect, double scale) {
+  public CroppingImageModel(Image image, PositionModel pos, RectangleModel rect, double scale) {
     this.image.set(image);
     this.cropPos.setX(pos.getX());
     this.cropPos.setY(pos.getY());
@@ -42,7 +42,7 @@ public class CroppingImageModel {
     this.scale.set(scale);
   }
 
-  public CroppingImageModel(Rectangle rect) {
+  public CroppingImageModel(RectangleModel rect) {
     this.cropRect = rect;
   }
 
@@ -198,7 +198,7 @@ public class CroppingImageModel {
     return cropPos;
   }
 
-  public Rectangle getRectangle() {
+  public RectangleModel getRectangle() {
     return cropRect;
   }
 

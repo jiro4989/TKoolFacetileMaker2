@@ -58,7 +58,7 @@ public class ImageFormatConfigModelTest {
   })
   public void testSelect(int selectIndex, double wantWidth, double wantHeight) throws Exception {
     var fmt = new ImageFormatConfigModel(false);
-    fmt.addAdditionalImageFormat(new ImageFormatModel("test", 3, 3, new Rectangle(30, 30)));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("test", 3, 3, new RectangleModel(30, 30)));
     fmt.select(selectIndex);
 
     var selected = fmt.getSelectedImageFormat();
@@ -125,7 +125,7 @@ public class ImageFormatConfigModelTest {
   public void testWriteXML() throws Exception {
     var fmt = new ImageFormatConfigModel(false);
     List<ImageFormatModel> list = new ArrayList<>();
-    list.add(new ImageFormatModel("3x3", 3, 3, new Rectangle(100, 100)));
+    list.add(new ImageFormatModel("3x3", 3, 3, new RectangleModel(100, 100)));
 
     try (Writer w = new StringWriter()) {
       fmt.writeXML(w, list);
@@ -142,8 +142,8 @@ public class ImageFormatConfigModelTest {
   public void testWriteXML2Items() throws Exception {
     var fmt = new ImageFormatConfigModel(false);
     List<ImageFormatModel> list = new ArrayList<>();
-    list.add(new ImageFormatModel("3x3", 3, 3, new Rectangle(100, 100)));
-    list.add(new ImageFormatModel("4x5", 4, 5, new Rectangle(200, 300)));
+    list.add(new ImageFormatModel("3x3", 3, 3, new RectangleModel(100, 100)));
+    list.add(new ImageFormatModel("4x5", 4, 5, new RectangleModel(200, 300)));
 
     try (Writer w = new StringWriter()) {
       fmt.writeXML(w, list);
@@ -163,15 +163,15 @@ public class ImageFormatConfigModelTest {
   public void testExistsDeletableImageFormats(boolean add) throws Exception {
     var fmt = new ImageFormatConfigModel(false);
     if (add)
-      fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new Rectangle(100, 100)));
+      fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new RectangleModel(100, 100)));
     assertEquals(add, fmt.existsDeletableImageFormats());
   }
 
   @Test
   public void testGetAdditionalImageFormatNames() throws Exception {
     var fmt = new ImageFormatConfigModel(false);
-    fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new Rectangle(100, 100)));
-    fmt.addAdditionalImageFormat(new ImageFormatModel("3x4", 3, 3, new Rectangle(100, 100)));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new RectangleModel(100, 100)));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("3x4", 3, 3, new RectangleModel(100, 100)));
     var got = fmt.getAdditionalImageFormatNames();
     List<String> want = new ArrayList<>();
     want.add("1. 3x3");
@@ -187,8 +187,8 @@ public class ImageFormatConfigModelTest {
   public void testDeleteAdditionalImageFormat(int selectIndex, double wantWidth, double wantHeight)
       throws Exception {
     var fmt = new ImageFormatConfigModel(false);
-    fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new Rectangle(100, 100)));
-    fmt.addAdditionalImageFormat(new ImageFormatModel("3x4", 3, 3, new Rectangle(20, 30)));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("3x3", 3, 3, new RectangleModel(100, 100)));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("3x4", 3, 3, new RectangleModel(20, 30)));
     fmt.deleteAdditionalImageFormat(selectIndex);
     fmt.select(2);
     var got = fmt.getSelectedImageFormat();

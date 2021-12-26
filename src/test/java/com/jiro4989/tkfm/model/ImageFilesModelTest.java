@@ -13,7 +13,7 @@ import org.testfx.framework.junit5.*;
 public class ImageFilesModelTest {
   @Test
   public void testAddAndClear() {
-    var ci = new CroppingImageModel(new Rectangle(144, 144));
+    var ci = new CroppingImageModel(new RectangleModel(144, 144));
     var i = new ImageFilesModel(ci);
     assertEquals(0, i.getFiles().size());
 
@@ -36,7 +36,7 @@ public class ImageFilesModelTest {
     "-1,2,false,false",
   })
   public void testRemove(int index, int wantSize, boolean remove, boolean remove2) {
-    var ci = new CroppingImageModel(new Rectangle(144, 144));
+    var ci = new CroppingImageModel(new RectangleModel(144, 144));
     var i = new ImageFilesModel(ci);
 
     var path = getClass().getResource("/sample1.png").getPath();
@@ -53,7 +53,7 @@ public class ImageFilesModelTest {
     "-1", "0", "1", "2",
   })
   public void testSelect(int index) {
-    var ci = new CroppingImageModel(new Rectangle(144, 144));
+    var ci = new CroppingImageModel(new RectangleModel(144, 144));
     var i = new ImageFilesModel(ci);
 
     var path = getClass().getResource("/sample1.png").getPath();
