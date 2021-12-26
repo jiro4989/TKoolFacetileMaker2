@@ -1,5 +1,7 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
+import com.jiro4989.tkfm.CropImageStage;
+import com.jiro4989.tkfm.ImageFormatStage;
 import com.jiro4989.tkfm.model.*;
 import com.jiro4989.tkfm.util.DialogUtil;
 import com.jiro4989.tkfm.util.ImageUtil;
@@ -32,7 +34,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-public class MainController {
+public class MainViewController {
   // UI parts /////////////////////////////////////////////////////////////////
 
   // Menu
@@ -460,7 +462,7 @@ public class MainController {
     var y = position.getY();
     var scale = cropImage.scaleProperty().getValue();
 
-    CropImage ci = new CropImage(x, y, scale);
+    CropImageStage ci = new CropImageStage(x, y, scale);
     ci.showAndWait();
 
     if (!ci.getOK()) {

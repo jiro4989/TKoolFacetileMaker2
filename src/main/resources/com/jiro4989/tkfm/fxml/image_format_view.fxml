@@ -44,7 +44,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.ImageFormatController">
+<VBox prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.controller.ImageFormatViewController">
   <children>
       <AnchorPane>
          <children>

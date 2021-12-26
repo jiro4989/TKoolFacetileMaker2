@@ -1,13 +1,13 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
-import com.jiro4989.tkfm.data.Rectangle;
-import com.jiro4989.tkfm.model.ImageFormat;
-import com.jiro4989.tkfm.util.Validator;
+import com.jiro4989.tkfm.model.ImageFormatModel;
+import com.jiro4989.tkfm.model.Rectangle;
+import com.jiro4989.tkfm.util.ValidationUtil;
 import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class ImageFormatController {
+public class ImageFormatViewController {
   @FXML private TextField nameInput;
   @FXML private TextField rowInput;
   @FXML private TextField colInput;
@@ -31,7 +31,7 @@ public class ImageFormatController {
               @Override
               public void changed(
                   ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!Validator.isInteger(newValue) || "0".equals(newValue)) {
+                if (!ValidationUtil.isInteger(newValue) || "0".equals(newValue)) {
                   input.setText(oldValue);
                 }
               }
@@ -55,19 +55,19 @@ public class ImageFormatController {
   }
 
   /** Returns x */
-  ImageFormat getImageFormat() {
+  public ImageFormatModel getImageFormat() {
     var name = nameInput.getText().trim();
     var row = Integer.parseInt(rowInput.getText());
     var col = Integer.parseInt(colInput.getText());
     var width = Integer.parseInt(tileWidthInput.getText());
     var height = Integer.parseInt(tileHeightInput.getText());
     var rect = new Rectangle(width, height);
-    var fmt = new ImageFormat(name, row, col, rect);
+    var fmt = new ImageFormatModel(name, row, col, rect);
     return fmt;
   }
 
   /** Returns ok button was pressed. */
-  boolean getOK() {
+  public boolean getOK() {
     return ok;
   }
 }

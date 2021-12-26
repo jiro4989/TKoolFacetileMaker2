@@ -2,7 +2,6 @@ package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.jiro4989.tkfm.data.Rectangle;
 import java.io.IOException;
 import java.util.*;
 import javafx.scene.image.Image;
@@ -126,7 +125,7 @@ public class TileImageModelTest {
       throws ParserConfigurationException, IOException, SAXException {
     var rect = new Rectangle(20, 20);
     var fmt = new ImageFormatConfigModel(false);
-    fmt.addAdditionalImageFormat(new ImageFormat("test", 2, 4, rect));
+    fmt.addAdditionalImageFormat(new ImageFormatModel("test", 2, 4, rect));
     fmt.select(2);
     return fmt;
   }

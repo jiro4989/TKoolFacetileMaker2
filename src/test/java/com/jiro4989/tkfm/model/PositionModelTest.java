@@ -1,4 +1,4 @@
-package com.jiro4989.tkfm.data;
+package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,17 +7,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.*;
 
 @ExtendWith(ApplicationExtension.class)
-public class PositionTest {
+public class PositionModelTest {
   @Test
   public void testConstructor() {
-    var pos = new Position();
+    var pos = new PositionModel();
     assertEquals(0, pos.getX());
     assertEquals(0, pos.getY());
   }
 
   @Test
   public void testProperty() {
-    var pos = new Position(5, 7);
+    var pos = new PositionModel(5, 7);
     assertEquals(5, pos.xProperty().get());
     assertEquals(7, pos.yProperty().get());
 

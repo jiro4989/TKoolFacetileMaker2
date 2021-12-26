@@ -1,18 +1,19 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.controller.CropImageViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class CropImage extends Stage {
-  private CropImageController controller;
+public class CropImageStage extends Stage {
+  private CropImageViewController controller;
 
-  public CropImage(double x, double y, double scale) {
+  public CropImageStage(double x, double y, double scale) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("CropImage.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/crop_image_view.fxml"));
       VBox root = loader.load();
-      controller = (CropImageController) loader.getController();
+      controller = (CropImageViewController) loader.getController();
 
       // UI conficuration
       Scene scene = new Scene(root);

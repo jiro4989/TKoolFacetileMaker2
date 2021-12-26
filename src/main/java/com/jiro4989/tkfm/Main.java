@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm;
 
+import com.jiro4989.tkfm.controller.MainViewController;
 import com.jiro4989.tkfm.model.PropertiesModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
   public static final String TITLE = "TKoolFacetileMaker2";
-  private MainController controller;
+  private MainViewController controller;
   private BorderPane root;
   private Stage stage;
 
@@ -21,16 +22,16 @@ public class Main extends Application {
     prop.load();
     stage = primaryStage;
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main_view.fxml"));
       root = (BorderPane) loader.load();
-      controller = (MainController) loader.getController();
+      controller = (MainViewController) loader.getController();
 
       Scene scene = new Scene(root, 1280, 880);
-      scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+      scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());
       primaryStage.setScene(scene);
       primaryStage
           .getIcons()
-          .add(new Image(getClass().getResource("resources/logo.png").toExternalForm()));
+          .add(new Image(getClass().getResource("img/logo.png").toExternalForm()));
 
       primaryStage.setTitle(TITLE);
       primaryStage.setX(prop.getX());

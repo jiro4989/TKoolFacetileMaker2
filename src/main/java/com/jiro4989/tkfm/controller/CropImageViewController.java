@@ -1,11 +1,11 @@
-package com.jiro4989.tkfm;
+package com.jiro4989.tkfm.controller;
 
-import com.jiro4989.tkfm.util.Validator;
+import com.jiro4989.tkfm.util.ValidationUtil;
 import javafx.beans.value.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class CropImageController {
+public class CropImageViewController {
   @FXML private TextField xInput;
   @FXML private TextField yInput;
   @FXML private TextField scaleInput;
@@ -26,7 +26,7 @@ public class CropImageController {
               @Override
               public void changed(
                   ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!Validator.isInteger(newValue)) {
+                if (!ValidationUtil.isInteger(newValue)) {
                   input.setText(oldValue);
                 }
               }
@@ -50,34 +50,34 @@ public class CropImageController {
   }
 
   /** Returns x */
-  double getX() {
+  public double getX() {
     return Double.parseDouble(xInput.getText());
   }
 
   /** Returns y */
-  double getY() {
+  public double getY() {
     return Double.parseDouble(yInput.getText());
   }
 
   /** Returns scale */
-  double getScale() {
+  public double getScale() {
     return Double.parseDouble(scaleInput.getText());
   }
 
   /** Returns ok button was pressed. */
-  boolean getOK() {
+  public boolean getOK() {
     return ok;
   }
 
-  void setX(double x) {
+  public void setX(double x) {
     xInput.setText("" + (int) x);
   }
 
-  void setY(double y) {
+  public void setY(double y) {
     yInput.setText("" + (int) y);
   }
 
-  void setScale(double scale) {
+  public void setScale(double scale) {
     scaleInput.setText("" + (int) scale);
   }
 }

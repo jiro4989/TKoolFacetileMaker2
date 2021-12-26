@@ -1,19 +1,20 @@
 package com.jiro4989.tkfm;
 
-import com.jiro4989.tkfm.model.ImageFormat;
+import com.jiro4989.tkfm.controller.ImageFormatViewController;
+import com.jiro4989.tkfm.model.ImageFormatModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
 public class ImageFormatStage extends Stage {
-  private ImageFormatController controller;
+  private ImageFormatViewController controller;
 
   public ImageFormatStage() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ImageFormat.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/image_format_view.fxml"));
       VBox root = loader.load();
-      controller = (ImageFormatController) loader.getController();
+      controller = (ImageFormatViewController) loader.getController();
 
       // UI conficuration
       Scene scene = new Scene(root);
@@ -25,7 +26,7 @@ public class ImageFormatStage extends Stage {
     }
   }
 
-  public ImageFormat getImageFormat() {
+  public ImageFormatModel getImageFormat() {
     return controller.getImageFormat();
   }
 

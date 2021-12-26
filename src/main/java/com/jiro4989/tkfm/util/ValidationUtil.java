@@ -1,6 +1,6 @@
 package com.jiro4989.tkfm.util;
 
-public class Validator {
+public class ValidationUtil {
   /** Returns `true` when the string format `value` is integer. */
   public static boolean isInteger(String value) {
     if (value.matches("^0\\d+$")) return false;
