@@ -2,8 +2,6 @@ package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.jiro4989.tkfm.data.Position;
-import com.jiro4989.tkfm.data.Rectangle;
 import java.io.File;
 import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(x, y);
+    var pos = new PositionModel(x, y);
     var rect = new Rectangle(20, 20);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.crop();
@@ -57,7 +55,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/20x20.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(x, y);
+    var pos = new PositionModel(x, y);
     var rect = new Rectangle(width, height);
     var c = new CroppingImageModel(img, pos, rect, scale);
     var got = c.cropByBufferedImage();
@@ -89,7 +87,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(10, 10);
+    var pos = new PositionModel(10, 10);
     var rect = new Rectangle(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
@@ -126,7 +124,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(20, 30);
+    var pos = new PositionModel(20, 30);
     var rect = new Rectangle(20, 40);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
@@ -149,7 +147,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/sample1.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(10, 10);
+    var pos = new PositionModel(10, 10);
     var rect = new Rectangle(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
@@ -171,7 +169,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/20x20.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(0, 0);
+    var pos = new PositionModel(0, 0);
     var rect = new Rectangle(20, 20);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
@@ -187,7 +185,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/20x20.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(30, 50);
+    var pos = new PositionModel(30, 50);
     var rect = new Rectangle(20, 20);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);
@@ -202,7 +200,7 @@ public class CroppingImageModelTest {
     var path = getClass().getResource("/20x20.png").getPath();
     var file = new File(path);
     var img = new Image(file.toURI().toString());
-    var pos = new Position(30, 50);
+    var pos = new PositionModel(30, 50);
     var rect = new Rectangle(20, 30);
     var scale = 100.0;
     var c = new CroppingImageModel(img, pos, rect, scale);

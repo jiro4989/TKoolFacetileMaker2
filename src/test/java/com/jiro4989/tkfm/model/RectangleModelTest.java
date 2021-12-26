@@ -1,10 +1,10 @@
-package com.jiro4989.tkfm.data;
+package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.*;
 
-public class RectangleTest {
+public class RectangleModelTest {
   @Test
   public void testConstructor() {
     var rect = new Rectangle(20, 40);

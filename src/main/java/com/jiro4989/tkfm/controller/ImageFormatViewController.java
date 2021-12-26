@@ -1,7 +1,7 @@
 package com.jiro4989.tkfm.controller;
 
-import com.jiro4989.tkfm.data.Rectangle;
 import com.jiro4989.tkfm.model.ImageFormatModel;
+import com.jiro4989.tkfm.model.Rectangle;
 import com.jiro4989.tkfm.util.ValidationUtil;
 import javafx.beans.value.*;
 import javafx.fxml.FXML;

@@ -2,7 +2,6 @@ package com.jiro4989.tkfm.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.jiro4989.tkfm.data.Rectangle;
 import java.io.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

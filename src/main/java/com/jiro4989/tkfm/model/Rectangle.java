@@ -1,4 +1,4 @@
-package com.jiro4989.tkfm.data;
+package com.jiro4989.tkfm.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

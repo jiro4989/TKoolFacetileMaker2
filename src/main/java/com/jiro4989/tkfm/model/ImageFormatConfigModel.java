@@ -1,6 +1,5 @@
 package com.jiro4989.tkfm.model;
 
-import com.jiro4989.tkfm.data.Rectangle;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;

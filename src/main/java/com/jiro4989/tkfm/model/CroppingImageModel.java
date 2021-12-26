@@ -1,7 +1,5 @@
 package com.jiro4989.tkfm.model;
 
-import com.jiro4989.tkfm.data.Position;
-import com.jiro4989.tkfm.data.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -18,7 +16,7 @@ public class CroppingImageModel {
   private final ObjectProperty<Image> croppedImage =
       new SimpleObjectProperty<>(new WritableImage(144, 144));
   /** トリミング座標 */
-  private final Position cropPos = new Position(0, 0);
+  private final PositionModel cropPos = new PositionModel(0, 0);
   /** トリミング画像の矩形 */
   private final Rectangle cropRect;
   /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
@@ -36,7 +34,7 @@ public class CroppingImageModel {
    * @param rect
    * @param scale
    */
-  public CroppingImageModel(Image image, Position pos, Rectangle rect, double scale) {
+  public CroppingImageModel(Image image, PositionModel pos, Rectangle rect, double scale) {
     this.image.set(image);
     this.cropPos.setX(pos.getX());
     this.cropPos.setY(pos.getY());
@@ -196,7 +194,7 @@ public class CroppingImageModel {
 
   // getter ///////////////////////////////////////////////////////////////////
 
-  public Position getPosition() {
+  public PositionModel getPosition() {
     return cropPos;
   }
 

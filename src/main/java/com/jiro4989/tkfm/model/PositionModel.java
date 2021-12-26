@@ -1,17 +1,17 @@
-package com.jiro4989.tkfm.data;
+package com.jiro4989.tkfm.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-public class Position {
+public class PositionModel {
   private final DoubleProperty x = new SimpleDoubleProperty(0.0);
   private final DoubleProperty y = new SimpleDoubleProperty(0.0);
 
-  public Position() {
+  public PositionModel() {
     this(0, 0);
   }
 
-  public Position(double x, double y) {
+  public PositionModel(double x, double y) {
     setX(x);
     setY(y);
   }
