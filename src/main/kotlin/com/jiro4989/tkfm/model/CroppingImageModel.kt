@@ -158,8 +158,8 @@ data class CroppingImageModel(
 
   /** Centering */
   fun moveByMouse(x: Double, y: Double) {
-    val w = rectangle.getWidth()
-    val h = rectangle.getHeight()
+    val w = rectangle.width
+    val h = rectangle.height
     val xx = x - w / 2
     val yy = y - h / 2
     move(xx, yy)
