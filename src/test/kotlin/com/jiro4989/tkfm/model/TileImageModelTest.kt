@@ -72,8 +72,8 @@ public class TileImageModelTest {
     assertEquals(40.0, img.height)
 
     fmt.selectedImageFormat.rectangle.apply {
-      setWidth(40.0)
-      setHeight(30.0)
+      width = 40.0
+      height = 30.0
     }
     t.resetImage()
 

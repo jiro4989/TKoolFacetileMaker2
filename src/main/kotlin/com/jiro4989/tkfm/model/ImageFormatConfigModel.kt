@@ -56,8 +56,8 @@ data class ImageFormatConfigModel(
     val fmt = total.get(index)
     selectedImageFormat.rowProperty.set(fmt.rowProperty.get())
     selectedImageFormat.colProperty.set(fmt.colProperty.get())
-    selectedImageFormat.rectangle.widthProperty().set(fmt.rectangle.widthProperty().get())
-    selectedImageFormat.rectangle.heightProperty().set(fmt.rectangle.heightProperty().get())
+    selectedImageFormat.rectangle.widthProperty.set(fmt.rectangle.width)
+    selectedImageFormat.rectangle.heightProperty.set(fmt.rectangle.height)
   }
 
   /**
@@ -183,8 +183,8 @@ data class ImageFormatConfigModel(
       item.setAttribute("name", fmt.name)
       item.setAttribute("row", fmt.rowProperty.get().toString())
       item.setAttribute("col", fmt.colProperty.get().toString())
-      item.setAttribute("tileWidth", "" + rect.widthProperty().get().toInt().toString())
-      item.setAttribute("tileHeight", "" + rect.heightProperty().get().toInt().toString())
+      item.setAttribute("tileWidth", "" + rect.widthProperty.get().toInt().toString())
+      item.setAttribute("tileHeight", "" + rect.heightProperty.get().toInt().toString())
       root.appendChild(item)
     }
     val transformerFactory = TransformerFactory.newInstance()
