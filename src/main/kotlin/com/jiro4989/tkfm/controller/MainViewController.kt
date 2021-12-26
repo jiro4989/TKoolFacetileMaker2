@@ -463,7 +463,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   private fun setCropSizeWithDialog() {
     val ci =
         cropImage.let {
-          val pos = it.position
+          val pos = it.getPosition()
           val stage = CropImageStage(pos.x, pos.y, it.scaleProperty().value)
           stage.showAndWait()
           stage
