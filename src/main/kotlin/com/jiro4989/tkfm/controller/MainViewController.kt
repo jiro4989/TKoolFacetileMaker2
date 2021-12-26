@@ -545,7 +545,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     val stage = ImageFormatStage()
     stage.showAndWait()
 
-    if (!stage.ok) {
+    if (!stage.getOK()) {
       return
     }
 
