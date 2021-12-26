@@ -36,6 +36,8 @@ plugins {
 
   // Code coverage
   id 'jacoco'
+
+  id "org.jetbrains.kotlin.jvm" version "1.6.0"
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
@@ -85,6 +87,11 @@ dependencies {
   implementation "org.openjfx:javafx-controls:16"
   implementation "org.openjfx:javafx-graphics:16"
   implementation "org.openjfx:javafx-swing:16"
+
+  implementation platform('org.jetbrains.kotlin:kotlin-bom')
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+  testImplementation "org.jetbrains.kotlin:kotlin-test"
+  testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
 }
 
 sourceCompatibility = 16
@@ -97,6 +104,14 @@ application {
 
 compileJava {
   options.encoding = 'UTF-8'
+}
+
+compileKotlin {
+  kotlinOptions.jvmTarget = "16"
+}
+
+compileTestKotlin {
+  kotlinOptions.jvmTarget = "16"
 }
 
 javafx {
@@ -154,6 +169,11 @@ spotless {
     trimTrailingWhitespace()
     endWithNewline()
     removeUnusedImports()
+  }
+
+  kotlin {
+    ktfmt('0.15')
+    //diktat('0.4.0')
   }
 
   groovyGradle {
@@ -256,6 +276,7 @@ spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
 compileJava.dependsOn(['versionSet'])
+compileKotlin.dependsOn(['versionSet'])
 jacocoTestReport.dependsOn(['test'])
 
 dumpDependencies.dependsOn(['cleanDependencies'])

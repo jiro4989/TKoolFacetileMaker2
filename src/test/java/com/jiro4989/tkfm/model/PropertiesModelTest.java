@@ -104,14 +104,14 @@ public class PropertiesModelTest {
     var p = new PropertiesModel.ChoosedFile("test_choosed_file");
     // 存在するファイルなら何でも良い
     p.setOpenedFile(new File("src/main/java/com/jiro4989/tkfm/Version.java"));
-    p.setSavedFile(new File("src/main/java/com/jiro4989/tkfm/Main.java"));
+    p.setSavedFile(new File("src/main/kotlin/com/jiro4989/tkfm/Main.kt"));
     p.store();
 
     p.load();
     assertTrue(p.getOpenedFile().isPresent());
     assertEquals("Version.java", p.getOpenedFile().get().getName());
     assertTrue(p.getSavedFile().isPresent());
-    assertEquals("Main.java", p.getSavedFile().get().getName());
+    assertEquals("Main.kt", p.getSavedFile().get().getName());
   }
 
   @Test
