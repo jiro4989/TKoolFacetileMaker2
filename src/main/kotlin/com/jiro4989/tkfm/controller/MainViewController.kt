@@ -130,7 +130,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
       Platform.exit()
     }
 
-    val selectedImageFormat = imageFormat.getSelectedImageFormat()
+    val selectedImageFormat = imageFormat.selectedImageFormat
     val rect = selectedImageFormat.getRectangle()
 
     cropImage = CroppingImageModel(rectangle = rect)
@@ -489,7 +489,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     outputGridPane.getRowConstraints().clear()
     outputGridPane.getColumnConstraints().clear()
 
-    val selectedImageFormat = imageFormat.getSelectedImageFormat()
+    val selectedImageFormat = imageFormat.selectedImageFormat
     val row = selectedImageFormat.rowProperty().get()
     val col = selectedImageFormat.colProperty().get()
     val width = selectedImageFormat.getRectangle().widthProperty().get()
