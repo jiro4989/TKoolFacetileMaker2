@@ -2,12 +2,7 @@ package com.jiro4989.tkfm.controller
 
 import com.jiro4989.tkfm.CropImageStage
 import com.jiro4989.tkfm.ImageFormatStage
-import com.jiro4989.tkfm.model.CroppingImageModel
-import com.jiro4989.tkfm.model.ImageFileModel
-import com.jiro4989.tkfm.model.ImageFilesModel
-import com.jiro4989.tkfm.model.ImageFormatConfigModel
-import com.jiro4989.tkfm.model.PropertiesModel
-import com.jiro4989.tkfm.model.TileImageModel
+import com.jiro4989.tkfm.model.*
 import com.jiro4989.tkfm.util.DialogUtil
 import com.jiro4989.tkfm.util.ImageUtil
 import java.io.File
@@ -93,7 +88,7 @@ class MainViewController : Initializable {
   private lateinit var imageFiles: ImageFilesModel
   private lateinit var cropImage: CroppingImageModel
   private lateinit var tileImage: TileImageModel
-  private val prop = PropertiesModel.ChoosedFile()
+  private val prop = ChoosedFilePropertiesModel()
 
   override fun initialize(location: URL?, resources: ResourceBundle?) {
     // initialize models
@@ -211,6 +206,10 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     resetOutputGridPane()
   }
 
+  private fun getInitialDir(file: File): File {
+    return if (file.isDirectory) file else if (file.isFile) file.parentFile else File(".")
+  }
+
   /** 取り込むファイルを選択する。 */
   @FXML
   private fun openFile() {
@@ -218,22 +217,14 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     fc.title = "ファイルを開く"
     fc.extensionFilters += ExtensionFilter("Image Files", "*.png")
 
-    prop.getOpenedFile().ifPresent { f ->
-      var dir = File(".")
-      if (f.isDirectory()) {
-        dir = f
-      } else if (f.isFile()) {
-        dir = f.getParentFile()
-      }
-      fc.initialDirectory = dir
-    }
+    prop.openedFile?.let { fc.initialDirectory = getInitialDir(it) }
 
     val stage = Stage(StageStyle.UTILITY)
     val files: List<File>? = fc.showOpenMultipleDialog(stage)
     files?.let {
-      it.forEach { file ->
-        imageFiles.add(file)
-        prop.setOpenedFile(file)
+      it.forEach {
+        imageFiles.add(it)
+        prop.openedFile = it
       }
     }
   }
@@ -241,11 +232,11 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   /** ファイルを保存する。 ファイル名が存在しなかった場合は別名で保存が呼び出される。 */
   @FXML
   private fun saveFile() {
-    prop.savedFile.ifPresent { file ->
-      if (file.isFile()) {
+    prop.savedFile?.let {
+      if (it.isFile()) {
         try {
           var img = outputImageView.getImage()
-          ImageUtil.writeFile(img, file)
+          ImageUtil.writeFile(img, it)
         } catch (e: IOException) {
           // TODO
           e.printStackTrace()
@@ -263,23 +254,15 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     fc.title = "名前をつけて保存"
     fc.extensionFilters += ExtensionFilter("Image Files", "*.png")
 
-    prop.savedFile.ifPresent { f ->
-      var dir = File(".")
-      if (f.isDirectory()) {
-        dir = f
-      } else if (f.isFile()) {
-        dir = f.getParentFile()
-      }
-      fc.setInitialDirectory(dir)
-    }
+    prop.savedFile?.let { fc.initialDirectory = getInitialDir(it) }
 
     val stage = Stage(StageStyle.UTILITY)
     val saveFile: File? = fc.showSaveDialog(stage)
-    saveFile?.let { file ->
+    saveFile?.let {
       try {
-        var img = outputImageView.getImage()
-        ImageUtil.writeFile(img, file)
-        prop.setSavedFile(file)
+        val img = outputImageView.getImage()
+        ImageUtil.writeFile(img, it)
+        prop.savedFile = it
       } catch (e: IOException) {
         // TODO
         e.printStackTrace()

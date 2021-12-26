@@ -1,7 +1,7 @@
 package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.MainViewController
-import com.jiro4989.tkfm.model.PropertiesModel
+import com.jiro4989.tkfm.model.WindowPropertiesModel
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -30,7 +30,7 @@ class Main : Application() {
   private lateinit var controller: MainViewController
   private lateinit var root: BorderPane
   private lateinit var stage: Stage
-  private val prop = PropertiesModel.Window()
+  private val prop = WindowPropertiesModel()
 
   override fun start(primaryStage: Stage) {
     prop.load()
@@ -43,15 +43,17 @@ class Main : Application() {
       val scene = Scene(root, 1280.0, 880.0)
       scene.stylesheets += this.javaClass.getResource("css/application.css").toExternalForm()
 
-      stage.scene = scene
-      stage.icons += Image(this.javaClass.getResource("img/logo.png").toExternalForm())
-      stage.title = title
-      stage.x = prop.getX()
-      stage.y = prop.getY()
-      stage.width = prop.getWidth()
-      stage.height = prop.getHeight()
-
-      stage.show()
+      val thisClass = this.javaClass
+      stage.apply {
+        setScene(scene)
+        icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
+        setTitle(title)
+        setX(prop.x)
+        setY(prop.y)
+        setWidth(prop.width)
+        setHeight(prop.height)
+        show()
+      }
     } catch (e: Exception) {
       e.printStackTrace()
     }
@@ -59,10 +61,12 @@ class Main : Application() {
 
   override fun stop() {
     controller.storeProperties()
-    prop.setX(stage.getX())
-    prop.setY(stage.getY())
-    prop.setWidth(stage.getWidth())
-    prop.setHeight(stage.getHeight())
-    prop.store()
+    prop.apply {
+      x = stage.x
+      y = stage.y
+      width = stage.width
+      height = stage.height
+      store()
+    }
   }
 }
