@@ -171,6 +171,12 @@ spotless {
     removeUnusedImports()
   }
 
+  kotlin {
+    ktfmt('0.15')
+    ktlint('0.37.2')
+    //diktat('0.4.0')
+  }
+
   groovyGradle {
     target '*.gradle'
     greclipse().configFile("$rootDir/greclipse.properties")
