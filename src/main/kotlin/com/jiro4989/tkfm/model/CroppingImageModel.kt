@@ -47,22 +47,6 @@ data class CroppingImageModel(
     val rectangle: RectangleModel
 ) {
 
-  // /**
-  //  * 単体テストで使う目的。通常プログラムでは使わない。
-  //  *
-  //  * @param image
-  //  * @param pos
-  //  * @param rect
-  //  * @param scale
-  //  */
-  // constructor(image: Image, pos: PositionModel, rect: RectangleModel, scale: Double) {
-  //   this.image.set(image)
-  //   this.position.setX(pos.getX())
-  //   this.position.setY(pos.getY())
-  //   this.rectangle = rect
-  //   scaleProperty.set(scale)
-  // }
-
   fun crop(): Image {
     // 画面上は百分率で表示しているため少数に変換
     val scale = scaleProperty.get() / 100
