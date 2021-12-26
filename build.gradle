@@ -106,6 +106,14 @@ compileJava {
   options.encoding = 'UTF-8'
 }
 
+compileKotlin {
+  kotlinOptions.jvmTarget = "16"
+}
+
+compileTestKotlin {
+  kotlinOptions.jvmTarget = "16"
+}
+
 javafx {
   modules = [
     'javafx.controls',
@@ -263,6 +271,7 @@ spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
 compileJava.dependsOn(['versionSet'])
+compileKotlin.dependsOn(['versionSet'])
 jacocoTestReport.dependsOn(['test'])
 
 dumpDependencies.dependsOn(['cleanDependencies'])
