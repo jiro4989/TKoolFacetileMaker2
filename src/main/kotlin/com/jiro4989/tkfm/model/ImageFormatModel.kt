@@ -13,6 +13,13 @@ data class ImageFormatModel(
     /** 1タイルあたりの矩形 */
     val rectangle: RectangleModel
 ) {
+  var row
+    get() = rowProperty.get()
+    set(value) = rowProperty.set(value)
+  var col
+    get() = colProperty.get()
+    set(value) = colProperty.set(value)
+
   constructor(name: String, row: Int, col: Int, rect: RectangleModel) : this(
       name, SimpleIntegerProperty(row), SimpleIntegerProperty(col), rect)
 }
