@@ -105,7 +105,7 @@ data class CroppingImageModel(
     return wImg
   }
 
-  fun move(x: Double, y: Double) {
+  fun move(x: Double = position.x, y: Double = position.y) {
     val bImg = imageProperty.get()
     val s = scaleProperty.get() / 100
     val w = bImg.width
@@ -124,12 +124,6 @@ data class CroppingImageModel(
     position.x = xx
     position.y = yy
     croppedImageProperty.set(crop())
-  }
-
-  fun move() {
-    val x = position.x
-    val y = position.y
-    move(x, y)
   }
 
   fun moveUp(n: Double) {
