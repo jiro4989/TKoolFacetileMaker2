@@ -2,6 +2,7 @@ package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.MainViewController
 import com.jiro4989.tkfm.model.WindowPropertiesModel
+import java.util.Properties
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -13,15 +14,6 @@ val title = "TKoolFacetileMaker2"
 
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
-  println("--------------------------------------------")
-  println("application_name: $title")
-  println("version: ${version}")
-  println("commit_hash: ${commitHash}")
-  println("document: README.txt")
-  println("author: 次郎 (jiro)")
-  println("contact: https://twitter.com/jiro_saburomaru")
-  println("--------------------------------------------")
-
   Application.launch(Main::class.java, *args)
 }
 
@@ -33,6 +25,7 @@ class Main : Application() {
   private val prop = WindowPropertiesModel()
 
   override fun start(primaryStage: Stage) {
+    printApplicationInformation()
     prop.load()
     stage = primaryStage
     try {
@@ -68,5 +61,22 @@ class Main : Application() {
       height = stage.height
       store()
     }
+  }
+
+  fun printApplicationInformation() {
+    val property = Properties()
+    this.javaClass.getResourceAsStream("properties/application.properties")?.bufferedReader().use {
+      property.load(it)
+    }
+    val version = property.get("version")
+    val commitHash = property.get("commithash")
+    println("--------------------------------------------")
+    println("application_name: $title")
+    println("version: $version")
+    println("commit_hash: $commitHash")
+    println("document: README.txt")
+    println("author: 次郎 (jiro)")
+    println("contact: https://twitter.com/jiro_saburomaru")
+    println("--------------------------------------------")
   }
 }

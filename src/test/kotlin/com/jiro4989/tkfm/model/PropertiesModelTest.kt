@@ -97,13 +97,13 @@ class PropertiesModelTest {
   fun testLoadStoreChoosedFile() {
     val p = ChoosedFilePropertiesModel(file = configFile("test_choosed_file"))
     // 存在するファイルなら何でも良い
-    p.openedFile = File("src/main/java/com/jiro4989/tkfm/Version.java")
+    p.openedFile = File("src/main/kotlin/com/jiro4989/tkfm/controller/MainViewController.kt")
     p.savedFile = File("src/main/kotlin/com/jiro4989/tkfm/Main.kt")
     p.store()
 
     p.load()
     assertNotNull(p.openedFile)
-    p.openedFile?.let { assertEquals("Version.java", it.name) }
+    p.openedFile?.let { assertEquals("MainViewController.kt", it.name) }
     assertNotNull(p.savedFile)
     p.savedFile?.let { assertEquals("Main.kt", it.name) }
   }
