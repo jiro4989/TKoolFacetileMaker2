@@ -42,7 +42,7 @@ data class CroppingImageModel(
     val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
 
     /** トリミング座標 */
-    val position: PositionModel = PositionModel(0.0, 0.0),
+    val croppingPosition: PositionModel = PositionModel(0.0, 0.0),
     /** トリミング画像の矩形 */
     val rectangle: RectangleModel
 ) {
@@ -52,8 +52,8 @@ data class CroppingImageModel(
     val scale = scaleProperty.get() / 100
 
     // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var x = position.x / scale
-    var y = position.y / scale
+    var x = croppingPosition.x / scale
+    var y = croppingPosition.y / scale
     val width = rectangle.width / scale
     val height = rectangle.height / scale
 
@@ -79,8 +79,8 @@ data class CroppingImageModel(
 
   fun cropByBufferedImage(): Image {
     val scale = scaleProperty.get() / 100
-    var x = position.x.toInt()
-    var y = position.y.toInt()
+    var x = croppingPosition.x.toInt()
+    var y = croppingPosition.y.toInt()
     var width = rectangle.width.toInt()
     var height = rectangle.height.toInt()
 
@@ -105,7 +105,7 @@ data class CroppingImageModel(
     return wImg
   }
 
-  fun move(x: Double = position.x, y: Double = position.y) {
+  fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
     val s = scaleProperty.get() / 100
     val w = bImg.width
@@ -121,32 +121,32 @@ data class CroppingImageModel(
     if (xx < 0) xx = 0.0
     if (yy < 0) yy = 0.0
 
-    position.x = xx
-    position.y = yy
+    croppingPosition.x = xx
+    croppingPosition.y = yy
     croppedImageProperty.set(crop())
   }
 
   fun moveUp(n: Double) {
-    val x = position.x
-    val y = position.y - n
+    val x = croppingPosition.x
+    val y = croppingPosition.y - n
     move(x, y)
   }
 
   fun moveRight(n: Double) {
-    val x = position.x + n
-    val y = position.y
+    val x = croppingPosition.x + n
+    val y = croppingPosition.y
     move(x, y)
   }
 
   fun moveDown(n: Double) {
-    val x = position.x
-    val y = position.y + n
+    val x = croppingPosition.x
+    val y = croppingPosition.y + n
     move(x, y)
   }
 
   fun moveLeft(n: Double) {
-    val x = position.x - n
-    val y = position.y
+    val x = croppingPosition.x - n
+    val y = croppingPosition.y
     move(x, y)
   }
 

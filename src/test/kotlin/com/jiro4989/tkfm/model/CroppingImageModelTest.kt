@@ -95,7 +95,7 @@ class CroppingImageModelTest {
       "left" -> c.moveLeft(moveWidth)
     }
 
-    pos = c.position
+    pos = c.croppingPosition
     assertEquals(wantX, pos.x)
     assertEquals(wantY, pos.y)
     assertEquals(20.0, c.croppedImageProperty.get().width)
@@ -113,7 +113,7 @@ class CroppingImageModelTest {
     val scale = 100.0
     val c = crop(img, pos, rect, scale)
     c.moveByMouse(x, y)
-    pos = c.position
+    pos = c.croppingPosition
     assertEquals(wantX, pos.x)
     assertEquals(wantY, pos.y)
   }
@@ -168,7 +168,7 @@ class CroppingImageModelTest {
     val rect = RectangleModel(20.0, 20.0)
     val scale = 100.0
     val c = crop(img, pos, rect, scale)
-    val p = c.position
+    val p = c.croppingPosition
 
     assertEquals(30.0, p.x)
     assertEquals(50.0, p.y)
@@ -193,7 +193,7 @@ class CroppingImageModelTest {
   private fun crop(img: Image, pos: PositionModel, rect: RectangleModel, scale: Double) =
       CroppingImageModel(
           imageProperty = SimpleObjectProperty(img),
-          position = pos,
+          croppingPosition = pos,
           rectangle = rect,
           scaleProperty = SimpleDoubleProperty(scale))
 }

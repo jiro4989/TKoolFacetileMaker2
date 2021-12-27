@@ -132,7 +132,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     tileImage = TileImageModel(imageFormat)
 
     // bindigns
-    val pos = cropImage.position
+    val pos = cropImage.croppingPosition
     val rowCount = selectedImageFormat.rowProperty
     val colCount = selectedImageFormat.colProperty
 
@@ -445,7 +445,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   private fun setCropSizeWithDialog() {
     val ci =
         cropImage.let {
-          val pos = it.position
+          val pos = it.croppingPosition
           val stage = CropImageStage(pos.x, pos.y, it.scaleProperty.value)
           stage.showAndWait()
           stage
