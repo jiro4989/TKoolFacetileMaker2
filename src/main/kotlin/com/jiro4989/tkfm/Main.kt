@@ -15,8 +15,8 @@ val title = "TKoolFacetileMaker2"
 fun main(args: Array<String>) {
   println("--------------------------------------------")
   println("application_name: $title")
-  println("version: ${Version.version}")
-  println("commit_hash: ${Version.commitHash}")
+  println("version: ${version}")
+  println("commit_hash: ${commitHash}")
   println("document: README.txt")
   println("author: 次郎 (jiro)")
   println("contact: https://twitter.com/jiro_saburomaru")

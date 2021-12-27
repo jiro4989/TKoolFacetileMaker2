@@ -48,10 +48,10 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 // に値を差し替える。
 def commitHash = 'dev'
 
-def VERSION_JAVA_FILE = 'Version.java'
-def SRC_FILE = 'template/' + VERSION_JAVA_FILE
-def DST_DIR = 'src/main/java/com/jiro4989/tkfm'
-def DST_FILE = DST_DIR + '/' + VERSION_JAVA_FILE
+def VERSION_SOURCE_FILE = 'Version.kt'
+def SRC_FILE = 'template/' + VERSION_SOURCE_FILE
+def DST_DIR = 'src/main/kotlin/com/jiro4989/tkfm'
+def DST_FILE = DST_DIR + '/' + VERSION_SOURCE_FILE
 
 def LIB_DIR = './lib'
 
