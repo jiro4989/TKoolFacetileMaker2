@@ -235,7 +235,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
       if (it.isFile()) {
         try {
           var img = outputImageView.getImage()
-          ImageUtil.writeFile(img, it)
+          writeFile(img, it)
         } catch (e: IOException) {
           // TODO
           e.printStackTrace()
@@ -260,7 +260,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     saveFile?.let {
       try {
         val img = outputImageView.getImage()
-        ImageUtil.writeFile(img, it)
+        writeFile(img, it)
         prop.savedFile = it
       } catch (e: IOException) {
         // TODO
