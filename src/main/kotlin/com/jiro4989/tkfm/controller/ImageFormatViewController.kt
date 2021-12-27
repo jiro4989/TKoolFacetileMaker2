@@ -2,7 +2,7 @@ package com.jiro4989.tkfm.controller
 
 import com.jiro4989.tkfm.model.ImageFormatModel
 import com.jiro4989.tkfm.model.RectangleModel
-import com.jiro4989.tkfm.util.ValidationUtil
+import com.jiro4989.tkfm.util.isInteger
 import javafx.fxml.FXML
 import javafx.scene.control.TextField
 
@@ -24,7 +24,7 @@ class ImageFormatViewController {
 
   private fun setListener(input: TextField) {
     input.textProperty().addListener { _, oldValue, newValue ->
-      if (!ValidationUtil.isInteger(newValue) || "0".equals(newValue)) {
+      if (!isInteger(newValue) || "0".equals(newValue)) {
         input.text = oldValue
       }
     }
