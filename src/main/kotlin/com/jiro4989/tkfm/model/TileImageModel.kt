@@ -34,11 +34,7 @@ class TileImageModel {
     draw()
   }
 
-  fun bulkInsert(images: List<Image>) {
-    bulkInsert(images, 0)
-  }
-
-  fun bulkInsert(images: List<Image>, startIndex: Int) {
+  fun bulkInsert(images: List<Image>, startIndex: Int = 0) {
     val rowCount = getRow()
     val colCount = getCol()
     val size = images.size
