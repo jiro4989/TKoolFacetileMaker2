@@ -1,6 +1,6 @@
 package com.jiro4989.tkfm.controller
 
-import com.jiro4989.tkfm.util.ValidationUtil
+import com.jiro4989.tkfm.util.isInteger
 import javafx.fxml.FXML
 import javafx.scene.control.TextField
 
@@ -19,7 +19,7 @@ class CropImageViewController {
 
   private fun setListener(input: TextField) {
     input.textProperty().addListener { _, oldValue, newValue ->
-      if (!ValidationUtil.isInteger(newValue)) {
+      if (!isInteger(newValue)) {
         input.setText(oldValue)
       }
     }
