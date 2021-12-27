@@ -3,8 +3,7 @@ package com.jiro4989.tkfm.controller
 import com.jiro4989.tkfm.CropImageStage
 import com.jiro4989.tkfm.ImageFormatStage
 import com.jiro4989.tkfm.model.*
-import com.jiro4989.tkfm.util.DialogUtil
-import com.jiro4989.tkfm.util.ImageUtil
+import com.jiro4989.tkfm.util.*
 import java.io.File
 import java.io.IOException
 import java.net.URL
@@ -96,7 +95,7 @@ class MainViewController : Initializable {
       imageFormat = ImageFormatConfigModel()
     } catch (e: ParserConfigurationException) {
       e.printStackTrace()
-      DialogUtil.showAndWaitCommonExceptionDialog("ParserConfigurationException")
+      showAndWaitCommonExceptionDialog("ParserConfigurationException")
       Platform.exit()
     } catch (e: IOException) {
       e.printStackTrace()
@@ -109,7 +108,7 @@ class MainViewController : Initializable {
 - configフォルダが存在するか
 - 特別なフォルダ (システムフォルダなど)で実行していないか
 """
-      DialogUtil.showAndWaitExceptionDialog(exception, msg)
+      showAndWaitExceptionDialog(exception, msg)
       Platform.exit()
     } catch (e: SAXException) {
       e.printStackTrace()
@@ -121,7 +120,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
 不正なXMLファイルになっている可能性があります。
 当該ファイルを削除してアプリケーションを再起動してみてください
 """
-      DialogUtil.showAndWaitExceptionDialog(exception, msg)
+      showAndWaitExceptionDialog(exception, msg)
       Platform.exit()
     }
 
@@ -236,7 +235,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
       if (it.isFile()) {
         try {
           var img = outputImageView.getImage()
-          ImageUtil.writeFile(img, it)
+          writeFile(img, it)
         } catch (e: IOException) {
           // TODO
           e.printStackTrace()
@@ -261,7 +260,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     saveFile?.let {
       try {
         val img = outputImageView.getImage()
-        ImageUtil.writeFile(img, it)
+        writeFile(img, it)
         prop.savedFile = it
       } catch (e: IOException) {
         // TODO
@@ -556,13 +555,13 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
       imageFormat.writeXMLFile()
     } catch (e: ParserConfigurationException) {
       e.printStackTrace()
-      DialogUtil.showAndWaitCommonExceptionDialog("ParserConfigurationException")
+      showAndWaitCommonExceptionDialog("ParserConfigurationException")
     } catch (e: TransformerConfigurationException) {
       e.printStackTrace()
-      DialogUtil.showAndWaitCommonExceptionDialog("TransformerConfigurationException")
+      showAndWaitCommonExceptionDialog("TransformerConfigurationException")
     } catch (e: TransformerException) {
       e.printStackTrace()
-      DialogUtil.showAndWaitCommonExceptionDialog("TransformerException")
+      showAndWaitCommonExceptionDialog("TransformerException")
     } catch (e: IOException) {
       e.printStackTrace()
       val exception = "IOException"
@@ -574,7 +573,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
 - 特別なフォルダ (システムフォルダなど)で実行していないか
 - 設定ファイルが壊れていないか
 """
-      DialogUtil.showAndWaitExceptionDialog(exception, msg)
+      showAndWaitExceptionDialog(exception, msg)
     }
   }
 }
