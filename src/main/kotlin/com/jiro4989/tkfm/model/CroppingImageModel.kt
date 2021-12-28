@@ -119,29 +119,10 @@ data class CroppingImageModel(
     croppedImageProperty.set(crop())
   }
 
-  fun moveUp(n: Double) {
-    val x = croppingPosition.x
-    val y = croppingPosition.y - n
-    move(x, y)
-  }
-
-  fun moveRight(n: Double) {
-    val x = croppingPosition.x + n
-    val y = croppingPosition.y
-    move(x, y)
-  }
-
-  fun moveDown(n: Double) {
-    val x = croppingPosition.x
-    val y = croppingPosition.y + n
-    move(x, y)
-  }
-
-  fun moveLeft(n: Double) {
-    val x = croppingPosition.x - n
-    val y = croppingPosition.y
-    move(x, y)
-  }
+  fun moveUp(n: Double) = move(y = croppingPosition.y - n)
+  fun moveDown(n: Double) = move(y = croppingPosition.y + n)
+  fun moveLeft(n: Double) = move(x = croppingPosition.x - n)
+  fun moveRight(n: Double) = move(x = croppingPosition.x + n)
 
   /** Centering */
   fun moveByMouse(x: Double, y: Double) {
