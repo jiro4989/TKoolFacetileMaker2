@@ -275,8 +275,9 @@ tasks.register('jlink', Exec) {
 spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
-compileJava.dependsOn(['versionSet'])
-compileKotlin.dependsOn(['versionSet'])
+processResources.dependsOn(['versionSet'])
+compileJava.dependsOn(['processResources'])
+compileKotlin.dependsOn(['processResources'])
 jacocoTestReport.dependsOn(['test'])
 
 dumpDependencies.dependsOn(['cleanDependencies'])
