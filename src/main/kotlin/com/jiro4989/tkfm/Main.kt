@@ -22,7 +22,7 @@ class Main : Application() {
   private lateinit var controller: MainViewController
   private lateinit var root: BorderPane
   private lateinit var stage: Stage
-  private val prop = WindowPropertiesModel()
+  private val windowProperty = WindowPropertiesModel()
   private val applicationProperty = Properties()
 
   override fun start(primaryStage: Stage) {
@@ -31,7 +31,7 @@ class Main : Application() {
     }
     printApplicationInformation()
 
-    prop.load()
+    windowProperty.load()
     stage = primaryStage
     try {
       val loader = FXMLLoader(this.javaClass.getResource("fxml/main_view.fxml"))
@@ -46,10 +46,10 @@ class Main : Application() {
         setScene(scene)
         icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
         setTitle(applicationTitle)
-        setX(prop.x)
-        setY(prop.y)
-        setWidth(prop.width)
-        setHeight(prop.height)
+        setX(windowProperty.x)
+        setY(windowProperty.y)
+        setWidth(windowProperty.width)
+        setHeight(windowProperty.height)
         show()
       }
     } catch (e: Exception) {
@@ -59,7 +59,7 @@ class Main : Application() {
 
   override fun stop() {
     controller.storeProperties()
-    prop.apply {
+    windowProperty.apply {
       x = stage.x
       y = stage.y
       width = stage.width
