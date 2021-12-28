@@ -41,35 +41,31 @@ data class WindowPropertiesModel(
       return
     }
 
-    try {
-      FileInputStream(file).use { stream: InputStream ->
-        prop.load(InputStreamReader(stream, "UTF-8"))
-        prop.getProperty("x")?.let {
-          if (!it.isNullOrEmpty()) {
-            x = it.toDouble()
-          }
-        }
-
-        prop.getProperty("y")?.let {
-          if (!it.isNullOrEmpty()) {
-            y = it.toDouble()
-          }
-        }
-
-        prop.getProperty("width")?.let {
-          if (!it.isNullOrEmpty()) {
-            width = it.toDouble()
-          }
-        }
-
-        prop.getProperty("height")?.let {
-          if (!it.isNullOrEmpty()) {
-            height = it.toDouble()
-          }
+    FileInputStream(file).use { stream: InputStream ->
+      prop.load(InputStreamReader(stream, "UTF-8"))
+      prop.getProperty("x")?.let {
+        if (!it.isNullOrEmpty()) {
+          x = it.toDouble()
         }
       }
-    } catch (e: IOException) {
-      e.printStackTrace()
+
+      prop.getProperty("y")?.let {
+        if (!it.isNullOrEmpty()) {
+          y = it.toDouble()
+        }
+      }
+
+      prop.getProperty("width")?.let {
+        if (!it.isNullOrEmpty()) {
+          width = it.toDouble()
+        }
+      }
+
+      prop.getProperty("height")?.let {
+        if (!it.isNullOrEmpty()) {
+          height = it.toDouble()
+        }
+      }
     }
   }
 
@@ -104,14 +100,10 @@ data class ChoosedFilePropertiesModel(
       return
     }
 
-    try {
-      FileInputStream(file).use { stream: InputStream ->
-        prop.load(InputStreamReader(stream, "UTF-8"))
-        openedFile = readFileFromProperties(prop, "opened_file_dir", "opened_file_file")
-        savedFile = readFileFromProperties(prop, "saved_file_dir", "saved_file_file")
-      }
-    } catch (e: IOException) {
-      e.printStackTrace()
+    FileInputStream(file).use { stream: InputStream ->
+      prop.load(InputStreamReader(stream, "UTF-8"))
+      openedFile = readFileFromProperties(prop, "opened_file_dir", "opened_file_file")
+      savedFile = readFileFromProperties(prop, "saved_file_dir", "saved_file_file")
     }
   }
 
