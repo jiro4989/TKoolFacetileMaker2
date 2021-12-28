@@ -42,9 +42,9 @@ data class CroppingImageModel(
     val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
 
     /** トリミング座標 */
-    val position: PositionModel = PositionModel(0.0, 0.0),
+    val croppingPosition: PositionModel = PositionModel(0.0, 0.0),
     /** トリミング画像の矩形 */
-    val rectangle: RectangleModel
+    val croppingRectangle: RectangleModel
 ) {
 
   fun crop(): Image {
@@ -52,21 +52,14 @@ data class CroppingImageModel(
     val scale = scaleProperty.get() / 100
 
     // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var x = position.x / scale
-    var y = position.y / scale
-    val width = rectangle.width / scale
-    val height = rectangle.height / scale
+    var (x, y) = croppingPosition / scale
+    val (width, height) = croppingRectangle / scale
 
     // 0未満の座標はNGなので0で上書きして調整
     if (x < 0) x = 0.0
     if (y < 0) y = 0.0
 
     val img = imageProperty.get()
-
-    // 画像サイズ0は通常起こり得ないはず
-    if (img.width <= 0 || img.height <= 0) {
-      return croppedImageProperty.get()
-    }
 
     // 座標に矩形幅を足した値が画像全体の幅より大きくなってはいけない
     if (img.width < x + width || img.height < y + height) {
@@ -79,10 +72,10 @@ data class CroppingImageModel(
 
   fun cropByBufferedImage(): Image {
     val scale = scaleProperty.get() / 100
-    var x = position.x.toInt()
-    var y = position.y.toInt()
-    var width = rectangle.width.toInt()
-    var height = rectangle.height.toInt()
+    var x = croppingPosition.x.toInt()
+    var y = croppingPosition.y.toInt()
+    var width = croppingRectangle.width.toInt()
+    var height = croppingRectangle.height.toInt()
 
     val bImg = SwingFXUtils.fromFXImage(imageProperty.get(), null)
     val scaledImg = scaledImage(bImg, scale)
@@ -105,13 +98,14 @@ data class CroppingImageModel(
     return wImg
   }
 
-  fun move(x: Double, y: Double) {
+  /** トリミング座標を x, y の座標に変更し、トリミング画像を更新する。 座標が不正な範囲外の場合は下限値、上限値に変更して設定するため、異常な範囲指定に対して安全である。 */
+  fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
     val s = scaleProperty.get() / 100
     val w = bImg.width
     val h = bImg.height
-    val rectWidth = rectangle.width
-    val rectHeight = rectangle.height
+    val rectWidth = croppingRectangle.width
+    val rectHeight = croppingRectangle.height
 
     var xx = x
     var yy = y
@@ -121,48 +115,20 @@ data class CroppingImageModel(
     if (xx < 0) xx = 0.0
     if (yy < 0) yy = 0.0
 
-    position.x = xx
-    position.y = yy
+    croppingPosition.x = xx
+    croppingPosition.y = yy
     croppedImageProperty.set(crop())
   }
 
-  fun move() {
-    val x = position.x
-    val y = position.y
-    move(x, y)
-  }
+  fun moveUp(n: Double) = move(y = croppingPosition.y - n)
+  fun moveDown(n: Double) = move(y = croppingPosition.y + n)
+  fun moveLeft(n: Double) = move(x = croppingPosition.x - n)
+  fun moveRight(n: Double) = move(x = croppingPosition.x + n)
 
-  fun moveUp(n: Double) {
-    val x = position.x
-    val y = position.y - n
-    move(x, y)
-  }
-
-  fun moveRight(n: Double) {
-    val x = position.x + n
-    val y = position.y
-    move(x, y)
-  }
-
-  fun moveDown(n: Double) {
-    val x = position.x
-    val y = position.y + n
-    move(x, y)
-  }
-
-  fun moveLeft(n: Double) {
-    val x = position.x - n
-    val y = position.y
-    move(x, y)
-  }
-
-  /** Centering */
+  /** トリミング座標を指定して、画像をトリミングする。 座標はマウスでの設定を想定しており、座標はトリミング矩形の中央として解釈する。 */
   fun moveByMouse(x: Double, y: Double) {
-    val w = rectangle.width
-    val h = rectangle.height
-    val xx = x - w / 2
-    val yy = y - h / 2
-    move(xx, yy)
+    val (width, height) = croppingRectangle / 2.0
+    move(x - width, y - height)
   }
 
   fun clearImage() {
@@ -191,14 +157,14 @@ data class CroppingImageModel(
   }
 
   fun setScale(scale: Double) {
-    val MIN_SCALE = 20.0
-    val MAX_SCALE = 200.0
+    val minScale = 20.0
+    val maxScale = 200.0
     var scale2 = scale
 
-    if (scale2 < MIN_SCALE) {
-      scale2 = MIN_SCALE
-    } else if (MAX_SCALE < scale2) {
-      scale2 = MAX_SCALE
+    if (scale2 < minScale) {
+      scale2 = minScale
+    } else if (maxScale < scale2) {
+      scale2 = maxScale
     }
 
     scaleProperty.set(scale2)

@@ -1,7 +1,6 @@
 package com.jiro4989.tkfm.model
 
 import java.io.*
-import java.util.Optional
 import java.util.Properties
 
 private val configDir = "config"
@@ -41,35 +40,31 @@ data class WindowPropertiesModel(
       return
     }
 
-    try {
-      FileInputStream(file).use { stream: InputStream ->
-        prop.load(InputStreamReader(stream, "UTF-8"))
-        prop.getProperty("x")?.let {
-          if (!it.isNullOrEmpty()) {
-            x = it.toDouble()
-          }
-        }
-
-        prop.getProperty("y")?.let {
-          if (!it.isNullOrEmpty()) {
-            y = it.toDouble()
-          }
-        }
-
-        prop.getProperty("width")?.let {
-          if (!it.isNullOrEmpty()) {
-            width = it.toDouble()
-          }
-        }
-
-        prop.getProperty("height")?.let {
-          if (!it.isNullOrEmpty()) {
-            height = it.toDouble()
-          }
+    FileInputStream(file).use { stream: InputStream ->
+      prop.load(InputStreamReader(stream, "UTF-8"))
+      prop.getProperty("x")?.let {
+        if (!it.isNullOrEmpty()) {
+          x = it.toDouble()
         }
       }
-    } catch (e: IOException) {
-      e.printStackTrace()
+
+      prop.getProperty("y")?.let {
+        if (!it.isNullOrEmpty()) {
+          y = it.toDouble()
+        }
+      }
+
+      prop.getProperty("width")?.let {
+        if (!it.isNullOrEmpty()) {
+          width = it.toDouble()
+        }
+      }
+
+      prop.getProperty("height")?.let {
+        if (!it.isNullOrEmpty()) {
+          height = it.toDouble()
+        }
+      }
     }
   }
 
@@ -99,19 +94,20 @@ data class ChoosedFilePropertiesModel(
     var openedFile: File? = null,
     var savedFile: File? = null
 ) : PropertiesInterface {
+  private val propertyKeyOpenedFileDir = "opened_file_dir"
+  private val propertyKeyOpenedFileFile = "opened_file_file"
+  private val propertyKeySavedFileDir = "saved_file_dir"
+  private val propertyKeySavedFileFile = "saved_file_file"
+
   override fun load() {
     if (!file.exists()) {
       return
     }
 
-    try {
-      FileInputStream(file).use { stream: InputStream ->
-        prop.load(InputStreamReader(stream, "UTF-8"))
-        openedFile = readFileFromProperties(prop, "opened_file_dir", "opened_file_file")
-        savedFile = readFileFromProperties(prop, "saved_file_dir", "saved_file_file")
-      }
-    } catch (e: IOException) {
-      e.printStackTrace()
+    FileInputStream(file).use { stream: InputStream ->
+      prop.load(InputStreamReader(stream, "UTF-8"))
+      openedFile = readFileFromProperties(prop, propertyKeyOpenedFileDir, propertyKeyOpenedFileFile)
+      savedFile = readFileFromProperties(prop, propertyKeySavedFileDir, propertyKeySavedFileFile)
     }
   }
 
@@ -119,13 +115,13 @@ data class ChoosedFilePropertiesModel(
     file.getParentFile().mkdirs()
 
     openedFile?.let {
-      prop.setProperty("opened_file_dir", it.parentFile.absolutePath)
-      prop.setProperty("opened_file_file", it.name)
+      prop.setProperty(propertyKeyOpenedFileDir, it.parentFile.absolutePath)
+      prop.setProperty(propertyKeyOpenedFileFile, it.name)
     }
 
     savedFile?.let {
-      prop.setProperty("saved_file_dir", it.parentFile.absolutePath)
-      prop.setProperty("saved_file_file", it.name)
+      prop.setProperty(propertyKeySavedFileDir, it.parentFile.absolutePath)
+      prop.setProperty(propertyKeySavedFileFile, it.name)
     }
 
     try {

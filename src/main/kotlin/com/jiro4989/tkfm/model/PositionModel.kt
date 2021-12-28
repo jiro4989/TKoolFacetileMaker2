@@ -12,4 +12,6 @@ data class PositionModel(val xProperty: DoubleProperty, val yProperty: DoublePro
     set(value) = yProperty.set(value)
   constructor() : this(DP(0.0), DP(0.0))
   constructor(x: Double, y: Double) : this(DP(x), DP(y))
+
+  operator fun div(scale: Double) = Pair(x / scale, y / scale)
 }

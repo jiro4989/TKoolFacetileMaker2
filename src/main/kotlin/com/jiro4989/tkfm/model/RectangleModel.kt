@@ -12,4 +12,6 @@ data class RectangleModel(val widthProperty: DoubleProperty, val heightProperty:
     set(value) = heightProperty.set(value)
 
   constructor(w: Double, h: Double) : this(DP(w), DP(h))
+
+  operator fun div(scale: Double) = Pair(width / scale, height / scale)
 }

@@ -60,6 +60,6 @@ class ImageFilesModelTest {
     i.select(index)
   }
 
-  private fun crop() = CroppingImageModel(rectangle = RectangleModel(144.0, 144.0))
+  private fun crop() = CroppingImageModel(croppingRectangle = RectangleModel(144.0, 144.0))
   private fun resourcePath(path: String) = this.javaClass.getResource(path).getPath()
 }
