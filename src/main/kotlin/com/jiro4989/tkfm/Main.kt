@@ -10,7 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 
-val title = "TKoolFacetileMaker2"
+val applicationTitle = "TKoolFacetileMaker2"
 
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
@@ -22,11 +22,16 @@ class Main : Application() {
   private lateinit var controller: MainViewController
   private lateinit var root: BorderPane
   private lateinit var stage: Stage
-  private val prop = WindowPropertiesModel()
+  private val windowProperty = WindowPropertiesModel()
+  private val applicationProperty = Properties()
 
   override fun start(primaryStage: Stage) {
+    this.javaClass.getResourceAsStream("properties/application.properties")?.bufferedReader().use {
+      applicationProperty.load(it)
+    }
     printApplicationInformation()
-    prop.load()
+
+    windowProperty.load()
     stage = primaryStage
     try {
       val loader = FXMLLoader(this.javaClass.getResource("fxml/main_view.fxml"))
@@ -40,11 +45,11 @@ class Main : Application() {
       stage.apply {
         setScene(scene)
         icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
-        setTitle(title)
-        setX(prop.x)
-        setY(prop.y)
-        setWidth(prop.width)
-        setHeight(prop.height)
+        setTitle(applicationTitle)
+        setX(windowProperty.x)
+        setY(windowProperty.y)
+        setWidth(windowProperty.width)
+        setHeight(windowProperty.height)
         show()
       }
     } catch (e: Exception) {
@@ -54,7 +59,7 @@ class Main : Application() {
 
   override fun stop() {
     controller.storeProperties()
-    prop.apply {
+    windowProperty.apply {
       x = stage.x
       y = stage.y
       width = stage.width
@@ -64,14 +69,10 @@ class Main : Application() {
   }
 
   fun printApplicationInformation() {
-    val property = Properties()
-    this.javaClass.getResourceAsStream("properties/application.properties")?.bufferedReader().use {
-      property.load(it)
-    }
-    val version = property.get("version")
-    val commitHash = property.get("commithash")
+    val version = applicationProperty.getProperty("version", "dev")
+    val commitHash = applicationProperty.getProperty("commithash", "dev")
     println("--------------------------------------------")
-    println("application_name: $title")
+    println("application_name: $applicationTitle")
     println("version: $version")
     println("commit_hash: $commitHash")
     println("document: README.txt")
