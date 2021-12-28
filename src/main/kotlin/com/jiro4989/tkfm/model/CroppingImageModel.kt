@@ -44,7 +44,7 @@ data class CroppingImageModel(
     /** トリミング座標 */
     val croppingPosition: PositionModel = PositionModel(0.0, 0.0),
     /** トリミング画像の矩形 */
-    val rectangle: RectangleModel
+    val croppingRectangle: RectangleModel
 ) {
 
   fun crop(): Image {
@@ -54,8 +54,8 @@ data class CroppingImageModel(
     // 座標と矩形にスケールをかけてトリミングサイズを調整
     var x = croppingPosition.x / scale
     var y = croppingPosition.y / scale
-    val width = rectangle.width / scale
-    val height = rectangle.height / scale
+    val width = croppingRectangle.width / scale
+    val height = croppingRectangle.height / scale
 
     // 0未満の座標はNGなので0で上書きして調整
     if (x < 0) x = 0.0
@@ -81,8 +81,8 @@ data class CroppingImageModel(
     val scale = scaleProperty.get() / 100
     var x = croppingPosition.x.toInt()
     var y = croppingPosition.y.toInt()
-    var width = rectangle.width.toInt()
-    var height = rectangle.height.toInt()
+    var width = croppingRectangle.width.toInt()
+    var height = croppingRectangle.height.toInt()
 
     val bImg = SwingFXUtils.fromFXImage(imageProperty.get(), null)
     val scaledImg = scaledImage(bImg, scale)
@@ -110,8 +110,8 @@ data class CroppingImageModel(
     val s = scaleProperty.get() / 100
     val w = bImg.width
     val h = bImg.height
-    val rectWidth = rectangle.width
-    val rectHeight = rectangle.height
+    val rectWidth = croppingRectangle.width
+    val rectHeight = croppingRectangle.height
 
     var xx = x
     var yy = y
@@ -152,8 +152,8 @@ data class CroppingImageModel(
 
   /** Centering */
   fun moveByMouse(x: Double, y: Double) {
-    val w = rectangle.width
-    val h = rectangle.height
+    val w = croppingRectangle.width
+    val h = croppingRectangle.height
     val xx = x - w / 2
     val yy = y - h / 2
     move(xx, yy)

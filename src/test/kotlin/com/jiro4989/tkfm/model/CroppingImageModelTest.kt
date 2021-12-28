@@ -183,7 +183,7 @@ class CroppingImageModelTest {
     val rect = RectangleModel(20.0, 30.0)
     val scale = 100.0
     val c = crop(img, pos, rect, scale)
-    val r = c.rectangle
+    val r = c.croppingRectangle
 
     assertEquals(20.0, r.width)
     assertEquals(30.0, r.height)
@@ -194,6 +194,6 @@ class CroppingImageModelTest {
       CroppingImageModel(
           imageProperty = SimpleObjectProperty(img),
           croppingPosition = pos,
-          rectangle = rect,
+          croppingRectangle = rect,
           scaleProperty = SimpleDoubleProperty(scale))
 }

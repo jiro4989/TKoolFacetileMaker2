@@ -127,7 +127,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     val selectedImageFormat = imageFormat.selectedImageFormat
     val rect = selectedImageFormat.rectangle
 
-    cropImage = CroppingImageModel(rectangle = rect)
+    cropImage = CroppingImageModel(croppingRectangle = rect)
     imageFiles = ImageFilesModel(cropImage)
     tileImage = TileImageModel(imageFormat)
 
