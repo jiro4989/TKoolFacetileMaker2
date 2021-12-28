@@ -178,14 +178,14 @@ data class CroppingImageModel(
   }
 
   fun setScale(scale: Double) {
-    val MIN_SCALE = 20.0
-    val MAX_SCALE = 200.0
+    val minScale = 20.0
+    val maxScale = 200.0
     var scale2 = scale
 
-    if (scale2 < MIN_SCALE) {
-      scale2 = MIN_SCALE
-    } else if (MAX_SCALE < scale2) {
-      scale2 = MAX_SCALE
+    if (scale2 < minScale) {
+      scale2 = minScale
+    } else if (maxScale < scale2) {
+      scale2 = maxScale
     }
 
     scaleProperty.set(scale2)
