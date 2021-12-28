@@ -10,7 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 
-val title = "TKoolFacetileMaker2"
+val applicationTitle = "TKoolFacetileMaker2"
 
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
@@ -40,7 +40,7 @@ class Main : Application() {
       stage.apply {
         setScene(scene)
         icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
-        setTitle(title)
+        setTitle(applicationTitle)
         setX(prop.x)
         setY(prop.y)
         setWidth(prop.width)
@@ -71,7 +71,7 @@ class Main : Application() {
     val version = property.get("version")
     val commitHash = property.get("commithash")
     println("--------------------------------------------")
-    println("application_name: $title")
+    println("application_name: $applicationTitle")
     println("version: $version")
     println("commit_hash: $commitHash")
     println("document: README.txt")
