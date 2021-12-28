@@ -1,7 +1,6 @@
 package com.jiro4989.tkfm.model
 
 import java.io.*
-import java.util.Optional
 import java.util.Properties
 
 private val configDir = "config"
