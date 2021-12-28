@@ -52,8 +52,7 @@ data class CroppingImageModel(
     val scale = scaleProperty.get() / 100
 
     // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var x = croppingPosition.x / scale
-    var y = croppingPosition.y / scale
+    var (x, y) = croppingPosition / scale
     val width = croppingRectangle.width / scale
     val height = croppingRectangle.height / scale
 
