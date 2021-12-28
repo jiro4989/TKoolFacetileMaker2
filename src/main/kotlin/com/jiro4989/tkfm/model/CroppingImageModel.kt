@@ -98,6 +98,7 @@ data class CroppingImageModel(
     return wImg
   }
 
+  /** トリミング座標を x, y の座標に変更し、トリミング画像を更新する。 座標が不正な範囲外の場合は下限値、上限値に変更して設定するため、異常な範囲指定に対して安全である。 */
   fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
     val s = scaleProperty.get() / 100
@@ -124,13 +125,10 @@ data class CroppingImageModel(
   fun moveLeft(n: Double) = move(x = croppingPosition.x - n)
   fun moveRight(n: Double) = move(x = croppingPosition.x + n)
 
-  /** Centering */
+  /** トリミング座標を指定して、画像をトリミングする。 座標はマウスでの設定を想定しており、座標はトリミング矩形の中央として解釈する。 */
   fun moveByMouse(x: Double, y: Double) {
-    val w = croppingRectangle.width
-    val h = croppingRectangle.height
-    val xx = x - w / 2
-    val yy = y - h / 2
-    move(xx, yy)
+    val (width, height) = croppingRectangle / 2.0
+    move(x - width, y - height)
   }
 
   fun clearImage() {
