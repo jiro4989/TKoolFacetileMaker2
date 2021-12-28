@@ -61,11 +61,6 @@ data class CroppingImageModel(
 
     val img = imageProperty.get()
 
-    // 画像サイズ0は通常起こり得ないはず
-    if (img.width <= 0 || img.height <= 0) {
-      return croppedImageProperty.get()
-    }
-
     // 座標に矩形幅を足した値が画像全体の幅より大きくなってはいけない
     if (img.width < x + width || img.height < y + height) {
       return croppedImageProperty.get()
