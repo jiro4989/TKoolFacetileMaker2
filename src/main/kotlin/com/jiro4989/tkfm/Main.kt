@@ -69,8 +69,8 @@ class Main : Application() {
   }
 
   fun printApplicationInformation() {
-    val version = applicationProperty.get("version")
-    val commitHash = applicationProperty.get("commithash")
+    val version = applicationProperty.getProperty("version", "dev")
+    val commitHash = applicationProperty.getProperty("commithash", "dev")
     println("--------------------------------------------")
     println("application_name: $applicationTitle")
     println("version: $version")
