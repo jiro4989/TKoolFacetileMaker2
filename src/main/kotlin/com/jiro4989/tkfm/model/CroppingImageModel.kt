@@ -53,8 +53,7 @@ data class CroppingImageModel(
 
     // 座標と矩形にスケールをかけてトリミングサイズを調整
     var (x, y) = croppingPosition / scale
-    val width = croppingRectangle.width / scale
-    val height = croppingRectangle.height / scale
+    val (width, height) = croppingRectangle / scale
 
     // 0未満の座標はNGなので0で上書きして調整
     if (x < 0) x = 0.0
