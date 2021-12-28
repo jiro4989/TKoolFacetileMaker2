@@ -23,11 +23,11 @@ class Main : Application() {
   private lateinit var root: BorderPane
   private lateinit var stage: Stage
   private val prop = WindowPropertiesModel()
-  private val property = Properties()
+  private val applicationProperty = Properties()
 
   override fun start(primaryStage: Stage) {
     this.javaClass.getResourceAsStream("properties/application.properties")?.bufferedReader().use {
-      property.load(it)
+      applicationProperty.load(it)
     }
     printApplicationInformation()
 
@@ -69,8 +69,8 @@ class Main : Application() {
   }
 
   fun printApplicationInformation() {
-    val version = property.get("version")
-    val commitHash = property.get("commithash")
+    val version = applicationProperty.get("version")
+    val commitHash = applicationProperty.get("commithash")
     println("--------------------------------------------")
     println("application_name: $applicationTitle")
     println("version: $version")
