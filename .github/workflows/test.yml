@@ -76,11 +76,14 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           java-package: jdk
           architecture: x64
+
+      - name: Set build version information
+        run: |
+          echo ORG_GRADLE_PROJECT_CI_VERSION="${VERSION}" >> $GITHUB_ENV
+          echo ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)" >> $GITHUB_ENV
+
       - name: Build
-        run: >
-          ORG_GRADLE_PROJECT_CI_VERSION="${VERSION}"
-          ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)"
-          ./gradlew build -x test
+        run: ./gradlew build -x test
 
       - name: Create artifact
         run: >
