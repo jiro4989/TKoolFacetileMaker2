@@ -243,7 +243,7 @@ tasks.register('runApp', Exec) {
   commandLine 'java',
     '--module-path', LIB_DIR,
     '--add-modules', APP_MODS.join(','),
-    '-jar', 'build/libs/tkfm-dev.jar'
+    '-jar', "build/libs/tkfm-${version}.jar"
 }
 
 if (project.hasProperty('CI_JMODS_DIR')) {
