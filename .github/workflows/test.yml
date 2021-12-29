@@ -19,6 +19,7 @@ name: test
 env:
   APP_NAME: 'tkfm'
   JAVA_VERSION: '17'
+  # スクリプト内から参照
   JAVAFX_VERSION: '17.0.1'
 
 defaults:
