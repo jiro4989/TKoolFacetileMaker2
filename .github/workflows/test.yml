@@ -48,7 +48,7 @@ jobs:
   build-artifact:
     runs-on: ${{ matrix.os }}
     env:
-      VERSION: ci
+      VERSION: 0.0.0-SNAPSHOT
     strategy:
       matrix:
         include:
