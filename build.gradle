@@ -82,11 +82,11 @@ dependencies {
   testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 
   // JavaFX
-  implementation "org.openjfx:javafx-fxml:16"
-  implementation "org.openjfx:javafx-base:16"
-  implementation "org.openjfx:javafx-controls:16"
-  implementation "org.openjfx:javafx-graphics:16"
-  implementation "org.openjfx:javafx-swing:16"
+  implementation "org.openjfx:javafx-fxml:17.0.1"
+  implementation "org.openjfx:javafx-base:17.0.1"
+  implementation "org.openjfx:javafx-controls:17.0.1"
+  implementation "org.openjfx:javafx-graphics:17.0.1"
+  implementation "org.openjfx:javafx-swing:17.0.1"
 
   implementation platform('org.jetbrains.kotlin:kotlin-bom')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -94,8 +94,8 @@ dependencies {
   testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
 }
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 application {
   // Define the main class for the application.
@@ -107,11 +107,11 @@ compileJava {
 }
 
 compileKotlin {
-  kotlinOptions.jvmTarget = "16"
+  kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-  kotlinOptions.jvmTarget = "16"
+  kotlinOptions.jvmTarget = "17"
 }
 
 javafx {
