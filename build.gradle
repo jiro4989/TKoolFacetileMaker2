@@ -13,9 +13,6 @@ buildscript {
       setUrl("https://plugins.gradle.org/m2/")
     }
   }
-  dependencies {
-    classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
-  }
 }
 
 plugins {
@@ -39,8 +36,6 @@ plugins {
 
   id "org.jetbrains.kotlin.jvm" version "1.6.0"
 }
-
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 // 変数定義
 
@@ -91,7 +86,7 @@ dependencies {
   implementation platform('org.jetbrains.kotlin:kotlin-bom')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
   testImplementation "org.jetbrains.kotlin:kotlin-test"
-  testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+  testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
 }
 
 sourceCompatibility = 16
@@ -100,6 +95,13 @@ targetCompatibility = 16
 application {
   // Define the main class for the application.
   getMainClass().set('com.jiro4989.tkfm.Main')
+}
+
+test {
+  useJUnitPlatform()
+  jacoco {
+    destinationFile = file("${buildDir}/jacoco/test.exec")
+  }
 }
 
 compileJava {
@@ -137,22 +139,12 @@ jar {
   duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-jacoco {
-  applyTo junitPlatformTest
-}
-
 tasks.register('junitPlatformJacocoReport', JacocoReport) {
   group = "Verification"
   description = "Jacocoを使ってテストのレポートを取得する"
 
   sourceSets sourceSets.main
-  executionData junitPlatformTest
-}
-
-junitPlatformTest {
-  jacoco {
-    destinationFile = file("${buildDir}/jacoco/test.exec")
-  }
+  executionData test
 }
 
 jacocoTestReport {
@@ -189,7 +181,6 @@ if (project.hasProperty('CI_VERSION')) {
 if (project.hasProperty('CI_COMMIT_HASH')) {
   commitHash = CI_COMMIT_HASH
 }
-
 
 // Version.javaにバージョン番号とコミットハッシュを埋め込んでコピーする。
 //
