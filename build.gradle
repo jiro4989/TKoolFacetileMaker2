@@ -13,9 +13,6 @@ buildscript {
       setUrl("https://plugins.gradle.org/m2/")
     }
   }
-  dependencies {
-    classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
-  }
 }
 
 plugins {
@@ -100,6 +97,10 @@ targetCompatibility = 16
 application {
   // Define the main class for the application.
   getMainClass().set('com.jiro4989.tkfm.Main')
+}
+
+test {
+  useJUnitPlatform()
 }
 
 compileJava {
