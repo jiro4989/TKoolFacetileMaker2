@@ -82,7 +82,7 @@ dependencies {
   testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 
   // JavaFX
-  implementation "org.openjfx:javafx-fxml:16"
+  implementation "org.openjfx:javafx-fxml:17.0.1"
   implementation "org.openjfx:javafx-base:16"
   implementation "org.openjfx:javafx-controls:16"
   implementation "org.openjfx:javafx-graphics:16"
