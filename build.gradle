@@ -182,7 +182,7 @@ spotless {
   }
 }
 
-version = 'dev'
+version = '0.0.0-SNAPSHOT'
 if (project.hasProperty('CI_VERSION')) {
   version = CI_VERSION
 }
