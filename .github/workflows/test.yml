@@ -18,8 +18,8 @@ name: test
 
 env:
   APP_NAME: 'tkfm'
-  JAVA_VERSION: '17'
-  JAVAFX_VERSION: '17'
+  JAVA_VERSION: '16'
+  JAVAFX_VERSION: '16'
 
 defaults:
   run:
