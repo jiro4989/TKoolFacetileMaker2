@@ -46,11 +46,14 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           java-package: jdk
           architecture: x64
+
+      - name: Set build version information
+        run: |
+          echo ORG_GRADLE_PROJECT_CI_VERSION="${GITHUB_REF##*/v}" >> $GITHUB_ENV
+          echo ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)" >> $GITHUB_ENV
+
       - name: Build
-        run: >
-          ORG_GRADLE_PROJECT_CI_VERSION="${GITHUB_REF##*/}"
-          ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)"
-          ./gradlew build -x test
+        run: ./gradlew build -x test
 
       - name: Create artifact
         run: >
@@ -58,7 +61,7 @@ jobs:
           ARCHIVE_CMD="${{ matrix.archive_cmd }}"
           ARTIFACT_EXT="${{ matrix.artifact_ext }}"
           ENTRYPOINT_SCRIPT_EXT="${{ matrix.entrypoint_script_ext }}"
-          VERSION="${GITHUB_REF##*/}"
+          VERSION="${ORG_GRADLE_PROJECT_CI_VERSION}"
           ./script/create_artifact.sh
 
       - name: Release
