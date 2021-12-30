@@ -22,14 +22,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.controller.MainViewController">
+<BorderPane prefHeight="877.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.controller.MainViewController">
   <top>
     <MenuBar id="menuBar" prefHeight="30.0" prefWidth="1280.0">
       <menus>
@@ -228,28 +227,6 @@
                                        </BorderPane.margin>
                                     </ScrollPane>
                                  </center>
-                                 <left>
-                                    <AnchorPane prefHeight="435.0" prefWidth="163.0">
-                                       <children>
-                                          <FlowPane alignment="BOTTOM_LEFT" columnHalignment="LEFT" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="149.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
-                                             <children>
-                                                <Label id="" prefHeight="30.0" prefWidth="106.0" text="トリミング：" />
-                                                <GridPane fx:id="croppedGridPane" gridLinesVisible="true" prefHeight="144.0" prefWidth="144.0">
-                                                   <children>
-                                                      <ImageView fx:id="croppedImageView" fitHeight="144.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                                   </children>
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                   <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                   </rowConstraints>
-                                                </GridPane>
-                                             </children>
-                                          </FlowPane>
-                                       </children>
-                                    </AnchorPane>
-                                 </left>
                               </BorderPane>
                            </center>
                         </BorderPane>
