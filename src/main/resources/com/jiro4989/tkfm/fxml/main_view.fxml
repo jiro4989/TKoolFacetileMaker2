@@ -24,6 +24,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -190,9 +191,9 @@
                            <center>
                               <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
                                  <content>
-                                    <AnchorPane id="AnchorPane">
+                                    <StackPane>
                                        <children>
-                                          <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true">
                                              <children>
                                                 <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                              </children>
@@ -203,22 +204,12 @@
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
-                                          <AnchorPane layoutX="206.5" layoutY="159.5" onMouseDragged="#focusGridPaneOnMouseDragged" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <GridPane fx:id="focusGridPane" gridLinesVisible="true" layoutX="0.5" layoutY="0.5" prefHeight="144.0" prefWidth="144.0">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                   <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                   </rowConstraints>
-                                                </GridPane>
-                                             </children>
-                                          </AnchorPane>
+                                          <Pane fx:id="focusShadowPaneTop" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneLeft" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneRight" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneBottom" prefHeight="200.0" prefWidth="200.0" />
                                        </children>
-                                    </AnchorPane>
+                                    </StackPane>
                                  </content>
                                  <BorderPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
