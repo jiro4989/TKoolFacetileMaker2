@@ -62,8 +62,6 @@ class MainViewController : Initializable {
   // Crop view
   @FXML private lateinit var cropImageGridPane: GridPane
   @FXML private lateinit var cropImageView: ImageView
-  @FXML private lateinit var croppedGridPane: GridPane
-  @FXML private lateinit var croppedImageView: ImageView
   @FXML private lateinit var focusGridPane: GridPane
   @FXML private lateinit var cropXLabel: Label
   @FXML private lateinit var cropYLabel: Label
@@ -165,11 +163,6 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
                 cropImage.imageHeightProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
 
-    Bindings.bindBidirectional(croppedGridPane.prefWidthProperty(), rect.widthProperty)
-    Bindings.bindBidirectional(croppedGridPane.prefHeightProperty(), rect.heightProperty)
-    Bindings.bindBidirectional(croppedImageView.imageProperty(), cropImage.croppedImageProperty)
-    Bindings.bindBidirectional(croppedImageView.fitWidthProperty(), rect.widthProperty)
-    Bindings.bindBidirectional(croppedImageView.fitHeightProperty(), rect.heightProperty)
     Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty)
     Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty)
     Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty)
