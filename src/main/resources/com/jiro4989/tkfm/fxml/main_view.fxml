@@ -191,9 +191,13 @@
                            <center>
                               <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
                                  <content>
-                                    <StackPane>
+                                    <AnchorPane>
                                        <children>
-                                          <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true">
+                                          <Pane fx:id="focusShadowPaneTop" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneLeft" layoutX="100.0" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneRight" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneBottom" layoutX="0.5" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
+                                          <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true" layoutX="0.5" layoutY="0.5">
                                              <children>
                                                 <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                              </children>
@@ -204,12 +208,8 @@
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
-                                          <Pane fx:id="focusShadowPaneTop" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneLeft" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneRight" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneBottom" prefHeight="200.0" prefWidth="200.0" />
                                        </children>
-                                    </StackPane>
+                                    </AnchorPane>
                                  </content>
                                  <BorderPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
