@@ -50,8 +50,13 @@ internal fun calcShadowLayerAxis(
   val halfCroppingWidth = croppingWidth / 2
   val halfCroppingHeight = croppingHeight / 2
 
-  val mx = if (mouseX < halfCroppingWidth) halfCroppingWidth else mouseX
-  val my = if (mouseY < halfCroppingHeight) halfCroppingHeight else mouseY
+  val mx =
+      if (mouseX < halfCroppingWidth) halfCroppingWidth
+      else if (imageWidth - halfCroppingWidth < mouseX) imageWidth - halfCroppingWidth else mouseX
+  val my =
+      if (mouseY < halfCroppingHeight) halfCroppingHeight
+      else if (imageHeight - halfCroppingHeight < mouseY) imageHeight - halfCroppingHeight
+      else mouseY
 
   val x1 = mx - halfCroppingWidth
   val y1 = my - halfCroppingHeight
