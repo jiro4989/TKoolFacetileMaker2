@@ -141,7 +141,7 @@
     </MenuBar>
   </top>
    <center>
-      <SplitPane dividerPositions="0.1" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
             <TitledPane animated="false" collapsible="false" prefHeight="9999.0" text="画像ビューワ">
               <content>
@@ -221,7 +221,7 @@
                   </BorderPane>
               </content>
             </TitledPane>
-            <TitledPane animated="false" collapsible="false" maxHeight="350.0" text="出力画像プレビュー">
+            <TitledPane animated="false" collapsible="false" maxHeight="9999.0" text="出力画像プレビュー">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
