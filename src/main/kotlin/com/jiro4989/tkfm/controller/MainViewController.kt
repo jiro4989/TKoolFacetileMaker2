@@ -226,7 +226,9 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     cropAxisComboBox.getSelectionModel().select(1 as Int?)
     cropScaleComboBox.setItems(cropScaleItems)
     cropScaleComboBox.getSelectionModel().select(1 as Int?)
-    cropScaleSlider.valueProperty().addListener { _ -> cropImage.move() }
+    cropScaleSlider.valueProperty().addListener { _, _, newValue ->
+      cropImage.setScale(newValue.toDouble())
+    }
 
     // properties
     prop.load()
