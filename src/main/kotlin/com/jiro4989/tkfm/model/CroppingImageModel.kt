@@ -198,6 +198,7 @@ data class CroppingImageModel(
     imageProperty.set(image)
     imageWidthProperty.set(image.getWidth())
     imageHeightProperty.set(image.getHeight())
+    move()
   }
 
   fun setScale(scale: Double) {
