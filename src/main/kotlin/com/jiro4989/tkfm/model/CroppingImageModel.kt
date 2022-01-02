@@ -33,7 +33,8 @@ internal fun calcShadowLayerAxis(
     croppingWidth: Double,
     croppingHeight: Double,
     croppingX: Double,
-    croppingY: Double
+    croppingY: Double,
+    croppingScale: Double
 ): ShadowLayerAxis {
   // +---------+----+
   // |top      |righ|
@@ -45,12 +46,15 @@ internal fun calcShadowLayerAxis(
   // |    |    4    |
   // |    |bottom   |
   // +----+---------+
+  val cs = croppingScale / 100.0
+  val iw = imageWidth * cs
+  val ih = imageHeight * cs
   val mx =
       if (croppingX < 0) 0.0
-      else if (imageWidth - croppingWidth < croppingX) imageWidth - croppingWidth else croppingX
+      else if (iw - croppingWidth < croppingX) iw - croppingWidth else croppingX
   val my =
       if (croppingY < 0) 0.0
-      else if (imageHeight - croppingHeight < croppingY) imageHeight - croppingHeight else croppingY
+      else if (ih - croppingHeight < croppingY) ih - croppingHeight else croppingY
 
   val x1 = mx
   val y1 = my
@@ -61,9 +65,9 @@ internal fun calcShadowLayerAxis(
   val y4 = y3
 
   val top = Rectangle(0.0, 0.0, x2, y2)
-  val right = Rectangle(x2, 0.0, imageWidth - x2, y4)
-  val left = Rectangle(0.0, y1, x1, imageHeight - y1)
-  val bottom = Rectangle(x3, y3, imageWidth - x3, imageHeight - y3)
+  val right = Rectangle(x2, 0.0, iw - x2, y4)
+  val left = Rectangle(0.0, y1, x1, ih - y1)
+  val bottom = Rectangle(x3, y3, iw - x3, ih - y3)
   val result = ShadowLayerAxis(top = top, right = right, left = left, bottom = bottom)
   return result
 }
@@ -222,11 +226,18 @@ data class CroppingImageModel(
       croppingWidth: Double = croppingRectangle.width,
       croppingHeight: Double = croppingRectangle.height,
       croppingX: Double = croppingPosition.x,
-      croppingY: Double = croppingPosition.y
+      croppingY: Double = croppingPosition.y,
+      croppingScale: Double = scaleProperty.get()
   ) {
     val axis =
         calcShadowLayerAxis(
-            imageWidth, imageHeight, croppingWidth, croppingHeight, croppingX, croppingY)
+            imageWidth,
+            imageHeight,
+            croppingWidth,
+            croppingHeight,
+            croppingX,
+            croppingY,
+            croppingScale)
 
     shadowTopLayerXProperty.set(axis.top.x)
     shadowTopLayerYProperty.set(axis.top.y)
