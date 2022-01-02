@@ -26,6 +26,46 @@ private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
   return newImage
 }
 
+/** 影レイヤの座標を計算して返却する */
+internal fun calcShadowLayerAxis(
+    imageWidth: Double,
+    imageHeight: Double,
+    croppingWidth: Double,
+    croppingHeight: Double,
+    mouseX: Double,
+    mouseY: Double
+): ShadowLayerAxis {
+  // +---------+----+
+  // |top      |righ|
+  // |    1    |t   |
+  // +----+----+2   |
+  // |left|    |    |
+  // |    |    |    |
+  // |   3+----+----+
+  // |    |    4    |
+  // |    |bottom   |
+  // +----+---------+
+  // マウス座標はトリミング矩形の中央。
+  // マウス座標からトリミング矩形の半分が基準の座標になる
+  val halfCroppingWidth = croppingWidth / 2
+  val halfCroppingHeight = croppingHeight / 2
+
+  val x1 = mouseX - halfCroppingWidth
+  val y1 = mouseY - halfCroppingHeight
+  val x2 = mouseX + halfCroppingWidth
+  val y2 = y1
+  val x3 = x1
+  val y3 = mouseY + halfCroppingHeight
+  val y4 = y3
+
+  val top = Rectangle(0.0, 0.0, x2, y2)
+  val right = Rectangle(x2, 0.0, imageWidth - x2, y4)
+  val left = Rectangle(0.0, y1, x1, imageHeight - y1)
+  val bottom = Rectangle(x3, y3, imageWidth - x3, imageHeight - y3)
+  val result = ShadowLayerAxis(top = top, right = right, left = left, bottom = bottom)
+  return result
+}
+
 /** 画像をトリミングするロジックを管理する。 */
 data class CroppingImageModel(
     // Properties
@@ -171,3 +211,8 @@ data class CroppingImageModel(
     move()
   }
 }
+
+internal data class Rectangle(val x: Double, val y: Double, val width: Double, val height: Double)
+
+internal data class ShadowLayerAxis(
+    val top: Rectangle, val right: Rectangle, val left: Rectangle, val bottom: Rectangle)

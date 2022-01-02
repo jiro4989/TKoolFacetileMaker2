@@ -189,6 +189,57 @@ class CroppingImageModelTest {
     assertEquals(30.0, r.height)
   }
 
+  @ParameterizedTest
+  @CsvSource(
+      "100.0, 200.0, 40.0, 30.0, 50.0, 40.0,     0.0, 0.0, 70.0, 25.0,    70.0, 0.0, 30.0, 55.0,    0.0, 25.0, 30.0, 175.0,    30.0, 55.0, 70.0, 145.0")
+  fun testCalcShadowLayerAxis(
+      imageWidth: Double,
+      imageHeight: Double,
+      croppingWidth: Double,
+      croppingHeight: Double,
+      mouseX: Double,
+      mouseY: Double,
+      wantTopX: Double,
+      wantTopY: Double,
+      wantTopWidth: Double,
+      wantTopHeight: Double,
+      wantRightX: Double,
+      wantRightY: Double,
+      wantRightWidth: Double,
+      wantRightHeight: Double,
+      wantLeftX: Double,
+      wantLeftY: Double,
+      wantLeftWidth: Double,
+      wantLeftHeight: Double,
+      wantBottomX: Double,
+      wantBottomY: Double,
+      wantBottomWidth: Double,
+      wantBottomHeight: Double
+  ) {
+    val got =
+        calcShadowLayerAxis(imageWidth, imageHeight, croppingWidth, croppingHeight, mouseX, mouseY)
+
+    assertEquals(got.top.x, wantTopX)
+    assertEquals(got.top.y, wantTopY)
+    assertEquals(got.top.width, wantTopWidth)
+    assertEquals(got.top.height, wantTopHeight)
+
+    assertEquals(got.right.x, wantRightX)
+    assertEquals(got.right.y, wantRightY)
+    assertEquals(got.right.width, wantRightWidth)
+    assertEquals(got.right.height, wantRightHeight)
+
+    assertEquals(got.left.x, wantLeftX)
+    assertEquals(got.left.y, wantLeftY)
+    assertEquals(got.left.width, wantLeftWidth)
+    assertEquals(got.left.height, wantLeftHeight)
+
+    assertEquals(got.bottom.x, wantBottomX)
+    assertEquals(got.bottom.y, wantBottomY)
+    assertEquals(got.bottom.width, wantBottomWidth)
+    assertEquals(got.bottom.height, wantBottomHeight)
+  }
+
   private fun resourcePath(path: String) = this.javaClass.getResource(path).getPath()
   private fun crop(img: Image, pos: PositionModel, rect: RectangleModel, scale: Double) =
       CroppingImageModel(
