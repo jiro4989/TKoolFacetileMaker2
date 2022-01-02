@@ -1,6 +1,6 @@
 ---
-name: バグ報告テンプレート
-about: 不具合報告用のテンプレート
+name: バグ報告
+about: 不具合報告
 title: ''
 labels: bug
 assignees: jiro4989

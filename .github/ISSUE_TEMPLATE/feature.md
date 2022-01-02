@@ -1,6 +1,6 @@
 ---
-name: 機能要望テンプレート
-about: 新機能に関する要望
+name: 機能要望
+about: 新機能・機能改善に関する要望
 title: ''
 labels: feature
 assignees: jiro4989
