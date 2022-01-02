@@ -193,10 +193,6 @@
                                  <content>
                                     <AnchorPane onMouseDragged="#focusGridPaneOnMouseDragged">
                                        <children>
-                                          <Pane fx:id="focusShadowPaneTop" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneLeft" layoutX="100.0" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneRight" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
-                                          <Pane fx:id="focusShadowPaneBottom" layoutX="0.5" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
                                           <GridPane id="GridPane" fx:id="cropImageGridPane" gridLinesVisible="true" layoutX="0.5" layoutY="0.5">
                                              <children>
                                                 <ImageView fx:id="cropImageView" fitHeight="417.75" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -208,6 +204,10 @@
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
+                                          <Pane fx:id="focusShadowPaneTop" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneLeft" layoutX="100.0" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneRight" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
+                                          <Pane fx:id="focusShadowPaneBottom" layoutX="0.5" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>
