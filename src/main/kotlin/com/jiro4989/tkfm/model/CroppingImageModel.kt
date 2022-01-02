@@ -112,13 +112,7 @@ data class CroppingImageModel(
     val croppingRectangle: RectangleModel
 ) {
   init {
-    val imageWidth = imageWidthProperty.get()
-    val imageHeight = imageHeightProperty.get()
-    val croppingWidth = croppingRectangle.width
-    val croppingHeight = croppingRectangle.height
-    val mouseX = 144.0
-    val mouseY = 144.0
-    setShadowLayerAxis(imageWidth, imageHeight, croppingWidth, croppingHeight, mouseX, mouseY)
+    setShadowLayerAxis(croppingX = 10.0, croppingY = 10.0)
   }
 
   fun cropByBufferedImage(): Image {
@@ -168,6 +162,7 @@ data class CroppingImageModel(
 
     croppingPosition.x = xx
     croppingPosition.y = yy
+    setShadowLayerAxis(croppingX = xx, croppingY = yy)
   }
 
   fun moveUp(n: Double) = move(y = croppingPosition.y - n)
@@ -221,15 +216,16 @@ data class CroppingImageModel(
   }
 
   private fun setShadowLayerAxis(
-      imageWidth: Double,
-      imageHeight: Double,
-      croppingWidth: Double,
-      croppingHeight: Double,
-      mouseX: Double,
-      mouseY: Double
+      imageWidth: Double = imageWidthProperty.get(),
+      imageHeight: Double = imageHeightProperty.get(),
+      croppingWidth: Double = croppingRectangle.width,
+      croppingHeight: Double = croppingRectangle.height,
+      croppingX: Double = croppingPosition.x,
+      croppingY: Double = croppingPosition.y
   ) {
     val axis =
-        calcShadowLayerAxis(imageWidth, imageHeight, croppingWidth, croppingHeight, mouseX, mouseY)
+        calcShadowLayerAxis(
+            imageWidth, imageHeight, croppingWidth, croppingHeight, croppingX, croppingY)
 
     shadowTopLayerXProperty.set(axis.top.x)
     shadowTopLayerYProperty.set(axis.top.y)
