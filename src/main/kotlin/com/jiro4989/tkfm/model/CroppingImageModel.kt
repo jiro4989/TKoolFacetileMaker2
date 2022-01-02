@@ -147,7 +147,10 @@ data class CroppingImageModel(
     return wImg
   }
 
-  /** トリミング座標を x, y の座標に変更し、トリミング画像を更新する。 座標が不正な範囲外の場合は下限値、上限値に変更して設定するため、異常な範囲指定に対して安全である。 */
+  /**
+   * トリミング座標を x, y の座標に変更し、トリミング画像を更新する。 座標が不正な範囲外の場合は下限値、上限値に変更して設定するため、異常な範囲指定に対して安全である。
+   * 少数の細かい値を許容しないため、単数を切り捨てるために整数に変換してから少数に戻す。
+   */
   fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
     val s = scaleProperty.get() / 100
@@ -163,6 +166,10 @@ data class CroppingImageModel(
     if (h * s - rectHeight < yy) yy = h * s - rectHeight
     if (xx < 0) xx = 0.0
     if (yy < 0) yy = 0.0
+
+    // 単数切り捨て
+    xx = xx.toInt().toDouble()
+    yy = yy.toInt().toDouble()
 
     croppingPosition.x = xx
     croppingPosition.y = yy
