@@ -14,25 +14,6 @@ import org.testfx.framework.junit5.*
 class CroppingImageModelTest {
   @ParameterizedTest
   @CsvSource(
-      "50.0, 0.0, 0.0, 40.0, 40.0",
-      "100.0, -5.0, 0.0, 20.0, 20.0",
-      "100.0, 0.0, -5.0, 20.0, 20.0",
-      "100.0, 0.0, 0.0, 20.0, 20.0")
-  fun testCrop(scale: Double, x: Double, y: Double, wantWidth: Double, wantHeight: Double) {
-    val path = resourcePath("/sample1.png")
-    val file = File(path)
-    val img = Image(file.toURI().toString())
-    val pos = PositionModel(x, y)
-    val rect = RectangleModel(20.0, 20.0)
-    val c = crop(img, pos, rect, scale)
-    val got = c.crop()
-
-    assertEquals(wantWidth, got.width)
-    assertEquals(wantHeight, got.height)
-  }
-
-  @ParameterizedTest
-  @CsvSource(
       "50.0, 0.0, 0.0, 10.0, 10.0, 10.0, 10.0",
       "50.0, 5.0, 5.0, 10.0, 10.0, 5.0, 5.0",
       "100.0, 0.0, 0.0, 20.0, 20.0, 20.0, 20.0",
@@ -98,8 +79,6 @@ class CroppingImageModelTest {
     pos = c.croppingPosition
     assertEquals(wantX, pos.x)
     assertEquals(wantY, pos.y)
-    assertEquals(20.0, c.croppedImageProperty.get().width)
-    assertEquals(30.0, c.croppedImageProperty.get().height)
   }
 
   @ParameterizedTest

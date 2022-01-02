@@ -80,8 +80,6 @@ data class CroppingImageModel(
 
     /** トリミング対象の画像 */
     val imageProperty: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage()),
-    /** トリミングされた結果のプレビュー画像 */
-    val croppedImageProperty: ObjectProperty<Image> = SimpleObjectProperty(WritableImage(144, 144)),
     /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
     val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(288.0),
     /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
@@ -94,29 +92,6 @@ data class CroppingImageModel(
     /** トリミング画像の矩形 */
     val croppingRectangle: RectangleModel
 ) {
-
-  fun crop(): Image {
-    // 画面上は百分率で表示しているため少数に変換
-    val scale = scaleProperty.get() / 100
-
-    // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var (x, y) = croppingPosition / scale
-    val (width, height) = croppingRectangle / scale
-
-    // 0未満の座標はNGなので0で上書きして調整
-    if (x < 0) x = 0.0
-    if (y < 0) y = 0.0
-
-    val img = imageProperty.get()
-
-    // 座標に矩形幅を足した値が画像全体の幅より大きくなってはいけない
-    if (img.width < x + width || img.height < y + height) {
-      return croppedImageProperty.get()
-    }
-
-    val pix = img.pixelReader
-    return WritableImage(pix, x.toInt(), y.toInt(), width.toInt(), height.toInt())
-  }
 
   fun cropByBufferedImage(): Image {
     val scale = scaleProperty.get() / 100
@@ -165,7 +140,6 @@ data class CroppingImageModel(
 
     croppingPosition.x = xx
     croppingPosition.y = yy
-    croppedImageProperty.set(crop())
   }
 
   fun moveUp(n: Double) = move(y = croppingPosition.y - n)
@@ -201,7 +175,6 @@ data class CroppingImageModel(
     imageProperty.set(image)
     imageWidthProperty.set(image.getWidth())
     imageHeightProperty.set(image.getHeight())
-    croppedImageProperty.set(crop())
   }
 
   fun setScale(scale: Double) {
