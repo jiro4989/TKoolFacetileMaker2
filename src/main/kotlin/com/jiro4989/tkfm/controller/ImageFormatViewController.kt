@@ -1,9 +1,12 @@
 package com.jiro4989.tkfm.controller
 
 import com.jiro4989.tkfm.model.ImageFormatModel
+import com.jiro4989.tkfm.model.ImageFormatViewModel
 import com.jiro4989.tkfm.model.RectangleModel
-import com.jiro4989.tkfm.util.isInteger
+import com.jiro4989.tkfm.model.isAvailableInteger
+import javafx.beans.binding.Bindings
 import javafx.fxml.FXML
+import javafx.scene.control.Button
 import javafx.scene.control.TextField
 
 class ImageFormatViewController {
@@ -12,22 +15,37 @@ class ImageFormatViewController {
   @FXML private lateinit var colInput: TextField
   @FXML private lateinit var tileWidthInput: TextField
   @FXML private lateinit var tileHeightInput: TextField
+  @FXML private lateinit var okButton: Button
+  private val imageFormatViewModel = ImageFormatViewModel()
   private var ok = false
 
   @FXML
   private fun initialize() {
-    setListener(rowInput)
-    setListener(colInput)
-    setListener(tileWidthInput)
-    setListener(tileHeightInput)
+    Bindings.bindBidirectional(nameInput.textProperty(), imageFormatViewModel.nameProperty)
+    Bindings.bindBidirectional(rowInput.textProperty(), imageFormatViewModel.rowProperty)
+    Bindings.bindBidirectional(colInput.textProperty(), imageFormatViewModel.colProperty)
+    Bindings.bindBidirectional(
+        tileWidthInput.textProperty(), imageFormatViewModel.tileWidthProperty)
+    Bindings.bindBidirectional(
+        tileHeightInput.textProperty(), imageFormatViewModel.tileHeightProperty)
+    setIntegerChangeListener(rowInput)
+    setIntegerChangeListener(colInput)
+    setIntegerChangeListener(tileWidthInput)
+    setIntegerChangeListener(tileHeightInput)
   }
 
-  private fun setListener(input: TextField) {
+  private fun setIntegerChangeListener(input: TextField) {
     input.textProperty().addListener { _, oldValue, newValue ->
-      if (!isInteger(newValue) || "0".equals(newValue)) {
+      if (!isAvailableInteger(newValue, true)) {
         input.text = oldValue
       }
     }
+  }
+
+  /** OKボタンの押せる/押せないの状態を切り替える。 切り替えはTextFieldがすべて正常な値を設定しているかどうか */
+  @FXML
+  private fun changeStateOKButton() {
+    okButton.setDisable(!imageFormatViewModel.validate())
   }
 
   @FXML
