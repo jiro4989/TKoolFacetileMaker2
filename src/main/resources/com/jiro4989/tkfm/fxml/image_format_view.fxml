@@ -46,12 +46,6 @@
 
 <VBox prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jiro4989.tkfm.controller.ImageFormatViewController">
   <children>
-      <AnchorPane>
-         <children>
-            <Label text="画像フォーマット" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-      <Separator prefWidth="200.0" />
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

@@ -18,6 +18,7 @@ class ImageFormatStage : Stage {
 
       // UI conficuration
       val scene = Scene(root)
+      setTitle("画像フォーマットを追加")
       setX(windowX + 50.0)
       setY(windowY + 50.0)
       setScene(scene)
