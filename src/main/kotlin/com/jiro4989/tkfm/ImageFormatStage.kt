@@ -10,7 +10,7 @@ import javafx.stage.*
 class ImageFormatStage : Stage {
   private lateinit var controller: ImageFormatViewController
 
-  constructor() {
+  constructor(windowX: Double, windowY: Double) {
     try {
       val loader = FXMLLoader(this.javaClass.getResource("fxml/image_format_view.fxml"))
       val root = loader.load() as VBox
@@ -18,6 +18,8 @@ class ImageFormatStage : Stage {
 
       // UI conficuration
       val scene = Scene(root)
+      setX(windowX + 50.0)
+      setY(windowY + 50.0)
       setScene(scene)
       initStyle(StageStyle.UTILITY)
       initModality(Modality.APPLICATION_MODAL)
