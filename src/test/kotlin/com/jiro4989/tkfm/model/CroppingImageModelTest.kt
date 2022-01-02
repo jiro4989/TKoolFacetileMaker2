@@ -14,25 +14,6 @@ import org.testfx.framework.junit5.*
 class CroppingImageModelTest {
   @ParameterizedTest
   @CsvSource(
-      "50.0, 0.0, 0.0, 40.0, 40.0",
-      "100.0, -5.0, 0.0, 20.0, 20.0",
-      "100.0, 0.0, -5.0, 20.0, 20.0",
-      "100.0, 0.0, 0.0, 20.0, 20.0")
-  fun testCrop(scale: Double, x: Double, y: Double, wantWidth: Double, wantHeight: Double) {
-    val path = resourcePath("/sample1.png")
-    val file = File(path)
-    val img = Image(file.toURI().toString())
-    val pos = PositionModel(x, y)
-    val rect = RectangleModel(20.0, 20.0)
-    val c = crop(img, pos, rect, scale)
-    val got = c.crop()
-
-    assertEquals(wantWidth, got.width)
-    assertEquals(wantHeight, got.height)
-  }
-
-  @ParameterizedTest
-  @CsvSource(
       "50.0, 0.0, 0.0, 10.0, 10.0, 10.0, 10.0",
       "50.0, 5.0, 5.0, 10.0, 10.0, 5.0, 5.0",
       "100.0, 0.0, 0.0, 20.0, 20.0, 20.0, 20.0",
@@ -98,8 +79,6 @@ class CroppingImageModelTest {
     pos = c.croppingPosition
     assertEquals(wantX, pos.x)
     assertEquals(wantY, pos.y)
-    assertEquals(20.0, c.croppedImageProperty.get().width)
-    assertEquals(30.0, c.croppedImageProperty.get().height)
   }
 
   @ParameterizedTest
@@ -187,6 +166,80 @@ class CroppingImageModelTest {
 
     assertEquals(20.0, r.width)
     assertEquals(30.0, r.height)
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+      // 正常系
+      "100.0, 200.0, 40.0, 30.0, 30.0, 25.0, 100.0,     0.0, 0.0, 70.0, 25.0,    70.0, 0.0, 30.0, 55.0,    0.0, 25.0, 30.0, 175.0,    30.0, 55.0, 70.0, 145.0",
+      // 左上
+      "100.0, 200.0, 40.0, 30.0, 0.0, 0.0, 100.0,       0.0, 0.0, 40.0, 0.0,     40.0, 0.0, 60.0, 30.0,    0.0, 0.0, 0.0, 200.0,      0.0, 30.0, 100.0, 170.0",
+      // 右上
+      "100.0, 200.0, 40.0, 30.0, 60.0, 0.0, 100.0,      0.0, 0.0, 100.0, 0.0,    100.0, 0.0, 0.0, 30.0,    0.0, 0.0, 60.0, 200.0,     60.0, 30.0, 40.0, 170.0",
+      // 左下
+      "100.0, 200.0, 40.0, 30.0, 0.0, 170.0, 100.0,     0.0, 0.0, 40.0, 170.0,   40.0, 0.0, 60.0, 200.0,   0.0, 170.0, 0.0, 30.0,     0.0, 200.0, 100.0, 0.0",
+      // 右下
+      "100.0, 200.0, 40.0, 30.0, 60.0, 170.0, 100.0,    0.0, 0.0, 100.0, 170.0,  100.0, 0.0, 0.0, 200.0,   0.0, 170.0, 60.0, 30.0,    60.0, 200.0, 40.0, 0.0",
+      // 左上。マウス座標がトリミング幅の中央よりも小さい幅
+      "100.0, 200.0, 40.0, 30.0, -1.0, -1.0, 100.0,     0.0, 0.0, 40.0, 0.0,     40.0, 0.0, 60.0, 30.0,    0.0, 0.0, 0.0, 200.0,      0.0, 30.0, 100.0, 170.0",
+      // 右下。マウス座標＋トリミング幅が画像の領域を超える
+      "100.0, 200.0, 40.0, 30.0, 110.0, 210.0, 100.0,   0.0, 0.0, 100.0, 170.0,  100.0, 0.0, 0.0, 200.0,   0.0, 170.0, 60.0, 30.0,    60.0, 200.0, 40.0, 0.0",
+      // 正常系の拡縮0.5倍
+      "100.0, 200.0, 40.0, 30.0, 30.0, 25.0, 50.0,      0.0, 0.0, 50.0, 25.0,    50.0, 0.0, 0.0, 55.0,     0.0, 25.0, 10.0, 75.0,     10.0, 55.0, 40.0, 45.0")
+  fun testCalcShadowLayerAxis(
+      imageWidth: Double,
+      imageHeight: Double,
+      croppingWidth: Double,
+      croppingHeight: Double,
+      croppingX: Double,
+      croppingY: Double,
+      croppingScale: Double,
+      wantTopX: Double,
+      wantTopY: Double,
+      wantTopWidth: Double,
+      wantTopHeight: Double,
+      wantRightX: Double,
+      wantRightY: Double,
+      wantRightWidth: Double,
+      wantRightHeight: Double,
+      wantLeftX: Double,
+      wantLeftY: Double,
+      wantLeftWidth: Double,
+      wantLeftHeight: Double,
+      wantBottomX: Double,
+      wantBottomY: Double,
+      wantBottomWidth: Double,
+      wantBottomHeight: Double
+  ) {
+    val got =
+        calcShadowLayerAxis(
+            imageWidth,
+            imageHeight,
+            croppingWidth,
+            croppingHeight,
+            croppingX,
+            croppingY,
+            croppingScale)
+
+    assertEquals(got.top.x, wantTopX)
+    assertEquals(got.top.y, wantTopY)
+    assertEquals(got.top.width, wantTopWidth)
+    assertEquals(got.top.height, wantTopHeight)
+
+    assertEquals(got.right.x, wantRightX)
+    assertEquals(got.right.y, wantRightY)
+    assertEquals(got.right.width, wantRightWidth)
+    assertEquals(got.right.height, wantRightHeight)
+
+    assertEquals(got.left.x, wantLeftX)
+    assertEquals(got.left.y, wantLeftY)
+    assertEquals(got.left.width, wantLeftWidth)
+    assertEquals(got.left.height, wantLeftHeight)
+
+    assertEquals(got.bottom.x, wantBottomX)
+    assertEquals(got.bottom.y, wantBottomY)
+    assertEquals(got.bottom.width, wantBottomWidth)
+    assertEquals(got.bottom.height, wantBottomHeight)
   }
 
   private fun resourcePath(path: String) = this.javaClass.getResource(path).getPath()

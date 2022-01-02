@@ -15,3 +15,8 @@ GridPane > .label {
     -fx-alignment: center;
     -fx-border-style: solid;
 }
+
+AnchorPane > Pane {
+    -fx-background-color: gray;
+    -fx-opacity: 0.5;
+}

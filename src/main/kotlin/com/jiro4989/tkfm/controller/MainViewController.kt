@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
+import javafx.scene.layout.Pane
 import javafx.scene.layout.RowConstraints
 import javafx.stage.FileChooser
 import javafx.stage.FileChooser.ExtensionFilter
@@ -62,12 +63,15 @@ class MainViewController : Initializable {
   // Crop view
   @FXML private lateinit var cropImageGridPane: GridPane
   @FXML private lateinit var cropImageView: ImageView
-  @FXML private lateinit var focusGridPane: GridPane
   @FXML private lateinit var cropXLabel: Label
   @FXML private lateinit var cropYLabel: Label
   @FXML private lateinit var cropScaleLabel: Label
   @FXML private lateinit var cropScaleSlider: Slider
   @FXML private lateinit var cropAxisComboBox: ComboBox<Int>
+  @FXML private lateinit var focusShadowPaneTop: Pane
+  @FXML private lateinit var focusShadowPaneLeft: Pane
+  @FXML private lateinit var focusShadowPaneRight: Pane
+  @FXML private lateinit var focusShadowPaneBottom: Pane
 
   private val cropAxisItems: ObservableList<Int> =
       FXCollections.observableArrayList(1, 5, 10, 25, 50)
@@ -140,6 +144,43 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     rect.widthProperty.addListener { _ -> resetOutputGridPane() }
     rect.heightProperty.addListener { _ -> resetOutputGridPane() }
 
+    // フォーカス用の影レイヤ
+    Bindings.bindBidirectional(
+        focusShadowPaneTop.layoutXProperty(), cropImage.shadowTopLayerXProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneTop.layoutYProperty(), cropImage.shadowTopLayerYProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneTop.prefWidthProperty(), cropImage.shadowTopLayerWidthProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneTop.prefHeightProperty(), cropImage.shadowTopLayerHeightProperty)
+
+    Bindings.bindBidirectional(
+        focusShadowPaneRight.layoutXProperty(), cropImage.shadowRightLayerXProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneRight.layoutYProperty(), cropImage.shadowRightLayerYProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneRight.prefWidthProperty(), cropImage.shadowRightLayerWidthProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneRight.prefHeightProperty(), cropImage.shadowRightLayerHeightProperty)
+
+    Bindings.bindBidirectional(
+        focusShadowPaneLeft.layoutXProperty(), cropImage.shadowLeftLayerXProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneLeft.layoutYProperty(), cropImage.shadowLeftLayerYProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneLeft.prefWidthProperty(), cropImage.shadowLeftLayerWidthProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneLeft.prefHeightProperty(), cropImage.shadowLeftLayerHeightProperty)
+
+    Bindings.bindBidirectional(
+        focusShadowPaneBottom.layoutXProperty(), cropImage.shadowBottomLayerXProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneBottom.layoutYProperty(), cropImage.shadowBottomLayerYProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneBottom.prefWidthProperty(), cropImage.shadowBottomLayerWidthProperty)
+    Bindings.bindBidirectional(
+        focusShadowPaneBottom.prefHeightProperty(), cropImage.shadowBottomLayerHeightProperty)
+
     cropImageGridPane.prefWidthProperty()
         .bind(
             Bindings.multiply(
@@ -163,10 +204,6 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
                 cropImage.imageHeightProperty,
                 Bindings.divide(cropScaleSlider.valueProperty(), 100)))
 
-    Bindings.bindBidirectional(focusGridPane.layoutXProperty(), pos.xProperty)
-    Bindings.bindBidirectional(focusGridPane.layoutYProperty(), pos.yProperty)
-    Bindings.bindBidirectional(focusGridPane.prefWidthProperty(), rect.widthProperty)
-    Bindings.bindBidirectional(focusGridPane.prefHeightProperty(), rect.heightProperty)
     val cropXConv: StringConverter<Number> = NumberStringConverter()
     Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty, cropXConv)
     val cropYConv: StringConverter<Number> = NumberStringConverter()

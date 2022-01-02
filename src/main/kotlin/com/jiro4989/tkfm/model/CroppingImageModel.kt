@@ -26,18 +26,87 @@ private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
   return newImage
 }
 
+/** 影レイヤの座標を計算して返却する。croppingX,Yは中央の矩形の左上の頂点の座標。 */
+internal fun calcShadowLayerAxis(
+    imageWidth: Double,
+    imageHeight: Double,
+    croppingWidth: Double,
+    croppingHeight: Double,
+    croppingX: Double,
+    croppingY: Double,
+    croppingScale: Double
+): ShadowLayerAxis {
+  // +---------+----+
+  // |top      |righ|
+  // |    1    |t   |
+  // +----+----+2   |
+  // |left|    |    |
+  // |    |    |    |
+  // |   3+----+----+
+  // |    |    4    |
+  // |    |bottom   |
+  // +----+---------+
+  val cs = croppingScale / 100.0
+  val iw = imageWidth * cs
+  val ih = imageHeight * cs
+  val mx =
+      if (croppingX < 0) 0.0
+      else if (iw - croppingWidth < croppingX) iw - croppingWidth else croppingX
+  val my =
+      if (croppingY < 0) 0.0
+      else if (ih - croppingHeight < croppingY) ih - croppingHeight else croppingY
+
+  val x1 = mx
+  val y1 = my
+  val x2 = mx + croppingWidth
+  val y2 = y1
+  val x3 = x1
+  val y3 = my + croppingHeight
+  val y4 = y3
+
+  val top = Rectangle(0.0, 0.0, x2, y2)
+  val right = Rectangle(x2, 0.0, iw - x2, y4)
+  val left = Rectangle(0.0, y1, x1, ih - y1)
+  val bottom = Rectangle(x3, y3, iw - x3, ih - y3)
+  val result = ShadowLayerAxis(top = top, right = right, left = left, bottom = bottom)
+  return result
+}
+
 /** 画像をトリミングするロジックを管理する。 */
 data class CroppingImageModel(
     // Properties
 
     /** トリミング対象の画像 */
     val imageProperty: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage()),
-    /** トリミングされた結果のプレビュー画像 */
-    val croppedImageProperty: ObjectProperty<Image> = SimpleObjectProperty(WritableImage(144, 144)),
     /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
     val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(288.0),
     /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
     val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+
+    // Top
+    val shadowTopLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowTopLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowTopLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowTopLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+
+    // Right
+    val shadowRightLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowRightLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowRightLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowRightLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+
+    // Left
+    val shadowLeftLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowLeftLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowLeftLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowLeftLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+
+    // Bottom
+    val shadowBottomLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowBottomLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
+    val shadowBottomLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+
     /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
     val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
 
@@ -46,28 +115,8 @@ data class CroppingImageModel(
     /** トリミング画像の矩形 */
     val croppingRectangle: RectangleModel
 ) {
-
-  fun crop(): Image {
-    // 画面上は百分率で表示しているため少数に変換
-    val scale = scaleProperty.get() / 100
-
-    // 座標と矩形にスケールをかけてトリミングサイズを調整
-    var (x, y) = croppingPosition / scale
-    val (width, height) = croppingRectangle / scale
-
-    // 0未満の座標はNGなので0で上書きして調整
-    if (x < 0) x = 0.0
-    if (y < 0) y = 0.0
-
-    val img = imageProperty.get()
-
-    // 座標に矩形幅を足した値が画像全体の幅より大きくなってはいけない
-    if (img.width < x + width || img.height < y + height) {
-      return croppedImageProperty.get()
-    }
-
-    val pix = img.pixelReader
-    return WritableImage(pix, x.toInt(), y.toInt(), width.toInt(), height.toInt())
+  init {
+    setShadowLayerAxis(croppingX = 10.0, croppingY = 10.0)
   }
 
   fun cropByBufferedImage(): Image {
@@ -117,7 +166,7 @@ data class CroppingImageModel(
 
     croppingPosition.x = xx
     croppingPosition.y = yy
-    croppedImageProperty.set(crop())
+    setShadowLayerAxis(croppingX = xx, croppingY = yy)
   }
 
   fun moveUp(n: Double) = move(y = croppingPosition.y - n)
@@ -153,7 +202,7 @@ data class CroppingImageModel(
     imageProperty.set(image)
     imageWidthProperty.set(image.getWidth())
     imageHeightProperty.set(image.getHeight())
-    croppedImageProperty.set(crop())
+    move()
   }
 
   fun setScale(scale: Double) {
@@ -170,4 +219,49 @@ data class CroppingImageModel(
     scaleProperty.set(scale2)
     move()
   }
+
+  private fun setShadowLayerAxis(
+      imageWidth: Double = imageWidthProperty.get(),
+      imageHeight: Double = imageHeightProperty.get(),
+      croppingWidth: Double = croppingRectangle.width,
+      croppingHeight: Double = croppingRectangle.height,
+      croppingX: Double = croppingPosition.x,
+      croppingY: Double = croppingPosition.y,
+      croppingScale: Double = scaleProperty.get()
+  ) {
+    val axis =
+        calcShadowLayerAxis(
+            imageWidth,
+            imageHeight,
+            croppingWidth,
+            croppingHeight,
+            croppingX,
+            croppingY,
+            croppingScale)
+
+    shadowTopLayerXProperty.set(axis.top.x)
+    shadowTopLayerYProperty.set(axis.top.y)
+    shadowTopLayerWidthProperty.set(axis.top.width)
+    shadowTopLayerHeightProperty.set(axis.top.height)
+
+    shadowRightLayerXProperty.set(axis.right.x)
+    shadowRightLayerYProperty.set(axis.right.y)
+    shadowRightLayerWidthProperty.set(axis.right.width)
+    shadowRightLayerHeightProperty.set(axis.right.height)
+
+    shadowLeftLayerXProperty.set(axis.left.x)
+    shadowLeftLayerYProperty.set(axis.left.y)
+    shadowLeftLayerWidthProperty.set(axis.left.width)
+    shadowLeftLayerHeightProperty.set(axis.left.height)
+
+    shadowBottomLayerXProperty.set(axis.bottom.x)
+    shadowBottomLayerYProperty.set(axis.bottom.y)
+    shadowBottomLayerWidthProperty.set(axis.bottom.width)
+    shadowBottomLayerHeightProperty.set(axis.bottom.height)
+  }
 }
+
+internal data class Rectangle(val x: Double, val y: Double, val width: Double, val height: Double)
+
+internal data class ShadowLayerAxis(
+    val top: Rectangle, val right: Rectangle, val left: Rectangle, val bottom: Rectangle)
