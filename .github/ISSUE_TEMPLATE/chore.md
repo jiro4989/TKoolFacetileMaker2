@@ -1,6 +1,6 @@
 ---
 name: 改善テンプレート
-about: すべてのissuesのベースになる書式
+about: featureでもbugでもない細々改善タスクのテンプレート
 title: ''
 labels: chore
 assignees: jiro4989
