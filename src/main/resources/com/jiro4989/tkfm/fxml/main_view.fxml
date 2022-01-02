@@ -191,7 +191,7 @@
                            <center>
                               <ScrollPane id="imageRootScroolPane" prefHeight="425.0" prefWidth="659.0">
                                  <content>
-                                    <AnchorPane>
+                                    <AnchorPane onMouseDragged="#focusGridPaneOnMouseDragged">
                                        <children>
                                           <Pane fx:id="focusShadowPaneTop" layoutX="0.5" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
                                           <Pane fx:id="focusShadowPaneLeft" layoutX="100.0" layoutY="0.5" prefHeight="200.0" prefWidth="200.0" />
