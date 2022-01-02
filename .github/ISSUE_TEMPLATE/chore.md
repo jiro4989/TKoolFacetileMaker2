@@ -1,6 +1,6 @@
 ---
 name: 改善テンプレート
-about: featureでもbugでもない細々改善タスクのテンプレート
+about: 機能要望でもバグ報告でもない細々改善タスクのテンプレート
 title: ''
 labels: chore
 assignees: jiro4989
