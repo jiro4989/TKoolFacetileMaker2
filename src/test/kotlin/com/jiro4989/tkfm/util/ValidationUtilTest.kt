@@ -44,22 +44,4 @@ public class ValidationUtilTest {
     var got = isDouble(input)
     assertEquals(want, got)
   }
-
-  @ParameterizedTest
-  @CsvSource(
-      "true, '', false",
-      "true, 1, false",
-      "true, 10, false",
-      "true, 999, false",
-      "true, 0, true",
-      "false, 0, false",
-      "false, -1, false",
-      "false, a, false",
-      "false, 01, false",
-      "false, 1a, false",
-      "false, あ, false")
-  fun testIsAvailableInteger(want: Boolean, value: String, zeroOK: Boolean) {
-    var got = isAvailableInteger(value, zeroOK)
-    assertEquals(want, got)
-  }
 }
