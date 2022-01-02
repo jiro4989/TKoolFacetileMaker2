@@ -556,7 +556,8 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   }
 
   private fun addNewImageFormat() {
-    val stage = ImageFormatStage()
+    val window = getWindow()
+    val stage = ImageFormatStage(window.x, window.y)
     stage.showAndWait()
 
     if (!stage.getOK()) {
@@ -608,4 +609,6 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
       showAndWaitExceptionDialog(exception, msg)
     }
   }
+
+  private fun getWindow() = removeButton.scene.window
 }
