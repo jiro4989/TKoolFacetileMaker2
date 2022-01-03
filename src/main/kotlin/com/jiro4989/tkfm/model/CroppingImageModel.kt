@@ -20,6 +20,10 @@ private const val SCALE_MAX = 200.0
 
 private const val DEFAULT_IMAGE_SIZE = 288.0
 
+// Scale用のスライダーはは百分率で値を保持するため、拡縮演算をする際は100で割って小数に変換する必要がある。
+// これはその小数への変換用の定数
+private const val TO_DECIMAL_DIVIDE_NUMBER = 100.0
+
 /** 拡大した画像を返す。 */
 private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
   val width = image.getWidth() * scale
@@ -56,7 +60,7 @@ internal fun calcShadowLayerAxis(
   // |    |    4    |
   // |    |bottom   |
   // +----+---------+
-  val cs = croppingScale / 100.0
+  val cs = croppingScale / TO_DECIMAL_DIVIDE_NUMBER
   val iw = imageWidth * cs
   val ih = imageHeight * cs
   val mx =
