@@ -12,6 +12,10 @@ import javafx.stage.Stage
 
 private const val APPLICATION_TITLE = "TKoolFacetileMaker2"
 
+private const val DEFAULT_WINDOW_WIDTH = 1280.0
+
+private const val DEFAULT_WINDOW_HEIGHT = 880.0
+
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
   Application.launch(Main::class.java, *args)
@@ -38,7 +42,7 @@ class Main : Application() {
       root = loader.load() as BorderPane
       controller = loader.getController() as MainViewController
 
-      val scene = Scene(root, 1280.0, 880.0)
+      val scene = Scene(root, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
       scene.stylesheets += this.javaClass.getResource("css/application.css").toExternalForm()
 
       val thisClass = this.javaClass
