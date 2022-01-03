@@ -138,7 +138,7 @@ data class CroppingImageModel(
   }
 
   fun cropByBufferedImage(): Image {
-    val scale = scaleProperty.get() / 100
+    val scale = scaleProperty.get() / TO_DECIMAL_DIVIDE_NUMBER
     var x = croppingPosition.x.toInt()
     var y = croppingPosition.y.toInt()
     var width = croppingRectangle.width.toInt()
@@ -171,7 +171,7 @@ data class CroppingImageModel(
    */
   fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
-    val s = scaleProperty.get() / 100
+    val s = scaleProperty.get() / TO_DECIMAL_DIVIDE_NUMBER
     val w = bImg.width
     val h = bImg.height
     val rectWidth = croppingRectangle.width
