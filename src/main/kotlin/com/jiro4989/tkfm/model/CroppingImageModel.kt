@@ -11,6 +11,7 @@ import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 
+@Suppress("MagicNumber")
 private fun createEmptyImage() = WritableImage(100, 100)
 
 private const val SCALE_MIN = 20.0
