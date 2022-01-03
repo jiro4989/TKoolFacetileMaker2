@@ -9,6 +9,8 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 
+private const val PADDING_WIDTH = 50.0
+
 class ImageFormatStage : Stage {
   private lateinit var controller: ImageFormatViewController
 
@@ -21,8 +23,12 @@ class ImageFormatStage : Stage {
       // UI conficuration
       val scene = Scene(root)
       setTitle("画像フォーマットを追加")
-      setX(windowX + 50.0)
-      setY(windowY + 50.0)
+
+      // アプリケーションウィンドウからの相対位置として
+      // ウィンドウの左上頂点から右下方向に多少ずらした場所を初期位置とする
+      setX(windowX + PADDING_WIDTH)
+      setY(windowY + PADDING_WIDTH)
+
       setScene(scene)
       initStyle(StageStyle.UTILITY)
       initModality(Modality.APPLICATION_MODAL)
