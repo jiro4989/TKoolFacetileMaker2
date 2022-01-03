@@ -18,6 +18,7 @@ private const val DEFAULT_WINDOW_HEIGHT = 880.0
 
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
+  @Suppress("SpreadOperator")
   Application.launch(Main::class.java, *args)
 }
 
