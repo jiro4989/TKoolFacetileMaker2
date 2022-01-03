@@ -26,29 +26,37 @@ private const val rpgMakerMVTileImageWidth = 144.0
 
 private const val rpgMakerVXACETileImageWidth = 96.0
 
+private const val rpgMakerImageFormatRowCount = 2
+
+private const val rpgMakerImageFormatColCount = 4
+
 /** 設定ファイルの配置先 */
 private val configFilePath: Path = Paths.get(".", "config", "image_format.xml")
 
-private fun fmtMVMZ() =
+private fun createRPGMakerMVImageFormat() =
     ImageFormatModel(
-        "RPGツクールMV・MZ", 2, 4, RectangleModel(rpgMakerMVTileImageWidth, rpgMakerMVTileImageWidth))
+        "RPGツクールMV・MZ",
+        rpgMakerImageFormatRowCount,
+        rpgMakerImageFormatColCount,
+        RectangleModel(rpgMakerMVTileImageWidth, rpgMakerMVTileImageWidth))
 
-private fun fmtVXACE() =
+private fun createRPGMakerVXACEImageFormat() =
     ImageFormatModel(
         "RPGツクールVXACE",
-        2,
-        4,
+        rpgMakerImageFormatRowCount,
+        rpgMakerImageFormatColCount,
         RectangleModel(rpgMakerVXACETileImageWidth, rpgMakerVXACETileImageWidth))
 
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 data class ImageFormatConfigModel(
     /** 規定済み画像フォーマット */
-    private val imageFormats: List<ImageFormatModel> = listOf(fmtMVMZ(), fmtVXACE()),
+    private val imageFormats: List<ImageFormatModel> =
+        listOf(createRPGMakerMVImageFormat(), createRPGMakerVXACEImageFormat()),
     /** ユーザ定義の画像フォーマット */
     private val additionalImageFormats: MutableList<ImageFormatModel> = mutableListOf(),
     private val loadXML: Boolean = true,
     /** 選択中の画像フォーマット */
-    val selectedImageFormat: ImageFormatModel = fmtMVMZ()
+    val selectedImageFormat: ImageFormatModel = createRPGMakerMVImageFormat()
 ) {
   init {
     if (loadXML) loadXMLFile(configFilePath)
