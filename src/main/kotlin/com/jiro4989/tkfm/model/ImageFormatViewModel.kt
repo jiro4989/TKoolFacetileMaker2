@@ -26,11 +26,13 @@ class ImageFormatViewModel(
       SSP(name), SSP(row), SSP(col), SSP(tileWidth), SSP(tileHeight))
 
   fun validate(): Boolean {
-    if (nameProperty.get() == "") return false
-    if (!isAvailableInteger(rowProperty.get(), false)) return false
-    if (!isAvailableInteger(colProperty.get(), false)) return false
-    if (!isAvailableInteger(tileWidthProperty.get(), false)) return false
-    if (!isAvailableInteger(tileHeightProperty.get(), false)) return false
-    return true
+    return when {
+      nameProperty.get() == "" -> false
+      !isAvailableInteger(rowProperty.get(), false) -> false
+      !isAvailableInteger(colProperty.get(), false) -> false
+      !isAvailableInteger(tileWidthProperty.get(), false) -> false
+      !isAvailableInteger(tileHeightProperty.get(), false) -> false
+      else -> true
+    }
   }
 }
