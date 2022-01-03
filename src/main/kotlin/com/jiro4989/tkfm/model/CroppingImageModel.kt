@@ -18,6 +18,8 @@ private const val SCALE_MIN = 20.0
 
 private const val SCALE_MAX = 200.0
 
+private const val DEFAULT_IMAGE_SIZE = 288.0
+
 /** 拡大した画像を返す。 */
 private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
   val width = image.getWidth() * scale
@@ -87,9 +89,9 @@ data class CroppingImageModel(
     /** トリミング対象の画像 */
     val imageProperty: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage()),
     /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
-    val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_IMAGE_SIZE),
     /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
-    val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_IMAGE_SIZE),
 
     // シャドウレイヤは起動直後の初期化処理で位置調整が走るためデフォルト値は何でも良い
 
