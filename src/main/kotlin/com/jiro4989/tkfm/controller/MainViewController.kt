@@ -54,6 +54,9 @@ import javax.xml.transform.TransformerConfigurationException
 import javax.xml.transform.TransformerException
 import org.xml.sax.SAXException
 
+@Suppress("MagicNumber")
+private fun createComboItems() = FXCollections.observableArrayList(1, 5, 10, 25, 50)
+
 // @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
 @Suppress("UnusedPrivateMember")
 class MainViewController : Initializable {
@@ -83,11 +86,9 @@ class MainViewController : Initializable {
   @FXML private lateinit var focusShadowPaneRight: Pane
   @FXML private lateinit var focusShadowPaneBottom: Pane
 
-  private val cropAxisItems: ObservableList<Int> =
-      FXCollections.observableArrayList(1, 5, 10, 25, 50)
+  private val cropAxisItems: ObservableList<Int> = createComboItems()
   @FXML private lateinit var cropScaleComboBox: ComboBox<Int>
-  private val cropScaleItems: ObservableList<Int> =
-      FXCollections.observableArrayList(1, 5, 10, 25, 50)
+  private val cropScaleItems: ObservableList<Int> = createComboItems()
 
   // Output view
   @FXML private lateinit var outputGridPane: GridPane
