@@ -57,6 +57,10 @@ import org.xml.sax.SAXException
 @Suppress("MagicNumber")
 private fun createComboItems() = FXCollections.observableArrayList(1, 5, 10, 25, 50)
 
+// Scale用のスライダーはは百分率で値を保持するため、拡縮演算をする際は100で割って小数に変換する必要がある。
+// これはその小数への変換用の定数
+private const val TO_DECIMAL_DIVIDE_NUMBER = 100
+
 // @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
 @Suppress("UnusedPrivateMember")
 class MainViewController : Initializable {
@@ -192,28 +196,29 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     Bindings.bindBidirectional(
         focusShadowPaneBottom.prefHeightProperty(), cropImage.shadowBottomLayerHeightProperty)
 
+    // scaleは100分率で値を保持するため、乗算する場合は少数に変換する必要がある
     cropImageGridPane.prefWidthProperty()
         .bind(
             Bindings.multiply(
                 cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
+                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
     cropImageGridPane.prefHeightProperty()
         .bind(
             Bindings.multiply(
                 cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
+                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
 
     Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty)
     cropImageView.fitWidthProperty()
         .bind(
             Bindings.multiply(
                 cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
+                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
     cropImageView.fitHeightProperty()
         .bind(
             Bindings.multiply(
                 cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
+                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
 
     val cropXConv: StringConverter<Number> = NumberStringConverter()
     Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty, cropXConv)
