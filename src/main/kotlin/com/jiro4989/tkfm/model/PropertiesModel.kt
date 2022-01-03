@@ -9,7 +9,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.Properties
 
-private val configDir = "config"
+private const val configDir = "config"
 
 internal fun configFile(filename: String) =
     File(configDir + File.separator + filename + ".properties")

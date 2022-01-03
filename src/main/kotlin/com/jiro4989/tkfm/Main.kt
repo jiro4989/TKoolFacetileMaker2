@@ -10,7 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 
-val applicationTitle = "TKoolFacetileMaker2"
+private const val applicationTitle = "TKoolFacetileMaker2"
 
 /** プログラムのエントリーポイント */
 fun main(args: Array<String>) {
