@@ -22,13 +22,13 @@ import javax.xml.transform.stream.StreamResult
 import org.w3c.dom.Element
 import org.xml.sax.SAXException
 
-private const val rpgMakerMVTileImageWidth = 144.0
+private const val RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH = 144.0
 
-private const val rpgMakerVXACETileImageWidth = 96.0
+private const val RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH = 96.0
 
-private const val rpgMakerImageFormatRowCount = 2
+private const val RPG_MAKER_IMAGE_FORMAT_ROW_COUNT = 2
 
-private const val rpgMakerImageFormatColCount = 4
+private const val RPG_MAKER_IMAGE_FORMAT_COL_COUNT = 4
 
 /** 設定ファイルの配置先 */
 private val configFilePath: Path = Paths.get(".", "config", "image_format.xml")
@@ -36,16 +36,17 @@ private val configFilePath: Path = Paths.get(".", "config", "image_format.xml")
 private fun createRPGMakerMVImageFormat() =
     ImageFormatModel(
         "RPGツクールMV・MZ",
-        rpgMakerImageFormatRowCount,
-        rpgMakerImageFormatColCount,
-        RectangleModel(rpgMakerMVTileImageWidth, rpgMakerMVTileImageWidth))
+        RPG_MAKER_IMAGE_FORMAT_ROW_COUNT,
+        RPG_MAKER_IMAGE_FORMAT_COL_COUNT,
+        RectangleModel(RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH, RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH))
 
 private fun createRPGMakerVXACEImageFormat() =
     ImageFormatModel(
         "RPGツクールVXACE",
-        rpgMakerImageFormatRowCount,
-        rpgMakerImageFormatColCount,
-        RectangleModel(rpgMakerVXACETileImageWidth, rpgMakerVXACETileImageWidth))
+        RPG_MAKER_IMAGE_FORMAT_ROW_COUNT,
+        RPG_MAKER_IMAGE_FORMAT_COL_COUNT,
+        RectangleModel(
+            RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH, RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH))
 
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 data class ImageFormatConfigModel(
