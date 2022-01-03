@@ -2,9 +2,11 @@ package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.CropImageViewController
 import javafx.fxml.FXMLLoader
-import javafx.scene.*
-import javafx.scene.layout.*
-import javafx.stage.*
+import javafx.scene.Scene
+import javafx.scene.layout.VBox
+import javafx.stage.Modality
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 
 class CropImageStage : Stage {
   private lateinit var controller: CropImageViewController
