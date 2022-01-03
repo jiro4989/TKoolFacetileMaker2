@@ -4,6 +4,8 @@ import com.jiro4989.tkfm.util.isInteger
 import javafx.fxml.FXML
 import javafx.scene.control.TextField
 
+// @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
+@Suppress("UnusedPrivateMember")
 class CropImageViewController {
   @FXML private lateinit var xInput: TextField
   @FXML private lateinit var yInput: TextField

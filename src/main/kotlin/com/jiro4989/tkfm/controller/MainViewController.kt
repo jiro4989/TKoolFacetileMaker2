@@ -54,6 +54,8 @@ import javax.xml.transform.TransformerConfigurationException
 import javax.xml.transform.TransformerException
 import org.xml.sax.SAXException
 
+// @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
+@Suppress("UnusedPrivateMember")
 class MainViewController : Initializable {
   // UI parts /////////////////////////////////////////////////////////////////
 
