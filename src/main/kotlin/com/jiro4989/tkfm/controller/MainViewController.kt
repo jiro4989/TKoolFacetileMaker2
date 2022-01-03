@@ -432,7 +432,6 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     tileImage.clear()
   }
 
-  // TODO: Bad method name
   @FXML
   private fun focusGridPaneOnMouseDragged(event: MouseEvent) {
     val x = event.getX()
