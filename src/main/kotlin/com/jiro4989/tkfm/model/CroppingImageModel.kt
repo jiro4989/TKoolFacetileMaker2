@@ -90,29 +90,31 @@ data class CroppingImageModel(
     /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
     val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(288.0),
 
+    // シャドウレイヤは起動直後の初期化処理で位置調整が走るためデフォルト値は何でも良い
+
     // Top
-    val shadowTopLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowTopLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowTopLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowTopLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowTopLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Right
-    val shadowRightLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowRightLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowRightLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowRightLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowRightLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Left
-    val shadowLeftLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowLeftLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowLeftLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowLeftLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowLeftLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Bottom
-    val shadowBottomLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowBottomLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowBottomLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowBottomLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
     val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
