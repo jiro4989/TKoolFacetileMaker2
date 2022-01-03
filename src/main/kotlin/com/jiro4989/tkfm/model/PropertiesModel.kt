@@ -9,10 +9,10 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.Properties
 
-private const val configDir = "config"
+private const val CONFIG_DIR = "config"
 
 internal fun configFile(filename: String) =
-    File(configDir + File.separator + filename + ".properties")
+    File(CONFIG_DIR + File.separator + filename + ".properties")
 
 private fun readFileFromProperties(prop: Properties, dirKey: String, fileKey: String): File? {
   val dir = prop.getProperty(dirKey) ?: return null
