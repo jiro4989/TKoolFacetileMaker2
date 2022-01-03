@@ -6,11 +6,13 @@ import javafx.scene.control.TextField
 
 /** 入力フォームが受け付ける文字列であるかを検証する */
 internal fun isAvailableInteger(value: String, emptyOK: Boolean): Boolean {
-  // 空文字はOK
-  if (emptyOK && value == "") return true
-  // 自然数はOK。0始まりの数値はNG
-  if (Regex("""^[1-9]\d*$""").matches(value)) return true
-  return false
+  return when {
+    // 空文字はOK
+    emptyOK && value == "" -> true
+    // 自然数はOK。0始まりの数値はNG
+    Regex("""^[1-9]\d*$""").matches(value) -> true
+    else -> false
+  }
 }
 
 class ImageFormatViewModel(
