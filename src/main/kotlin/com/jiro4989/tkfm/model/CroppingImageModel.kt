@@ -20,6 +20,8 @@ private const val SCALE_MAX = 200.0
 
 private const val DEFAULT_IMAGE_SIZE = 288.0
 
+private const val DEFAULT_SCALE_PROPERTY_VALUE = 100.0
+
 // Scale用のスライダーはは百分率で値を保持するため、拡縮演算をする際は100で割って小数に変換する必要がある。
 // これはその小数への変換用の定数
 private const val TO_DECIMAL_DIVIDE_NUMBER = 100.0
@@ -124,7 +126,7 @@ data class CroppingImageModel(
     val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
-    val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
+    val scaleProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_SCALE_PROPERTY_VALUE),
 
     /** トリミング座標 */
     val croppingPosition: PositionModel = PositionModel(0.0, 0.0),
