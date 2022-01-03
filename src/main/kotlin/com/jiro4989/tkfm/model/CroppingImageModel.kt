@@ -13,6 +13,10 @@ import javafx.scene.image.WritableImage
 
 private fun createEmptyImage() = WritableImage(100, 100)
 
+private const val SCALE_MIN = 20.0
+
+private const val SCALE_MAX = 200.0
+
 /** 拡大した画像を返す。 */
 private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
   val width = image.getWidth() * scale
@@ -216,14 +220,12 @@ data class CroppingImageModel(
   }
 
   fun setScale(scale: Double) {
-    val minScale = 20.0
-    val maxScale = 200.0
     var scale2 = scale
 
-    if (scale2 < minScale) {
-      scale2 = minScale
-    } else if (maxScale < scale2) {
-      scale2 = maxScale
+    if (scale2 < SCALE_MIN) {
+      scale2 = SCALE_MIN
+    } else if (SCALE_MAX < scale2) {
+      scale2 = SCALE_MAX
     }
 
     scaleProperty.set(scale2)
