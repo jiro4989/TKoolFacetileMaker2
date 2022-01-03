@@ -11,6 +11,7 @@ import com.jiro4989.tkfm.model.ImageFormatModel
 import com.jiro4989.tkfm.model.TileImageModel
 import com.jiro4989.tkfm.util.showAndWaitCommonExceptionDialog
 import com.jiro4989.tkfm.util.showAndWaitExceptionDialog
+import com.jiro4989.tkfm.util.warning
 import com.jiro4989.tkfm.util.writeFile
 import java.io.File
 import java.io.IOException
@@ -111,11 +112,11 @@ class MainViewController : Initializable {
     try {
       imageFormat = ImageFormatConfigModel()
     } catch (e: ParserConfigurationException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("ParserConfigurationException")
       Platform.exit()
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
 
       val exception = "IOException"
       val msg =
@@ -128,7 +129,7 @@ class MainViewController : Initializable {
       showAndWaitExceptionDialog(exception, msg)
       Platform.exit()
     } catch (e: SAXException) {
-      e.printStackTrace()
+      warning(e.toString())
 
       val exception = "SAXException"
       val msg =
@@ -286,7 +287,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
           writeFile(img, it)
         } catch (e: IOException) {
           // TODO
-          e.printStackTrace()
+          warning(e.toString())
         }
       } else {
         saveAsFile()
@@ -312,7 +313,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
         prop.savedFile = it
       } catch (e: IOException) {
         // TODO
-        e.printStackTrace()
+        warning(e.toString())
       }
     }
   }
@@ -610,16 +611,16 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     try {
       imageFormat.writeXMLFile()
     } catch (e: ParserConfigurationException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("ParserConfigurationException")
     } catch (e: TransformerConfigurationException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("TransformerConfigurationException")
     } catch (e: TransformerException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("TransformerException")
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
       val exception = "IOException"
       var msg =
           """画像フォーマットファイルの保存に失敗しました。

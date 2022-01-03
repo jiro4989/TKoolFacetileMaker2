@@ -1,6 +1,7 @@
 package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.CropImageViewController
+import com.jiro4989.tkfm.util.warning
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
@@ -30,7 +31,7 @@ class CropImageStage : Stage {
             setScale(scale)
           }
     } catch (e: Exception) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 

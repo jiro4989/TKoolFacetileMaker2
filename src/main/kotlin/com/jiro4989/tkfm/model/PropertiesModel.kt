@@ -1,5 +1,6 @@
 package com.jiro4989.tkfm.model
 
+import com.jiro4989.tkfm.util.warning
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -90,7 +91,7 @@ data class WindowPropertiesModel(
         prop.store(OutputStreamWriter(fos, "UTF-8"), null)
       }
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 }
@@ -136,7 +137,7 @@ data class ChoosedFilePropertiesModel(
         prop.store(OutputStreamWriter(stream, "UTF-8"), null)
       }
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 }

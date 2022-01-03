@@ -2,6 +2,7 @@ package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.ImageFormatViewController
 import com.jiro4989.tkfm.model.ImageFormatModel
+import com.jiro4989.tkfm.util.warning
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
@@ -33,7 +34,7 @@ class ImageFormatStage : Stage {
       initStyle(StageStyle.UTILITY)
       initModality(Modality.APPLICATION_MODAL)
     } catch (e: Exception) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 

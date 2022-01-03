@@ -2,6 +2,9 @@ package com.jiro4989.tkfm
 
 import com.jiro4989.tkfm.controller.MainViewController
 import com.jiro4989.tkfm.model.WindowPropertiesModel
+import com.jiro4989.tkfm.util.initLogger
+import com.jiro4989.tkfm.util.warning
+import java.io.File
 import java.util.Properties
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
@@ -31,6 +34,7 @@ class Main : Application() {
   private val applicationProperty = Properties()
 
   override fun start(primaryStage: Stage) {
+    initLogger()
     this.javaClass.getResourceAsStream("properties/application.properties")?.bufferedReader().use {
       applicationProperty.load(it)
     }
@@ -58,7 +62,7 @@ class Main : Application() {
         show()
       }
     } catch (e: Exception) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 
