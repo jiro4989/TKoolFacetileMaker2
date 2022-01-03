@@ -14,6 +14,7 @@ private const val CONFIG_DIR = "config"
 internal fun configFile(filename: String) =
     File(CONFIG_DIR + File.separator + filename + ".properties")
 
+@Suppress("ReturnCount")
 private fun readFileFromProperties(prop: Properties, dirKey: String, fileKey: String): File? {
   val dir = prop.getProperty(dirKey) ?: return null
   val file = prop.getProperty(fileKey) ?: return null
