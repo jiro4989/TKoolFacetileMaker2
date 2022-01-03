@@ -363,48 +363,56 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   @FXML
   private fun bulkInsert1() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 0)
   }
 
   @FXML
   private fun bulkInsert2() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 1)
   }
 
   @FXML
   private fun bulkInsert3() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 2)
   }
 
   @FXML
   private fun bulkInsert4() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 3)
   }
 
   @FXML
   private fun bulkInsert5() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 4)
   }
 
   @FXML
   private fun bulkInsert6() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 5)
   }
 
   @FXML
   private fun bulkInsert7() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 6)
   }
 
   @FXML
   private fun bulkInsert8() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 7)
   }
 
