@@ -22,12 +22,23 @@ import javax.xml.transform.stream.StreamResult
 import org.w3c.dom.Element
 import org.xml.sax.SAXException
 
+private const val rpgMakerMVTileImageWidth = 144.0
+
+private const val rpgMakerVXACETileImageWidth = 96.0
+
 /** 設定ファイルの配置先 */
 private val configFilePath: Path = Paths.get(".", "config", "image_format.xml")
 
-private fun fmtMVMZ() = ImageFormatModel("RPGツクールMV・MZ", 2, 4, RectangleModel(144.0, 144.0))
+private fun fmtMVMZ() =
+    ImageFormatModel(
+        "RPGツクールMV・MZ", 2, 4, RectangleModel(rpgMakerMVTileImageWidth, rpgMakerMVTileImageWidth))
 
-private fun fmtVXACE() = ImageFormatModel("RPGツクールVXACE", 2, 4, RectangleModel(96.0, 96.0))
+private fun fmtVXACE() =
+    ImageFormatModel(
+        "RPGツクールVXACE",
+        2,
+        4,
+        RectangleModel(rpgMakerVXACETileImageWidth, rpgMakerVXACETileImageWidth))
 
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 data class ImageFormatConfigModel(
