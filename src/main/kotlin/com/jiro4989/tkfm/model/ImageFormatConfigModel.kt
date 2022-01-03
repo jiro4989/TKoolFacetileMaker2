@@ -94,11 +94,7 @@ data class ImageFormatConfigModel(
     }
 
     // 例外を投げる前に確実にcloseしておきたいため
-    try {
-      FileInputStream(path.toFile()).use { stream: InputStream -> loadXML(stream) }
-    } catch (e: Exception) {
-      throw e
-    }
+    FileInputStream(path.toFile()).use { stream: InputStream -> loadXML(stream) }
   }
 
   /**
@@ -173,12 +169,8 @@ data class ImageFormatConfigModel(
     }
 
     // 例外を投げる前に確実にcloseしておきたいため
-    try {
-      FileWriter(path.toFile(), StandardCharsets.UTF_8).use { w: Writer ->
-        writeXML(w, additionalImageFormats)
-      }
-    } catch (e: Exception) {
-      throw e
+    FileWriter(path.toFile(), StandardCharsets.UTF_8).use { w: Writer ->
+      writeXML(w, additionalImageFormats)
     }
   }
 
