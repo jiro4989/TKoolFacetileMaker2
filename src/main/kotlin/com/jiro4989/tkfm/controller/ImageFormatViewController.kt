@@ -9,6 +9,8 @@ import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 
+// @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
+@Suppress("UnusedPrivateMember")
 class ImageFormatViewController {
   @FXML private lateinit var nameInput: TextField
   @FXML private lateinit var rowInput: TextField

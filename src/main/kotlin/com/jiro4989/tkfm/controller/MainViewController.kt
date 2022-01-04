@@ -2,14 +2,24 @@ package com.jiro4989.tkfm.controller
 
 import com.jiro4989.tkfm.CropImageStage
 import com.jiro4989.tkfm.ImageFormatStage
-import com.jiro4989.tkfm.model.*
-import com.jiro4989.tkfm.util.*
+import com.jiro4989.tkfm.model.ChoosedFilePropertiesModel
+import com.jiro4989.tkfm.model.CroppingImageModel
+import com.jiro4989.tkfm.model.ImageFileModel
+import com.jiro4989.tkfm.model.ImageFilesModel
+import com.jiro4989.tkfm.model.ImageFormatConfigModel
+import com.jiro4989.tkfm.model.ImageFormatModel
+import com.jiro4989.tkfm.model.TileImageModel
+import com.jiro4989.tkfm.util.showAndWaitCommonExceptionDialog
+import com.jiro4989.tkfm.util.showAndWaitExceptionDialog
+import com.jiro4989.tkfm.util.warning
+import com.jiro4989.tkfm.util.writeFile
 import java.io.File
 import java.io.IOException
 import java.net.URL
 import java.util.ResourceBundle
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
+import javafx.beans.property.DoubleProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
@@ -46,6 +56,15 @@ import javax.xml.transform.TransformerConfigurationException
 import javax.xml.transform.TransformerException
 import org.xml.sax.SAXException
 
+@Suppress("MagicNumber")
+private fun createComboItems() = FXCollections.observableArrayList(1, 5, 10, 25, 50)
+
+// Scale用のスライダーはは百分率で値を保持するため、拡縮演算をする際は100で割って小数に変換する必要がある。
+// これはその小数への変換用の定数
+private const val TO_DECIMAL_DIVIDE_NUMBER = 100
+
+// @FXMLアノテーション経由で呼び出されるメソッドが指摘されるのを無視する
+@Suppress("UnusedPrivateMember")
 class MainViewController : Initializable {
   // UI parts /////////////////////////////////////////////////////////////////
 
@@ -73,11 +92,9 @@ class MainViewController : Initializable {
   @FXML private lateinit var focusShadowPaneRight: Pane
   @FXML private lateinit var focusShadowPaneBottom: Pane
 
-  private val cropAxisItems: ObservableList<Int> =
-      FXCollections.observableArrayList(1, 5, 10, 25, 50)
+  private val cropAxisItems: ObservableList<Int> = createComboItems()
   @FXML private lateinit var cropScaleComboBox: ComboBox<Int>
-  private val cropScaleItems: ObservableList<Int> =
-      FXCollections.observableArrayList(1, 5, 10, 25, 50)
+  private val cropScaleItems: ObservableList<Int> = createComboItems()
 
   // Output view
   @FXML private lateinit var outputGridPane: GridPane
@@ -93,38 +110,7 @@ class MainViewController : Initializable {
 
   override fun initialize(location: URL?, resources: ResourceBundle?) {
     // initialize models
-    try {
-      imageFormat = ImageFormatConfigModel()
-    } catch (e: ParserConfigurationException) {
-      e.printStackTrace()
-      showAndWaitCommonExceptionDialog("ParserConfigurationException")
-      Platform.exit()
-    } catch (e: IOException) {
-      e.printStackTrace()
-
-      val exception = "IOException"
-      val msg =
-          """画像フォーマットファイルの読み込みに失敗しました。
-以下の観点で確認してください。
-
-- configフォルダが存在するか
-- 特別なフォルダ (システムフォルダなど)で実行していないか
-"""
-      showAndWaitExceptionDialog(exception, msg)
-      Platform.exit()
-    } catch (e: SAXException) {
-      e.printStackTrace()
-
-      val exception = "SAXException"
-      val msg =
-          """画像フォーマットファイルの読込に失敗しました。
-config/image_format.xmlファイルを手動で書き換えるなどして、
-不正なXMLファイルになっている可能性があります。
-当該ファイルを削除してアプリケーションを再起動してみてください
-"""
-      showAndWaitExceptionDialog(exception, msg)
-      Platform.exit()
-    }
+    createImageFormatConfigModel()?.let { imageFormat = it } ?: Platform.exit()
 
     val selectedImageFormat = imageFormat.selectedImageFormat
     val rect = selectedImageFormat.rectangle
@@ -144,73 +130,17 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     rect.widthProperty.addListener { _ -> resetOutputGridPane() }
     rect.heightProperty.addListener { _ -> resetOutputGridPane() }
 
-    // フォーカス用の影レイヤ
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.layoutXProperty(), cropImage.shadowTopLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.layoutYProperty(), cropImage.shadowTopLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.prefWidthProperty(), cropImage.shadowTopLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.prefHeightProperty(), cropImage.shadowTopLayerHeightProperty)
+    bindingShadowLayers(
+        focusShadowPaneTop,
+        focusShadowPaneRight,
+        focusShadowPaneLeft,
+        focusShadowPaneBottom,
+        cropImage)
+    bindingCroppingImagePanes(cropImageGridPane, cropImageView, cropScaleSlider, cropImage)
+    bindingConverterToLabel(cropXLabel, pos.xProperty)
+    bindingConverterToLabel(cropYLabel, pos.yProperty)
+    bindingConverterToLabel(cropScaleLabel, cropImage.scaleProperty)
 
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.layoutXProperty(), cropImage.shadowRightLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.layoutYProperty(), cropImage.shadowRightLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.prefWidthProperty(), cropImage.shadowRightLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.prefHeightProperty(), cropImage.shadowRightLayerHeightProperty)
-
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.layoutXProperty(), cropImage.shadowLeftLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.layoutYProperty(), cropImage.shadowLeftLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.prefWidthProperty(), cropImage.shadowLeftLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.prefHeightProperty(), cropImage.shadowLeftLayerHeightProperty)
-
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.layoutXProperty(), cropImage.shadowBottomLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.layoutYProperty(), cropImage.shadowBottomLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.prefWidthProperty(), cropImage.shadowBottomLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.prefHeightProperty(), cropImage.shadowBottomLayerHeightProperty)
-
-    cropImageGridPane.prefWidthProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
-    cropImageGridPane.prefHeightProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
-
-    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty)
-    cropImageView.fitWidthProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
-    cropImageView.fitHeightProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), 100)))
-
-    val cropXConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty, cropXConv)
-    val cropYConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(cropYLabel.textProperty(), pos.yProperty, cropYConv)
-    val cropScaleConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(
-        cropScaleLabel.textProperty(), cropImage.scaleProperty, cropScaleConv)
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty)
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty())
     outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty, colCount))
@@ -235,6 +165,119 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
 
     resetImageFormatMenu(false)
     resetOutputGridPane()
+  }
+
+  private fun createImageFormatConfigModel(): ImageFormatConfigModel? {
+    try {
+      return ImageFormatConfigModel()
+    } catch (e: ParserConfigurationException) {
+      warning(e.toString())
+      showAndWaitCommonExceptionDialog("ParserConfigurationException")
+    } catch (e: IOException) {
+      warning(e.toString())
+
+      val exception = "IOException"
+      val msg =
+          """画像フォーマットファイルの読み込みに失敗しました。
+以下の観点で確認してください。
+
+- configフォルダが存在するか
+- 特別なフォルダ (システムフォルダなど)で実行していないか
+"""
+      showAndWaitExceptionDialog(exception, msg)
+    } catch (e: SAXException) {
+      warning(e.toString())
+
+      val exception = "SAXException"
+      val msg =
+          """画像フォーマットファイルの読込に失敗しました。
+config/image_format.xmlファイルを手動で書き換えるなどして、
+不正なXMLファイルになっている可能性があります。
+当該ファイルを削除してアプリケーションを再起動してみてください
+"""
+      showAndWaitExceptionDialog(exception, msg)
+    }
+    return null
+  }
+
+  private fun bindingShadowLayers(
+      topPane: Pane,
+      rightPane: Pane,
+      leftPane: Pane,
+      bottomPane: Pane,
+      croppingImage: CroppingImageModel
+  ) {
+    // フォーカス用の影レイヤ
+    bindingShadowLayer(
+        topPane,
+        croppingImage.shadowTopLayerXProperty,
+        croppingImage.shadowTopLayerYProperty,
+        croppingImage.shadowTopLayerWidthProperty,
+        croppingImage.shadowTopLayerHeightProperty)
+    bindingShadowLayer(
+        rightPane,
+        croppingImage.shadowRightLayerXProperty,
+        croppingImage.shadowRightLayerYProperty,
+        croppingImage.shadowRightLayerWidthProperty,
+        croppingImage.shadowRightLayerHeightProperty)
+    bindingShadowLayer(
+        leftPane,
+        croppingImage.shadowLeftLayerXProperty,
+        croppingImage.shadowLeftLayerYProperty,
+        croppingImage.shadowLeftLayerWidthProperty,
+        croppingImage.shadowLeftLayerHeightProperty)
+    bindingShadowLayer(
+        bottomPane,
+        croppingImage.shadowBottomLayerXProperty,
+        croppingImage.shadowBottomLayerYProperty,
+        croppingImage.shadowBottomLayerWidthProperty,
+        croppingImage.shadowBottomLayerHeightProperty)
+  }
+
+  private fun bindingShadowLayer(
+      pane: Pane,
+      xProperty: DoubleProperty,
+      yProperty: DoubleProperty,
+      widthProperty: DoubleProperty,
+      heightProperty: DoubleProperty
+  ) {
+    Bindings.bindBidirectional(pane.layoutXProperty(), xProperty)
+    Bindings.bindBidirectional(pane.layoutYProperty(), yProperty)
+    Bindings.bindBidirectional(pane.prefWidthProperty(), widthProperty)
+    Bindings.bindBidirectional(pane.prefHeightProperty(), heightProperty)
+  }
+
+  private fun bindingCroppingImagePanes(
+      grid: GridPane, imageView: ImageView, slider: Slider, imageModel: CroppingImageModel
+  ) {
+    // scaleは100分率で値を保持するため、乗算する場合は少数に変換する必要がある
+    grid.prefWidthProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageWidthProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+    grid.prefHeightProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageHeightProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+
+    Bindings.bindBidirectional(imageView.imageProperty(), imageModel.imageProperty)
+    imageView.fitWidthProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageWidthProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+    imageView.fitHeightProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageHeightProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+  }
+
+  private fun bindingConverterToLabel(label: Label, property: DoubleProperty) {
+    val converter: StringConverter<Number> = NumberStringConverter()
+    Bindings.bindBidirectional(label.textProperty(), property, converter)
   }
 
   private fun getInitialDir(file: File): File {
@@ -270,7 +313,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
           writeFile(img, it)
         } catch (e: IOException) {
           // TODO
-          e.printStackTrace()
+          warning(e.toString())
         }
       } else {
         saveAsFile()
@@ -296,7 +339,7 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
         prop.savedFile = it
       } catch (e: IOException) {
         // TODO
-        e.printStackTrace()
+        warning(e.toString())
       }
     }
   }
@@ -347,48 +390,56 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
   @FXML
   private fun bulkInsert1() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 0)
   }
 
   @FXML
   private fun bulkInsert2() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 1)
   }
 
   @FXML
   private fun bulkInsert3() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 2)
   }
 
   @FXML
   private fun bulkInsert4() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 3)
   }
 
   @FXML
   private fun bulkInsert5() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 4)
   }
 
   @FXML
   private fun bulkInsert6() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 5)
   }
 
   @FXML
   private fun bulkInsert7() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 6)
   }
 
   @FXML
   private fun bulkInsert8() {
     val images = getSelectedImages()
+    @Suppress("MagicNumber")
     tileImage.bulkInsert(images, 7)
   }
 
@@ -408,7 +459,6 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     tileImage.clear()
   }
 
-  // TODO: Bad method name
   @FXML
   private fun focusGridPaneOnMouseDragged(event: MouseEvent) {
     val x = event.getX()
@@ -587,16 +637,16 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     try {
       imageFormat.writeXMLFile()
     } catch (e: ParserConfigurationException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("ParserConfigurationException")
     } catch (e: TransformerConfigurationException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("TransformerConfigurationException")
     } catch (e: TransformerException) {
-      e.printStackTrace()
+      warning(e.toString())
       showAndWaitCommonExceptionDialog("TransformerException")
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
       val exception = "IOException"
       var msg =
           """画像フォーマットファイルの保存に失敗しました。

@@ -54,7 +54,7 @@ jobs:
           echo ORG_GRADLE_PROJECT_CI_COMMIT_HASH="$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Build
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test -x detekt
 
       - name: Create artifact
         run: >

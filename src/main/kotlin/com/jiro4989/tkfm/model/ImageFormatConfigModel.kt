@@ -22,22 +22,42 @@ import javax.xml.transform.stream.StreamResult
 import org.w3c.dom.Element
 import org.xml.sax.SAXException
 
+private const val RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH = 144.0
+
+private const val RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH = 96.0
+
+private const val RPG_MAKER_IMAGE_FORMAT_ROW_COUNT = 2
+
+private const val RPG_MAKER_IMAGE_FORMAT_COL_COUNT = 4
+
 /** 設定ファイルの配置先 */
 private val configFilePath: Path = Paths.get(".", "config", "image_format.xml")
 
-private fun fmtMVMZ() = ImageFormatModel("RPGツクールMV・MZ", 2, 4, RectangleModel(144.0, 144.0))
+private fun createRPGMakerMVImageFormat() =
+    ImageFormatModel(
+        "RPGツクールMV・MZ",
+        RPG_MAKER_IMAGE_FORMAT_ROW_COUNT,
+        RPG_MAKER_IMAGE_FORMAT_COL_COUNT,
+        RectangleModel(RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH, RPG_MAKER_MV_IMAGE_FORMAT_TILE_WIDTH))
 
-private fun fmtVXACE() = ImageFormatModel("RPGツクールVXACE", 2, 4, RectangleModel(96.0, 96.0))
+private fun createRPGMakerVXACEImageFormat() =
+    ImageFormatModel(
+        "RPGツクールVXACE",
+        RPG_MAKER_IMAGE_FORMAT_ROW_COUNT,
+        RPG_MAKER_IMAGE_FORMAT_COL_COUNT,
+        RectangleModel(
+            RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH, RPG_MAKER_VXACE_IMAGE_FORMAT_TILE_WIDTH))
 
 /** 画像のトリミングサイズ、列数、行数の設定を保持する。 */
 data class ImageFormatConfigModel(
     /** 規定済み画像フォーマット */
-    private val imageFormats: List<ImageFormatModel> = listOf(fmtMVMZ(), fmtVXACE()),
+    private val imageFormats: List<ImageFormatModel> =
+        listOf(createRPGMakerMVImageFormat(), createRPGMakerVXACEImageFormat()),
     /** ユーザ定義の画像フォーマット */
     private val additionalImageFormats: MutableList<ImageFormatModel> = mutableListOf(),
     private val loadXML: Boolean = true,
     /** 選択中の画像フォーマット */
-    val selectedImageFormat: ImageFormatModel = fmtMVMZ()
+    val selectedImageFormat: ImageFormatModel = createRPGMakerMVImageFormat()
 ) {
   init {
     if (loadXML) loadXMLFile(configFilePath)
@@ -74,11 +94,7 @@ data class ImageFormatConfigModel(
     }
 
     // 例外を投げる前に確実にcloseしておきたいため
-    try {
-      FileInputStream(path.toFile()).use { stream: InputStream -> loadXML(stream) }
-    } catch (e: Exception) {
-      throw e
-    }
+    FileInputStream(path.toFile()).use { stream: InputStream -> loadXML(stream) }
   }
 
   /**
@@ -153,12 +169,8 @@ data class ImageFormatConfigModel(
     }
 
     // 例外を投げる前に確実にcloseしておきたいため
-    try {
-      FileWriter(path.toFile(), StandardCharsets.UTF_8).use { w: Writer ->
-        writeXML(w, additionalImageFormats)
-      }
-    } catch (e: Exception) {
-      throw e
+    FileWriter(path.toFile(), StandardCharsets.UTF_8).use { w: Writer ->
+      writeXML(w, additionalImageFormats)
     }
   }
 

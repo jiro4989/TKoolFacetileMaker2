@@ -1,13 +1,21 @@
 package com.jiro4989.tkfm.model
 
-import java.io.*
+import com.jiro4989.tkfm.util.warning
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.util.Properties
 
-private val configDir = "config"
+private const val CONFIG_DIR = "config"
 
 internal fun configFile(filename: String) =
-    File(configDir + File.separator + filename + ".properties")
+    File(CONFIG_DIR + File.separator + filename + ".properties")
 
+@Suppress("ReturnCount")
 private fun readFileFromProperties(prop: Properties, dirKey: String, fileKey: String): File? {
   val dir = prop.getProperty(dirKey) ?: return null
   val file = prop.getProperty(fileKey) ?: return null
@@ -83,7 +91,7 @@ data class WindowPropertiesModel(
         prop.store(OutputStreamWriter(fos, "UTF-8"), null)
       }
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 }
@@ -129,7 +137,7 @@ data class ChoosedFilePropertiesModel(
         prop.store(OutputStreamWriter(stream, "UTF-8"), null)
       }
     } catch (e: IOException) {
-      e.printStackTrace()
+      warning(e.toString())
     }
   }
 }

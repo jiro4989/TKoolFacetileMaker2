@@ -168,6 +168,7 @@ class CroppingImageModelTest {
     assertEquals(30.0, r.height)
   }
 
+  @Suppress("MaxLineLength")
   @ParameterizedTest
   @CsvSource(
       // 正常系

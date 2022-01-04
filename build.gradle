@@ -35,6 +35,9 @@ plugins {
   id 'jacoco'
 
   id "org.jetbrains.kotlin.jvm" version "1.6.10"
+
+  // Linter
+  id 'io.gitlab.arturbosch.detekt' version '1.19.0'
 }
 
 // 変数定義
@@ -165,12 +168,63 @@ spotless {
 
   kotlin {
     ktfmt('0.15')
-    //diktat('0.4.0')
   }
 
   groovyGradle {
     target '*.gradle'
     greclipse().configFile("$rootDir/greclipse.properties")
+  }
+}
+
+detekt {
+  // Version of Detekt that will be used. When unspecified the latest detekt
+  // version found will be used. Override to stay on the same version.
+  toolVersion = "1.19.0"
+
+  // Define the detekt configuration(s) you want to use.
+  // Defaults to the default detekt configuration.
+  config = files("detekt.yml")
+
+  //
+  // // Specifying a baseline file. All findings stored in this file in subsequent runs of detekt.
+  // baseline = file("path/to/baseline.xml")
+
+  // Disables all default detekt rulesets and will only run detekt with custom rules
+  // defined in plugins passed in with `detektPlugins` configuration. `false` by default.
+  disableDefaultRuleSets = false
+
+  // Adds debug output during task execution. `false` by default.
+  debug = false
+
+  // If set to `true` the build does not fail when the
+  // maxIssues count was reached. Defaults to `false`.
+  ignoreFailures = false
+
+  // Android: Don't create tasks for the specified build types (e.g. "release")
+  ignoredBuildTypes = ["release"]
+
+  // Android: Don't create tasks for the specified build flavor (e.g. "production")
+  ignoredFlavors = ["production"]
+
+  // Android: Don't create tasks for the specified build variants (e.g. "productionRelease")
+  ignoredVariants = ["productionRelease"]
+
+  // Specify the base path for file paths in the formatted reports.
+  // If not set, all file paths reported will be absolute file path.
+  basePath = projectDir
+}
+
+tasks.named("detekt").configure {
+  dependsOn 'spotlessApply'
+  reports {
+    xml.required.set(false)
+    sarif.required.set(false)
+
+    html.required.set(true)
+    html.outputLocation.set(file("build/reports/detekt.html"))
+
+    txt.required.set(true)
+    txt.outputLocation.set(file("build/reports/detekt.txt"))
   }
 }
 
@@ -266,6 +320,7 @@ tasks.register('jlink', Exec) {
 spotlessApply.dependsOn(['clean'])
 versionSet.dependsOn(['spotlessApply'])
 test.dependsOn('spotlessApply')
+// detekt.dependsOn('spotlessApply')
 processResources.dependsOn(['versionSet'])
 compileJava.dependsOn(['processResources'])
 compileKotlin.dependsOn(['processResources'])

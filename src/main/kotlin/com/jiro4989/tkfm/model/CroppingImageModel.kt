@@ -3,12 +3,28 @@ package com.jiro4989.tkfm.model
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
-import javafx.beans.property.*
+import javafx.beans.property.DoubleProperty
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 
+@Suppress("MagicNumber")
 private fun createEmptyImage() = WritableImage(100, 100)
+
+private const val SCALE_MIN = 20.0
+
+private const val SCALE_MAX = 200.0
+
+private const val DEFAULT_IMAGE_SIZE = 288.0
+
+private const val DEFAULT_SCALE_PROPERTY_VALUE = 100.0
+
+// Scale用のスライダーはは百分率で値を保持するため、拡縮演算をする際は100で割って小数に変換する必要がある。
+// これはその小数への変換用の定数
+private const val TO_DECIMAL_DIVIDE_NUMBER = 100.0
 
 /** 拡大した画像を返す。 */
 private fun scaledImage(image: BufferedImage, scale: Double): BufferedImage {
@@ -46,7 +62,7 @@ internal fun calcShadowLayerAxis(
   // |    |    4    |
   // |    |bottom   |
   // +----+---------+
-  val cs = croppingScale / 100.0
+  val cs = croppingScale / TO_DECIMAL_DIVIDE_NUMBER
   val iw = imageWidth * cs
   val ih = imageHeight * cs
   val mx =
@@ -79,36 +95,38 @@ data class CroppingImageModel(
     /** トリミング対象の画像 */
     val imageProperty: ObjectProperty<Image> = SimpleObjectProperty(createEmptyImage()),
     /** トリミング対象画像の横幅。JavaFXのUIとのプロパティバインド用 */
-    val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    val imageWidthProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_IMAGE_SIZE),
     /** トリミング対象画像の縦幅。JavaFXのUIとのプロパティバインド用 */
-    val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(288.0),
+    val imageHeightProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_IMAGE_SIZE),
+
+    // シャドウレイヤは起動直後の初期化処理で位置調整が走るためデフォルト値は何でも良い
 
     // Top
-    val shadowTopLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowTopLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowTopLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowTopLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowTopLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowTopLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Right
-    val shadowRightLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowRightLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowRightLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowRightLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowRightLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowRightLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Left
-    val shadowLeftLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowLeftLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowLeftLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowLeftLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowLeftLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowLeftLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     // Bottom
-    val shadowBottomLayerXProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowBottomLayerYProperty: DoubleProperty = SimpleDoubleProperty(0.0),
-    val shadowBottomLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(10.0),
-    val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(10.0),
+    val shadowBottomLayerXProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerYProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerWidthProperty: DoubleProperty = SimpleDoubleProperty(),
+    val shadowBottomLayerHeightProperty: DoubleProperty = SimpleDoubleProperty(),
 
     /** 画像をトリミングする際の拡縮値。JavaFXのUIとのプロパティバインド用 */
-    val scaleProperty: DoubleProperty = SimpleDoubleProperty(100.0),
+    val scaleProperty: DoubleProperty = SimpleDoubleProperty(DEFAULT_SCALE_PROPERTY_VALUE),
 
     /** トリミング座標 */
     val croppingPosition: PositionModel = PositionModel(0.0, 0.0),
@@ -120,7 +138,7 @@ data class CroppingImageModel(
   }
 
   fun cropByBufferedImage(): Image {
-    val scale = scaleProperty.get() / 100
+    val scale = scaleProperty.get() / TO_DECIMAL_DIVIDE_NUMBER
     var x = croppingPosition.x.toInt()
     var y = croppingPosition.y.toInt()
     var width = croppingRectangle.width.toInt()
@@ -153,7 +171,7 @@ data class CroppingImageModel(
    */
   fun move(x: Double = croppingPosition.x, y: Double = croppingPosition.y) {
     val bImg = imageProperty.get()
-    val s = scaleProperty.get() / 100
+    val s = scaleProperty.get() / TO_DECIMAL_DIVIDE_NUMBER
     val w = bImg.width
     val h = bImg.height
     val rectWidth = croppingRectangle.width
@@ -213,14 +231,12 @@ data class CroppingImageModel(
   }
 
   fun setScale(scale: Double) {
-    val minScale = 20.0
-    val maxScale = 200.0
     var scale2 = scale
 
-    if (scale2 < minScale) {
-      scale2 = minScale
-    } else if (maxScale < scale2) {
-      scale2 = maxScale
+    if (scale2 < SCALE_MIN) {
+      scale2 = SCALE_MIN
+    } else if (SCALE_MAX < scale2) {
+      scale2 = SCALE_MAX
     }
 
     scaleProperty.set(scale2)

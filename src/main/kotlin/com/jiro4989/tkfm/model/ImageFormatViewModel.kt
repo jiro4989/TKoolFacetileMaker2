@@ -6,11 +6,13 @@ import javafx.scene.control.TextField
 
 /** 入力フォームが受け付ける文字列であるかを検証する */
 internal fun isAvailableInteger(value: String, emptyOK: Boolean): Boolean {
-  // 空文字はOK
-  if (emptyOK && value == "") return true
-  // 自然数はOK。0始まりの数値はNG
-  if (Regex("""^[1-9]\d*$""").matches(value)) return true
-  return false
+  return when {
+    // 空文字はOK
+    emptyOK && value == "" -> true
+    // 自然数はOK。0始まりの数値はNG
+    Regex("""^[1-9]\d*$""").matches(value) -> true
+    else -> false
+  }
 }
 
 class ImageFormatViewModel(
@@ -24,11 +26,13 @@ class ImageFormatViewModel(
       SSP(name), SSP(row), SSP(col), SSP(tileWidth), SSP(tileHeight))
 
   fun validate(): Boolean {
-    if (nameProperty.get() == "") return false
-    if (!isAvailableInteger(rowProperty.get(), false)) return false
-    if (!isAvailableInteger(colProperty.get(), false)) return false
-    if (!isAvailableInteger(tileWidthProperty.get(), false)) return false
-    if (!isAvailableInteger(tileHeightProperty.get(), false)) return false
-    return true
+    return when {
+      nameProperty.get() == "" -> false
+      !isAvailableInteger(rowProperty.get(), false) -> false
+      !isAvailableInteger(colProperty.get(), false) -> false
+      !isAvailableInteger(tileWidthProperty.get(), false) -> false
+      !isAvailableInteger(tileHeightProperty.get(), false) -> false
+      else -> true
+    }
   }
 }

@@ -100,16 +100,12 @@ class ImageFormatConfigModelTest {
   fun testWriteXML() {
     val fmt = ImageFormatConfigModel(loadXML = false)
     val list = mutableListOf(ImageFormatModel("3x3", 3, 3, RectangleModel(100.0, 100.0)))
-    try {
-      StringWriter().use { w: Writer ->
-        fmt.writeXML(w, list)
-        val got = w.toString().trim()
-        val path = resourcePath("/image_format_3x3_100x100.xml")
-        val want = Files.readString(path).trim()
-        assertEquals(want, got)
-      }
-    } catch (e: Exception) {
-      throw e
+    StringWriter().use { w: Writer ->
+      fmt.writeXML(w, list)
+      val got = w.toString().trim()
+      val path = resourcePath("/image_format_3x3_100x100.xml")
+      val want = Files.readString(path).trim()
+      assertEquals(want, got)
     }
   }
 
@@ -121,16 +117,12 @@ class ImageFormatConfigModelTest {
             ImageFormatModel("3x3", 3, 3, RectangleModel(100.0, 100.0)),
             ImageFormatModel("4x5", 4, 5, RectangleModel(200.0, 300.0)))
 
-    try {
-      StringWriter().use { w: Writer ->
-        fmt.writeXML(w, list)
-        val got = w.toString().trim()
-        val path = resourcePath("/image_format_3x3_100x100_2.xml")
-        val want = Files.readString(path).trim()
-        assertEquals(want, got)
-      }
-    } catch (e: Exception) {
-      throw e
+    StringWriter().use { w: Writer ->
+      fmt.writeXML(w, list)
+      val got = w.toString().trim()
+      val path = resourcePath("/image_format_3x3_100x100_2.xml")
+      val want = Files.readString(path).trim()
+      assertEquals(want, got)
     }
   }
 
