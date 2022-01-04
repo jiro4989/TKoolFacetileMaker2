@@ -168,7 +168,6 @@ spotless {
 
   kotlin {
     ktfmt('0.15')
-    //diktat('0.4.0')
   }
 
   groovyGradle {
@@ -182,9 +181,10 @@ detekt {
   // version found will be used. Override to stay on the same version.
   toolVersion = "1.19.0"
 
-  // // Define the detekt configuration(s) you want to use.
-  // // Defaults to the default detekt configuration.
-  // config = files("path/to/config.yml")
+  // Define the detekt configuration(s) you want to use.
+  // Defaults to the default detekt configuration.
+  config = files("detekt.yml")
+
   //
   // // Specifying a baseline file. All findings stored in this file in subsequent runs of detekt.
   // baseline = file("path/to/baseline.xml")
