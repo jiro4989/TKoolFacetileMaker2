@@ -13,7 +13,7 @@ import javafx.stage.StageStyle
 private const val PADDING_WIDTH = 50.0
 
 class ImageFormatStage : Stage {
-  private lateinit var controller: ImageFormatViewController
+  private val controller: ImageFormatViewController
 
   constructor(windowX: Double, windowY: Double) {
     val loader = FXMLLoader(this.javaClass.getResource("fxml/image_format_view.fxml"))
