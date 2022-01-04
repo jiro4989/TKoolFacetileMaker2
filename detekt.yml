@@ -122,6 +122,7 @@ complexity:
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: []
+    excludes: ["**/test/**"]
   MethodOverloading:
     active: false
     threshold: 6
