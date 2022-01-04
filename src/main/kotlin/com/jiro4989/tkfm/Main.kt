@@ -42,27 +42,24 @@ class Main : Application() {
 
     windowProperty.load()
     stage = primaryStage
-    try {
-      val loader = FXMLLoader(this.javaClass.getResource("fxml/main_view.fxml"))
-      root = loader.load() as BorderPane
-      controller = loader.getController() as MainViewController
 
-      val scene = Scene(root, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
-      scene.stylesheets += this.javaClass.getResource("css/application.css").toExternalForm()
+    val loader = FXMLLoader(this.javaClass.getResource("fxml/main_view.fxml"))
+    root = loader.load() as BorderPane
+    controller = loader.getController() as MainViewController
 
-      val thisClass = this.javaClass
-      stage.apply {
-        setScene(scene)
-        icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
-        setTitle(APPLICATION_TITLE)
-        setX(windowProperty.x)
-        setY(windowProperty.y)
-        setWidth(windowProperty.width)
-        setHeight(windowProperty.height)
-        show()
-      }
-    } catch (e: Exception) {
-      warning(e.toString())
+    val scene = Scene(root, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
+    scene.stylesheets += this.javaClass.getResource("css/application.css").toExternalForm()
+
+    val thisClass = this.javaClass
+    stage.apply {
+      setScene(scene)
+      icons.add(Image(thisClass.getResource("img/logo.png").toExternalForm()))
+      setTitle(APPLICATION_TITLE)
+      setX(windowProperty.x)
+      setY(windowProperty.y)
+      setWidth(windowProperty.width)
+      setHeight(windowProperty.height)
+      show()
     }
   }
 

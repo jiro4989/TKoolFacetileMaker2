@@ -16,26 +16,22 @@ class ImageFormatStage : Stage {
   private lateinit var controller: ImageFormatViewController
 
   constructor(windowX: Double, windowY: Double) {
-    try {
-      val loader = FXMLLoader(this.javaClass.getResource("fxml/image_format_view.fxml"))
-      val root = loader.load() as VBox
-      controller = loader.getController() as ImageFormatViewController
+    val loader = FXMLLoader(this.javaClass.getResource("fxml/image_format_view.fxml"))
+    val root = loader.load() as VBox
+    controller = loader.getController() as ImageFormatViewController
 
-      // UI conficuration
-      val scene = Scene(root)
-      setTitle("画像フォーマットを追加")
+    // UI conficuration
+    val scene = Scene(root)
+    setTitle("画像フォーマットを追加")
 
-      // アプリケーションウィンドウからの相対位置として
-      // ウィンドウの左上頂点から右下方向に多少ずらした場所を初期位置とする
-      setX(windowX + PADDING_WIDTH)
-      setY(windowY + PADDING_WIDTH)
+    // アプリケーションウィンドウからの相対位置として
+    // ウィンドウの左上頂点から右下方向に多少ずらした場所を初期位置とする
+    setX(windowX + PADDING_WIDTH)
+    setY(windowY + PADDING_WIDTH)
 
-      setScene(scene)
-      initStyle(StageStyle.UTILITY)
-      initModality(Modality.APPLICATION_MODAL)
-    } catch (e: Exception) {
-      warning(e.toString())
-    }
+    setScene(scene)
+    initStyle(StageStyle.UTILITY)
+    initModality(Modality.APPLICATION_MODAL)
   }
 
   fun getImageFormat() = controller.getImageFormat()

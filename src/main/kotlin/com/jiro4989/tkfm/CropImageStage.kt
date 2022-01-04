@@ -13,26 +13,22 @@ class CropImageStage : Stage {
   private lateinit var controller: CropImageViewController
 
   constructor(x: Double, y: Double, scale: Double) {
-    try {
-      val loader = FXMLLoader(this.javaClass.getResource("fxml/crop_image_view.fxml"))
-      val root = loader.load() as VBox
+    val loader = FXMLLoader(this.javaClass.getResource("fxml/crop_image_view.fxml"))
+    val root = loader.load() as VBox
 
-      // UI conficuration
-      val scene = Scene(root)
-      setScene(scene)
-      initStyle(StageStyle.UTILITY)
-      initModality(Modality.APPLICATION_MODAL)
+    // UI conficuration
+    val scene = Scene(root)
+    setScene(scene)
+    initStyle(StageStyle.UTILITY)
+    initModality(Modality.APPLICATION_MODAL)
 
-      // Set default value
-      controller =
-          (loader.getController() as CropImageViewController).apply {
-            setX(x)
-            setY(y)
-            setScale(scale)
-          }
-    } catch (e: Exception) {
-      warning(e.toString())
-    }
+    // Set default value
+    controller =
+        (loader.getController() as CropImageViewController).apply {
+          setX(x)
+          setY(y)
+          setScale(scale)
+        }
   }
 
   /** Returns X that was set with controller. But method name getX was defined. */
