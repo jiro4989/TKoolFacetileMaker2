@@ -409,11 +409,12 @@ formatting:
   StringTemplate:
     active: true
     autoCorrect: true
-  TrailingComma:
-    active: false
-    autoCorrect: true
-    allowTrailingComma: false
-    allowTrailingCommaOnCallSite: false
+  # FIXME: 公式サイトからコピペしてきたのにプロパティが無いとか言われた
+  # TrailingComma:
+  #   active: false
+  #   autoCorrect: true
+  #   allowTrailingComma: false
+  #   allowTrailingCommaOnCallSite: false
 
 naming:
   active: true
@@ -564,8 +565,9 @@ potential-bugs:
   MissingWhenCase:
     active: true
     allowElseExpression: true
-  NullCheckOnMutableProperty:
-    active: false
+  # FIXME: 公式サイトからコピペしてきたのにプロパティが無いとか言われた
+  # NullCheckOnMutableProperty:
+  #   active: false
   NullableToStringCall:
     active: false
   RedundantElseInWhen:
@@ -594,8 +596,9 @@ potential-bugs:
 
 style:
   active: true
-  CanBeNonNullable:
-    active: false
+  # FIXME: 公式サイトからコピペしてきたのにプロパティが無いとか言われた
+  # CanBeNonNullable:
+  #   active: false
   ClassOrdering:
     active: false
   CollapsibleIfStatements:
@@ -740,7 +743,8 @@ style:
   UnderscoresInNumericLiterals:
     active: false
     acceptableLength: 4
-    allowNonStandardGrouping: false
+    # FIXME: 公式サイトからコピペしてきたのにプロパティが無いとか言われた
+    # allowNonStandardGrouping: false
   UnnecessaryAbstractClass:
     active: true
   UnnecessaryAnnotationUseSiteTarget:
