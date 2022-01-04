@@ -1,5 +1,19 @@
 package com.jiro4989.tkfm.util
 
+fun initLogger() {
+  // WIP
+}
+
+fun info(msg: String) {
+  println(msg)
+}
+
+fun warning(msg: String) {
+  println(msg)
+}
+
+/*
+// WIP
 import java.io.File
 import java.nio.file.Paths
 import java.util.logging.ConsoleHandler
@@ -59,3 +73,5 @@ fun warning(msg: String) {
 private fun createLogDirectory() {
   File(LOG_DIRECTORY).mkdirs()
 }
+
+*/
