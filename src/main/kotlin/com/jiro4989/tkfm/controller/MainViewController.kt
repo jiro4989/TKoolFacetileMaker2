@@ -19,6 +19,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
+import javafx.beans.property.DoubleProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
@@ -109,38 +110,7 @@ class MainViewController : Initializable {
 
   override fun initialize(location: URL?, resources: ResourceBundle?) {
     // initialize models
-    try {
-      imageFormat = ImageFormatConfigModel()
-    } catch (e: ParserConfigurationException) {
-      warning(e.toString())
-      showAndWaitCommonExceptionDialog("ParserConfigurationException")
-      Platform.exit()
-    } catch (e: IOException) {
-      warning(e.toString())
-
-      val exception = "IOException"
-      val msg =
-          """画像フォーマットファイルの読み込みに失敗しました。
-以下の観点で確認してください。
-
-- configフォルダが存在するか
-- 特別なフォルダ (システムフォルダなど)で実行していないか
-"""
-      showAndWaitExceptionDialog(exception, msg)
-      Platform.exit()
-    } catch (e: SAXException) {
-      warning(e.toString())
-
-      val exception = "SAXException"
-      val msg =
-          """画像フォーマットファイルの読込に失敗しました。
-config/image_format.xmlファイルを手動で書き換えるなどして、
-不正なXMLファイルになっている可能性があります。
-当該ファイルを削除してアプリケーションを再起動してみてください
-"""
-      showAndWaitExceptionDialog(exception, msg)
-      Platform.exit()
-    }
+    createImageFormatConfigModel()?.let { imageFormat = it } ?: Platform.exit()
 
     val selectedImageFormat = imageFormat.selectedImageFormat
     val rect = selectedImageFormat.rectangle
@@ -160,74 +130,17 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
     rect.widthProperty.addListener { _ -> resetOutputGridPane() }
     rect.heightProperty.addListener { _ -> resetOutputGridPane() }
 
-    // フォーカス用の影レイヤ
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.layoutXProperty(), cropImage.shadowTopLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.layoutYProperty(), cropImage.shadowTopLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.prefWidthProperty(), cropImage.shadowTopLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneTop.prefHeightProperty(), cropImage.shadowTopLayerHeightProperty)
+    bindingShadowLayers(
+        focusShadowPaneTop,
+        focusShadowPaneRight,
+        focusShadowPaneLeft,
+        focusShadowPaneBottom,
+        cropImage)
+    bindingCroppingImagePanes(cropImageGridPane, cropImageView, cropScaleSlider, cropImage)
+    bindingConverterToLabel(cropXLabel, pos.xProperty)
+    bindingConverterToLabel(cropYLabel, pos.yProperty)
+    bindingConverterToLabel(cropScaleLabel, cropImage.scaleProperty)
 
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.layoutXProperty(), cropImage.shadowRightLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.layoutYProperty(), cropImage.shadowRightLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.prefWidthProperty(), cropImage.shadowRightLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneRight.prefHeightProperty(), cropImage.shadowRightLayerHeightProperty)
-
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.layoutXProperty(), cropImage.shadowLeftLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.layoutYProperty(), cropImage.shadowLeftLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.prefWidthProperty(), cropImage.shadowLeftLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneLeft.prefHeightProperty(), cropImage.shadowLeftLayerHeightProperty)
-
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.layoutXProperty(), cropImage.shadowBottomLayerXProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.layoutYProperty(), cropImage.shadowBottomLayerYProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.prefWidthProperty(), cropImage.shadowBottomLayerWidthProperty)
-    Bindings.bindBidirectional(
-        focusShadowPaneBottom.prefHeightProperty(), cropImage.shadowBottomLayerHeightProperty)
-
-    // scaleは100分率で値を保持するため、乗算する場合は少数に変換する必要がある
-    cropImageGridPane.prefWidthProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
-    cropImageGridPane.prefHeightProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
-
-    Bindings.bindBidirectional(cropImageView.imageProperty(), cropImage.imageProperty)
-    cropImageView.fitWidthProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageWidthProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
-    cropImageView.fitHeightProperty()
-        .bind(
-            Bindings.multiply(
-                cropImage.imageHeightProperty,
-                Bindings.divide(cropScaleSlider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
-
-    val cropXConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(cropXLabel.textProperty(), pos.xProperty, cropXConv)
-    val cropYConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(cropYLabel.textProperty(), pos.yProperty, cropYConv)
-    val cropScaleConv: StringConverter<Number> = NumberStringConverter()
-    Bindings.bindBidirectional(
-        cropScaleLabel.textProperty(), cropImage.scaleProperty, cropScaleConv)
     Bindings.bindBidirectional(cropScaleSlider.valueProperty(), cropImage.scaleProperty)
     Bindings.bindBidirectional(outputImageView.imageProperty(), tileImage.imageProperty())
     outputGridPane.prefWidthProperty().bind(Bindings.multiply(rect.widthProperty, colCount))
@@ -252,6 +165,119 @@ config/image_format.xmlファイルを手動で書き換えるなどして、
 
     resetImageFormatMenu(false)
     resetOutputGridPane()
+  }
+
+  private fun createImageFormatConfigModel(): ImageFormatConfigModel? {
+    try {
+      return ImageFormatConfigModel()
+    } catch (e: ParserConfigurationException) {
+      warning(e.toString())
+      showAndWaitCommonExceptionDialog("ParserConfigurationException")
+    } catch (e: IOException) {
+      warning(e.toString())
+
+      val exception = "IOException"
+      val msg =
+          """画像フォーマットファイルの読み込みに失敗しました。
+以下の観点で確認してください。
+
+- configフォルダが存在するか
+- 特別なフォルダ (システムフォルダなど)で実行していないか
+"""
+      showAndWaitExceptionDialog(exception, msg)
+    } catch (e: SAXException) {
+      warning(e.toString())
+
+      val exception = "SAXException"
+      val msg =
+          """画像フォーマットファイルの読込に失敗しました。
+config/image_format.xmlファイルを手動で書き換えるなどして、
+不正なXMLファイルになっている可能性があります。
+当該ファイルを削除してアプリケーションを再起動してみてください
+"""
+      showAndWaitExceptionDialog(exception, msg)
+    }
+    return null
+  }
+
+  private fun bindingShadowLayers(
+      topPane: Pane,
+      rightPane: Pane,
+      leftPane: Pane,
+      bottomPane: Pane,
+      croppingImage: CroppingImageModel
+  ) {
+    // フォーカス用の影レイヤ
+    bindingShadowLayer(
+        topPane,
+        croppingImage.shadowTopLayerXProperty,
+        croppingImage.shadowTopLayerYProperty,
+        croppingImage.shadowTopLayerWidthProperty,
+        croppingImage.shadowTopLayerHeightProperty)
+    bindingShadowLayer(
+        rightPane,
+        croppingImage.shadowRightLayerXProperty,
+        croppingImage.shadowRightLayerYProperty,
+        croppingImage.shadowRightLayerWidthProperty,
+        croppingImage.shadowRightLayerHeightProperty)
+    bindingShadowLayer(
+        leftPane,
+        croppingImage.shadowLeftLayerXProperty,
+        croppingImage.shadowLeftLayerYProperty,
+        croppingImage.shadowLeftLayerWidthProperty,
+        croppingImage.shadowLeftLayerHeightProperty)
+    bindingShadowLayer(
+        bottomPane,
+        croppingImage.shadowBottomLayerXProperty,
+        croppingImage.shadowBottomLayerYProperty,
+        croppingImage.shadowBottomLayerWidthProperty,
+        croppingImage.shadowBottomLayerHeightProperty)
+  }
+
+  private fun bindingShadowLayer(
+      pane: Pane,
+      xProperty: DoubleProperty,
+      yProperty: DoubleProperty,
+      widthProperty: DoubleProperty,
+      heightProperty: DoubleProperty
+  ) {
+    Bindings.bindBidirectional(pane.layoutXProperty(), xProperty)
+    Bindings.bindBidirectional(pane.layoutYProperty(), yProperty)
+    Bindings.bindBidirectional(pane.prefWidthProperty(), widthProperty)
+    Bindings.bindBidirectional(pane.prefHeightProperty(), heightProperty)
+  }
+
+  private fun bindingCroppingImagePanes(
+      grid: GridPane, imageView: ImageView, slider: Slider, imageModel: CroppingImageModel
+  ) {
+    // scaleは100分率で値を保持するため、乗算する場合は少数に変換する必要がある
+    grid.prefWidthProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageWidthProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+    grid.prefHeightProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageHeightProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+
+    Bindings.bindBidirectional(imageView.imageProperty(), imageModel.imageProperty)
+    imageView.fitWidthProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageWidthProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+    imageView.fitHeightProperty()
+        .bind(
+            Bindings.multiply(
+                imageModel.imageHeightProperty,
+                Bindings.divide(slider.valueProperty(), TO_DECIMAL_DIVIDE_NUMBER)))
+  }
+
+  private fun bindingConverterToLabel(label: Label, property: DoubleProperty) {
+    val converter: StringConverter<Number> = NumberStringConverter()
+    Bindings.bindBidirectional(label.textProperty(), property, converter)
   }
 
   private fun getInitialDir(file: File): File {
