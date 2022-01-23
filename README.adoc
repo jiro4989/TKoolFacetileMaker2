@@ -263,6 +263,16 @@ git tag
 git tag {新しいタグ}
 ----
 
+=== JDKのアップグレード
+
+`./script/update_jdk_version.sh` を使う。
+以下はJDK17にアップグレードする場合の例。
+
+[source,bash]
+----
+./script/update_jdk_version.sh 17
+----
+
 === 余談
 
 初期はJava + JavaFXのみで作ってあったけれど
