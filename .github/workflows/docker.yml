@@ -1,0 +1,27 @@
+---
+
+name: docker
+
+"on":
+  push:
+    paths:
+      - 'Dockerfile'
+    branches:
+      - master
+  pull_request:
+    paths:
+      - 'Dockerfile'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build -t ci .
+      - name: Build
+        run: docker run -t ci ./gradlew build -x test -x detekt
