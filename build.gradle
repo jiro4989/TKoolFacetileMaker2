@@ -92,8 +92,8 @@ dependencies {
   testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
 }
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 application {
   // Define the main class for the application.
@@ -112,11 +112,11 @@ compileJava {
 }
 
 compileKotlin {
-  kotlinOptions.jvmTarget = "16"
+  kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-  kotlinOptions.jvmTarget = "16"
+  kotlinOptions.jvmTarget = "17"
 }
 
 javafx {

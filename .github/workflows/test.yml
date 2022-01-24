@@ -8,6 +8,7 @@ name: test
       - 'LICENSE'
       - 'README.*'
       - 'docs/*'
+      - 'Dockerfile'
     branches:
       - master
   pull_request:
@@ -15,11 +16,12 @@ name: test
       - 'LICENSE'
       - 'README.*'
       - 'docs/*'
+      - 'Dockerfile'
 
 env:
   APP_NAME: 'tkfm'
-  JAVA_VERSION: '16'
-  JAVAFX_VERSION: '16'
+  JAVA_VERSION: '17'
+  JAVAFX_VERSION: '17'
 
 defaults:
   run:
