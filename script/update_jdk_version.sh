@@ -5,7 +5,11 @@ set -eu
 java_version=$1
 
 sed -i -E \
-  -e "/(source|target)Compatibility/s/[0-9]+/${java_version}/g" \
+  -e "/\* Java /s/[0-9]+/${java_version}/g" \
+  README.adoc
+
+sed -i -E \
+  -e "/(source|target)Compatibility/s/[1-9]+/${java_version}/g" \
   -e "/jvmTarget/s/[0-9]+/${java_version}/g" \
   build.gradle
 
