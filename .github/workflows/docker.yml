@@ -12,10 +12,6 @@ name: docker
     paths:
       - '.github/dockerfiles/**'
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   java:
     runs-on: ubuntu-latest
@@ -25,3 +21,12 @@ jobs:
         run: docker build -f .github/dockerfiles/java/Dockerfile -t ci .
       - name: Build
         run: docker run -t ci ./gradlew build -x test -x detekt
+
+  gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build -f .github/dockerfiles/gradle/Dockerfile -t ci .
+      - name: Build
+        run: docker run -t ci gradle build -x test -x detekt
