@@ -5,23 +5,28 @@ name: docker
 "on":
   push:
     paths:
-      - 'Dockerfile'
+      - '.github/dockerfiles/**'
     branches:
       - master
   pull_request:
     paths:
-      - 'Dockerfile'
-
-defaults:
-  run:
-    shell: bash
+      - '.github/dockerfiles/**'
 
 jobs:
-  test:
+  java:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build docker image
-        run: docker build -t ci .
+        run: docker build -f .github/dockerfiles/java/Dockerfile -t ci .
       - name: Build
         run: docker run -t ci ./gradlew build -x test -x detekt
+
+  gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build -f .github/dockerfiles/gradle/Dockerfile -t ci .
+      - name: Build
+        run: docker run -t ci gradle build -x test -x detekt

@@ -8,7 +8,7 @@ name: test
       - 'LICENSE'
       - 'README.*'
       - 'docs/*'
-      - 'Dockerfile'
+      - '.github/dockerfiles/**'
     branches:
       - master
   pull_request:
@@ -16,7 +16,7 @@ name: test
       - 'LICENSE'
       - 'README.*'
       - 'docs/*'
-      - 'Dockerfile'
+      - '.github/dockerfiles/**'
 
 env:
   APP_NAME: 'tkfm'
