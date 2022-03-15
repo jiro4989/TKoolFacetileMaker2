@@ -84,7 +84,7 @@ dependencies {
   implementation "org.openjfx:javafx-base:17.0.2"
   implementation "org.openjfx:javafx-controls:17.0.2"
   implementation "org.openjfx:javafx-graphics:17.0.2"
-  implementation "org.openjfx:javafx-swing:17.0.2"
+  implementation "org.openjfx:javafx-swing:18"
 
   implementation platform('org.jetbrains.kotlin:kotlin-bom')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
