@@ -80,11 +80,11 @@ dependencies {
   testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 
   // JavaFX
-  implementation "org.openjfx:javafx-fxml:18.0.2"
-  implementation "org.openjfx:javafx-base:18.0.2"
-  implementation "org.openjfx:javafx-controls:18.0.2"
+  implementation "org.openjfx:javafx-fxml:19"
+  implementation "org.openjfx:javafx-base:19"
+  implementation "org.openjfx:javafx-controls:19"
   implementation "org.openjfx:javafx-graphics:19"
-  implementation "org.openjfx:javafx-swing:18.0.2"
+  implementation "org.openjfx:javafx-swing:19"
 
   implementation platform('org.jetbrains.kotlin:kotlin-bom')
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
