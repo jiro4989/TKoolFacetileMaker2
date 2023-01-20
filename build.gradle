@@ -81,7 +81,7 @@ dependencies {
 
   // JavaFX
   implementation "org.openjfx:javafx-fxml:19.0.2"
-  implementation "org.openjfx:javafx-base:19.0.2"
+  implementation "org.openjfx:javafx-base:19.0.2.1"
   implementation "org.openjfx:javafx-controls:19.0.2"
   implementation "org.openjfx:javafx-graphics:19.0.2"
   implementation "org.openjfx:javafx-swing:19.0.2"
