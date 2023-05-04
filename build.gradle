@@ -26,7 +26,7 @@ plugins {
   id 'application'
 
   // JavaFX
-  id "org.openjfx.javafxplugin" version "0.0.13"
+  id "org.openjfx.javafxplugin" version "0.0.14"
 
   // Spotless for code formatting
   id "com.diffplug.spotless" version "6.18.0"
