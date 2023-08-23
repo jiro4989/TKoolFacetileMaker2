@@ -34,7 +34,7 @@ plugins {
   // Code coverage
   id 'jacoco'
 
-  id "org.jetbrains.kotlin.jvm" version "1.9.0"
+  id "org.jetbrains.kotlin.jvm" version "1.9.10"
 
   // Linter
   id 'io.gitlab.arturbosch.detekt' version '1.23.1'
