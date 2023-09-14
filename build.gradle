@@ -77,7 +77,7 @@ dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
   testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0'
-  testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
+  testImplementation "org.testfx:testfx-junit5:4.0.17"
 
   // JavaFX
   implementation "org.openjfx:javafx-fxml:20.0.2"
