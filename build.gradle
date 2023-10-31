@@ -37,7 +37,7 @@ plugins {
   id "org.jetbrains.kotlin.jvm" version "1.9.20"
 
   // Linter
-  id 'io.gitlab.arturbosch.detekt' version '1.23.1'
+  id 'io.gitlab.arturbosch.detekt' version '1.23.3'
 }
 
 // 変数定義
