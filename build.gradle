@@ -29,7 +29,7 @@ plugins {
   id "org.openjfx.javafxplugin" version "0.1.0"
 
   // Spotless for code formatting
-  id "com.diffplug.spotless" version "6.23.2"
+  id "com.diffplug.spotless" version "6.23.3"
 
   // Code coverage
   id 'jacoco'
