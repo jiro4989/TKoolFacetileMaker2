@@ -66,7 +66,7 @@ jobs:
           ./script/create_artifact.sh
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: 'dist/${{ env.APP_NAME }}_*.*'
         env:
