@@ -41,7 +41,7 @@ jobs:
             entrypoint_script_ext: ''
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4.6.0
+      - uses: actions/setup-java@v4.7.0
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
