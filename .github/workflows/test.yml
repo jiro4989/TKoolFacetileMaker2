@@ -20,8 +20,8 @@ name: test
 
 env:
   APP_NAME: 'tkfm'
-  JAVA_VERSION: '17'
-  JAVAFX_VERSION: '17'
+  JAVA_VERSION: '24'
+  JAVAFX_VERSION: '24'
 
 defaults:
   run:
@@ -111,7 +111,7 @@ jobs:
           ENTRYPOINT_SCRIPT_EXT="${{ matrix.entrypoint_script_ext }}"
           ./script/create_artifact.sh
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: artifact
           path: |
