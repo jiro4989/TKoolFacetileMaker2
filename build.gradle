@@ -81,7 +81,7 @@ dependencies {
 
   // JavaFX
   implementation "org.openjfx:javafx-fxml:22.0.2"
-  implementation "org.openjfx:javafx-base:22.0.2"
+  implementation "org.openjfx:javafx-base:24.0.1"
   implementation "org.openjfx:javafx-controls:22.0.2"
   implementation "org.openjfx:javafx-graphics:22.0.2"
   implementation "org.openjfx:javafx-swing:22.0.2"
